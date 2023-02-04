@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany, HasOne};
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -18,9 +20,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'img_url',
+        'about',
+        'status',
+        'activated_at',
+        'last_activity',
+        'role_id',
     ];
 
     /**
@@ -40,5 +49,88 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'activated_at' => 'datetime',
+        'last_activity' => 'datetime',
     ];
+
+    /**
+     * @return string
+     */
+    public function getFirstNameAttribute(): string
+    {
+        return Str::ucfirst(mb_strtolower($this->attributes['first_name']));
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastNameAttribute(): string
+    {
+        return Str::ucfirst(mb_strtolower($this->attributes['last_name']));
+    }
+
+    /**
+     * Set email value
+     *
+     * @param $value
+     */
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = mb_strtolower($value);
+    }
+
+    /**
+     * Set password value
+     *
+     * @param string $value
+     */
+    public function setPasswordAttribute(string $value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    /**
+     * Related user info
+     *
+     * @return HasOne
+     */
+    public function info(): HasOne
+    {
+        return $this->hasOne(UserInfo::class, 'user_id', 'id');
+    }
+
+    /**
+     * Related login history
+     *
+     * @return HasMany
+     */
+    public function loginHistory(): HasMany
+    {
+        return $this->hasMany(LoginHistory::class);
+    }
+
+    /**
+     * Related role
+     *
+     * @return BelongsTo
+     */
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Extend model behavior
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($model) {
+            // Remove info
+            $model->info()->delete();
+            // Remove login history
+            $model->loginHistory()->each(fn($entity) => $entity->delete());
+        });
+    }
 }
