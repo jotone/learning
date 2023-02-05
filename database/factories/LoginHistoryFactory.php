@@ -2,14 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\{LoginHistory, User};
+use App\Models\LoginHistory;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Tests\Traits\ModelGeneratorsTrait;
 
 /**
  * @extends Factory<LoginHistory>
  */
 class LoginHistoryFactory extends Factory
 {
+    use ModelGeneratorsTrait;
+
     /**
      * The name of the factory's corresponding model.
      *
@@ -24,7 +27,7 @@ class LoginHistoryFactory extends Factory
      */
     public function definition(): array
     {
-        $user = User::whereHas('role', fn ($q) => $q->where('level', '>=', 127))->inRandomOrder()->first();
+        $user = $this->generateUser();
         return [
             'user_id' => $user->id,
             'ip' => fake()->ipv4,

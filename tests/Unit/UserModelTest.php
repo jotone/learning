@@ -2,13 +2,16 @@
 
 namespace Tests\Unit;
 
-use App\Models\{LoginHistory, Role, User, UserInfo};
+use App\Models\{LoginHistory, User, UserInfo};
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Tests\ModelTestCase;
+use Tests\Traits\ModelGeneratorsTrait;
 
 class UserModelTest extends ModelTestCase
 {
+    use ModelGeneratorsTrait;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -96,29 +99,6 @@ class UserModelTest extends ModelTestCase
             $this->assertDatabaseMissing('login_history', ['user_id' => $model->id]);
             $this->assertDatabaseMissing('user_info', ['user_id' => $model->id]);
         });
-    }
-
-    /**
-     * Create user with the simple role
-     *
-     * @return User
-     */
-    protected function generateUser() : User
-    {
-        $role = $this->getRole();
-        return User::factory()->create(['role_id' => $role->id]);
-    }
-
-    /**
-     * Get or create fake role
-     *
-     * @return Role
-     */
-    protected function getRole(): Role
-    {
-        return Role::where('level', '>=', 127)->count()
-            ? Role::where('level', '>=', 127)->inRandomOrder()->first()
-            : Role::factory()->create();
     }
 
     /**
