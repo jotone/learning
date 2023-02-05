@@ -80,11 +80,6 @@
       "value": "Dev"
     },
     {
-      "caption": "Select Theme",
-      "key": "site_theme",
-      "value": 0
-    },
-    {
       "caption": "Time Zone",
       "key": "site_timezone",
       "value": "+00:00"
