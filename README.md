@@ -25,3 +25,6 @@
 - migrate - run artisan migrate
 - reset - reset and seed environment
 
+### TODO
+
+- CI/CD
