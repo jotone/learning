@@ -27,4 +27,4 @@
 
 ### TODO
 
-- CI/CD
+- Installation data
