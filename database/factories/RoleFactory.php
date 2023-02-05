@@ -28,7 +28,7 @@ class RoleFactory extends Factory
         return [
             'name' => $name,
             'slug' => generateUrl($name),
-            'level' => mt_rand(127, 200)
+            'level' => mt_rand(128, 200)
         ];
     }
 }

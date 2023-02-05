@@ -106,8 +106,8 @@ class UserModelTest extends ModelTestCase
      */
     protected static function getModel(): Model
     {
-        return User::whereHas('role', fn($q) => $q->where('level', '>=', 127))->count()
-            ? User::whereHas('role', fn($q) => $q->where('level', '>=', 127))->first()
+        return User::whereHas('role', fn($q) => $q->where('level', '>', 127))->count()
+            ? User::whereHas('role', fn($q) => $q->where('level', '>', 127))->first()
             : User::factory()->create();
     }
 }

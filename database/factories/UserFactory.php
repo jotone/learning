@@ -29,7 +29,7 @@ class UserFactory extends Factory
 
         $dims = [200, 240, 280, 320, 480, 640];
 
-        $role = Role::where('level', '>=', 127)->inRandomOrder()->first();
+        $role = Role::where('level', '>', 127)->inRandomOrder()->first();
 
         if (!$role) {
             $role = Role::factory()->create();

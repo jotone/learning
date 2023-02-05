@@ -28,4 +28,8 @@
 
 ### TODO
 
-- Role API
+- Login page
+- Dashboard Interface
+- Roles list page
+- Create Role page
+- Edit role page

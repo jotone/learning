@@ -24,8 +24,8 @@ trait ModelGeneratorsTrait
      */
     protected function getRole(): Role
     {
-        return Role::where('level', '>=', 127)->count()
-            ? Role::where('level', '>=', 127)->inRandomOrder()->first()
+        return Role::where('level', '>', 127)->count()
+            ? Role::where('level', '>', 127)->inRandomOrder()->first()
             : Role::factory()->create();
     }
 }
