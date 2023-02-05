@@ -24,7 +24,8 @@
 - down - stop docker containers
 - migrate - run artisan migrate
 - reset - reset and seed environment
+- test - run tests
 
 ### TODO
 
-- Installation data
+- Role API

@@ -1,0 +1,187 @@
+{
+  "api": [
+    {
+      "caption": "Zapier API key",
+      "key": "zapier_key",
+      "value": ""
+    },
+    {
+      "caption": "Digistore24 API key",
+      "key": "digistore_key",
+      "value": ""
+    },
+    {
+      "caption": "Enable Digistore24",
+      "key": "digistore_enable",
+      "value": false
+    },
+    {
+      "caption": "CopeCart ID",
+      "key": "copecart_id",
+      "value": ""
+    },
+    {
+      "caption": "Server Secret Key",
+      "key": "admin_server_access_key",
+      "value": ""
+    }
+  ],
+  "smtp-settings": [
+    {
+      "caption": "Username",
+      "key": "smtp_username",
+      "value": ""
+    },
+    {
+      "caption": "Password",
+      "key": "smtp_password",
+      "value": ""
+    },
+    {
+      "caption": "Host",
+      "key": "smtp_host",
+      "value": ""
+    },
+    {
+      "caption": "Port",
+      "key": "smtp_port",
+      "value": ""
+    },
+    {
+      "caption": "Encryption",
+      "key": "smtp_encryption",
+      "value": ""
+    },
+    {
+      "caption": "From Address",
+      "key": "smtp_from_address",
+      "value": ""
+    },
+    {
+      "caption": "From name",
+      "key": "smtp_from_name",
+      "value": ""
+    }
+  ],
+  "site-info": [
+    {
+      "caption": "Custom URL",
+      "key": "site_custom_url",
+      "value": ""
+    },
+    {
+      "caption": "Site URL",
+      "key": "site_url",
+      "value": "https://dev.learningsoftwarecy.com"
+    },
+    {
+      "caption": "System Name",
+      "key": "site_title",
+      "value": "Dev"
+    },
+    {
+      "caption": "Select Theme",
+      "key": "site_theme",
+      "value": 0
+    },
+    {
+      "caption": "Time Zone",
+      "key": "site_timezone",
+      "value": "+00:00"
+    }
+  ],
+  "hidden": [
+    {
+      "caption": "Signed up date",
+      "key": "sign_up_date",
+      "value": ""
+    },
+    {
+      "caption": "Plan",
+      "key": "package_type",
+      "value": 2
+    },
+    {
+      "caption": "Expires_at",
+      "key": "expires_at",
+      "value": ""
+    },
+    {
+      "caption": "",
+      "key": "courses_max_count",
+      "value": 1
+    },
+    {
+      "caption": "",
+      "key": "students_max_count",
+      "value": 50
+    },
+    {
+      "caption": "",
+      "key": "main_language",
+      "value": ""
+    }
+  ],
+  "registration-process": [
+    {
+      "caption": "Enable phone",
+      "key": "enable_phone",
+      "value": true
+    },
+    {
+      "caption": "Enable address",
+      "key": "enable_address",
+      "value": true
+    },
+    {
+      "caption": "Enable User's signature",
+      "key": "enable_signature",
+      "value": true
+    },
+    {
+      "caption": "Enable t-shirt size",
+      "key": "enable_t_shirt",
+      "value": true
+    }
+  ],
+  "custom-scripts": [
+    {
+      "caption": "Footer code",
+      "key": "footer_code",
+      "value": ""
+    },
+    {
+      "caption": "Header code",
+      "key": "header_code",
+      "value": ""
+    }
+  ],
+  "video-player": [
+    {
+      "caption": "Use custom video player",
+      "key": "use_custom_player",
+      "value": true
+    },
+    {
+      "caption": "Video player color",
+      "key": "video_player_bg_color",
+      "value": "#8A8515"
+    },
+    {
+      "caption": "Video player controls color",
+      "key": "video_player_font_color",
+      "value": "#FFFFFF"
+    }
+  ],
+  "user-img": [
+    {
+      "caption": "User Image processing",
+      "key": "user_img_processing",
+      "value": {
+        "thumb_small": [90, 60],
+        "thumb_large": [150, 90],
+        "resize": [400, 300]
+      }
+    }
+  ]
+}

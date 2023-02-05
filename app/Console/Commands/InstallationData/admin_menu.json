@@ -1,0 +1,80 @@
+{
+  "top": [
+    {
+      "name": "Dashboard",
+      "route": "dashboard.index",
+      "img": "images/icons/dashboard.svg"
+    }
+  ],
+  "bottom": [
+    {
+      "name": "getSupport",
+      "route": "https://intercom.help/copehelp/en/collections/3332192-copemember-help",
+      "img": "images/icons/help.svg"
+    },
+    {
+      "name": "Users and permissions",
+      "route": "#",
+      "img": "images/icons/hand-n-heart.svg",
+      "is_top": 0,
+      "inner": [
+        {
+          "name": "Users",
+          "route": "#"
+        },
+        {
+          "name": "Roles",
+          "route": "#"
+        }
+      ]
+    },
+    {
+      "name": "settings",
+      "route": "#",
+      "img_url": "images/icons/cog.svg",
+      "is_top": 0,
+      "inner": [
+        {
+          "name": "Main",
+          "route": "#"
+        },
+        {
+          "name": "Login Page",
+          "route": "#"
+        },
+        {
+          "name": "Course Page",
+          "route": "#"
+        },
+        {
+          "name": "Features",
+          "route": "#"
+        },
+        {
+          "name": "Integration",
+          "route": "#"
+        },
+        {
+          "name": "Email",
+          "route": "#"
+        },
+        {
+          "name": "Help",
+          "route": "#"
+        },
+        {
+          "name": "Language",
+          "route": "#"
+        },
+        {
+          "name": "Top Menu",
+          "route": "#"
+        },
+        {
+          "name": "Coaches",
+          "route": "#"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "student": {
+    "name": "Student",
+    "level": 127,
+    "permissions": []
+  },
+  "coach": {
+    "name": "Coach",
+    "level": 63,
+    "permissions": []
+  },
+  "admin": {
+    "name": "Administrator",
+    "level": 31,
+    "permissions": []
+  },
+  "superuser": {
+    "name": "SuperUser",
+    "level": 0,
+    "permissions": []
+  }
+}

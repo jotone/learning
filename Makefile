@@ -9,6 +9,7 @@ migrate:
 
 reset:
 	@vendor/bin/sail artisan migrate:fresh
+	@vendor/bin/sail artisan app:install
 
 test:
 	@vendor/bin/sail artisan test

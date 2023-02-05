@@ -53,5 +53,5 @@ jobs:
         DB_USER: root
         DB_PASSWORD: secret
       run: |
-        php artisan migrate:fresh
+        php artisan migrate:fresh && php artisan app:install
         php artisan test
