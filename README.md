@@ -28,8 +28,16 @@
 
 ### TODO
 
-- Login page
-- Dashboard Interface
 - Roles list page
 - Create Role page
 - Edit role page
+- User list page
+- Create User page
+- Edit User page
+- Main Settings page
+- Login Settings page
+- Coaches list page
+- Remove Auth\RegisteredUserController
+- Login page
+- Sanctum middleware
+- Separate dashboard middleware

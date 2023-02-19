@@ -1,0 +1,93 @@
+@import "../font", "vars", "icons";
+
+#app {min-height: 92vh}
+
+.header {
+  align-items: center;
+  background: white;
+  border-bottom: 1px solid $borderColor;
+  display: flex;
+  justify-content: space-between;
+  left: 0;
+  min-height: 62px;
+  padding: 6px 23px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 2000;
+
+  a.logo {
+    background-image: url("/images/logo-dashboard.png");
+    background-position: 0 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: block;
+    height: 40px;
+    width: 220px;
+  }
+}
+
+.content-wrap {
+  margin-top: 62px;
+}
+
+.side-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 95vh;
+  left: 0;
+  padding: 10px 0;
+  position: fixed;
+  text-align: center;
+  top: 62px;
+  width: 80px;
+  z-index: 100;
+
+  .side-menu-bottom {justify-content: flex-end}
+
+  .side-menu-top, .side-menu-bottom {
+    display: flex;
+    flex-direction: column;
+
+    svg {
+      fill: $secondary;
+      margin-bottom: 8px;
+    }
+
+    li {margin-bottom: 17px}
+
+    li.active svg {fill: $blue}
+
+    li.active a, a:hover {
+      border-left: 4px solid $blue;
+      color: $blue;
+      font-weight: 500;
+    }
+
+    a {
+      align-items: center;
+      color: $menuColor;
+      display: flex;
+      flex-direction: column;
+      font-size: 10px;
+      max-width: 100%;
+      overflow: hidden;
+      padding: 8px 0;
+      position: relative;
+      text-decoration: none;
+      transition: color .1s ease,border .1s ease;
+    }
+  }
+}
+
+.content {
+  background-color: $background;
+  padding: 20px;
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+@media (max-width: 600px) {
+  .header a.logo {background-image: url("/images/logo-dashboard-mobile.png")}
+}

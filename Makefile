@@ -11,6 +11,9 @@ reset:
 	@vendor/bin/sail artisan migrate:fresh
 	@vendor/bin/sail artisan app:install
 
+route:
+	@vendor/bin/sail artisan route:list
+
 test:
 	@vendor/bin/sail artisan test
 

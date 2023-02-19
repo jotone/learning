@@ -18,7 +18,9 @@ trait CommandsTrait
     {
         $menu = AdminMenu::create([
             'name' => $data['name'],
-            'route' => $data['route'],
+            'route' => str_starts_with($data['route'], 'http') || $data['route'] == '#'
+                ? $data['route']
+                : route($data['route'], [], false),
             'img' => $data['img'] ?? null,
             'parent_id' => $parent_id,
             'position' => $position,

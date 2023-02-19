@@ -3,35 +3,35 @@
     {
       "name": "Dashboard",
       "route": "dashboard.index",
-      "img": "images/icons/dashboard.svg"
+      "img": "dashboard"
     }
   ],
   "bottom": [
     {
-      "name": "getSupport",
+      "name": "Get Support",
       "route": "https://intercom.help/copehelp/en/collections/3332192-copemember-help",
-      "img": "images/icons/help.svg"
+      "img": "help"
     },
     {
       "name": "Users and permissions",
-      "route": "#",
-      "img": "images/icons/hand-n-heart.svg",
+      "route": "dashboard.users.index",
+      "img": "hand-n-heart",
       "is_top": 0,
       "inner": [
         {
           "name": "Users",
-          "route": "#"
+          "route": "dashboard.users.index"
         },
         {
           "name": "Roles",
-          "route": "#"
+          "route": "dashboard.users.roles.index"
         }
       ]
     },
     {
-      "name": "settings",
+      "name": "Settings",
       "route": "#",
-      "img_url": "images/icons/cog.svg",
+      "img": "cog",
       "is_top": 0,
       "inner": [
         {
