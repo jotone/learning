@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-
+const {exists} = require('fs')
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -31,3 +31,7 @@ mix
   })
   .version()
   .disableNotifications()
+
+// Copying libs
+// Jquery
+exists('./public/js/jquery.min.js', res => !res && mix.copy('node_modules/jquery/dist/jquery.min.js', 'public/js'))

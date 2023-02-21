@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BasicAdminController;
+use Illuminate\Http\Request;
 use Inertia\Response;
 
 class UsersController extends BasicAdminController
 {
     /**
-    * @return Response
-    */
-    public function index(): Response
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request): Response
     {
-        return $this->view('Users/Index');
+        return $this->view('Users/Index', $request);
     }
 }

@@ -7,7 +7,8 @@
   <link type="text/css" rel="stylesheet" href="{{ mix('css/reset.css') }}"/>
   <link type="text/css" rel="stylesheet" href="{{ mix('css/dashboard/main.css') }}"/>
 
-  <script src="{{ asset('js/dashboard.js') }}" defer></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/dashboard.js" defer></script>
   <title>Test</title>
 </head>
 <body>

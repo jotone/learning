@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RoleResource;
 use App\Http\Requests\Role\{RoleStoreRequest, RoleUpdateRequest};
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\{JsonResponse, Request};
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Str;
 
 class RoleController extends Controller
@@ -33,7 +35,7 @@ class RoleController extends Controller
      * @var array
      */
     protected array $order = [
-        'by' => ['id'],
+        'by'  => ['id'],
         'dir' => 'desc'
     ];
 
@@ -48,9 +50,9 @@ class RoleController extends Controller
      * Roles list
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return AnonymousResourceCollection
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): AnonymousResourceCollection
     {
         $args = $this->getRequest($request);
 
@@ -92,8 +94,8 @@ class RoleController extends Controller
         }
 
         $collection = $collection->paginate($this->take, $this->select);
-        return response()->json(
-        // Modify collection
+        return RoleResource::collection(
+            // Modify collection
             $collection->setCollection(
                 $collection->getCollection()
                     // Apply map function

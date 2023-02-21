@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
 
 class AdminMenu extends Model
 {
@@ -43,6 +43,16 @@ class AdminMenu extends Model
     protected $casts = [
         'is_top' => 'boolean',
     ];
+
+    /**
+     * Get menu parent item
+     *
+     * @return BelongsTo
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'parent_id', 'id');
+    }
 
     /**
      * Get menu inheritors

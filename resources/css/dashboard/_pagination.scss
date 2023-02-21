@@ -1,0 +1,29 @@
+.pagination {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  margin-bottom: 20px;
+
+  ul {
+    display: inline-block;
+
+    li {
+      display: inline-block;
+      margin-left: 5px;
+    }
+
+    a {
+      color: $light;
+      display: block;
+      padding: 4px;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    li.active a {
+      color: $blue;
+      font-weight: 500;
+    }
+  }
+}

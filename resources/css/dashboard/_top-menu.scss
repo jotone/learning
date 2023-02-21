@@ -1,0 +1,35 @@
+.content-submenu {
+  background: $lightBg;
+  left: 0;
+  position: sticky;
+  overflow-x: auto;
+  top: 62px;
+  z-index: 20;
+
+  ul {
+    border-bottom: 1px solid $borderColor;
+    display: flex;
+    margin-bottom: 17px;
+
+    li {
+      border-bottom: 1px solid $borderColor;
+      margin-bottom: -1px;
+      white-space: nowrap;
+    }
+
+    a {
+      color: #909bbf;
+      display: block;
+      font-size: 14px;
+      margin: 0 40px 0 20px;
+      padding: 20px 5px 12px 5px;
+      text-decoration: none;
+    }
+
+    li.active a {
+      box-shadow: inset 0 -4px 0 -1px $blue;
+      color: $blue;
+      font-weight: 500;
+    }
+  }
+}

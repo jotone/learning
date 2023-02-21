@@ -28,16 +28,26 @@
 
 ### TODO
 
-- Roles list page
-- Create Role page
-- Edit role page
+- Role list page
+  - ~~Pagination~~
+  - Sort
+  - Search
 - User list page
-- Create User page
-- Edit User page
 - Main Settings page
 - Login Settings page
-- Coaches list page
 - Remove Auth\RegisteredUserController
 - Login page
+- Logout
 - Sanctum middleware
 - Separate dashboard middleware
+- Create User
+- Edit User
+- Create role
+- Edit role
+- Remove role
+- Remove User
+- Coaches list page
+- Create Coach
+- Edit Coach
+- Remove Coach
+- Admin Profile

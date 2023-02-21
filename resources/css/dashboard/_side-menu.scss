@@ -1,0 +1,50 @@
+.side-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 95vh;
+  left: 0;
+  overflow-y: auto;
+  padding: 10px 0;
+  position: fixed;
+  text-align: center;
+  top: 62px;
+  width: 80px;
+  z-index: 100;
+
+  .side-menu-bottom {justify-content: flex-end}
+
+  .side-menu-top, .side-menu-bottom {
+    display: flex;
+    flex-direction: column;
+
+    svg {
+      fill: $secondary;
+      margin-bottom: 8px;
+    }
+
+    li {margin-bottom: 17px}
+
+    li.active svg {fill: $blue}
+
+    li.active a, a:hover {
+      border-left: 4px solid $blue;
+      color: $blue;
+      font-weight: 500;
+    }
+
+    a {
+      align-items: center;
+      color: $menuColor;
+      display: flex;
+      flex-direction: column;
+      font-size: 10px;
+      max-width: 100%;
+      overflow: hidden;
+      padding: 8px 0;
+      position: relative;
+      text-decoration: none;
+      transition: color .1s ease,border .1s ease;
+    }
+  }
+}

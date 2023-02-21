@@ -13,6 +13,7 @@
 </template>
 
 <script>
+
 import {Link} from "@inertiajs/vue3";
 
 export default {
@@ -25,8 +26,8 @@ export default {
      * @returns {boolean}
      */
     isActive() {
-      return window.location.pathname.startsWith(this.item.route)
-        && (this.item.route !== '/dashboard' || window.location.pathname === '/dashboard')
+      const path = window.location.pathname.replace(/\/$/, '')
+      return path.startsWith(this.item.route) && (this.item.route !== '/dashboard' || path === '/dashboard')
     },
     /**
      * Check if link is external

@@ -1,11 +1,11 @@
 <template>
   <div class="header">
-    <a class="logo" :href="attrs.routes.dashboard.index"></a>
+    <a class="logo" :href="routes.dashboard.index"></a>
   </div>
 
   <div class="content-wrap">
 
-    <SideMenu :menu="attrs.menu"/>
+    <SideMenu :menu="menu"/>
 
     <div class="content">
       <slot />
@@ -20,10 +20,6 @@ import SideMenu from './SideMenu.vue';
 export default {
   components: {SideMenu},
   name: "DefaultLayout",
-  props: ["attrs"]
+  props: ["menu", "routes"]
 }
 </script>
-
-<style scoped>
-
-</style>

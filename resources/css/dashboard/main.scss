@@ -1,4 +1,4 @@
-@import "../font", "vars", "icons";
+@import "../font", "vars", "icons", "collection-table.scss", "pagination", "side-menu", "top-menu";
 
 #app {min-height: 92vh}
 
@@ -27,67 +27,29 @@
   }
 }
 
-.content-wrap {
-  margin-top: 62px;
-}
-
-.side-menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 95vh;
-  left: 0;
-  padding: 10px 0;
-  position: fixed;
-  text-align: center;
-  top: 62px;
-  width: 80px;
-  z-index: 100;
-
-  .side-menu-bottom {justify-content: flex-end}
-
-  .side-menu-top, .side-menu-bottom {
-    display: flex;
-    flex-direction: column;
-
-    svg {
-      fill: $secondary;
-      margin-bottom: 8px;
-    }
-
-    li {margin-bottom: 17px}
-
-    li.active svg {fill: $blue}
-
-    li.active a, a:hover {
-      border-left: 4px solid $blue;
-      color: $blue;
-      font-weight: 500;
-    }
-
-    a {
-      align-items: center;
-      color: $menuColor;
-      display: flex;
-      flex-direction: column;
-      font-size: 10px;
-      max-width: 100%;
-      overflow: hidden;
-      padding: 8px 0;
-      position: relative;
-      text-decoration: none;
-      transition: color .1s ease,border .1s ease;
-    }
-  }
-}
+.content-wrap {margin-top: 62px}
 
 .content {
   background-color: $background;
-  padding: 20px;
   margin-left: 80px;
   width: calc(100% - 80px);
 }
 
+.page-content-wrap {padding: 20px}
+
 @media (max-width: 600px) {
   .header a.logo {background-image: url("/images/logo-dashboard-mobile.png")}
+
+  .table-group .search-form {
+    input {
+      font-size: 14px;
+      height: 36px;
+      line-height: 34px;
+      padding: 0 11px;
+    }
+    button {
+      height: 36px;
+      width: 36px;
+    }
+  }
 }

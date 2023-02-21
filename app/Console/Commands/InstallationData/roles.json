@@ -1,17 +1,17 @@
 {
   "student": {
     "name": "Student",
-    "level": 127,
+    "level": 255,
     "permissions": []
   },
   "coach": {
     "name": "Coach",
-    "level": 63,
+    "level": 127,
     "permissions": []
   },
   "admin": {
     "name": "Administrator",
-    "level": 31,
+    "level": 63,
     "permissions": []
   },
   "superuser": {
