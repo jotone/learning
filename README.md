@@ -28,10 +28,7 @@
 
 ### TODO
 
-- Role list page
-  - ~~Pagination~~
-  - Sort
-  - Search
+- ~~Role list page~~
 - User list page
 - Main Settings page
 - Login Settings page

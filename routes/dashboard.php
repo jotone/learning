@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Dashboard\{DashboardController, RoleController, UsersController};
+use App\Http\Controllers\Dashboard\{DashboardController, RoleController, UserController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('index');
@@ -11,4 +11,4 @@ Route::as('users.')->group(function () {
     Route::get('/users/role/{role}', [RoleController::class, 'edit'])->name('roles.edit');
 });
 
-Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+Route::get('/users', [UserController::class, 'index'])->name('users.index');

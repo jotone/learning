@@ -7,7 +7,7 @@
         placeholder="Search for users…"
         pattern=".{0}|.{3,}"
         type="search"
-        value=""
+        :value="this.$parent.$parent.$attrs.filters.search || ''"
       >
       <button class="search-button" type="submit">
         <span></span>

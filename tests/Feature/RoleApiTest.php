@@ -37,13 +37,23 @@ class RoleApiTest extends TestCase
         $response = $this//->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
             ->get(route(self::$route_prefix . 'index') . "?take=$take&page=$page&order[by]=id&order[dir]=asc")
             ->assertJsonStructure([
-                'current_page',
                 'data',
-                'from',
-                'last_page',
-                'per_page',
-                'to',
-                'total'
+                'links' => [
+                    'first',
+                    'last',
+                    'prev',
+                    'next'
+                ],
+                'meta' => [
+                    'current_page',
+                    'from',
+                    'last_page',
+                    'links',
+                    'path',
+                    'per_page',
+                    'to',
+                    'total'
+                ]
             ])
             ->assertOk();
         //Response content
@@ -53,14 +63,14 @@ class RoleApiTest extends TestCase
 
         $this
             // Check total items equals database records
-            ->assertDatabaseCount($models[0]->getTable(), $content->total)
+            ->assertDatabaseCount($models[0]->getTable(), $content->meta->total)
             // Check response random item exists on the database
             ->assertDatabaseHas(
                 $models[0]->getTable(),
                 array_intersect_key((array)Arr::random($content->data), array_flip($fillable))
             )
             // Check per_page value equals response collection
-            ->assertCount($content->per_page, $content->data);
+            ->assertCount($content->meta->per_page, $content->data);
 
         // Check the response contains proper models
         $query = Role::limit($take)->offset(($page - 1) * $take)->get()->pluck('id')->toArray();

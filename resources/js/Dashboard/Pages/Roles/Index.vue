@@ -3,7 +3,7 @@
     <TopMenu :menu="$attrs.top_menu"/>
 
     <div class="page-content-wrap">
-      <Pagination :options="pagination" :filters="filters"/>
+      <Pagination :options="pagination" :path="filtersToUri()"/>
 
       <div class="table-group">
 
@@ -52,11 +52,11 @@
 
 <script>
 
-import ContentTableHead from "../../Layouts/ContentTableHead.vue";
+import ContentTableHead from "../../Layouts/ContentTable/ContentTableHead.vue";
 import DefaultLayout from "../../Layouts/DefaultLayout.vue";
 import {Link} from "@inertiajs/vue3";
-import Pagination from "../../Layouts/Pagination.vue";
-import SearchForm from "../../Layouts/SearchForm.vue";
+import Pagination from "../../Layouts/ContentTable/Pagination.vue";
+import SearchForm from "../../Layouts/ContentTable/SearchForm.vue";
 import TopMenu from "../../Layouts/TopMenu.vue";
 
 export default {
@@ -64,30 +64,20 @@ export default {
   data() {
     return {
       collection: [],
-      filters: {
-        take: 30,
-        order: {
-          by: 'created_at',
-          dir: 'desc'
-        }
-      },
-      pagination: {}
+      pagination: {},
+      url: ''
     }
   },
   name: "Roles/Index",
   methods: {
     /**
      * Convert filters to URI string
-     * @param filters
      * @param uri
      * @returns {string}
      */
-    filtersToUri(filters = null, uri = '?') {
-      if (null === filters) {
-        filters = this.filters
-      }
-      for (let field in filters) {
-        const value = filters[field]
+    filtersToUri(uri = '?') {
+      for (let field in this.$attrs.filters) {
+        const value = this.$attrs.filters[field]
         // Nested params
         if (typeof value === 'object') {
           for (let option in value) {
@@ -100,7 +90,10 @@ export default {
       }
       return uri.slice(0, -1)
     },
-    getCollection(url) {
+    getCollection(url = null) {
+      if (null === url) {
+        url = this.url + this.filtersToUri()
+      }
       return $.axios.get(url)
         .then(response => {
           if (200 === response.status) {
@@ -146,9 +139,8 @@ export default {
     }
   },
   beforeMount() {
-    this.filters = Object.assign(this.filters, this.$attrs.filters);
-
-    this.getCollection(this.$attrs.routes.roles.list + this.filtersToUri())
+    this.url = this.$attrs.routes.roles.list
+    this.getCollection()
   }
 }
 </script>

@@ -8,6 +8,12 @@ use Inertia\{Inertia, Response};
 
 class BasicAdminController
 {
+    protected string $order_by = 'created_at';
+
+    protected string $order_dir = 'desc';
+
+    protected int $take = 30;
+
     /**
      * Default page render.
      *   Adds to rendered vue component default variables: routes, admin side menu,
@@ -24,8 +30,13 @@ class BasicAdminController
 
         $default = [
             'filters'  => [
+                'order'  => [
+                    'by' => $this->order_by,
+                    'dir' => $this->order_dir
+                ],
                 'page'   => $request->get('page', 1),
-                'search' => $request->get('search', '')
+                'search' => $request->get('search', ''),
+                'take'   => $this->take
             ],
             'menu'     => AdminMenu::select(['name', 'route', 'img', 'is_top'])
                 ->whereNull('parent_id')

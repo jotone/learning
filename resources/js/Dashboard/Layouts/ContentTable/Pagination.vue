@@ -53,12 +53,13 @@
 
 export default {
   name: "Pagination",
-  props: ["options", "filters"],
+  props: ["options", "path"],
+  beforeMount() {
+    console.log()
+  },
   methods: {
     buildUri(page) {
-      const filters = this.filters
-      filters.page = page
-      return this.$parent.$parent.filtersToUri(filters)
+      return this.path.replace(/page=\d/, 'page=' + page)
     },
     changePage(e) {
       const _this = $(e.target).closest('a');
@@ -70,10 +71,14 @@ export default {
           .replace(/=/g, '":"') +
         '"}')
 
-      this.filters.page = uriParams.page
+      this.$parent.$parent.$attrs.filters.page = uriParams.page
 
-      this.$parent.$parent.getCollection(_this.attr('href')).then(() => {
-        window.history.pushState(this.$parent.$parent.$parent.initialPage, "", `?page=${uriParams.page}`);
+      this.$parent.$parent.getCollection().then(() => {
+        let uri = `?page=${uriParams.page}`;
+        if (!!uriParams.search) {
+          uri += `&search=${uriParams.search}`
+        }
+        window.history.pushState(this.$parent.$parent.$parent.initialPage, '', uri);
       })
     }
   }

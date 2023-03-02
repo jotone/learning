@@ -6,7 +6,7 @@ use App\Http\Controllers\BasicAdminController;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
-class UsersController extends BasicAdminController
+class UserController extends BasicAdminController
 {
     /**
      * @param Request $request
