@@ -54,12 +54,9 @@
 export default {
   name: "Pagination",
   props: ["options", "path"],
-  beforeMount() {
-    console.log()
-  },
   methods: {
     buildUri(page) {
-      return this.path.replace(/page=\d/, 'page=' + page)
+      return this.path.replace(/page=\d+/, 'page=' + page)
     },
     changePage(e) {
       const _this = $(e.target).closest('a');

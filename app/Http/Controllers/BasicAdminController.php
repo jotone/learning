@@ -6,13 +6,12 @@ use App\Models\AdminMenu;
 use Illuminate\Http\Request;
 use Inertia\{Inertia, Response};
 
-class BasicAdminController
+class BasicAdminController extends Controller
 {
-    protected string $order_by = 'created_at';
-
-    protected string $order_dir = 'desc';
-
-    protected int $take = 30;
+    protected array $order = [
+        'by' => 'created_at',
+        'dir' => 'desc'
+    ];
 
     /**
      * Default page render.
@@ -31,8 +30,8 @@ class BasicAdminController
         $default = [
             'filters'  => [
                 'order'  => [
-                    'by' => $this->order_by,
-                    'dir' => $this->order_dir
+                    'by' => $this->order['by'],
+                    'dir' => $this->order['dir']
                 ],
                 'page'   => $request->get('page', 1),
                 'search' => $request->get('search', ''),

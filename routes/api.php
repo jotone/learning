@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\{RoleController, UserController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['as' => 'api.'], function () {
+    // Roles API routes
     Route::resource('/roles', RoleController::class)->except(['create', 'edit']);
+    // User API routes
+    Route::resource('/users', UserController::class)->except(['create', 'edit']);
 });
 /*
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

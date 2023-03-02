@@ -29,7 +29,7 @@
 ### TODO
 
 - ~~Role list page~~
-- User list page
+- ~~User list page~~
 - Main Settings page
 - Login Settings page
 - Remove Auth\RegisteredUserController
