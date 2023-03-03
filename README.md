@@ -31,6 +31,8 @@
 - ~~Role list page~~
 - ~~User list page~~
 - Main Settings page
+  - Preloader
+  - Notifications
 - Login Settings page
 - Remove Auth\RegisteredUserController
 - Login page
