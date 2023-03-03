@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class UserController extends BasicApiController
 {
     /**
-     * Roles list
+     * User list
      *
      * @param Request $request
      * @return AnonymousResourceCollection
@@ -28,7 +28,7 @@ class UserController extends BasicApiController
     }
 
     /**
-     * Specified role data
+     * Specified user data
      *
      * @param int $id
      * @param Request $request

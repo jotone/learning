@@ -12,7 +12,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class RoleController extends BasicApiController
 {
     /**
-     * Roles list
+     * Role list
      *
      * @param Request $request
      * @return AnonymousResourceCollection

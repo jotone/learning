@@ -3,21 +3,19 @@
 namespace Tests\Feature;
 
 use App\Models\Role;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Tests\TestCase;
+use Tests\ApiTestCase;
 use Tests\Traits\ModelGeneratorsTrait;
 
-class RoleApiTest extends TestCase
+class RoleApiTest extends ApiTestCase
 {
     use ModelGeneratorsTrait;
-
-    protected static string $route_prefix = '';
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        self::$class = Role::class;
         self::$route_prefix = 'api.roles.';
     }
 
@@ -28,55 +26,35 @@ class RoleApiTest extends TestCase
      */
     public function testRoleList(): void
     {
-        $models = Role::factory(50)->create();
+        $this->runListTest(function ($content, $models) {
+            $fillable = ['id', ...$models[0]->getFillable()];
 
-        $take = mt_rand(1, 5);
-        $page = mt_rand(1, 4);
+            $this
+                // Check total items equals database records
+                ->assertDatabaseCount($models[0]->getTable(), $content->meta->total)
+                // Check response random item exists on the database
+                ->assertDatabaseHas(
+                    $models[0]->getTable(),
+                    array_intersect_key((array)Arr::random($content->data), array_flip($fillable))
+                )
+                // Check per_page value equals response collection
+                ->assertCount($content->meta->per_page, $content->data);
+        });
+    }
 
-        // User list response
-        $response = $this//->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
-            ->get(route(self::$route_prefix . 'index') . "?take=$take&page=$page&order[by]=id&order[dir]=asc")
-            ->assertJsonStructure([
-                'data',
-                'links' => [
-                    'first',
-                    'last',
-                    'prev',
-                    'next'
-                ],
-                'meta' => [
-                    'current_page',
-                    'from',
-                    'last_page',
-                    'links',
-                    'path',
-                    'per_page',
-                    'to',
-                    'total'
-                ]
-            ])
-            ->assertOk();
-        //Response content
-        $content = json_decode($response->content());
-
-        $fillable = ['id', ...$models[0]->getFillable()];
-
-        $this
-            // Check total items equals database records
-            ->assertDatabaseCount($models[0]->getTable(), $content->meta->total)
-            // Check response random item exists on the database
-            ->assertDatabaseHas(
-                $models[0]->getTable(),
-                array_intersect_key((array)Arr::random($content->data), array_flip($fillable))
-            )
-            // Check per_page value equals response collection
-            ->assertCount($content->meta->per_page, $content->data);
-
-        // Check the response contains proper models
-        $query = Role::limit($take)->offset(($page - 1) * $take)->get()->pluck('id')->toArray();
-
-        // Compare db query and api request
-        $this->assertEmpty(array_diff($query, collect($content->data)->pluck('id')->toArray()));
+    /**
+     * Test role show
+     *
+     * @return void
+     */
+    public function testRoleShow(): void
+    {
+        $this->runShowTest($this->getRole(), [
+            'id',
+            'name',
+            'slug',
+            'level'
+        ]);
     }
 
     /**
@@ -89,31 +67,31 @@ class RoleApiTest extends TestCase
         $cases = [
             // Send empty request body
             [
-                'send' => [],
+                'send'   => [],
                 'assert' => [
-                    'name' => [lang('validation.required', 'name')],
-                    'slug' => [lang('validation.required', 'slug')],
+                    'name'  => [lang('validation.required', 'name')],
+                    'slug'  => [lang('validation.required', 'slug')],
                     'level' => [lang('validation.required', 'level')]
                 ]
             ],
             // Send request body with empty values
             [
-                'send' => [
-                    'name' => null,
-                    'slug' => null,
+                'send'   => [
+                    'name'  => null,
+                    'slug'  => null,
                     'level' => null,
                 ],
                 'assert' => [
-                    'name' => [lang('validation.required', 'name')],
-                    'slug' => [lang('validation.required', 'slug')],
+                    'name'  => [lang('validation.required', 'name')],
+                    'slug'  => [lang('validation.required', 'slug')],
                     'level' => [lang('validation.required', 'level')]
                 ]
             ],
             // Send fail level value
             [
-                'send' => [
-                    'name' => $this->faker->name,
-                    'slug' => $this->faker->slug,
+                'send'   => [
+                    'name'  => $this->faker->name,
+                    'slug'  => $this->faker->slug,
                     'level' => $this->faker->name,
                 ],
                 'assert' => [
@@ -122,9 +100,9 @@ class RoleApiTest extends TestCase
             ],
             // Send fail outbound level value
             [
-                'send' => [
-                    'name' => $this->faker->name,
-                    'slug' => $this->faker->slug,
+                'send'   => [
+                    'name'  => $this->faker->name,
+                    'slug'  => $this->faker->slug,
                     'level' => 256,
                 ],
                 'assert' => [
@@ -134,7 +112,7 @@ class RoleApiTest extends TestCase
         ];
         foreach ($cases as $case) {
             $this//->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
-                ->post(route(self::$route_prefix . 'store'), $case['send'])
+            ->post(route(self::$route_prefix . 'store'), $case['send'])
                 ->assertJson(['errors' => $case['assert']])
                 ->assertUnprocessable();
         }
@@ -152,13 +130,13 @@ class RoleApiTest extends TestCase
         $table = $model->getTable();
 
         $values = [
-            'name' => $model->name,
-            'slug' => $model->slug,
+            'name'  => $model->name,
+            'slug'  => $model->slug,
             'level' => $model->level,
         ];
 
         $response = $this//->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
-            ->post(route(self::$route_prefix . 'store'), $values)
+        ->post(route(self::$route_prefix . 'store'), $values)
             ->assertJsonFragment($values)->assertCreated();
 
         $content = json_decode($response->content());
@@ -176,7 +154,7 @@ class RoleApiTest extends TestCase
 
         $fields = ['name', 'level'];
 
-        $model = static::getRole();
+        $model = $this->getRole();
 
         $missing = array_intersect_key($model->toArray(), array_flip(['id', ...$fields]));
 
@@ -188,7 +166,7 @@ class RoleApiTest extends TestCase
         $updated = ['id' => $model->id, ...$update];
 
         $this//->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
-            ->put(route(self::$route_prefix . 'update', $model->id), $update)
+        ->put(route(self::$route_prefix . 'update', $model->id), $update)
             ->assertJsonFragment($updated)
             ->assertOk();
 
