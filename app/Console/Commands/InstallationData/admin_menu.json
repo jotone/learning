@@ -30,13 +30,13 @@
     },
     {
       "name": "Settings",
-      "route": "#",
+      "route": "dashboard.settings.main",
       "img": "cog",
       "is_top": 0,
       "inner": [
         {
           "name": "Main",
-          "route": "#"
+          "route": "dashboard.settings.main"
         },
         {
           "name": "Login Page",

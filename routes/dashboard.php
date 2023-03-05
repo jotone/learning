@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Dashboard\{DashboardController, RoleController, UserController};
+use App\Http\Controllers\Dashboard\{DashboardController, RoleController, SettingsController, UserController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('index');
@@ -13,6 +13,10 @@ Route::as('users.')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('index');
     Route::get('/users/create', [UserController::class, 'create'])->name('create');
     Route::get('/users/{user}', [UserController::class, 'edit'])->name('edit');
+});
+
+Route::as('settings.')->group(function () {
+    Route::get('/settings', [SettingsController::class, 'main'])->name('main');
 });
 
 

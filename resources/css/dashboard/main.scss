@@ -1,6 +1,10 @@
-@import "../font", "vars", "icons", "collection-table.scss", "pagination", "side-menu", "top-menu";
+@import "../font", "vars", "icons", "collection-table.scss", "forms", "pagination", "side-menu", "top-menu";
 
 #app {min-height: 92vh}
+
+.cut-form {max-width: 75%}
+
+.col-1-2 {width: 50%}
 
 .header {
   align-items: center;
@@ -32,10 +36,39 @@
 .content {
   background-color: $background;
   margin-left: 80px;
+  min-height: 92vh;
   width: calc(100% - 80px);
 }
 
 .page-content-wrap {padding: 20px}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid $borderColor;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 15px;
+  position: relative;
+
+  .card-title {
+    color: $primary;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 18px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .cut-form {
+    max-width: 100%;
+  }
+}
 
 @media (max-width: 600px) {
   .header a.logo {background-image: url("/images/logo-dashboard-mobile.png")}
@@ -51,5 +84,9 @@
       height: 36px;
       width: 36px;
     }
+  }
+
+  .form-group .form-image-upload {
+    padding: 15px;
   }
 }

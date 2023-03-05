@@ -9,6 +9,8 @@ use Inertia\Response;
 class UserController extends BasicAdminController
 {
     /**
+     * User list page
+     *
      * @param Request $request
      * @return Response
      */

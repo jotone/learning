@@ -31,8 +31,15 @@
 - ~~Role list page~~
 - ~~User list page~~
 - Main Settings page
+  - Form elements
+    - ~~input type text~~
+    - ~~image upload~~
+    - textarea
+    - main checkbox
+    - button settings
   - Preloader
   - Notifications
+  - Save Settings
 - Login Settings page
 - Remove Auth\RegisteredUserController
 - Login page

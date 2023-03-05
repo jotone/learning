@@ -83,6 +83,11 @@
       "caption": "Time Zone",
       "key": "site_timezone",
       "value": "+00:00"
+    },
+    {
+      "caption": "Logo image",
+      "key": "logo_img_url",
+      "value": "/images/logo-dashboard.png"
     }
   ],
   "hidden": [

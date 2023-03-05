@@ -10,6 +10,8 @@ use Inertia\Response;
 class RoleController extends BasicAdminController
 {
     /**
+     * Role list page
+     *
      * @param Request $request
      * @return Response
      */
