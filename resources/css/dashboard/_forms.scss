@@ -1,5 +1,9 @@
-.form-group {
+.form-group-wide {
+  padding: 10px 0;
+}
+.form-group, .form-group-wide {
   margin-bottom: 20px;
+  position: relative;
 
   .caption {
     > span {
@@ -8,6 +12,12 @@
       font-size: 14px;
       line-height: 16px;
     }
+  }
+
+  .form-checkbox {
+    accent-color: $blue;
+    margin-right: 10px;
+    transform: scale(1.5);
   }
 
   .form-input {
@@ -20,6 +30,43 @@
     margin-top: 6px;
     padding: 0 15px;
     width: 100%;
+  }
+
+  .form-select {
+    appearance: none;
+    background-color: white;
+    background-image: url('/images/icons/angle-down.svg');
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 12px;
+    border: 1px solid $borderColor;
+    border-radius: 4px;
+    color: $primary;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 6px;
+    padding: 0 15px;
+    width: 100%;
+  }
+
+  .form-textarea {
+    border: 1px solid $borderColor;
+    border-radius: 4px;
+    color: $primary;
+    font-family: Rubik, sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    margin-top: 6px;
+    min-height: 200px;
+    padding: 10px 15px;
+    resize: vertical;
+    width: 100%;
+  }
+
+  .code-editor {
+    margin-top: 10px;
+    min-height: 200px;
   }
 
   .form-image-upload {
@@ -103,4 +150,20 @@
 
     &.active {display: block}
   }
+}
+
+.btn {
+  align-items: center;
+  background: $blue;
+  border: 1px solid $blue;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  line-height: 1.1;
+  padding: 12px 16px;
+  position: relative;
+  text-decoration: none;
+  vertical-align: top;
 }

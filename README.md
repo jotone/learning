@@ -31,16 +31,13 @@
 - ~~Role list page~~
 - ~~User list page~~
 - Main Settings page
-  - Form elements
-    - ~~input type text~~
-    - ~~image upload~~
-    - textarea
-    - main checkbox
-    - ~~button settings~~
+  - ~~Form elements~~
   - Preloader
-  - Notifications
   - Save Settings
+  - Notifications
 - Login Settings page
+  - Form elements
+    - color picker
 - Remove Auth\RegisteredUserController
 - Login page
 - Logout
@@ -57,3 +54,9 @@
 - Edit Coach
 - Remove Coach
 - Admin Profile
+
+### Technical debt
+
+- Dashboard
+  - Main settings
+    - Site custom URL

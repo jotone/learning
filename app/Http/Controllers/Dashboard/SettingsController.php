@@ -21,7 +21,9 @@ class SettingsController extends BasicAdminController
             'routes' => [
 
             ],
-            'content' => Settings::whereIn('section', ['site-info', 'main-colors'])->get()->keyBy('key')
+            'content' => Settings::whereIn('section', ['custom-scripts', 'site-info', 'main-colors'])
+                ->get()
+                ->keyBy('key')
         ]);
     }
 }

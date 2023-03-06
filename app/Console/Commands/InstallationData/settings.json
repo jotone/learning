@@ -138,6 +138,20 @@
           "color": "#005AFF"
         }
       }
+    },
+    {
+      "caption": "Menu colors",
+      "key": "menu_colors",
+      "value": {
+        "normal": {
+          "top-menu-background-color": "#FFFFFF",
+          "top-menu-text-color": "#ACA7BF"
+        },
+        "hover": {
+          "top-menu-background-color": "#FFFFFF",
+          "top-menu-text-color": "#005AFF"
+        }
+      }
     }
   ],
   "registration-process": [

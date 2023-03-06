@@ -7,7 +7,7 @@
         :data-state="key"
         @click="viewBookmark"
       >
-        {{ key === 'normal' ? 'Button' : ':' + key}}
+        {{ key === 'normal' ? caption : ':' + key}}
       </li>
     </ul>
 
@@ -19,9 +19,9 @@
     >
       <div class="form-group" v-for="(prop, field) in item">
         <label class="caption">
-          <span v-if="field === 'background-color'">Background Color</span>
-          <span v-if="field === 'color'">Text Color</span>
-          <span v-if="field === 'border-color'">Border Color</span>
+          <!-- TODO: Make fields translations -->
+
+          <span>{{ field }}:</span>
 
           <input
             autocomplete="off"
@@ -32,7 +32,6 @@
           >
         </label>
       </div>
-
     </div>
   </div>
 </template>
@@ -43,7 +42,7 @@ import "@eastdesire/jscolor/jscolor"
 
 export default {
   name: "ButtonSettings",
-  props: ["name", "value"],
+  props: ["caption", "name", "value"],
   data() {
     return {
       tab: 'normal'
