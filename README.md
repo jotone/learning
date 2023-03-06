@@ -36,7 +36,7 @@
     - ~~image upload~~
     - textarea
     - main checkbox
-    - button settings
+    - ~~button settings~~
   - Preloader
   - Notifications
   - Save Settings

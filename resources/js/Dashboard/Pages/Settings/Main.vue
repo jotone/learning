@@ -25,6 +25,19 @@
               name="logo_img_url"
             />
           </div>
+
+          <div class="card">
+            <div class="card-title">
+              Button Settings
+            </div>
+            <div class="form-group">
+              <label class="caption">
+                <span>Primary buttons</span>
+              </label>
+
+              <ButtonSettings name="primary_btn" :value="JSON.parse($attrs.content.primary_btn.value)"/>
+            </div>
+          </div>
         </div>
       </div>
     </form>
@@ -36,9 +49,10 @@ import DefaultLayout from "../../Layouts/DefaultLayout.vue";
 import ImageUpload from "../../Layouts/Form/ImageUpload.vue";
 import InputText from "../../Layouts/Form/InputText.vue";
 import TopMenu from "../../Layouts/TopMenu.vue";
+import ButtonSettings from "../../Layouts/Form/ButtonSettings.vue";
 
 export default {
-  components: {DefaultLayout, ImageUpload, InputText, TopMenu},
+  components: {ButtonSettings, DefaultLayout, ImageUpload, InputText, TopMenu},
   name: "Settings/Main"
 }
 </script>

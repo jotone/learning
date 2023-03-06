@@ -67,3 +67,40 @@
     }
   }
 }
+
+.buttons-settings-wrap {
+  margin: 10px 0 20px;
+  width: 100%;
+
+  .button-settings-bookmarks {
+    align-items: center;
+    border: 1px solid $borderColor;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin-bottom: 25px;
+
+    li {
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      font-size: 12px;
+      padding: 15px 0;
+      text-align: center;
+      width: 50%;
+
+      &.active {
+        background-color: $blue;
+        color: white;
+      }
+    }
+  }
+
+  .button-settings-list {
+    display: none;
+    margin: 10px 0;
+
+    &.active {display: block}
+  }
+}
