@@ -1,4 +1,5 @@
 /node_modules
+/public/css/override.css
 /public/favicon
 /public/images
 !/public/images/icons

@@ -17,31 +17,20 @@
       :class="{active: tab === key}"
       :data-state="key"
     >
-      <div class="form-group" v-for="(prop, field) in item">
-        <label class="caption">
-          <!-- TODO: Make fields translations -->
-
-          <span>{{ field }}:</span>
-
-          <input
-            autocomplete="off"
-            class="form-input"
-            data-jscolor="{format:'hex', previewSize:40}"
-            :name="`${name}[${key}][${field}]`"
-            :value="item[field]"
-          >
-        </label>
-      </div>
+      <template v-for="(prop, field) in item">
+        <!-- TODO: Make fields translations -->
+        <InputColor :caption="field" :name="`${name}[${key}][${field}]`" :value="item[field]"/>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
-
-import "@eastdesire/jscolor/jscolor"
+import InputColor from "./InputColor.vue";
 
 export default {
   name: "ButtonSettings",
+  components: {InputColor},
   props: ["caption", "name", "value"],
   data() {
     return {

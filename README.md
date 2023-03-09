@@ -31,10 +31,7 @@
 - ~~Role list page~~
 - ~~User list page~~
 - ~~Main Settings page~~
-- Login Settings page
-  - Form elements
-    - color picker
-  - Save Settings
+- ~~Login Settings page~~
 - Remove Auth\RegisteredUserController
 - Login page
 - Logout
@@ -51,6 +48,7 @@
 - Edit Coach
 - Remove Coach
 - Admin Profile
+- Login page settings -> preview
 
 ### Technical debt
 

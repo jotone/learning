@@ -28,6 +28,31 @@ class SettingsController extends BasicAdminController
                 ],
                 'content' => Settings::whereIn('section', ['custom-scripts', 'site-info', 'main-colors'])
                     ->get()
+                    ->keyBy('key')
+            ],
+            prevent_filters: true
+        );
+    }
+
+    /**
+     * Login page settings
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function loginPage(Request $request): Response
+    {
+        return $this->view(
+            template: 'Settings/Login',
+            request: $request,
+            share: [
+                'routes'  => [
+                    'settings' => [
+                        'update' => route('api.settings.update')
+                    ]
+                ],
+                'content' => Settings::whereIn('section', ['login-colors'])
+                    ->get()
                     ->keyBy('key'),
             ],
             prevent_filters: true

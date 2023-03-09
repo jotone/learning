@@ -14,7 +14,7 @@
         id="mainSettings"
         :action="$attrs.routes.settings.update"
         method="POST"
-        @submit.prevent="submit"
+        @submit.prevent="submitForm"
       >
         <input name="_method" type="hidden" value="PATCH">
         <div class="row">
@@ -179,7 +179,7 @@ import ImageUpload from "../../Layouts/Form/ImageUpload.vue";
 import InputText from "../../Layouts/Form/InputText.vue";
 import TextArea from "../../Layouts/Form/TextArea.vue";
 import TopMenu from "../../Layouts/TopMenu.vue";
-import {showNotification} from "../../../libs/notifications";
+import {FormMixin} from "../../Mixins/form-mixin";
 import {Timezone} from "../../Mixins/timezone";
 
 export default {
@@ -194,7 +194,7 @@ export default {
       }
     }
   },
-  mixins: [Timezone],
+  mixins: [FormMixin, Timezone],
   methods: {
     enableCustomDomain(e) {
       this.customDomainEnabled = $(e.target).closest('input[type="checkbox"]').prop('checked')
@@ -202,107 +202,6 @@ export default {
     setCustomDomain(e) {
       const value = $(e.target).closest('input').val().trim()
       this.customDomainSet = value.length > 0 && value.indexOf('.') > 0
-    },
-    submit(e) {
-      const form = $(e.target).closest('form');
-
-      if (typeof form.attr('action') === 'undefined') {
-        throw new ReferenceError('Form action attribute is not declared.')
-      }
-
-      let formData = new FormData(form[0])
-
-      if (typeof form.attr('id') !== 'undefined') {
-        const formID = form.attr('id')
-        $('#app').find(`[form="${formID}"]`).each(function () {
-          const tag = $(this).prop('tagName').toLowerCase()
-          const name = $(this).attr('name')
-          if (typeof name !== 'undefined') {
-            switch (tag) {
-              case 'input':
-                const type = $(this).attr('type')
-                if (typeof type === 'undefined') {
-                  formData.append(name, $(this).val())
-                } else {
-                  switch (type.toLowerCase()) {
-                    case 'checkbox':
-                      formData.append(name, $(this).prop('checked'))
-                      break;
-                    case 'radio':
-                      formData.append(name, $(`${tag}[name="${name}"]:checked`).val())
-                      break;
-                    case 'hidden':
-                    case 'number':
-                    case 'text':
-                      formData.append(name, $(this).val())
-                      break;
-                    case 'file':
-                      formData.append(name, $(this).prop('files'))
-                      break;
-                  }
-                }
-                break;
-              case 'select':
-              case 'textarea':
-                formData.append(name, $(this).val())
-                break;
-              default:
-                console.log(name, $(this).val())
-            }
-          }
-        })
-      }
-
-      const method = typeof form.attr('method') === 'undefined' ? 'get' : form.attr('method').toLowerCase();
-
-      $.axios.interceptors.request.use((config) => {
-        $('.preloader').show()
-        return config;
-      });
-
-      $.axios[method](form.attr('action'), formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-          "accept": "application/json"
-        }
-      })
-        .then(response => {
-          $('.preloader').hide()
-
-          showNotification({
-            type: 'success',
-            text: [this.messages.saved]
-          })
-        })
-        .catch(error => {
-          $('.preloader').hide()
-
-          let messages = []
-          if (error.hasOwnProperty('response')) {
-            messages.push({
-              type: 'error',
-              caption: error.response.statusText,
-              text: Object.keys(error.response.data.errors).map(key => error.response.data.errors[key]).flat(2)
-            })
-          } else if (error.hasOwnProperty('request')) {
-            let errors = JSON.parse(error.request.responseText)
-            messages.push({
-              type: 'error',
-              caption: error.request.statusText,
-              text: Object.keys(errors).map(key => errors[key]).flat(2)
-            })
-          } else if (error.hasOwnProperty('message')) {
-            messages.push({
-              type: 'error',
-              caption: error.name,
-              text: [error.message]
-            })
-          } else {
-            console.error(error)
-          }
-
-          showNotification(messages)
-        })
     }
   }
 }

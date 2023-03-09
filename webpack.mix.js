@@ -35,3 +35,4 @@ mix
 // Copying libs
 // Jquery
 exists('./public/js/jquery.min.js', res => !res && mix.copy('node_modules/jquery/dist/jquery.min.js', 'public/js'))
+exists('./public/js/jscolor.min.js', res => !res && mix.copy('node_modules/@eastdesire/jscolor/jscolor.min.js', 'public/js'))

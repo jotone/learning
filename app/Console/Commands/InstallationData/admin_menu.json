@@ -40,7 +40,7 @@
         },
         {
           "name": "Login Page",
-          "route": "#"
+          "route": "dashboard.settings.login"
         },
         {
           "name": "Course Page",

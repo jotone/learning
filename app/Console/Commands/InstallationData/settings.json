@@ -26,73 +26,16 @@
       "value": ""
     }
   ],
-  "smtp-settings": [
+  "custom-scripts": [
     {
-      "caption": "Username",
-      "key": "smtp_username",
+      "caption": "Footer code",
+      "key": "footer_code",
       "value": ""
     },
     {
-      "caption": "Password",
-      "key": "smtp_password",
+      "caption": "Header code",
+      "key": "header_code",
       "value": ""
-    },
-    {
-      "caption": "Host",
-      "key": "smtp_host",
-      "value": ""
-    },
-    {
-      "caption": "Port",
-      "key": "smtp_port",
-      "value": ""
-    },
-    {
-      "caption": "Encryption",
-      "key": "smtp_encryption",
-      "value": ""
-    },
-    {
-      "caption": "From Address",
-      "key": "smtp_from_address",
-      "value": ""
-    },
-    {
-      "caption": "From name",
-      "key": "smtp_from_name",
-      "value": ""
-    }
-  ],
-  "site-info": [
-    {
-      "caption": "Custom URL",
-      "key": "site_custom_url",
-      "value": ""
-    },
-    {
-      "caption": "Site URL",
-      "key": "site_url",
-      "value": "https://dev.learningsoftwarecy.com"
-    },
-    {
-      "caption": "System Name",
-      "key": "site_title",
-      "value": "Dev"
-    },
-    {
-      "caption": "Time Zone",
-      "key": "site_timezone",
-      "value": "+00:00"
-    },
-    {
-      "caption": "Fav Icon",
-      "key": "fav_icon",
-      "value": ""
-    },
-    {
-      "caption": "Logo image",
-      "key": "logo_img_url",
-      "value": "/images/logo-dashboard.png"
     }
   ],
   "hidden": [
@@ -125,6 +68,44 @@
       "caption": "",
       "key": "main_language",
       "value": ""
+    }
+  ],
+  "login-colors": [
+    {
+      "caption": "Login page background color",
+      "key": "login_bg_color",
+      "value": "#FFFFFF"
+    },
+    {
+      "caption": "Login page Logo image background color",
+      "key": "login_logo_bg_color",
+      "value": "#FFFFFF"
+    },
+    {
+      "caption": "Login page form background color",
+      "key": "login_form_bg_color",
+      "value": "#FFFFFF"
+    },
+    {
+      "caption": "Login page form text color",
+      "key": "login_form_text_color",
+      "value": "#212529"
+    },
+    {
+      "caption": "Login form buttons",
+      "key": "login_btn",
+      "value": {
+        "normal": {
+          "background-color": "#0061F6",
+          "border-color": "#0061F6",
+          "color": "#FFFFFF"
+        },
+        "hover": {
+          "background-color": "#FFFFFF",
+          "border-color": "#FFFFFF",
+          "color": "#0061F6"
+        }
+      }
     }
   ],
   "main-colors": [
@@ -181,16 +162,84 @@
       "value": true
     }
   ],
-  "custom-scripts": [
+  "site-info": [
     {
-      "caption": "Footer code",
-      "key": "footer_code",
+      "caption": "Custom URL",
+      "key": "site_custom_url",
       "value": ""
     },
     {
-      "caption": "Header code",
-      "key": "header_code",
+      "caption": "Site URL",
+      "key": "site_url",
+      "value": "https://dev.learningsoftwarecy.com"
+    },
+    {
+      "caption": "System Name",
+      "key": "site_title",
+      "value": "Dev"
+    },
+    {
+      "caption": "Time Zone",
+      "key": "site_timezone",
+      "value": "+00:00"
+    },
+    {
+      "caption": "Fav Icon",
+      "key": "fav_icon",
       "value": ""
+    },
+    {
+      "caption": "Logo image",
+      "key": "logo_img_url",
+      "value": "/images/logo-dashboard.png"
+    }
+  ],
+  "smtp-settings": [
+    {
+      "caption": "Username",
+      "key": "smtp_username",
+      "value": ""
+    },
+    {
+      "caption": "Password",
+      "key": "smtp_password",
+      "value": ""
+    },
+    {
+      "caption": "Host",
+      "key": "smtp_host",
+      "value": ""
+    },
+    {
+      "caption": "Port",
+      "key": "smtp_port",
+      "value": ""
+    },
+    {
+      "caption": "Encryption",
+      "key": "smtp_encryption",
+      "value": ""
+    },
+    {
+      "caption": "From Address",
+      "key": "smtp_from_address",
+      "value": ""
+    },
+    {
+      "caption": "From name",
+      "key": "smtp_from_name",
+      "value": ""
+    }
+  ],
+  "user-img": [
+    {
+      "caption": "User Image processing",
+      "key": "user_img_processing",
+      "value": {
+        "thumb_small": [90, 60],
+        "thumb_large": [150, 90],
+        "resize": [400, 300]
+      }
     }
   ],
   "video-player": [
@@ -208,26 +257,6 @@
       "caption": "Video player controls color",
       "key": "video_player_font_color",
       "value": "#FFFFFF"
-    }
-  ],
-  "user-img": [
-    {
-      "caption": "User Image processing",
-      "key": "user_img_processing",
-      "value": {
-        "thumb_small": [
-          90,
-          60
-        ],
-        "thumb_large": [
-          150,
-          90
-        ],
-        "resize": [
-          400,
-          300
-        ]
-      }
     }
   ]
 }

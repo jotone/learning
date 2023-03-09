@@ -26,6 +26,11 @@ class SettingsController extends BasicApiController
             'fav_icon', //
             'footer_code',//
             'header_code',//
+            'login_bg_color',
+            'login_btn',
+            'login_form_bg_color',
+            'login_form_text_color',
+            'login_logo_bg_color',
             'logo_img_url',//
             'menu_colors',//
             'override_css',//
@@ -74,7 +79,7 @@ class SettingsController extends BasicApiController
                                 ->save(public_path($dir . '/icon-32.png'));
                             // Convert PNG icon 192x192 pixels
                             ImageManagerStatic::make(public_path($img_url))
-                                ->resize(192, 192, fn ($constraint) => $constraint->aspectRatio())
+                                ->resize(192, 192, fn($constraint) => $constraint->aspectRatio())
                                 ->save();
                         } else {
                             // Convert SVG as PNG icon 512x512 pixels
@@ -121,6 +126,7 @@ class SettingsController extends BasicApiController
                         $data[$key] = $img_url;
                     }
                     break;
+                case 'login_btn':
                 case 'menu_colors':
                 case 'primary_btn':
                     $rules[$key] = ['array'];
@@ -133,6 +139,10 @@ class SettingsController extends BasicApiController
                 case 'site_custom_url':
                     // TODO send request to admin.copemember
                     break;
+                case 'login_bg_color':
+                case 'login_form_bg_color':
+                case 'login_form_text_color':
+                case 'login_logo_bg_color':
                 case 'site_timezone':
                 case 'site_title':
                     $rules[$key] = ['required', 'string', 'max:255'];
@@ -160,6 +170,10 @@ class SettingsController extends BasicApiController
             if (empty($model)) dd($key, $val);
             $model->value = $val;
             $model->save();
+        }
+
+        if (isset($args['override_css'])) {
+            file_put_contents(public_path('/css/override.css'), $args['override_css']);
         }
 
         return response()->json(Settings::whereIn('key', array_keys($args))->get());

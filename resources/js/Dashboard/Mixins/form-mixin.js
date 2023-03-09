@@ -1,0 +1,148 @@
+import {showNotification} from "../../libs/notifications";
+
+export const FormMixin = {
+  methods: {
+    /**
+     * Send XHR request
+     *
+     * @param props
+     */
+    request(props) {
+      if (!props.hasOwnProperty('url')) {
+        throw new RangeError('Request action method is not set')
+      }
+      if (!props.hasOwnProperty('method')) {
+        props.method = 'get';
+      }
+
+      $.axios.interceptors.request.use((config) => {
+        if (props.hasOwnProperty('beforeRequest')  && typeof props.beforeRequest === 'function') {
+          props.beforeRequest()
+        } else {
+          $('.preloader').show()
+        }
+
+        return config;
+      });
+
+      $.axios[props.method](props.url, props.data ?? [], {
+        headers: {
+          "content-type": "multipart/form-data",
+          "accept": "application/json"
+        }
+      })
+        .then(response => {
+          $('.preloader').hide()
+
+          if (props.hasOwnProperty('onSuccess') && typeof props.onSuccess === 'function') {
+            props.onSuccess()
+          }
+
+          if (!props.hasOwnProperty('preventNotification')) {
+            showNotification({
+              type: 'success',
+              text: [this.messages.saved]
+            })
+          }
+        })
+        .catch(error => {
+          $('.preloader').hide()
+
+          if (props.hasOwnProperty('onError') && typeof props.onSuccess === 'onError') {
+            props.onError()
+          }
+          if (!props.hasOwnProperty('preventNotification')) {
+            // Default message body
+            let message = {
+              type: 'error',
+              caption: error.name
+            }
+            // Check the response property exists
+            if (error.hasOwnProperty('response')) {
+              message.caption = error.request.statusText;
+              message.text = Object.keys(error.response.data.errors).map(key => error.response.data.errors[key]).flat(2)
+            // Check the request property exists
+            } else if (error.hasOwnProperty('request')) {
+              let errors = JSON.parse(error.request.responseText)
+              message.caption = error.request.statusText;
+              message.text = Object.keys(errors).map(key => errors[key]).flat(2)
+            // Default error handler
+            } else if (error.hasOwnProperty('message')) {
+              message.text = [error.message]
+            } else {
+              console.error(error)
+            }
+            console.log(message)
+            showNotification(message)
+          }
+        })
+    },
+    /**
+     * Get form data
+     *
+     * @param form
+     * @returns {FormData}
+     */
+    serializeForm(form) {
+      let formData = new FormData(form[0])
+
+      if (typeof form.attr('id') !== 'undefined') {
+        const formID = form.attr('id')
+        $('#app').find(`[form="${formID}"]`).each(function () {
+          const tag = $(this).prop('tagName').toLowerCase()
+          const name = $(this).attr('name')
+          if (typeof name !== 'undefined') {
+            switch (tag) {
+              case 'input':
+                const type = $(this).attr('type')
+                if (typeof type === 'undefined') {
+                  formData.append(name, $(this).val())
+                } else {
+                  switch (type.toLowerCase()) {
+                    case 'checkbox':
+                      formData.append(name, $(this).prop('checked'))
+                      break;
+                    case 'radio':
+                      formData.append(name, $(`${tag}[name="${name}"]:checked`).val())
+                      break;
+                    case 'hidden':
+                    case 'number':
+                    case 'text':
+                      formData.append(name, $(this).val())
+                      break;
+                    case 'file':
+                      formData.append(name, $(this).prop('files'))
+                      break;
+                  }
+                }
+                break;
+              case 'select':
+              case 'textarea':
+                formData.append(name, $(this).val())
+                break;
+              default:
+                console.log(name, $(this).val())
+            }
+          }
+        })
+      }
+
+      return formData;
+    },
+    /**
+     * @param e
+     */
+    submitForm(e) {
+      const form = $(e.target).closest('form')
+      if (typeof form.attr('action') === 'undefined') {
+        throw new ReferenceError('Form action attribute is not declared.')
+      }
+
+      this.request({
+        url: form.attr('action'),
+        method: typeof form.attr('method') === 'undefined' ? 'get' : form.attr('method').toLowerCase(),
+        data: this.serializeForm(form)
+      })
+    }
+  }
+}
