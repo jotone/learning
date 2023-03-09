@@ -2,8 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Role;
-use App\Models\User;
+use App\Models\{Role, User};
 use Illuminate\Support\Arr;
 use Tests\ApiTestCase;
 use Tests\Traits\ModelGeneratorsTrait;
@@ -39,7 +38,7 @@ class UserApiTest extends ApiTestCase
                 ->assertDatabaseHas($models[0]->getTable(), [
                     'id'         => $item->id,
                     'first_name' => $item->first_name ?? '',
-                    'last_name'  => empty($this->last_name) ? null : $this->last_name,
+                    'last_name'  => empty($item->last_name) ? null : $item->last_name,
                     'email'      => $item->email
                 ])
                 // Check per_page value equals response collection

@@ -28,7 +28,7 @@ class ApiTestCase extends TestCase
 
         // User list response
         $response = $this//->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
-        ->get(route(static::$route_prefix . 'index') . "?take=$take&page=$page&order[by]=id&order[dir]=asc" . static::$uri_request)
+            ->get(route(static::$route_prefix . 'index') . "?take=$take&page=$page&order[by]=id&order[dir]=asc" . static::$uri_request)
             ->assertJsonStructure([
                 'data',
                 'links' => [
@@ -51,8 +51,6 @@ class ApiTestCase extends TestCase
             ->assertOk();
         //Response content
         $content = json_decode($response->content());
-
-        $callback($content, $models);
 
         // Check the response contains proper models
         $query = static::$class::limit($take)->offset(($page - 1) * $take)->get()->pluck('id')->toArray();

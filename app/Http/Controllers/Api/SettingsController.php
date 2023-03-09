@@ -102,7 +102,7 @@ class SettingsController extends BasicApiController
                     break;
                 case 'footer_code':
                 case 'header_code':
-                    $rules[$key] = ['nullable', 'string'];
+                    $rules[$key] = ['nullable'];
                     $data[$key] = $val;
                     break;
                 case 'logo_img_url':
