@@ -17,15 +17,19 @@ class RoleController extends BasicAdminController
      */
     public function index(Request $request): Response
     {
-        return $this->view('Roles/Index', $request, [
-            'routes' => [
-                'roles' => [
-                    'list'    => route('api.roles.index'),
-                    'edit'    => route('dashboard.users.roles.edit', 0),
-                    'destroy' => route('api.roles.destroy', 0)
+        return $this->view(
+            template: 'Roles/Index',
+            request: $request,
+            share: [
+                'routes' => [
+                    'roles' => [
+                        'list'    => route('api.roles.index'),
+                        'edit'    => route('dashboard.users.roles.edit', 0),
+                        'destroy' => route('api.roles.destroy', 0)
+                    ]
                 ]
             ]
-        ]);
+        );
     }
 
     public function create(Request $request): Response

@@ -1,4 +1,4 @@
-@import "../font", "vars", "icons", "collection-table.scss", "forms", "pagination", "side-menu", "top-menu";
+@import "../font", "vars", "icons", "collection-table.scss", "forms", "notifications", "pagination", "side-menu", "top-menu";
 
 #app {min-height: 92vh}
 
@@ -79,29 +79,63 @@
   }
 }
 
-@media (max-width: 1024px) {
-  .cut-form {
-    max-width: 100%;
+.preloader {
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 99999;
+
+  .preloader-spinner {
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+
+    img {
+      object-fit: contain;
+      height: 80px;
+      width: 80px;
+    }
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1024px) {
+  .cut-form {max-width: 100%}
+}
+
+@media (max-width: 768px) {
+  .col-1-2 {width: calc(100% - 10px)}
+
   .header a.logo {background-image: url("/images/logo-dashboard-mobile.png")}
 
   .table-group .search-form {
     input {
-      font-size: 14px;
+      font-size: 12px;
       height: 36px;
       line-height: 34px;
       padding: 0 11px;
     }
+
     button {
       height: 36px;
       width: 36px;
     }
   }
 
+  .table-wrap table {
+    th {font-size: 10px; padding: 9px 12px}
+    td {font-size: 12px; padding: 12px}
+  }
+
   .form-group .form-image-upload {
     padding: 15px;
   }
+}
+
+@media (max-width: 480px) {
+  .content {margin-left: 0; width: 100%}
+  .page-content-wrap {padding: 5px}
 }

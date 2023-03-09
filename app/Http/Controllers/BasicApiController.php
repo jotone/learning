@@ -39,7 +39,8 @@ class BasicApiController extends Controller
                 // Cut rows
                 case 'row':
                     $temp = explode("\n", $model->$field);
-                    $model->$field = implode("\n", count($temp) > $options[1] ? array_slice($temp, 0, $options[1]) : $temp);
+                    $model->$field = implode("\n", count($temp) > $options[1] ? array_slice($temp, 0, $options[1])
+                        : $temp);
                     $model->$field .= count($temp) > $options[1] ? '...' : '';
                     break;
                 // Cut words
@@ -65,48 +66,38 @@ class BasicApiController extends Controller
      * @param Builder $collection
      * @param int $total
      * @param string $resource
+     * @param callable $search_callback
      * @return AnonymousResourceCollection
      */
-    protected function apiList(Request $request, Builder $collection, int $total, string $resource): AnonymousResourceCollection
+    protected function apiList(Request $request, Builder $collection, int $total, string $resource, callable $search_callback = null): AnonymousResourceCollection
     {
         $args = $this->getRequest($request);
 
         // Apply order query
         [$by, $dir] = array_values($this->order);
 
-        foreach ($by as $field) {
-            $collection = $collection->orderBy($field, $dir);
-        }
-
-        // Apply search query
-        if (!empty($args['search'])) {
-            $search = mb_strtolower($args['search']);
-            $collection = $collection->whereRaw("LOWER(name) LIKE '%$search%' OR LOWER(slug) LIKE '%$search%' OR level LIKE '%$search%'");
-        }
-
-        // Apply "where" query
-        if (!empty($args['where'])) {
-            $collection = $this->applyWhereQuery($collection, $args['where'], 'where');
-        }
-        // Apply "whereNot" query
-        if (!empty($args['where_not'])) {
-            $collection = $this->applyWhereQuery($collection, $args['where_not'], 'whereNot');
-        }
-        // Apply "orWhere" query
-        if (!empty($args['or_where'])) {
-            $collection = $this->applyWhereQuery($collection, $args['or_where'], 'orWhere');
-        }
-        // Apply additional query relationships
-        if (!empty($args['with'])) {
-            $collection = $this->applyWithQuery($collection, $args['with']);
-        }
-
         // Check if take is 0 that means take all
         if ($this->take == 0) {
             $this->take = $total;
         }
 
-        $collection = $collection->paginate($this->take, $this->select);
+        foreach ($by as $field) {
+            $collection = $collection->orderBy($field, $dir);
+        }
+
+        $collection = $collection
+            // Apply search query
+            ->when(!empty($args['search']) && is_callable($search_callback), fn ($q) => $search_callback($q, $args['search']))
+            // Apply "where" query
+            ->when(!empty($args['where']), fn($q) => $this->applyWhereQuery($q, $args['where'], 'where'))
+            // Apply "whereNot" query
+            ->when(!empty($args['where_not']), fn($q) => $this->applyWhereQuery($q, $args['where_not'], 'whereNot'))
+            // Apply "orWhere" query
+            ->when(!empty($args['or_where']), fn($q) => $this->applyWhereQuery($q, $args['or_where'], 'orWhere'))
+            // Apply additional query relationships
+            ->when(!empty($args['with']), fn($q) => $this->applyWithQuery($q, $args['with']))
+            // Paginate
+            ->paginate($this->take, $this->select);
 
         return $resource::collection(
         // Modify collection
@@ -127,27 +118,24 @@ class BasicApiController extends Controller
      * Get a single resource instance
      *
      * @param Request $request
-     * @param Builder $model
+     * @param Builder $query
      * @param int $id
      * @return JsonResponse
      */
-    protected function apiShow(Request $request, Builder $model, int $id): JsonResponse
+    protected function apiShow(Request $request, Builder $query, int $id): JsonResponse
     {
+        // >get request data
         $args = $request->only(['cut', 'select', 'with']);
-
-        // Select specified fields
-        if (!empty($args['select'])) {
-            $model = $model->select(explode(',', $args['select']));
-        }
-        // Select relation
-        if (!empty($args['with'])) {
-            $model = $this->applyWithQuery($model, $args['with']);
-        }
-
-        if (!empty($args['cut'])) {
-            $model = $this->applyCutQuery($model, $args['cut']);
-        }
-        return response()->json($model->findOrFail($id));
+        return response()->json(
+            $query
+                // Select specified fields
+                ->when(!empty($args['select']), fn($q) => $q->select(explode(',', $args['select'])))
+                // Select relation
+                ->when(!empty($args['with']), fn($q) => $this->applyWithQuery($q, $args['with']))
+                // Cut specified fields
+                ->when(!empty($args['cut']), fn($q) => $this->applyCutQuery($q, $args['cut']))
+                // Find model entity with the given ID
+                ->findOrFail($id));
     }
 
     /**

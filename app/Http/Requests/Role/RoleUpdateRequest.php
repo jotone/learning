@@ -14,8 +14,8 @@ class RoleUpdateRequest extends DefaultRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
-            'level' => ['required', 'numeric', 'min:0', 'max:255']
+            'level' => ['required', 'numeric', 'min:0', 'max:255'],
+            'name'  => ['required', 'string']
         ];
     }
 }

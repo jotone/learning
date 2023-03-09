@@ -14,6 +14,6 @@ class DashboardController extends BasicAdminController
      */
     public function index(Request $request): Response
     {
-        return $this->view('Dashboard', $request);
+        return $this->view(template: 'Dashboard', request: $request);
     }
 }

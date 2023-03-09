@@ -17,13 +17,20 @@ class SettingsController extends BasicAdminController
      */
     public function main(Request $request): Response
     {
-        return $this->view('Settings/Main', $request, [
-            'routes' => [
-
+        return $this->view(
+            template: 'Settings/Main',
+            request: $request,
+            share: [
+                'routes'  => [
+                    'settings' => [
+                        'update' => route('api.settings.update')
+                    ]
+                ],
+                'content' => Settings::whereIn('section', ['custom-scripts', 'site-info', 'main-colors'])
+                    ->get()
+                    ->keyBy('key'),
             ],
-            'content' => Settings::whereIn('section', ['custom-scripts', 'site-info', 'main-colors'])
-                ->get()
-                ->keyBy('key')
-        ]);
+            prevent_filters: true
+        );
     }
 }

@@ -1,0 +1,11 @@
+.icon {
+  display: inline-block;
+  mask-position: 50%;
+  mask-repeat: no-repeat;
+}
+
+.save-icon {
+  height: 22px;
+  mask-image: url("/images/icons/save.svg");
+  width: 22px;
+}

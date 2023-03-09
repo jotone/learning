@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\{RoleController, UserController};
+use App\Http\Controllers\Api\{RoleController, SettingsController, UserController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +19,8 @@ Route::group(['as' => 'api.'], function () {
     Route::resource('/roles', RoleController::class)->except(['create', 'edit']);
     // User API routes
     Route::resource('/users', UserController::class)->except(['create', 'edit']);
+    // Settings API
+    Route::match(['patch', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
 });
 /*
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

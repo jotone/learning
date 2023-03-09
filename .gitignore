@@ -1,7 +1,10 @@
 /node_modules
-/public/build
-/public/hot
-/public/storage
+/public/favicon
+/public/images
+!/public/images/icons
+!/public/images/logo-dashboard.png
+!/public/images/logo-dashboard-mobile.png
+!/public/images/preloader.svg
 /storage/*.key
 /vendor
 .env

@@ -19,7 +19,15 @@ class RoleController extends BasicApiController
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        return $this->apiList($request, Role::query(), Role::count(), RoleResource::class);
+        return $this->apiList(
+            request: $request,
+            collection: Role::query(),
+            total: Role::count(),
+            resource: RoleResource::class,
+            search_callback: function ($q, string $search) {
+                $search = mb_strtolower($search);
+                return $q->whereRaw("LOWER(name) LIKE '%$search%' OR LOWER(slug) LIKE '%$search%' OR level LIKE '%$search%'");
+            });
     }
 
     /**
@@ -31,7 +39,7 @@ class RoleController extends BasicApiController
      */
     public function show(int $id, Request $request): JsonResponse
     {
-        return $this->apiShow($request, Role::query(), $id);
+        return $this->apiShow(request: $request, query: Role::query(), id: $id);
     }
 
     /**

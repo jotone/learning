@@ -39,7 +39,7 @@ class UserApiTest extends ApiTestCase
                 ->assertDatabaseHas($models[0]->getTable(), [
                     'id'         => $item->id,
                     'first_name' => $item->first_name ?? '',
-                    'last_name'  => $item->last_name ?? '',
+                    'last_name'  => empty($this->last_name) ? null : $this->last_name,
                     'email'      => $item->email
                 ])
                 // Check per_page value equals response collection

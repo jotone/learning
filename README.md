@@ -30,14 +30,11 @@
 
 - ~~Role list page~~
 - ~~User list page~~
-- Main Settings page
-  - ~~Form elements~~
-  - Preloader
-  - Save Settings
-  - Notifications
+- ~~Main Settings page~~
 - Login Settings page
   - Form elements
     - color picker
+  - Save Settings
 - Remove Auth\RegisteredUserController
 - Login page
 - Logout

@@ -1,5 +1,5 @@
 <template>
-  <DefaultLayout :menu="$attrs.menu" :routes="$attrs.routes">
+  <DefaultLayout :menu="$attrs.menu" :routes="$attrs.routes" v-slot:content>
     <TopMenu :menu="$attrs.top_menu"/>
 
     <div class="page-content-wrap">

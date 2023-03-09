@@ -85,6 +85,11 @@
       "value": "+00:00"
     },
     {
+      "caption": "Fav Icon",
+      "key": "fav_icon",
+      "value": ""
+    },
+    {
       "caption": "Logo image",
       "key": "logo_img_url",
       "value": "/images/logo-dashboard.png"
@@ -210,9 +215,18 @@
       "caption": "User Image processing",
       "key": "user_img_processing",
       "value": {
-        "thumb_small": [90, 60],
-        "thumb_large": [150, 90],
-        "resize": [400, 300]
+        "thumb_small": [
+          90,
+          60
+        ],
+        "thumb_large": [
+          150,
+          90
+        ],
+        "resize": [
+          400,
+          300
+        ]
       }
     }
   ]

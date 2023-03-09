@@ -47,4 +47,43 @@
       transition: color .1s ease,border .1s ease;
     }
   }
+
+  .close {
+    background-color: $primary;
+    cursor: pointer;
+    display: none;
+    height: 36px;
+    mask-image: url("/images/icons/close.svg");
+    mask-position: 50%;
+    mask-repeat: no-repeat;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .side-menu {
+    background-color: white;
+    display: none;
+    justify-content: flex-start;
+    width: 100%;
+
+    &.active {display: block}
+
+    .side-menu-top, .side-menu-bottom {
+      a {
+        flex-direction: row;
+        font-size: 14px;
+        padding: 8px 10px 8px 40px;
+
+        > i {width: 24px; height: 24px}
+
+        > span {margin-left: 15px}
+      }
+    }
+
+    .close {display: block}
+  }
 }

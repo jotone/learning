@@ -154,10 +154,10 @@
 
 .btn {
   align-items: center;
-  background: $blue;
-  border: 1px solid $blue;
+  background-color: transparent;
+  border: 1px solid $borderColor;
   border-radius: 6px;
-  color: white;
+  color: $blue;
   cursor: pointer;
   display: inline-flex;
   font-size: 14px;
@@ -166,4 +166,22 @@
   position: relative;
   text-decoration: none;
   vertical-align: top;
+
+  &:hover {
+    background-color: rgba(0,90,255,.1);
+    border-color: $blue;
+  }
+
+  .icon {background-color: $blue}
+
+  &.regular, &.blue {
+    background-color: $blue;
+    border: 1px solid $blue;
+    color: white;
+
+    &:hover {
+      background-color: $blue;
+      border-color: $blue;
+    }
+  }
 }
