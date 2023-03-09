@@ -1,0 +1,187 @@
+.form-group-wide {
+  padding: 10px 0;
+}
+.form-group, .form-group-wide {
+  margin-bottom: 20px;
+  position: relative;
+
+  .caption {
+    > span {
+      color: $secondary;
+      display: block;
+      font-size: 14px;
+      line-height: 16px;
+    }
+  }
+
+  .form-checkbox {
+    accent-color: $blue;
+    margin-right: 10px;
+    transform: scale(1.5);
+  }
+
+  .form-input {
+    border: 1px solid $borderColor;
+    border-radius: 4px;
+    color: $primary;
+    font-size: 14px;
+    height: 40px;
+    line-height: 18px;
+    margin-top: 6px;
+    padding: 0 15px;
+    width: 100%;
+  }
+
+  .form-select {
+    appearance: none;
+    background-color: white;
+    background-image: url('/images/icons/angle-down.svg');
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 12px;
+    border: 1px solid $borderColor;
+    border-radius: 4px;
+    color: $primary;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 6px;
+    padding: 0 15px;
+    width: 100%;
+  }
+
+  .form-textarea {
+    border: 1px solid $borderColor;
+    border-radius: 4px;
+    color: $primary;
+    font-family: Rubik, sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    margin-top: 6px;
+    min-height: 200px;
+    padding: 10px 15px;
+    resize: vertical;
+    width: 100%;
+  }
+
+  .code-editor {
+    margin-top: 10px;
+    min-height: 200px;
+  }
+
+  .form-image-upload {
+    border: 1px dashed $blue;
+    border-radius: 4px;
+    display: block;
+    margin-top: 10px;
+    padding: 40px;
+    text-align: center;
+    user-select: none;
+
+    .image-preview {
+      display: block;
+      margin-bottom: 20px;
+      max-width: 100%;
+
+      img {
+        max-height: 200px;
+        max-width: 100%;
+      }
+    }
+
+    .image-holder {
+      background: url("/images/icons/image-holder.svg") 50% 50% no-repeat;
+      display: inline-block;
+      height: 84px;
+      width: 84px;
+    }
+
+    .image-text {
+      color: $primary;
+      display: block;
+      font-size: 16px;
+      line-height: 22px;
+      margin: 20px 0;
+
+      span {color: $blue}
+    }
+
+    .image-info {
+      color: $secondary;
+      display: block;
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+}
+
+.buttons-settings-wrap {
+  margin: 10px 0 20px;
+  width: 100%;
+
+  .button-settings-bookmarks {
+    align-items: center;
+    border: 1px solid $borderColor;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin-bottom: 25px;
+
+    li {
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      font-size: 12px;
+      padding: 15px 0;
+      text-align: center;
+      width: 50%;
+
+      &.active {
+        background-color: $blue;
+        color: white;
+      }
+    }
+  }
+
+  .button-settings-list {
+    display: none;
+    margin: 10px 0;
+
+    &.active {display: block}
+  }
+}
+
+.btn {
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid $borderColor;
+  border-radius: 6px;
+  color: $blue;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  line-height: 1.1;
+  padding: 12px 16px;
+  position: relative;
+  text-decoration: none;
+  vertical-align: top;
+
+  &:hover {
+    background-color: rgba(0,90,255,.1);
+    border-color: $blue;
+  }
+
+  .icon {background-color: $blue}
+
+  &.regular, &.blue {
+    background-color: $blue;
+    border: 1px solid $blue;
+    color: white;
+
+    &:hover {
+      background-color: $blue;
+      border-color: $blue;
+    }
+  }
+}

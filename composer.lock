@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e79d5d09abc0e30d2fb70f4ce2d3716e",
+    "content-hash": "552849e20b0722d2da853dc0ed58b9df",
     "packages": [
         {
             "name": "brick/math",
@@ -60,6 +60,53 @@
                 }
             ],
             "time": "2023-01-15T23:15:59+00:00"
+        },
+        {
+            "name": "chrisjean/php-ico",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chrisbliss18/php-ico.git",
+                "reference": "ccd5c0d56554f3ddcd7a823e695be83e0d1e43b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chrisbliss18/php-ico/zipball/ccd5c0d56554f3ddcd7a823e695be83e0d1e43b6",
+                "reference": "ccd5c0d56554f3ddcd7a823e695be83e0d1e43b6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "php": ">=5.2.4"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "class-php-ico.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Jean",
+                    "homepage": "https://chrisjean.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "An easy-to-use library to generate valid ICO files.",
+            "homepage": "https://github.com/chrisbliss18/php-ico",
+            "keywords": [
+                "favicon",
+                "ico"
+            ],
+            "support": {
+                "issues": "https://github.com/chrisbliss18/php-ico/issues",
+                "source": "https://github.com/chrisbliss18/php-ico"
+            },
+            "time": "2016-09-27T22:00:56+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -1053,6 +1100,90 @@
             "time": "2023-01-17T01:02:51+00:00"
         },
         {
+            "name": "intervention/image",
+            "version": "2.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Intervention/image.git",
+                "reference": "04be355f8d6734c826045d02a1079ad658322dad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/04be355f8d6734c826045d02a1079ad658322dad",
+                "reference": "04be355f8d6734c826045d02a1079ad658322dad",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "guzzlehttp/psr7": "~1.1 || ^2.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.2",
+                "phpunit/phpunit": "^4.8 || ^5.7 || ^7.5.15"
+            },
+            "suggest": {
+                "ext-gd": "to use GD library based image processing.",
+                "ext-imagick": "to use Imagick based image processing.",
+                "intervention/imagecache": "Caching extension for the Intervention Image library"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Intervention\\Image\\ImageServiceProvider"
+                    ],
+                    "aliases": {
+                        "Image": "Intervention\\Image\\Facades\\Image"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Intervention\\Image\\": "src/Intervention/Image"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oliver Vogel",
+                    "email": "oliver@intervention.io",
+                    "homepage": "https://intervention.io/"
+                }
+            ],
+            "description": "Image handling and manipulation library with support for Laravel integration",
+            "homepage": "http://image.intervention.io/",
+            "keywords": [
+                "gd",
+                "image",
+                "imagick",
+                "laravel",
+                "thumbnail",
+                "watermark"
+            ],
+            "support": {
+                "issues": "https://github.com/Intervention/image/issues",
+                "source": "https://github.com/Intervention/image/tree/2.7.2"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/interventionio",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/Intervention",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-05-21T17:30:32+00:00"
+        },
+        {
             "name": "laravel/breeze",
             "version": "v1.19.1",
             "source": {
@@ -1840,6 +1971,59 @@
                 }
             ],
             "time": "2022-04-17T13:12:02+00:00"
+        },
+        {
+            "name": "meyfa/php-svg",
+            "version": "v0.14.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/meyfa/php-svg.git",
+                "reference": "a316e3fe3fb1491ddd61a07c047e8d8eaf65dc38"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/meyfa/php-svg/zipball/a316e3fe3fb1491ddd61a07c047e8d8eaf65dc38",
+                "reference": "a316e3fe3fb1491ddd61a07c047e8d8eaf65dc38",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3.0"
+            },
+            "require-dev": {
+                "meyfa/phpunit-assert-gd": "^v3.0.0",
+                "phpmd/phpmd": "^2.13.0",
+                "phpunit/phpunit": "^9.5.26"
+            },
+            "suggest": {
+                "ext-gd": "Needed to rasterize images",
+                "ext-simplexml": "Needed to read SVG strings and files"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SVG\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabian Meyer",
+                    "homepage": "https://meyfa.net"
+                }
+            ],
+            "description": "Read, edit, write, and render SVG files with PHP",
+            "homepage": "https://github.com/meyfa/php-svg",
+            "keywords": [
+                "svg"
+            ],
+            "support": {
+                "issues": "https://github.com/meyfa/php-svg/issues",
+                "source": "https://github.com/meyfa/php-svg/tree/v0.14.2"
+            },
+            "time": "2023-01-24T13:34:53+00:00"
         },
         {
             "name": "monolog/monolog",

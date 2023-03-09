@@ -53,6 +53,7 @@ class Settings extends Model
      */
     public function setValueAttribute($value): void
     {
+        $value = is_null($value) ? '' : $value;
         $this->attributes['data_type'] = gettype($value);
         if ($this->attributes['data_type'] === 'object' && $value instanceof Carbon) {
             $this->attributes['data_type'] = 'timestamp';

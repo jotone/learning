@@ -83,6 +83,16 @@
       "caption": "Time Zone",
       "key": "site_timezone",
       "value": "+00:00"
+    },
+    {
+      "caption": "Fav Icon",
+      "key": "fav_icon",
+      "value": ""
+    },
+    {
+      "caption": "Logo image",
+      "key": "logo_img_url",
+      "value": "/images/logo-dashboard.png"
     }
   ],
   "hidden": [
@@ -115,6 +125,38 @@
       "caption": "",
       "key": "main_language",
       "value": ""
+    }
+  ],
+  "main-colors": [
+    {
+      "caption": "Primary buttons",
+      "key": "primary_btn",
+      "value": {
+        "normal": {
+          "background-color": "#005AFF",
+          "border-color": "#005AFF",
+          "color": "#FFFFFF"
+        },
+        "hover": {
+          "background-color": "#FFFFFF",
+          "border-color": "#FFFFFF",
+          "color": "#005AFF"
+        }
+      }
+    },
+    {
+      "caption": "Menu colors",
+      "key": "menu_colors",
+      "value": {
+        "normal": {
+          "top-menu-background-color": "#FFFFFF",
+          "top-menu-text-color": "#ACA7BF"
+        },
+        "hover": {
+          "top-menu-background-color": "#FFFFFF",
+          "top-menu-text-color": "#005AFF"
+        }
+      }
     }
   ],
   "registration-process": [
@@ -173,9 +215,18 @@
       "caption": "User Image processing",
       "key": "user_img_processing",
       "value": {
-        "thumb_small": [90, 60],
-        "thumb_large": [150, 90],
-        "resize": [400, 300]
+        "thumb_small": [
+          90,
+          60
+        ],
+        "thumb_large": [
+          150,
+          90
+        ],
+        "resize": [
+          400,
+          300
+        ]
       }
     }
   ]

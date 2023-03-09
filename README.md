@@ -30,10 +30,11 @@
 
 - ~~Role list page~~
 - ~~User list page~~
-- Main Settings page
-  - Preloader
-  - Notifications
+- ~~Main Settings page~~
 - Login Settings page
+  - Form elements
+    - color picker
+  - Save Settings
 - Remove Auth\RegisteredUserController
 - Login page
 - Logout
@@ -50,3 +51,9 @@
 - Edit Coach
 - Remove Coach
 - Admin Profile
+
+### Technical debt
+
+- Dashboard
+  - Main settings
+    - Site custom URL

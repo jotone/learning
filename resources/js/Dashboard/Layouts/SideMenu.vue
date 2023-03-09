@@ -10,6 +10,8 @@
         <SideMenuItem :item="item" :view="!item.is_top"/>
       </template>
     </ul>
+
+    <div class="close" @click="closeSideMenu"></div>
   </nav>
 </template>
 
@@ -20,6 +22,11 @@ import SideMenuItem from "./SideMenuItem.vue";
 export default {
   components: {SideMenuItem},
   name: "SideMenu",
-  props: ["menu"]
+  props: ["menu"],
+  methods: {
+    closeSideMenu(e) {
+      $(e.target).closest('.side-menu').removeClass('active')
+    }
+  }
 }
 </script>

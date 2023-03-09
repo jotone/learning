@@ -1,5 +1,5 @@
 <template>
-  <DefaultLayout :attrs="$attrs">
+  <DefaultLayout :attrs="$attrs" v-slot:content>
 
   </DefaultLayout>
 </template>

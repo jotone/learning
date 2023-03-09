@@ -19,11 +19,20 @@ class UserController extends BasicApiController
     public function index(Request $request): AnonymousResourceCollection
     {
         return $this->apiList(
-            $request,
-            User::select(['users.*', 'roles.name as role_name'])
+            request: $request,
+            collection: User::select(['users.*', 'roles.name as role_name'])
                 ->leftJoin('roles', 'users.role_id', '=', 'roles.id'),
-            User::count(),
-            UserResource::class
+            total: User::count(),
+            resource: UserResource::class,
+            search_callback: function ($q, $search) {
+                $search = mb_strtolower($search);
+                return $q->where(
+                    fn($query) => $query
+                        ->whereRaw('CONCAT(`first_name`, \' \', `last_name`) LIKE \'%' . $search . '%\'')
+                        ->orWhereRaw('CONCAT(`last_name`, \' \', `first_name`) LIKE \'%' . $search . '%\'')
+                        ->orWhere('email', 'like', '%' . $search . '%')
+                );
+            }
         );
     }
 
