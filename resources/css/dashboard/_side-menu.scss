@@ -2,9 +2,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 95vh;
+  height: 94vh;
   left: 0;
-  overflow-y: auto;
   padding: 10px 0;
   position: fixed;
   text-align: center;
@@ -23,16 +22,6 @@
       margin-bottom: 8px;
     }
 
-    li {margin-bottom: 17px}
-
-    li.active svg {fill: $blue}
-
-    li.active a, a:hover {
-      border-left: 4px solid $blue;
-      color: $blue;
-      font-weight: 500;
-    }
-
     a {
       align-items: center;
       color: $menuColor;
@@ -45,6 +34,65 @@
       position: relative;
       text-decoration: none;
       transition: color .1s ease,border .1s ease;
+
+      &:hover {color: $blue}
+    }
+
+    > li:not(.user-link) {
+      margin-bottom: 17px;
+      position: relative;
+
+      &.active a, a:hover {
+        border-left: 4px solid $blue;
+        font-weight: 500;
+      }
+    }
+
+    li.active svg {fill: $blue}
+
+    li.user-link {
+      padding: 8px 0;
+      position: relative;
+      overflow: visible;
+
+      ul {
+        background-color: white;
+        border: 1px solid $borderColor;
+        border-radius: 8px;
+        display: none;
+        left: 80px;
+        padding-bottom: 15px;
+        position: absolute;
+        top: -120px;
+
+        li a {
+          align-items: flex-start;
+          font-size: 12px;
+          padding: 4px 0 4px 15px;
+        }
+
+        .user-link-info-wrap {
+          align-items: flex-start;
+          border-bottom: 1px solid $secondary;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+          padding: 15px;
+        }
+
+        .user-link-info {
+          padding: 5px;
+          text-align: left;
+          margin-left: 10px;
+
+          span {line-height: 20px}
+        }
+
+        .user-link-info-name {color: $blue; font-weight: 500}
+        .user-link-info-email {color: $secondary; font-size: 12px}
+      }
+
+      &:hover ul {display: block}
     }
   }
 

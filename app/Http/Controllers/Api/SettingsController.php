@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Classes\FileHelper;
 use App\Http\Controllers\BasicApiController;
 use App\Models\Settings;
+use App\Traits\SettingsTrait;
 use Illuminate\Http\{JsonResponse, Request};
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -14,6 +15,7 @@ use SVG\SVG;
 
 class SettingsController extends BasicApiController
 {
+    use SettingsTrait;
     /**
      * Update settings
      *
@@ -23,21 +25,22 @@ class SettingsController extends BasicApiController
     public function update(Request $request): JsonResponse
     {
         $args = $request->only([
-            'fav_icon', //
-            'footer_code',//
-            'header_code',//
+            'fav_icon',
+            'footer_code',
+            'header_code',
             'login_bg_color',
+            'login_bg_img',
             'login_btn',
             'login_form_bg_color',
             'login_form_text_color',
             'login_logo_bg_color',
-            'logo_img_url',//
-            'menu_colors',//
-            'override_css',//
-            'primary_btn',//
-            'site_custom_url',
-            'site_title',//
-            'site_timezone' //
+            'logo_img_url',
+            'menu_colors',
+            'override_css',
+            'primary_btn',
+            'site_custom_url',//
+            'site_title',
+            'site_timezone'
         ]);
 
         $data = [];
@@ -110,18 +113,31 @@ class SettingsController extends BasicApiController
                     $rules[$key] = ['nullable'];
                     $data[$key] = $val;
                     break;
-                case 'logo_img_url':
+                case 'login_bg_img':
+                case 'logo_img':
                     // Check file mimetype
                     if (in_array($val->getClientMimeType(), ['image/png', 'image/jpeg'])) {
-                        $rules[$key] = ['required', 'image'];
+                        //$rules[$key] = ['required', 'image'];
                         // Save file
                         $url = FileHelper::saveFile($val, 'images');
 
                         $path_info = pathinfo($url);
                         // Rebuild image url
-                        $img_url = sprintf('%s/%s.%s', $path_info['dirname'], 'logo', $path_info['extension']);
+                        $filename = ($key == 'login_bg_img' ? 'login-bg' : 'logo') . '.' . $path_info['extension'];
+                        $img_url = Str::finish($path_info['dirname'], '/') . $filename;
                         // Rename file
                         rename(public_path($url), public_path($img_url));
+
+                        $image_processing = Settings::firstWhere('key', $key . '_processing');
+
+                        if (!empty($image_processing)) {
+                            $dimensions = (array)$image_processing->val;
+                            if (count($dimensions) >= 2) {
+                                ImageManagerStatic::make(public_path($img_url))
+                                    ->resize($dimensions[0], $dimensions[1], fn($constraint) => $constraint->aspectRatio())
+                                    ->save();
+                            }
+                        }
 
                         $data[$key] = $img_url;
                     }
@@ -155,11 +171,14 @@ class SettingsController extends BasicApiController
         $validation = Validator::make($args, $rules);
 
         if ($validation->fails()) {
-            if (isset($args['logo_img_url'])) {
-                FileHelper::recursiveRemove(public_path($data['logo_img_url']));
-            }
             if (isset($args['fav_icon'])) {
                 FileHelper::recursiveRemove(public_path('/favicon'));
+            }
+            if (isset($args['login_bg_img'])) {
+                FileHelper::recursiveRemove(public_path($data['login_bg_img']));
+            }
+            if (isset($args['logo_img'])) {
+                FileHelper::recursiveRemove(public_path($data['logo_img']));
             }
 
             return response()->json(['errors' => $validation->errors()], 422);
@@ -172,8 +191,14 @@ class SettingsController extends BasicApiController
             $model->save();
         }
 
+        // Generate override css file
         if (isset($args['override_css'])) {
             file_put_contents(public_path('/css/override.css'), $args['override_css']);
+        }
+
+        // Generate login.css file
+        if (isset($args['login_btn'])) {
+            $this->generateLoginCSS();
         }
 
         return response()->json(Settings::whereIn('key', array_keys($args))->get());

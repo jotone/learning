@@ -68,7 +68,7 @@ export default {
           .replace(/=/g, '":"') +
         '"}')
 
-      this.$parent.$parent.$attrs.filters.page = uriParams.page
+      this.$page.props.filters.page = uriParams.page
 
       this.$parent.$parent.getCollection().then(() => {
         let uri = `?page=${uriParams.page}`;

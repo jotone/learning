@@ -40,11 +40,14 @@ class BasicAdminController extends Controller
                         return $model;
                     }),
                 'routes'   => [
+                    'auth'      => [
+                        'logout' => route('auth.logout')
+                    ],
                     'dashboard' => [
                         'index' => route('dashboard.index', [], false)
                     ]
                 ],
-                'top_menu' => AdminMenu::select(['name', 'route'])
+                'topMenu' => AdminMenu::select(['name', 'route'])
                     ->where('parent_id', $parent_menu->id)
                     ->orderBy('position')
                     ->get()

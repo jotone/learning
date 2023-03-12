@@ -1,7 +1,7 @@
 <template>
   <th
     class="toggle-sort"
-    :class="{ active: field === $parent.$parent.$attrs.filters.order.by }"
+    :class="{ active: field === $page.props.filters.order.by }"
     @click.prevent="changeOrder"
   >
     <span>{{ name }}</span>
@@ -19,9 +19,9 @@ export default {
       const field = _this.find('[data-sort]').attr('data-sort')
       const filters = this.$parent.$parent.$attrs.filters
       if (field === filters.order.by) {
-        this.$parent.$parent.$attrs.filters.order.dir = filters.order.dir === 'asc' ? 'desc' : 'asc'
+        this.$page.props.filters.order.dir = filters.order.dir === 'asc' ? 'desc' : 'asc'
       }
-      this.$parent.$parent.$attrs.filters.order.by = field
+      this.$page.props.filters.order.by = field
 
       this.$parent.$parent.getCollection()
     }

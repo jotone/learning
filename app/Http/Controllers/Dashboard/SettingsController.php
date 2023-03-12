@@ -51,7 +51,7 @@ class SettingsController extends BasicAdminController
                         'update' => route('api.settings.update')
                     ]
                 ],
-                'content' => Settings::whereIn('section', ['login-colors'])
+                'content' => Settings::whereIn('section', ['login-page'])
                     ->get()
                     ->keyBy('key'),
             ],

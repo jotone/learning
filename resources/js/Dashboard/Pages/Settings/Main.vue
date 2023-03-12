@@ -1,5 +1,5 @@
 <template>
-  <DefaultLayout :menu="$attrs.menu" :routes="$attrs.routes">
+  <DefaultLayout>
     <template v-slot:optionals>
       <button type="submit" form="mainSettings" class="btn">
         <i class="icon save-icon"></i>
@@ -7,7 +7,7 @@
     </template>
 
     <template v-slot:content>
-      <TopMenu :menu="$attrs.top_menu"/>
+      <TopMenu/>
 
       <form
         class="page-content-wrap cut-form"
@@ -40,7 +40,7 @@
 
               <ImageUpload
                 caption="Logo Image"
-                name="logo_img_url"
+                name="logo_img"
               />
             </div>
 

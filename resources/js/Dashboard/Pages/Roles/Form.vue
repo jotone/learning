@@ -1,5 +1,5 @@
 <template>
-  <DefaultLayout :attrs="$attrs" v-slot:content>
+  <DefaultLayout v-slot:content>
 
   </DefaultLayout>
 </template>
@@ -10,6 +10,6 @@ import DefaultLayout from "../../Layouts/DefaultLayout.vue";
 
 export default {
   components: {DefaultLayout},
-  name: "RolesForm.vue"
+  name: "Roles/Form"
 }
 </script>

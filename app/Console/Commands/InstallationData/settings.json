@@ -70,7 +70,7 @@
       "value": ""
     }
   ],
-  "login-colors": [
+  "login-page": [
     {
       "caption": "Login page background color",
       "key": "login_bg_color",
@@ -106,6 +106,18 @@
           "color": "#0061F6"
         }
       }
+    },
+    {
+      "caption": "Login background image post-processing",
+      "key": "login_bg_img_processing",
+      "value": {
+        "resize": [1280, 1024]
+      }
+    },
+    {
+      "caption": "Upload login image",
+      "key": "login_bg_img",
+      "value": ""
     }
   ],
   "main-colors": [
@@ -190,7 +202,7 @@
     },
     {
       "caption": "Logo image",
-      "key": "logo_img_url",
+      "key": "logo_img",
       "value": "/images/logo-dashboard.png"
     }
   ],
@@ -231,7 +243,7 @@
       "value": ""
     }
   ],
-  "user-img": [
+  "user": [
     {
       "caption": "User Image processing",
       "key": "user_img_processing",

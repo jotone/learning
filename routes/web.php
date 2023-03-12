@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\{AuthController, ForgotPasswordController};
 use App\Http\Controllers\Main\HomeController;
 use Illuminate\Support\Facades\Route;
 /*
@@ -14,8 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
+
+Route::get('/user/login', [AuthController::class, 'index'])->name('auth.index');
+
+Route::post('/user/login', [AuthController::class, 'login'])->name('auth.login');
+Route::any('/user/logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendMail'])->name('forgot.send');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+});
 /*
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/home', [HomeController::class, 'show'])->middleware('')->name('home.show');

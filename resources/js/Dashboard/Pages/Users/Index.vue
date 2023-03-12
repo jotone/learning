@@ -1,9 +1,9 @@
 <template>
-  <DefaultLayout :menu="$attrs.menu" :routes="$attrs.routes" v-slot:content>
-    <TopMenu :menu="$attrs.top_menu"/>
+  <DefaultLayout v-slot:content>
+    <TopMenu/>
 
     <div class="page-content-wrap">
-      <Pagination :options="pagination" :path="filtersToUri()"/>
+      <Pagination :options="pagination" :path="filtersToUri()" :url="url"/>
 
       <div class="table-group">
 

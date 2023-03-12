@@ -21,8 +21,8 @@ export const ContentTableMixin = {
      * @returns {string}
      */
     filtersToUri(uri = '?') {
-      for (let field in this.$attrs.filters) {
-        const value = this.$attrs.filters[field]
+      for (let field in this.$page.props.filters) {
+        const value = this.$page.props.filters[field]
         // Nested params
         if (typeof value === 'object') {
           for (let option in value) {

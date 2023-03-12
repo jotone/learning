@@ -3,12 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Models\{Role, Settings, User};
-use App\Traits\CommandsTrait;
+use App\Traits\{CommandsTrait, SettingsTrait};
 use Illuminate\Console\Command;
 
 class AppInstall extends Command
 {
-    use CommandsTrait;
+    use CommandsTrait, SettingsTrait;
 
     /**
      * The name and signature of the console command.
@@ -33,10 +33,10 @@ class AppInstall extends Command
 
         $files = [
             'admin_menu' => null,
-            'lang_en' => null,
-            'lang_de' => null,
-            'roles' => null,
-            'settings' => null,
+            'lang_en'    => null,
+            'lang_de'    => null,
+            'roles'      => null,
+            'settings'   => null,
         ];
 
         foreach ($files as $file => $data) {
@@ -52,8 +52,8 @@ class AppInstall extends Command
         $this->runWithTimer('User roles', function () use ($files) {
             foreach ($files['roles'] as $slug => $data) {
                 Role::firstOrCreate([
-                    'name' => $data['name'],
-                    'slug' => $slug,
+                    'name'  => $data['name'],
+                    'slug'  => $slug,
                     'level' => $data['level']
                 ]);
             }
@@ -64,13 +64,13 @@ class AppInstall extends Command
             return User::whereHas('role', fn($q) => $q->where('level', '<', 1))->count()
                 ? User::whereHas('role', fn($q) => $q->where('level', '<', 1))->first()
                 : User::create([
-                    'first_name' => 'Superuser',
-                    'email' => 'superadmin@mail.com',
+                    'first_name'        => 'Superuser',
+                    'email'             => 'superadmin@mail.com',
                     'email_verified_at' => now(),
-                    'password' => base64_decode('U29mdDkzMjg2NA=='),
-                    'activated_at' => now(),
-                    'role_id' => Role::where('level', '0')->value('id'),
-                    'status' => 0
+                    'password'          => base64_decode('U29mdDkzMjg2NA=='),
+                    'activated_at'      => now(),
+                    'role_id'           => Role::where('level', '0')->value('id'),
+                    'status'            => 0
                 ]);
         });
 
@@ -82,16 +82,19 @@ class AppInstall extends Command
                         $setting['value'] = now();
                     }
                     Settings::create([
-                        'key' => $setting['key'],
-                        'value' => $setting['value'],
-                        'section' => $section,
-                        'caption' => $setting['caption'],
-                        'about' => $setting['about'] ?? '',
+                        'key'      => $setting['key'],
+                        'value'    => $setting['value'],
+                        'section'  => $section,
+                        'caption'  => $setting['caption'],
+                        'about'    => $setting['about'] ?? '',
                         'position' => $i
                     ]);
                 }
             }
         });
+
+        // Generate login css
+        $this->generateLoginCSS();
 
         // Create admin menu
         $this->installAdminMenu($files);

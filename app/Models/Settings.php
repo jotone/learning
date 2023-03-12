@@ -34,7 +34,7 @@ class Settings extends Model
      *
      * @return mixed
      */
-    public function getConvertedValueAttribute(): mixed
+    public function getValAttribute(): mixed
     {
         return match ($this->attributes['data_type']) {
             'boolean' => (bool)(int)$this->attributes['value'],
