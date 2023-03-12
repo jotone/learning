@@ -1,14 +1,38 @@
 <template>
   <nav class="side-menu">
     <ul class="side-menu-top">
-      <template v-for="item in menu">
+      <template v-for="item in $page.props.menu">
         <SideMenuItem :item="item" :view="item.is_top"/>
       </template>
     </ul>
     <ul class="side-menu-bottom">
-      <template v-for="item in menu">
+      <template v-for="item in $page.props.menu">
         <SideMenuItem :item="item" :view="!item.is_top"/>
       </template>
+      <li class="user-link">
+        <Avatar/>
+        <ul>
+          <li class="user-link-info-wrap">
+            <div class="user-link-info-image">
+              <Avatar/>
+            </div>
+            <div class="user-link-info">
+              <span class="user-link-info-name">
+                {{ $page.props.auth.user.first_name }} {{ $page.props.auth.user.last_name }}
+              </span>
+              <span class="user-link-info-email">
+                {{ $page.props.auth.user.email }}
+              </span>
+            </div>
+          </li>
+          <li>
+            <a href="#">Edit my profile</a>
+          </li>
+          <li>
+            <a :href="$page.props.routes.auth.logout">Logout</a>
+          </li>
+        </ul>
+      </li>
     </ul>
 
     <div class="close" @click="closeSideMenu"></div>
@@ -17,12 +41,12 @@
 
 <script>
 
+import Avatar from "./Partials/User/Avatar.vue";
 import SideMenuItem from "./SideMenuItem.vue";
 
 export default {
-  components: {SideMenuItem},
+  components: {Avatar, SideMenuItem},
   name: "SideMenu",
-  props: ["menu"],
   methods: {
     closeSideMenu(e) {
       $(e.target).closest('.side-menu').removeClass('active')

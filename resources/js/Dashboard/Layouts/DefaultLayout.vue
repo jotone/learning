@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <a class="logo" :href="routes.dashboard.index" @click.prevent="showSideMenu"></a>
+    <a class="logo" :href="$page.props.routes.dashboard.index" @click.prevent="showSideMenu"></a>
 
     <div class="header-optionals">
       <slot name="optionals"/>
@@ -8,7 +8,7 @@
   </div>
 
   <div class="content-wrap">
-    <SideMenu :menu="menu"/>
+    <SideMenu/>
 
     <div class="content">
       <slot name="content"/>
@@ -31,7 +31,6 @@ import SideMenu from './SideMenu.vue';
 export default {
   components: {SideMenu},
   name: "DefaultLayout",
-  props: ["menu", "routes"],
   methods: {
     showSideMenu(e) {
       const _this = $(e.target).closest('a')

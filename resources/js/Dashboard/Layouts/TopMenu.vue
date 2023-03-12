@@ -1,7 +1,7 @@
 <template>
   <nav class="content-submenu">
     <ul>
-      <li v-for="item in menu" :class="{'active': isActive(item.route)}">
+      <li v-for="item in $page.props.topMenu" :class="{'active': isActive(item.route)}">
         <Link :href="item.route">
           <span>{{ item.name }}</span>
         </Link>
@@ -17,7 +17,6 @@ import {Link} from "@inertiajs/vue3";
 export default {
   components: {Link},
   name: "TopMenu",
-  props: ['menu'],
   methods: {
     /**
      * Check the current menu item should be active

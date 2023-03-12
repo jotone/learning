@@ -1,5 +1,5 @@
 <template>
-  <DefaultLayout :menu="$attrs.menu" :routes="$attrs.routes">
+  <DefaultLayout>
     <template v-slot:optionals>
       <button type="submit" form="loginPage" class="btn">
         <i class="icon save-icon"></i>
@@ -7,7 +7,7 @@
     </template>
 
     <template v-slot:content>
-      <TopMenu :menu="$attrs.top_menu"/>
+      <TopMenu/>
 
       <form
         class="page-content-wrap"
@@ -60,6 +60,18 @@
                 />
               </div>
             </div>
+
+            <div class="card">
+              <div class="card-title">
+                Login Background Image
+              </div>
+
+              <ImageUpload
+                name="login_bg_img"
+                :dimensions="[1280, 1024]"
+                :formats="['png', 'jpg']"
+              />
+            </div>
           </div>
           <div class="col-2-3">
             <div class="card">
@@ -79,12 +91,13 @@
 
 import ButtonSettings from "../../Layouts/Form/ButtonSettings.vue";
 import DefaultLayout from "../../Layouts/DefaultLayout.vue";
+import ImageUpload from "../../Layouts/Form/ImageUpload.vue";
 import InputColor from "../../Layouts/Form/InputColor.vue";
 import TopMenu from "../../Layouts/TopMenu.vue"
 import {FormMixin} from "../../Mixins/form-mixin";
 
 export default {
-  components: {ButtonSettings,DefaultLayout, InputColor, TopMenu},
+  components: {ButtonSettings,DefaultLayout, ImageUpload, InputColor, TopMenu},
   name: "Settings/Login",
   data() {
     return {

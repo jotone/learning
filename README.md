@@ -32,22 +32,26 @@
 - ~~User list page~~
 - ~~Main Settings page~~
 - ~~Login Settings page~~
-- Remove Auth\RegisteredUserController
-- Login page
-- Logout
+- ~~Login page~~
 - Sanctum middleware
 - Separate dashboard middleware
 - Create User
+  - Verify email
+  - Thumbs
 - Edit User
+- Remove User
+- Forgot password
+  - Reset password
+  - Confirm password
 - Create role
 - Edit role
 - Remove role
-- Remove User
 - Coaches list page
 - Create Coach
 - Edit Coach
 - Remove Coach
 - Admin Profile
+  - Menu Item
 - Login page settings -> preview
 
 ### Technical debt

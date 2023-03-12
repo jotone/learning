@@ -1,5 +1,5 @@
 <template>
-  <DefaultLayout :menu="$attrs.menu" :routes="$attrs.routes">
+  <DefaultLayout>
 
   </DefaultLayout>
 </template>

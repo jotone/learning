@@ -72,8 +72,8 @@ class RoleModelTest extends ModelTestCase
      */
     protected static function getModel(): Model
     {
-        return Role::where('level', '>', 127)->count()
-            ? Role::where('level', '>', 127)->first()
+        return Role::where('level', '>', 127)->where('level', '<', 255)->count()
+            ? Role::where('level', '>', 127)->where('level', '<', 255)->first()
             : Role::factory()->create();
     }
 }
