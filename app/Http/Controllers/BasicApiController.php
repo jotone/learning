@@ -66,10 +66,10 @@ class BasicApiController extends Controller
      * @param Builder $collection
      * @param int $total
      * @param string $resource
-     * @param callable $search_callback
+     * @param ?callable $search_callback
      * @return AnonymousResourceCollection
      */
-    protected function apiList(Request $request, Builder $collection, int $total, string $resource, callable $search_callback = null): AnonymousResourceCollection
+    protected function apiList(Request $request, Builder $collection, int $total, string $resource, ?callable $search_callback = null): AnonymousResourceCollection
     {
         $args = $this->getRequest($request);
 
@@ -87,7 +87,7 @@ class BasicApiController extends Controller
 
         $collection = $collection
             // Apply search query
-            ->when(!empty($args['search']) && is_callable($search_callback), fn ($q) => $search_callback($q, $args['search']))
+            ->when(!empty($args['search']) && is_callable($search_callback), fn($q) => $search_callback($q, $args['search']))
             // Apply "where" query
             ->when(!empty($args['where']), fn($q) => $this->applyWhereQuery($q, $args['where'], 'where'))
             // Apply "whereNot" query
@@ -100,7 +100,7 @@ class BasicApiController extends Controller
             ->paginate($this->take, $this->select);
 
         return $resource::collection(
-        // Modify collection
+            // Modify collection
             $collection->setCollection(
                 $collection->getCollection()
                     // Apply map function

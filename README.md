@@ -33,7 +33,7 @@
 - ~~Main Settings page~~
 - ~~Login Settings page~~
 - ~~Login page~~
-- Sanctum middleware
+- ~~Sanctum middleware~~
 - Separate dashboard middleware
 - Create User
   - Verify email
@@ -59,3 +59,5 @@
 - Dashboard
   - Main settings
     - Site custom URL
+  - LoginRequest on AuthController
+    - translations

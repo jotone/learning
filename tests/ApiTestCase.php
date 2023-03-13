@@ -7,12 +7,41 @@ use Illuminate\Database\Eloquent\Model;
 
 class ApiTestCase extends TestCase
 {
-
+    /**
+     * Tested entity class
+     *
+     * @var string
+     */
     protected static string $class;
 
+    /**
+     * Tested api route prefix
+     *
+     * @var string
+     */
     protected static string $route_prefix;
 
+    /**
+     * url query string
+     *
+     * @var string
+     */
     protected static string $uri_request = '';
+
+    /**
+     * User with access to api
+     *
+     * @var User
+     */
+    protected static User $actor;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        self::$actor = User::leftJoin('roles', 'users.role_id', '=', 'roles.id')->firstWhere('roles.slug', 'superuser');
+    }
+
 
     /**
      * Default routine for the API list request test
@@ -27,8 +56,9 @@ class ApiTestCase extends TestCase
         $page = mt_rand(1, 4);
 
         // User list response
-        $response = $this//->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
-            ->get(route(static::$route_prefix . 'index') . "?take=$take&page=$page&order[by]=id&order[dir]=asc" . static::$uri_request)
+        $response = $this
+            ->actingAs(self::$actor)
+            ->getJson(route(static::$route_prefix . 'index') . "?take=$take&page=$page&order[by]=id&order[dir]=asc" . static::$uri_request)
             ->assertJsonStructure([
                 'data',
                 'links' => [
@@ -71,7 +101,8 @@ class ApiTestCase extends TestCase
     protected function runShowTest(Model $model, array $fields): self
     {
         // Get user response
-        $response = $this->get(route(static::$route_prefix . 'show', $model->id))
+        $response = $this->actingAs(self::$actor)
+            ->getJson(route(static::$route_prefix . 'show', $model->id))
             ->assertJsonStructure($fields)
             ->assertOk();
         //Response content

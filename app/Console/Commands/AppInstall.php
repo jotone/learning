@@ -62,7 +62,7 @@ class AppInstall extends Command
         // Create superuser account
         $this->runWithTimer('Super user', function () use ($files) {
             return User::whereHas('role', fn($q) => $q->where('level', '<', 1))->count()
-                ? User::whereHas('role', fn($q) => $q->where('level', '<', 1))->first()
+                ? User::whereHas('role', fn($q) => $q->firstWhere('level', '<', 1))
                 : User::create([
                     'first_name'        => 'Superuser',
                     'email'             => 'superadmin@mail.com',

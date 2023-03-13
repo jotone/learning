@@ -6,7 +6,7 @@ use App\Http\Controllers\BasicApiController;
 use App\Http\Resources\RoleResource;
 use App\Http\Requests\Role\{RoleStoreRequest, RoleUpdateRequest};
 use App\Models\Role;
-use Illuminate\Http\{JsonResponse, Request};
+use Illuminate\Http\{JsonResponse, Request, Response};
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class RoleController extends BasicApiController

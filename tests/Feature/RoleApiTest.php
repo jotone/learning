@@ -111,8 +111,9 @@ class RoleApiTest extends ApiTestCase
             ]
         ];
         foreach ($cases as $case) {
-            $this//->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
-            ->post(route(self::$route_prefix . 'store'), $case['send'])
+            $this
+                ->actingAs(self::$actor)
+                ->postJson(route(self::$route_prefix . 'store'), $case['send'])
                 ->assertJson(['errors' => $case['assert']])
                 ->assertUnprocessable();
         }
@@ -135,8 +136,9 @@ class RoleApiTest extends ApiTestCase
             'level' => $model->level,
         ];
 
-        $response = $this//->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
-        ->post(route(self::$route_prefix . 'store'), $values)
+        $response = $this
+            ->actingAs(self::$actor)
+            ->postJson(route(self::$route_prefix . 'store'), $values)
             ->assertJsonFragment($values)->assertCreated();
 
         $content = json_decode($response->content());
@@ -165,8 +167,9 @@ class RoleApiTest extends ApiTestCase
 
         $updated = ['id' => $model->id, ...$update];
 
-        $this//->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
-        ->put(route(self::$route_prefix . 'update', $model->id), $update)
+        $this
+            ->actingAs(self::$actor)
+            ->putJson(route(self::$route_prefix . 'update', $model->id), $update)
             ->assertJsonFragment($updated)
             ->assertOk();
 
@@ -182,9 +185,9 @@ class RoleApiTest extends ApiTestCase
         $model = $this->getRole();
 
         $route = self::$route_prefix . 'destroy';
-        $this->assertModelExists($model)
-            //->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
-            ->delete(route($route, $model->id))
+        $this
+            ->actingAs(self::$actor)->assertModelExists($model)
+            ->deleteJson(route($route, $model->id))
             ->assertNoContent();
 
         $this->assertModelMissing($model);

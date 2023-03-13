@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['as' => 'api.'], function () {
+Route::group(['as' => 'api.', 'middleware' => 'auth:sanctum'], function () {
     // Roles API routes
-    Route::resource('/roles', RoleController::class)->except(['create', 'edit']);
+    Route::apiResource('/roles', RoleController::class);
     // User API routes
-    Route::resource('/users', UserController::class)->except(['create', 'edit']);
+    Route::apiResource('/users', UserController::class);
     // Settings API
     Route::match(['patch', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
 });

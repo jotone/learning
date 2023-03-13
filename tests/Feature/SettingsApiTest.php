@@ -20,8 +20,9 @@ class SettingsApiTest extends ApiTestCase
         $model = Settings::firstWhere(['key' => 'footer_code']);
 
         $test_value = mt_rand(0, 1000);
-        $response = $this//->withHeaders(['Authorization' => 'Bearer ' . self::$jwt])
-            ->put(route(static::$route_prefix . 'update'), [
+        $response = $this
+            ->actingAs(self::$actor)->assertModelExists($model)
+            ->putJson(route(static::$route_prefix . 'update'), [
                 'footer_code' => $test_value
             ]);
 
