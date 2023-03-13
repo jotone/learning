@@ -63,4 +63,15 @@ class AuthApiTest extends TestCase
             'password' => 'password'
         ])->assertRedirect(route('dashboard.index'));
     }
+
+    /**
+     * @return void
+     */
+    public function testAccessApiWithoutToken(): void
+    {
+        // Access api without token
+        $this->getJson(route('api.users.index'))->assertUnauthorized();
+        // Access without Content-Type: application/json header
+        $this->get(route('api.users.index'))->assertRedirect(route('auth.index'));
+    }
 }

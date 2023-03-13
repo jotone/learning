@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Settings;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -37,7 +38,11 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        $route = Auth::user()->role->level >= 255 ? 'home.index' : 'dashboard.index';
+        $user = Auth::user();
+
+        Session::put('api-token', $user->createToken('token-name')->plainTextToken);
+
+        $route = $user->role->level >= 255 ? 'home.index' : 'dashboard.index';
         return redirect()->route($route);
     }
 
@@ -49,6 +54,8 @@ class AuthController extends Controller
      */
     public function logout(Request $request): RedirectResponse
     {
+        Auth::user()->tokens()->delete();
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
