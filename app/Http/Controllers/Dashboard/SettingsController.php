@@ -17,6 +17,7 @@ class SettingsController extends BasicAdminController
      */
     public function main(Request $request): Response
     {
+        $override_path = public_path('css/override.css');
         return $this->view(
             template: 'Settings/Main',
             request: $request,
@@ -28,7 +29,8 @@ class SettingsController extends BasicAdminController
                 ],
                 'content' => Settings::whereIn('section', ['custom-scripts', 'site-info', 'main-colors'])
                     ->get()
-                    ->keyBy('key')
+                    ->keyBy('key'),
+                'overrideCss' => file_exists($override_path) ? file_get_contents($override_path) : ''
             ],
             prevent_filters: true
         );

@@ -11,7 +11,6 @@
 </template>
 
 <script>
-
 import {Link} from "@inertiajs/vue3";
 
 export default {
@@ -24,7 +23,7 @@ export default {
      * @returns {boolean}
      */
     isActive(route) {
-      return window.location.pathname === route;
+      return window.location.pathname.replace(/(\/create|\/edit\/\d+)/, "") === route;
     }
   }
 }

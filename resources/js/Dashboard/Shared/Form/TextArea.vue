@@ -5,7 +5,7 @@
       <textarea
         class="form-textarea"
         :name="name"
-        :placeholder="placeholder || ''"
+        :placeholder="placeholder || caption + '...'"
       >{{ value || '' }}</textarea>
     </label>
   </div>

@@ -11,6 +11,7 @@
     <SideMenu/>
 
     <div class="content">
+      <TopMenu/>
       <slot name="content"/>
     </div>
   </div>
@@ -26,11 +27,12 @@
 
 <script>
 
-import SideMenu from './SideMenu.vue';
+import SideMenu from "./SideMenu.vue";
+import TopMenu from "./TopMenu.vue";
 
 export default {
-  components: {SideMenu},
-  name: "DefaultLayout",
+  components: {SideMenu, TopMenu},
+  name: "Layout",
   methods: {
     showSideMenu(e) {
       const _this = $(e.target).closest('a')
@@ -43,3 +45,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>

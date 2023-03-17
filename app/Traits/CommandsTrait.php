@@ -66,7 +66,7 @@ trait CommandsTrait
      */
     protected function installAdminMenu($files): void
     {
-        $this->runWithTimer('Dashboard side menu', function () use ($files) {
+        $this->runWithTimer('Dashboard2 side menu', function () use ($files) {
             foreach ($files['admin_menu'] as $top => $menu) {
                 foreach ($menu as $position => $item) {
                     $this->createAdminMenuItem($item, $top === 'top', $position);

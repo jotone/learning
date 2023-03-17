@@ -174,6 +174,10 @@
 
   .icon {background-color: $blue}
 
+  .icon + span {
+    margin-left: 10px;
+  }
+
   &.regular, &.blue {
     background-color: $blue;
     border: 1px solid $blue;
@@ -185,3 +189,5 @@
     }
   }
 }
+
+.country-select {margin-top: 6px; width: 100%}

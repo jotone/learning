@@ -26,7 +26,8 @@ class BasicAdminController extends Controller
      */
     protected function view(string $template, Request $request, array $share = [], bool $prevent_filters = false): Response
     {
-        $parent_menu = $this->getMenuParent(AdminMenu::firstWhere(['route' => rtrim($request->getPathInfo(), '/')]));
+        $path_info = preg_replace('/(create|edit\/\d+)/', '', $request->getPathInfo());
+        $parent_menu = $this->getMenuParent(AdminMenu::firstWhere(['route' => rtrim($path_info, '/')]));
 
         return Inertia::render($template, array_merge_recursive(
             [

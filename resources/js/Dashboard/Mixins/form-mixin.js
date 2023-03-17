@@ -1,4 +1,4 @@
-import {showNotification} from "../../libs/notifications";
+import { showNotification, XHRErrorHandle } from "../../libs/notifications";
 
 export const FormMixin = {
   methods: {
@@ -15,7 +15,7 @@ export const FormMixin = {
         props.method = 'get';
       }
 
-      $.axios.interceptors.request.use((config) => {
+      $.axios.interceptors.request.use(config => {
         if (props.hasOwnProperty('beforeRequest')  && typeof props.beforeRequest === 'function') {
           props.beforeRequest()
         } else {
@@ -45,37 +45,7 @@ export const FormMixin = {
             })
           }
         })
-        .catch(error => {
-          $('.preloader').hide()
-
-          if (props.hasOwnProperty('onError') && typeof props.onSuccess === 'onError') {
-            props.onError()
-          }
-          if (!props.hasOwnProperty('preventNotification')) {
-            // Default message body
-            let message = {
-              type: 'error',
-              caption: error.name
-            }
-            // Check the response property exists
-            if (error.hasOwnProperty('response')) {
-              message.caption = error.request.statusText;
-              message.text = Object.keys(error.response.data.errors).map(key => error.response.data.errors[key]).flat(2)
-            // Check the request property exists
-            } else if (error.hasOwnProperty('request')) {
-              let errors = JSON.parse(error.request.responseText)
-              message.caption = error.request.statusText;
-              message.text = Object.keys(errors).map(key => errors[key]).flat(2)
-            // Default error handler
-            } else if (error.hasOwnProperty('message')) {
-              message.text = [error.message]
-            } else {
-              console.error(error)
-            }
-            console.log(message)
-            showNotification(message)
-          }
-        })
+        .catch(error => XHRErrorHandle(error, props))
     },
     /**
      * Get form data
@@ -132,7 +102,7 @@ export const FormMixin = {
     /**
      * @param e
      */
-    submitForm(e) {
+    submit(e) {
       const form = $(e.target).closest('form')
       if (typeof form.attr('action') === 'undefined') {
         throw new ReferenceError('Form action attribute is not declared.')

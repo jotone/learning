@@ -1,20 +1,16 @@
 <template>
-  <DefaultLayout>
+  <Layout>
     <template v-slot:optionals>
-      <button type="submit" form="mainSettings" class="btn">
-        <i class="icon save-icon"></i>
-      </button>
+      <SaveButton form="mainSettings"/>
     </template>
 
     <template v-slot:content>
-      <TopMenu/>
-
       <form
         class="page-content-wrap cut-form"
         id="mainSettings"
         :action="$attrs.routes.settings.update"
         method="POST"
-        @submit.prevent="submitForm"
+        @submit.prevent="submit"
       >
         <input name="_method" type="hidden" value="PATCH">
         <div class="row">
@@ -38,10 +34,7 @@
                 :formats="['png', 'svg', 'ico']"
               />
 
-              <ImageUpload
-                caption="Logo Image"
-                name="logo_img"
-              />
+              <ImageUpload caption="Logo Image" name="logo_img"/>
             </div>
 
             <div class="card">
@@ -159,31 +152,28 @@
                 Custom Theme Styles
               </div>
 
-              <TextArea
-                name="override_css"
-                placeholder="Insert code here..."
-              />
+              <TextArea name="override_css" placeholder="Insert code here..." :value="$attrs.overrideCss"/>
             </div>
           </div>
         </div>
       </form>
     </template>
-  </DefaultLayout>
+  </Layout>
 </template>
 
 <script>
 
-import ButtonSettings from "../../Layouts/Form/ButtonSettings.vue";
-import DefaultLayout from "../../Layouts/DefaultLayout.vue";
-import ImageUpload from "../../Layouts/Form/ImageUpload.vue";
-import InputText from "../../Layouts/Form/InputText.vue";
-import TextArea from "../../Layouts/Form/TextArea.vue";
-import TopMenu from "../../Layouts/TopMenu.vue";
-import {FormMixin} from "../../Mixins/form-mixin";
-import {Timezone} from "../../Mixins/timezone";
+import ButtonSettings from "../../Shared/Form/ButtonSettings.vue";
+import ImageUpload from "../../Shared/Form/ImageUpload.vue";
+import InputText from "../../Shared/Form/InputText.vue";
+import Layout from "../../Shared/Layout.vue";
+import SaveButton from "../../Shared/Form/SaveButton.vue";
+import TextArea from "../../Shared/Form/TextArea.vue";
+import { FormMixin } from "../../Mixins/form-mixin";
+import { Timezone } from "../../../libs/timezone";
 
 export default {
-  components: {TextArea, ButtonSettings, DefaultLayout, ImageUpload, InputText, TopMenu},
+  components: {ButtonSettings, ImageUpload, InputText, Layout, SaveButton, TextArea},
   name: "Settings/Main",
   data() {
     return {
@@ -191,10 +181,10 @@ export default {
       customDomainSet: this.$attrs.content.site_custom_url.value.length > 0,
       messages: {
         saved: 'Settings were successfully saved.'
-      }
+      },
+      timezones: Timezone
     }
   },
-  mixins: [FormMixin, Timezone],
   methods: {
     enableCustomDomain(e) {
       this.customDomainEnabled = $(e.target).closest('input[type="checkbox"]').prop('checked')
@@ -203,6 +193,7 @@ export default {
       const value = $(e.target).closest('input').val().trim()
       this.customDomainSet = value.length > 0 && value.indexOf('.') > 0
     }
-  }
+  },
+  mixins: [FormMixin]
 }
 </script>
