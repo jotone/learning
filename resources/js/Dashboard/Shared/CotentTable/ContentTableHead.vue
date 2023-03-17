@@ -13,17 +13,17 @@
 export default {
   name: "ContentTableHead",
   props: ["field", "name"],
+  inject: ['getCollection'],
   methods: {
     changeOrder(e) {
       const _this = $(e.target).closest('th')
       const field = _this.find('[data-sort]').attr('data-sort')
-      const filters = this.$parent.$parent.$attrs.filters
+      const filters = this.$page.props.filters
       if (field === filters.order.by) {
         this.$page.props.filters.order.dir = filters.order.dir === 'asc' ? 'desc' : 'asc'
       }
       this.$page.props.filters.order.by = field
-
-      this.$parent.$parent.getCollection()
+      this.getCollection()
     }
   }
 }

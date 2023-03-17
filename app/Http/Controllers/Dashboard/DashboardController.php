@@ -15,7 +15,6 @@ class DashboardController extends BasicAdminController
      */
     public function index(Request $request): Response
     {
-        dump(Session::get('api-token'));
         return $this->view(template: 'Dashboard', request: $request);
     }
 }

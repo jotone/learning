@@ -41,7 +41,7 @@
 
 <script>
 
-import Avatar from "./Partials/User/Avatar.vue";
+import Avatar from "../Components/User/Avatar.vue";
 import SideMenuItem from "./SideMenuItem.vue";
 
 export default {

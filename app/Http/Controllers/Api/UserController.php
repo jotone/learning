@@ -53,7 +53,7 @@ class UserController extends BasicApiController
         );
     }
 
-    public function store()
+    public function store(Request $request)
     {
 
     }

@@ -1,20 +1,16 @@
 <template>
-  <DefaultLayout>
+  <Layout>
     <template v-slot:optionals>
-      <button type="submit" form="loginPage" class="btn">
-        <i class="icon save-icon"></i>
-      </button>
+      <SaveButton form="loginPage"/>
     </template>
 
     <template v-slot:content>
-      <TopMenu/>
-
       <form
         class="page-content-wrap"
         id="loginPage"
         :action="$attrs.routes.settings.update"
         method="POST"
-        @submit.prevent="submitForm"
+        @submit.prevent="submit"
       >
         <input name="_method" type="hidden" value="PATCH">
         <div class="row">
@@ -82,23 +78,21 @@
           </div>
         </div>
       </form>
-
     </template>
-  </DefaultLayout>
+  </Layout>
 </template>
 
 <script>
 
-import ButtonSettings from "../../Layouts/Form/ButtonSettings.vue";
-import DefaultLayout from "../../Layouts/DefaultLayout.vue";
-import ImageUpload from "../../Layouts/Form/ImageUpload.vue";
-import InputColor from "../../Layouts/Form/InputColor.vue";
-import TopMenu from "../../Layouts/TopMenu.vue"
+import ButtonSettings from "../../Shared/Form/ButtonSettings.vue";
+import ImageUpload from "../../Shared/Form/ImageUpload.vue";
+import InputColor from "../../Shared/Form/InputColor.vue";
+import Layout from "../../Shared/Layout.vue";
+import SaveButton from "../../Shared/Form/SaveButton.vue";
 import {FormMixin} from "../../Mixins/form-mixin";
 
 export default {
-  components: {ButtonSettings,DefaultLayout, ImageUpload, InputColor, TopMenu},
-  name: "Settings/Login",
+  components: {ButtonSettings, ImageUpload, InputColor, Layout, SaveButton},
   data() {
     return {
       messages: {
@@ -106,6 +100,7 @@ export default {
       }
     }
   },
+  name: "Settings/Login",
   mixins: [FormMixin]
 }
 </script>

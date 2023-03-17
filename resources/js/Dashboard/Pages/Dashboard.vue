@@ -1,15 +1,14 @@
 <template>
-  <DefaultLayout>
+  <Layout>
 
-  </DefaultLayout>
+  </Layout>
 </template>
 
 <script>
-
-import DefaultLayout from "../Layouts/DefaultLayout.vue";
+import Layout from "../Shared/Layout.vue";
 
 export default {
-  components: {DefaultLayout},
-  name: "Dashboard.vue"
+  name: "Dashboard",
+  components: {Layout}
 }
 </script>

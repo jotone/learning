@@ -19,3 +19,35 @@ export function showNotification(messages) {
     })
   }
 }
+
+export const XHRErrorHandle = (error, props = {}) => {
+  $('.preloader').hide()
+
+  if (props.hasOwnProperty('onError') && typeof props.onSuccess === 'onError') {
+    props.onError()
+  }
+  if (!props.hasOwnProperty('preventNotification')) {
+    // Default message body
+    let message = {
+      type: 'error',
+      caption: error.name
+    }
+    // Check the response property exists
+    if (error.hasOwnProperty('response')) {
+      message.caption = error.request.statusText;
+      message.text = Object.keys(error.response.data.errors).map(key => error.response.data.errors[key]).flat(2)
+      // Check the request property exists
+    } else if (error.hasOwnProperty('request')) {
+      let errors = JSON.parse(error.request.responseText)
+      message.caption = error.request.statusText;
+      message.text = Object.keys(errors).map(key => errors[key]).flat(2)
+      // Default error handler
+    } else if (error.hasOwnProperty('message')) {
+      message.text = [error.message]
+    } else {
+      console.error(error)
+    }
+
+    showNotification(message)
+  }
+}

@@ -1,9 +1,7 @@
 <template>
-  <DefaultLayout v-slot:content>
-    <TopMenu/>
-
+  <Layout v-slot:content>
     <div class="page-content-wrap">
-      <Pagination :options="pagination" :path="filtersToUri()" :url="url"/>
+      <Pagination :options="pagination" :url="url"/>
 
       <div class="table-group">
 
@@ -47,7 +45,7 @@
         </div>
       </div>
     </div>
-  </DefaultLayout>
+  </Layout>
 </template>
 
 <script>
@@ -67,7 +65,6 @@ export default {
   mixins: [ContentTableMixin],
   beforeMount() {
     this.url = this.$attrs.routes.roles.list
-    this.getCollection()
   }
 }
 </script>

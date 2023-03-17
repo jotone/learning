@@ -19,9 +19,4 @@ class HomeController extends Controller
             'phpVersion' => PHP_VERSION,
         ]);*/
     }
-
-    public function show()
-    {
-        return Inertia::render('Dashboard');
-    }
 }
