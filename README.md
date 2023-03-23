@@ -35,14 +35,25 @@
 - ~~Login page~~
 - ~~Sanctum middleware~~
 - Language settings
-  - Language form
-  - Add language
+  - ~~Add language~~
   - Select main language
+  - Remove language package
+  - Language form saving
   - Translation files
   - View translations form
   - Save translations
-  - Apply translations to page
-  - app:reset command
+  - Apply translations to pages
+    - Notifications
+    - User list
+    - Role list
+    - Main settings
+    - Login page
+    - Language settings
+    - Forms
+      - Button settings
+      - Image upload
+    - Admin Menu
+  - app:reset command https://www.youtube.com/watch?v=psd-RMVef_A
 - Email
   - Smtp settings
     - send test email

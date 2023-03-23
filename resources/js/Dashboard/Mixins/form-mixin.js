@@ -1,6 +1,8 @@
+import SaveButton from "../Shared/Form/SaveButton.vue";
 import { showNotification, XHRErrorHandle } from "../../libs/notifications";
 
 export const FormMixin = {
+  components: {SaveButton},
   methods: {
     /**
      * Send XHR request
@@ -35,13 +37,13 @@ export const FormMixin = {
           $('.preloader').hide()
 
           if (props.hasOwnProperty('onSuccess') && typeof props.onSuccess === 'function') {
-            props.onSuccess()
+            props.onSuccess(response)
           }
 
           if (!props.hasOwnProperty('preventNotification')) {
             showNotification({
               type: 'success',
-              text: [this.messages.saved]
+              text: [props.saveMsg || this.messages.saved]
             })
           }
         })
@@ -108,11 +110,21 @@ export const FormMixin = {
         throw new ReferenceError('Form action attribute is not declared.')
       }
 
-      this.request({
+      const body = {
         url: form.attr('action'),
         method: typeof form.attr('method') === 'undefined' ? 'get' : form.attr('method').toLowerCase(),
         data: this.serializeForm(form)
-      })
+      };
+
+      if (typeof form.attr('data-save-message') !== 'undefined') {
+        body.saveMsg = form.attr('data-save-message')
+      }
+
+      if (typeof form.attr('data-success-callback') !== 'undefined') {
+        body.onSuccess = this[form.attr('data-success-callback')]
+      }
+
+      this.request(body)
     }
   }
 }

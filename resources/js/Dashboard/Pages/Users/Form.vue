@@ -1,9 +1,7 @@
 <template>
   <Layout>
     <template v-slot:optionals>
-      <button type="submit" form="userCreate" class="btn">
-        <i class="icon save-icon"></i>
-      </button>
+      <SaveButton form="userCreate"/>
     </template>
     <template v-slot:content>
       <form

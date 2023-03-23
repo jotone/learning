@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\BasicAdminController;
 use App\Models\Settings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Response;
+use LaravelLang\Publisher\Constants\Locales;
+use LaravelLang\Publisher\Facades\Helpers\Locales as LocaleHelper;
 
 class SettingsController extends BasicAdminController
 {
@@ -18,21 +21,20 @@ class SettingsController extends BasicAdminController
     public function main(Request $request): Response
     {
         $override_path = public_path('css/override.css');
-        return $this->view(
+        return $this->form(
             template: 'Settings/Main',
             request: $request,
             share: [
-                'routes'  => [
+                'routes'      => [
                     'settings' => [
                         'update' => route('api.settings.update')
                     ]
                 ],
-                'content' => Settings::whereIn('section', ['custom-scripts', 'site-info', 'main-colors'])
+                'content'     => Settings::whereIn('section', ['custom-scripts', 'site-info', 'main-colors'])
                     ->get()
                     ->keyBy('key'),
                 'overrideCss' => file_exists($override_path) ? file_get_contents($override_path) : ''
-            ],
-            prevent_filters: true
+            ]
         );
     }
 
@@ -44,7 +46,7 @@ class SettingsController extends BasicAdminController
      */
     public function loginPage(Request $request): Response
     {
-        return $this->view(
+        return $this->form(
             template: 'Settings/Login',
             request: $request,
             share: [
@@ -56,8 +58,34 @@ class SettingsController extends BasicAdminController
                 'content' => Settings::whereIn('section', ['login-page'])
                     ->get()
                     ->keyBy('key'),
-            ],
-            prevent_filters: true
+            ]
+        );
+    }
+
+    /**
+     * Language settings page
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function language(Request $request): Response
+    {
+        return $this->form(
+            template: 'Settings/Language',
+            request: $request,
+            share: [
+                'installed' => LocaleHelper::installed(),
+                'available' => array_map(
+                    fn($str) => 'CHINESE_T' === $str ? 'Chinese Taiwan' : Str::headline(Str::lower(preg_replace('/_/', ' ', $str))),
+                    collect(Locales::cases())->pluck('name', 'value')->toArray()
+                ),
+                'routes' => [
+                    'language' => [
+                        'store'  => route('api.language.store'),
+                        'update' => '#'
+                    ]
+                ]
+            ]
         );
     }
 }

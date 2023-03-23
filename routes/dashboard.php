@@ -18,6 +18,7 @@ Route::as('users.')->group(function () {
 Route::as('settings.')->group(function () {
     Route::get('/settings', [SettingsController::class, 'main'])->name('main');
     Route::get('/settings/login-page', [SettingsController::class, 'loginPage'])->name('login');
+    Route::get('/settings/language', [SettingsController::class, 'language'])->name('language');
 });
 
 

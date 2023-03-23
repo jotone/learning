@@ -64,7 +64,7 @@
         },
         {
           "name": "Language",
-          "route": "#"
+          "route": "dashboard.settings.language"
         },
         {
           "name": "Top Menu",

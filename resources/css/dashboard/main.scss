@@ -81,6 +81,13 @@
   }
 }
 
+.shift-right {
+  display: flex;
+  justify-content: flex-end;
+
+  .btn {margin-left: 10px}
+}
+
 .preloader {
   background-color: rgba(0, 0, 0, 0.6);
   display: none;

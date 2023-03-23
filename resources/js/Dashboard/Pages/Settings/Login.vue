@@ -12,7 +12,7 @@
         method="POST"
         @submit.prevent="submit"
       >
-        <input name="_method" type="hidden" value="PATCH">
+        <Method value="PATCH"/>
         <div class="row">
           <div class="col-1-3">
             <div class="card">
@@ -88,11 +88,11 @@ import ButtonSettings from "../../Shared/Form/ButtonSettings.vue";
 import ImageUpload from "../../Shared/Form/ImageUpload.vue";
 import InputColor from "../../Shared/Form/InputColor.vue";
 import Layout from "../../Shared/Layout.vue";
-import SaveButton from "../../Shared/Form/SaveButton.vue";
+import Method from "../../Shared/Form/Method.vue";
 import {FormMixin} from "../../Mixins/form-mixin";
 
 export default {
-  components: {ButtonSettings, ImageUpload, InputColor, Layout, SaveButton},
+  components: {ButtonSettings, ImageUpload, InputColor, Layout, Method},
   data() {
     return {
       messages: {
