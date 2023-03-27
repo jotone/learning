@@ -35,6 +35,7 @@ class SettingsController extends BasicApiController
             'login_form_text_color',
             'login_logo_bg_color',
             'logo_img_url',
+            'main_language',
             'menu_colors',
             'override_css',
             'primary_btn',
@@ -159,6 +160,7 @@ class SettingsController extends BasicApiController
                 case 'login_form_bg_color':
                 case 'login_form_text_color':
                 case 'login_logo_bg_color':
+                case 'main_language':
                 case 'site_timezone':
                 case 'site_title':
                     $rules[$key] = ['required', 'string', 'max:255'];

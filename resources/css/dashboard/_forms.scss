@@ -188,6 +188,28 @@
       border-color: $blue;
     }
   }
+
+  &.success, &.green {
+    background-color: $green;
+    border: 1px solid $green;
+    color: white;
+
+    &:hover {
+      background-color: $green-border;
+      border-color: $green-border;
+    }
+  }
+
+  &.danger, &.red {
+    background-color: $red;
+    border: 1px solid $red;
+    color: white;
+
+    &:hover {
+      background-color: $red-border;
+      border-color: $red-border;
+    }
+  }
 }
 
 .country-select {margin-top: 6px; width: 100%}

@@ -96,7 +96,8 @@
     {!! $settings['footer_code']->val !!}
   @endif
 
-<script>{{--var switchForm = function (obj) {
+<script>{{--
+  var switchForm = function (obj) {
     const target = obj.getAttribute('data-target')
     document.querySelector('form.form-switch.active').classList.remove('active')
     document.querySelector(`form[data-trigger="${target}"]`).classList.add('active')

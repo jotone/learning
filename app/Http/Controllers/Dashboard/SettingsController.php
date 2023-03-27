@@ -81,8 +81,11 @@ class SettingsController extends BasicAdminController
                 ),
                 'routes' => [
                     'language' => [
+                        'destroy' => route('api.language.destroy', 0),
                         'store'  => route('api.language.store'),
-                        'update' => '#'
+                    ],
+                    'settings' => [
+                        'update' => route('api.settings.update')
                     ]
                 ]
             ]

@@ -43,7 +43,7 @@ export const FormMixin = {
           if (!props.hasOwnProperty('preventNotification')) {
             showNotification({
               type: 'success',
-              text: [props.saveMsg || this.messages.saved]
+              text: [props.msg || this.messages.saved]
             })
           }
         })
@@ -117,7 +117,7 @@ export const FormMixin = {
       };
 
       if (typeof form.attr('data-save-message') !== 'undefined') {
-        body.saveMsg = form.attr('data-save-message')
+        body.msg = form.attr('data-save-message')
       }
 
       if (typeof form.attr('data-success-callback') !== 'undefined') {

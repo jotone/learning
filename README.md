@@ -34,26 +34,6 @@
 - ~~Login Settings page~~
 - ~~Login page~~
 - ~~Sanctum middleware~~
-- Language settings
-  - ~~Add language~~
-  - Select main language
-  - Remove language package
-  - Language form saving
-  - Translation files
-  - View translations form
-  - Save translations
-  - Apply translations to pages
-    - Notifications
-    - User list
-    - Role list
-    - Main settings
-    - Login page
-    - Language settings
-    - Forms
-      - Button settings
-      - Image upload
-    - Admin Menu
-  - app:reset command https://www.youtube.com/watch?v=psd-RMVef_A
 - Email
   - Smtp settings
     - send test email
@@ -100,6 +80,25 @@
 - Admin Profile
   - Menu Item
 - Login page settings -> preview
+- Language settings
+  - ~~Add language~~
+  - ~~Select main language~~
+  - ~~Remove language package~~
+  - Translation files
+  - View translations form
+  - Save translations
+  - Apply translations to pages
+    - Notifications
+    - User list
+    - Role list
+    - Main settings
+    - Login page
+    - Language settings
+    - Forms
+      - Button settings
+      - Image upload
+    - Admin Menu
+  - app:reset command
 
 ### Technical debt
 

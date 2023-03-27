@@ -66,13 +66,11 @@ trait CommandsTrait
      */
     protected function installAdminMenu($files): void
     {
-        $this->runWithTimer('Dashboard2 side menu', function () use ($files) {
-            foreach ($files['admin_menu'] as $top => $menu) {
-                foreach ($menu as $position => $item) {
-                    $this->createAdminMenuItem($item, $top === 'top', $position);
-                }
+        foreach ($files['admin_menu'] as $top => $menu) {
+            foreach ($menu as $position => $item) {
+                $this->createAdminMenuItem($item, $top === 'top', $position);
             }
-        });
+        }
     }
 
     /**
@@ -86,12 +84,10 @@ trait CommandsTrait
     {
         // Get current timestamp
         $timestamp = microtime(true);
-        // Show console message
-        $this->line('<fg=yellow>Creating:</> ' . $message);
         // Run routine
         $result = $callback();
-        // Show the complete message
-        $this->line('<fg=green>Created:</> ' . $message . ' (' . number_format((microtime(true) - $timestamp) * 1000, 2) . 'ms)');
+        // Show the console message
+        $this->components->twoColumnDetail($message, '<fg=gray>' . number_format((microtime(true) - $timestamp) * 1000, 0) . 'ms</> <fg=green>DONE</>');
 
         return $result;
     }

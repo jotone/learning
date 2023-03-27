@@ -22,7 +22,12 @@ Route::group(['as' => 'api.', 'middleware' => 'auth:sanctum'], function () {
     // Settings API
     Route::match(['patch', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
     // Language API
-    Route::apiResource('/language', LanguageController::class)->only(['store', 'update']);
+    Route::group(['as' => 'language.', 'prefix' => '/language'], function () {
+        // Install language
+        Route::post('/', [LanguageController::class, 'store'])->name('store');
+        // Remove language package
+        Route::delete('/{name}', [LanguageController::class, 'destroy'])->name('destroy');
+    });
 });
 /*
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

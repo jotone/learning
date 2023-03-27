@@ -3,12 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Models\{Role, Settings, User};
-use App\Traits\{CommandsTrait, SettingsTrait};
+use App\Traits\{CommandsTrait, LanguageHelper, SettingsTrait};
 use Illuminate\Console\Command;
 
 class AppInstall extends Command
 {
-    use CommandsTrait, SettingsTrait;
+    use CommandsTrait, LanguageHelper, SettingsTrait;
 
     /**
      * The name and signature of the console command.
@@ -29,6 +29,8 @@ class AppInstall extends Command
      */
     public function handle(): void
     {
+        $this->components->info('Running server installation.');
+
         $install_path = base_path('app/Console/Commands/InstallationData/');
 
         $files = [
@@ -48,8 +50,7 @@ class AppInstall extends Command
             }
         }
 
-        // Creating roles
-        $this->runWithTimer('User roles', function () use ($files) {
+        $this->runWithTimer('Creating user roles', function () use ($files) {
             foreach ($files['roles'] as $slug => $data) {
                 Role::firstOrCreate([
                     'name'  => $data['name'],
@@ -59,8 +60,7 @@ class AppInstall extends Command
             }
         });
 
-        // Create superuser account
-        $this->runWithTimer('Super user', function () use ($files) {
+        $this->runWithTimer('Creating superuser account', function () use ($files) {
             return User::whereHas('role', fn($q) => $q->where('level', '<', 1))->count()
                 ? User::whereHas('role', fn($q) => $q->firstWhere('level', '<', 1))
                 : User::create([
@@ -74,8 +74,7 @@ class AppInstall extends Command
                 ]);
         });
 
-        // Create settings
-        $this->runWithTimer('Settings', function () use ($files) {
+        $this->runWithTimer('Installing settings', function () use ($files) {
             foreach ($files['settings'] as $section => $settings) {
                 foreach ($settings as $i => $setting) {
                     if ($setting['key'] == 'sign_up_date') {
@@ -93,10 +92,13 @@ class AppInstall extends Command
             }
         });
 
-        // Generate login css
-        $this->generateLoginCSS();
+        $this->runWithTimer('Installing language packages', function () use ($files) {
+            $this->writeTranslationsToFiles($files['lang_en'], [], 'en', true);
+        });
 
-        // Create admin menu
-        $this->installAdminMenu($files);
+        // Generate login css
+        $this->runWithTimer('Generating css files', fn () => $this->generateLoginCSS());
+
+        $this->runWithTimer('Creating dashboard side menu', fn () => $this->installAdminMenu($files));
     }
 }

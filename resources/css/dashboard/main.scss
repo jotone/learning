@@ -1,4 +1,4 @@
-@import "../font", "vars", "icons", "collection-table.scss", "forms", "notifications", "pagination", "side-menu", "top-menu";
+@import "../font", "vars", "icons", "collection-table.scss", "forms", "notifications", "pagination", "popup", "side-menu", "top-menu";
 
 #app {min-height: 92vh}
 
@@ -31,6 +31,8 @@
     height: 40px;
     width: 220px;
   }
+
+  .header-optionals .user-add-icon {background-color: $secondary}
 }
 
 .content-wrap {margin-top: 62px}
