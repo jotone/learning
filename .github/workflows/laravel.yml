@@ -45,16 +45,14 @@ jobs:
       run: |
         mkdir -p database
         touch database/database.sqlite
-    - name: Prepare environment
+    - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: mysql
         DB_DATABASE: laravel
         DB_PORT: 33306
-        DB_USER: root
+        DB_USER: user
         DB_PASSWORD: password
       run: |
         php artisan migrate:fresh
         php artisan app:install
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      run: |
         php artisan test
