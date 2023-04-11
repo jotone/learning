@@ -54,6 +54,7 @@ import {ContentTableMixin} from "../../Mixins/content-table-mixin";
 
 export default {
   name: "Roles/Index",
+  mixins: [ContentTableMixin],
   methods: {
     roleEdit(id) {
       return this.$attrs.routes.roles.edit.replace(/0$/, id)
@@ -62,7 +63,6 @@ export default {
       return this.$attrs.routes.roles.destroy.replace(/0$/, id)
     }
   },
-  mixins: [ContentTableMixin],
   beforeMount() {
     this.url = this.$attrs.routes.roles.list
   }

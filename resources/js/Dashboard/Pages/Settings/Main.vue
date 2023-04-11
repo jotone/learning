@@ -19,7 +19,7 @@
               <div class="card-title">
                 Site Info
               </div>
-              <InputText caption="Site URL" disabled="" name="site_url" :value="$attrs.content.site_url.value"/>
+              <InputText caption="Site URL" name="site_url" :disabled="true" :value="$attrs.content.site_url.value"/>
 
               <InputText
                 caption="System Name"
@@ -166,15 +166,13 @@
 import ButtonSettings from "../../Shared/Form/ButtonSettings.vue";
 import ImageUpload from "../../Shared/Form/ImageUpload.vue";
 import InputText from "../../Shared/Form/InputText.vue";
-import Layout from "../../Shared/Layout.vue";
 import Method from "../../Shared/Form/Method.vue";
 import TextArea from "../../Shared/Form/TextArea.vue";
 import { FormMixin } from "../../Mixins/form-mixin";
 import { Timezone } from "../../../libs/timezone";
 
 export default {
-  components: {ButtonSettings, ImageUpload, InputText, Layout, Method, TextArea},
-  name: "Settings/Main",
+  components: {ButtonSettings, ImageUpload, InputText, Method, TextArea},
   data() {
     return {
       customDomainEnabled: this.$attrs.content.site_custom_url.value.length > 0,
@@ -185,6 +183,8 @@ export default {
       timezones: Timezone
     }
   },
+  mixins: [FormMixin],
+  name: "Settings/Main",
   methods: {
     enableCustomDomain(e) {
       this.customDomainEnabled = $(e.target).closest('input[type="checkbox"]').prop('checked')
@@ -193,7 +193,6 @@ export default {
       const value = $(e.target).closest('input').val().trim()
       this.customDomainSet = value.length > 0 && value.indexOf('.') > 0
     }
-  },
-  mixins: [FormMixin]
+  }
 }
 </script>

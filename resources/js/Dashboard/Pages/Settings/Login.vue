@@ -8,8 +8,8 @@
       <form
         class="page-content-wrap"
         id="loginPage"
-        :action="$attrs.routes.settings.update"
         method="POST"
+        :action="$attrs.routes.settings.update"
         @submit.prevent="submit"
       >
         <Method value="PATCH"/>
@@ -87,12 +87,11 @@
 import ButtonSettings from "../../Shared/Form/ButtonSettings.vue";
 import ImageUpload from "../../Shared/Form/ImageUpload.vue";
 import InputColor from "../../Shared/Form/InputColor.vue";
-import Layout from "../../Shared/Layout.vue";
 import Method from "../../Shared/Form/Method.vue";
 import {FormMixin} from "../../Mixins/form-mixin";
 
 export default {
-  components: {ButtonSettings, ImageUpload, InputColor, Layout, Method},
+  components: {ButtonSettings, ImageUpload, InputColor, Method},
   data() {
     return {
       messages: {
@@ -100,7 +99,7 @@ export default {
       }
     }
   },
-  name: "Settings/Login",
-  mixins: [FormMixin]
+  mixins: [FormMixin],
+  name: "Settings/Login"
 }
 </script>

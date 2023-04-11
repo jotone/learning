@@ -5,7 +5,7 @@
   margin-bottom: 20px;
   position: relative;
 
-  .caption {
+  .caption, .small-caption {
     > span {
       color: $secondary;
       display: block;
@@ -13,6 +13,8 @@
       line-height: 16px;
     }
   }
+
+  .small-caption > span {font-size: 12px}
 
   .form-checkbox {
     accent-color: $blue;

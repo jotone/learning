@@ -4,6 +4,14 @@
   mask-repeat: no-repeat;
 }
 
+.info-icon {
+  background-color: $blue;
+  height: 12px;
+  mask-image: url("/images/icons/info.svg");
+  transform: scale(1.2);
+  width: 12px;
+}
+
 .times-icon {
   height: 22px;
   mask-image: url("/images/icons/times.svg");

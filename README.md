@@ -35,9 +35,8 @@
 - ~~Login page~~
 - ~~Sanctum middleware~~
 - Email
-  - Smtp settings
-    - send test email
-  - Need help modal
+  - ~~Smtp settings~~
+  - ~~Need help modal~~
   - Email Global Settings
   - Social Media Links
     - Superuser
@@ -80,6 +79,11 @@
 - Admin Profile
   - Menu Item
 - Login page settings -> preview
+- Pages
+  - How to help
+  - terms of service
+  - Privacy policy
+  - Corp. address
 - Language settings
   - ~~Add language~~
   - ~~Select main language~~

@@ -1,8 +1,9 @@
+import Layout from "../Shared/Layout.vue";
 import SaveButton from "../Shared/Form/SaveButton.vue";
 import { showNotification, XHRErrorHandle } from "../../libs/notifications";
 
 export const FormMixin = {
-  components: {SaveButton},
+  components: {Layout, SaveButton},
   methods: {
     /**
      * Send XHR request

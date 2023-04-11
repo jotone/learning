@@ -30,7 +30,11 @@ class SettingsController extends BasicAdminController
                         'update' => route('api.settings.update')
                     ]
                 ],
-                'content'     => Settings::whereIn('section', ['custom-scripts', 'site-info', 'main-colors'])
+                'content'     => Settings::whereIn('section', [
+                    'custom-scripts',
+                    'site-info',
+                    'main-colors'
+                ])
                     ->get()
                     ->keyBy('key'),
                 'overrideCss' => file_exists($override_path) ? file_get_contents($override_path) : ''
@@ -55,9 +59,29 @@ class SettingsController extends BasicAdminController
                         'update' => route('api.settings.update')
                     ]
                 ],
-                'content' => Settings::whereIn('section', ['login-page'])
-                    ->get()
-                    ->keyBy('key'),
+                'content' => Settings::where('section', 'login-page')->get()->keyBy('key'),
+            ]
+        );
+    }
+
+    /**
+     * Email Settings page
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function email(Request $request): Response
+    {
+        return $this->form(
+            template: 'Settings/Email',
+            request: $request,
+            share: [
+                'routes'  => [
+                    'settings' => [
+                        'update' => route('api.settings.update')
+                    ]
+                ],
+                'content' => Settings::where('section', 'smtp-settings')->get()->keyBy('key')
             ]
         );
     }
@@ -76,13 +100,14 @@ class SettingsController extends BasicAdminController
             share: [
                 'installed' => LocaleHelper::installed(),
                 'available' => array_map(
-                    fn($str) => 'CHINESE_T' === $str ? 'Chinese Taiwan' : Str::headline(Str::lower(preg_replace('/_/', ' ', $str))),
+                    fn($str) => 'CHINESE_T' === $str ? 'Chinese Taiwan'
+                        : Str::headline(Str::lower(preg_replace('/_/', ' ', $str))),
                     collect(Locales::cases())->pluck('name', 'value')->toArray()
                 ),
-                'routes' => [
+                'routes'    => [
                     'language' => [
                         'destroy' => route('api.language.destroy', 0),
-                        'store'  => route('api.language.store'),
+                        'store'   => route('api.language.store'),
                     ],
                     'settings' => [
                         'update' => route('api.settings.update')

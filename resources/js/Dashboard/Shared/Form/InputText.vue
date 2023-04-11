@@ -8,6 +8,7 @@
         :disabled="disabled"
         :name="name"
         :placeholder="caption.length ? caption + '...' : caption"
+        :required="required"
         :type="type"
         :value="value"
         @input="$emit('update:value', $event.target.value)"
@@ -32,6 +33,10 @@ export default {
     name: {
       type: String,
       default: ''
+    },
+    required: {
+      type: Boolean,
+      default: false
     },
     type: {
       type: String,
