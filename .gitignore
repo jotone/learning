@@ -6,6 +6,7 @@
 /public/favicon
 /public/images
 !/public/images/icons
+!/public/images/social-media
 !/public/images/vendor
 !/public/images/logo-dashboard.png
 !/public/images/logo-dashboard-mobile.png

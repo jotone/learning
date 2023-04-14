@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BasicAdminController;
 use App\Models\Settings;
+use App\Models\SocialMediaLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Response;
@@ -79,9 +80,15 @@ class SettingsController extends BasicAdminController
                 'routes'  => [
                     'settings' => [
                         'update' => route('api.settings.update')
+                    ],
+                    'social'   => [
+                        'store'   => route('api.socials.store'),
+                        'update'  => route('api.socials.update', 0),
+                        'destroy' => route('api.socials.destroy', 0)
                     ]
                 ],
-                'content' => Settings::where('section', 'smtp-settings')->get()->keyBy('key')
+                'content' => Settings::whereIn('section', ['smtp-settings', 'email-settings'])->get()->keyBy('key'),
+                'social'  => SocialMediaLink::orderBy('position')->get()
             ]
         );
     }

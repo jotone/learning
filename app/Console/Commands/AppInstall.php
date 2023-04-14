@@ -76,7 +76,7 @@ class AppInstall extends Command
 
         $this->runWithTimer('Installing settings', function () use ($files) {
             foreach ($files['settings'] as $section => $settings) {
-                foreach ($settings as $i => $setting) {
+                foreach ($settings as $setting) {
                     if ($setting['key'] == 'sign_up_date') {
                         $setting['value'] = now();
                     }
@@ -84,9 +84,7 @@ class AppInstall extends Command
                         'key'      => $setting['key'],
                         'value'    => $setting['value'],
                         'section'  => $section,
-                        'caption'  => $setting['caption'],
                         'about'    => $setting['about'] ?? '',
-                        'position' => $i
                     ]);
                 }
             }

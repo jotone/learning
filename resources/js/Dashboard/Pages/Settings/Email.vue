@@ -86,6 +86,71 @@
               </div>
             </form>
           </div>
+
+          <div class="col-1-3">
+            <form
+              class="card"
+              id="email"
+              data-save-message="Email Settings were successfully saved."
+              method="POST"
+              :action="$attrs.routes.settings.update"
+              @submit.prevent="submit"
+            >
+              <Method value="PATCH"/>
+
+              <div class="card-title">Email Global Settings</div>
+
+              <InputColor
+                caption="Footer Color"
+                name="footer_color"
+                :value="$attrs.content.footer_color.value"
+              />
+
+              <InputText
+                caption="Terms Of Service Link"
+                name="terms_of_service"
+                :value="$attrs.content.terms_of_service.value"
+              />
+
+              <InputText
+                caption="Privacy Policy Link"
+                name="privacy_policy"
+                :value="$attrs.content.privacy_policy.value"
+              />
+
+              <InputText
+                caption="Legal Address"
+                name="legal_address"
+                :value="$attrs.content.legal_address.value"
+              />
+            </form>
+
+            <div class="card">
+              <div class="card-title">
+                Social Media Links on Footer
+              </div>
+
+              <div class="form-group">
+                <ul class="drag-list">
+                  <template v-for="social in $attrs.social">
+                    <SocialMediaListItem :item="social"/>
+                  </template>
+                </ul>
+              </div>
+
+              <div class="form-group">
+                <button class="btn blue" type="button" @click="addSocial">Add</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-1-3">
+            <div class="card">
+              <div class="card-title">
+                Templates List
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </template>
@@ -135,23 +200,100 @@
 
 <script>
 
-import { Fancybox } from "@fancyapps/ui";
-import { FormMixin } from "../../Mixins/form-mixin";
+import {Fancybox} from "@fancyapps/ui";
+import {FormMixin} from "../../Mixins/form-mixin";
 import InputText from "../../Shared/Form/InputText.vue";
 import Method from "../../Shared/Form/Method.vue";
+import InputColor from "../../Shared/Form/InputColor.vue";
+import SocialMediaListItem from "./Partials/SocialMediaListItem.vue";
+import 'select2/dist/js/select2.min'
 
 export default {
-  components: {InputText, Method},
+  components: {SocialMediaListItem, InputColor, InputText, Method},
+  computed: {
+    /**
+     * Default Select2 Options
+     * @returns {{allowHtml: boolean, minimumResultsForSearch: number, templateSelection: function, templateResult: function}}
+     */
+    select2Options() {
+      return {
+        allowHtml: true,
+        minimumResultsForSearch: -1,
+        templateResult: this.formatOption,
+        templateSelection: this.formatOption
+      }
+    }
+  },
+  data() {
+    return {
+      allowRequest: true
+    }
+  },
   mixins: [FormMixin],
   name: "Settings/Email",
+  methods: {
+    /**
+     * Add social media entity
+     */
+    addSocial() {
+      if (this.allowRequest) {
+        this.allowRequest = !1;
+        // Social media items number
+        const itemsCount = $('.drag-list li').length
+        // Prepare form data
+        let formData = new FormData();
+        formData.append('type', 'facebook')
+        formData.append('url', '')
+        formData.append('position', itemsCount)
+
+        // Send request to store social media link
+        this.request({
+          method: 'post',
+          url: this.$attrs.routes.social.store,
+          data: formData,
+          preventNotification: !0,
+          onSuccess: response => {
+            this.allowRequest = !0;
+            if (201 === response.status) {
+              // Add item to list
+              this.$attrs.social.push({
+                id: response.data.id,
+                type: response.data.type,
+                url: response.data.url,
+              });
+
+              // Init select2
+              const itemAddedInterval = setInterval(() => {
+                if ($('.drag-list li').length > itemsCount) {
+                  $('.drag-list li:last select[name="social_type"]').select2(this.select2Options)
+                  clearInterval(itemAddedInterval)
+                }
+              }, 10)
+            }
+          }
+        })
+      }
+    },
+    /**
+     * Select2 option html template
+     * @param opt
+     * @returns {*|jQuery|HTMLElement}
+     */
+    formatOption(opt) {
+      return $(`<span class="option-small"><i class="icon social-${opt.id}"></i>${opt.text}</span>`);
+    }
+  },
   mounted() {
     Fancybox.bind('a[data-fancybox]', {
       hideScrollbar: false
     });
+
+    $('select[name="social_type"]').select2(this.select2Options)
   }
 }
 </script>
 
 <style>
 @import "/node_modules/@fancyapps/ui/dist/fancybox/fancybox.css";
+@import "/node_modules/select2/dist/css/select2.min.css";
 </style>

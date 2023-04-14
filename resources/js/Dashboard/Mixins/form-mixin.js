@@ -1,6 +1,6 @@
 import Layout from "../Shared/Layout.vue";
 import SaveButton from "../Shared/Form/SaveButton.vue";
-import { showNotification, XHRErrorHandle } from "../../libs/notifications";
+import {showNotification, XHRErrorHandle} from "../../libs/notifications";
 
 export const FormMixin = {
   components: {Layout, SaveButton},
@@ -19,7 +19,7 @@ export const FormMixin = {
       }
 
       $.axios.interceptors.request.use(config => {
-        if (props.hasOwnProperty('beforeRequest')  && typeof props.beforeRequest === 'function') {
+        if (props.hasOwnProperty('beforeRequest') && typeof props.beforeRequest === 'function') {
           props.beforeRequest()
         } else {
           $('.preloader').show()
@@ -106,7 +106,8 @@ export const FormMixin = {
      * @param e
      */
     submit(e) {
-      const form = $(e.target).closest('form')
+      const form = e.constructor.name === 'SubmitEvent' ? $(e.target).closest('form') : e;
+
       if (typeof form.attr('action') === 'undefined') {
         throw new ReferenceError('Form action attribute is not declared.')
       }
@@ -119,6 +120,10 @@ export const FormMixin = {
 
       if (typeof form.attr('data-save-message') !== 'undefined') {
         body.msg = form.attr('data-save-message')
+      }
+
+      if (typeof form.attr('data-prevent-message') !== 'undefined') {
+        body.preventNotification = true
       }
 
       if (typeof form.attr('data-success-callback') !== 'undefined') {

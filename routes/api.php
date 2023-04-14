@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\{LanguageController, RoleController, SettingsController, UserController};
+use App\Http\Controllers\Api\{
+    LanguageController, RoleController, SettingsController, SocialMediaLinksController, UserController
+};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +23,8 @@ Route::group(['as' => 'api.', 'middleware' => 'auth:sanctum'], function () {
     Route::apiResource('/users', UserController::class);
     // Settings API
     Route::match(['patch', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
+    // Social Media API
+    Route::resource('/socials', SocialMediaLinksController::class)->only(['store', 'update', 'destroy']);
     // Language API
     Route::group(['as' => 'language.', 'prefix' => '/language'], function () {
         // Install language

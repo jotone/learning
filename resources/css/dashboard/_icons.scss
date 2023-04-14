@@ -24,8 +24,50 @@
   width: 22px;
 }
 
+.social-facebook {
+  height: 8px;
+  mask-image: url("/images/social-media/facebook.png");
+  width: 11px;
+}
+
+.social-instagram {
+  height: 12px;
+  mask-image: url("/images/social-media/instagram.png");
+  width: 12px;
+}
+
+.social-linkedin {
+  height: 12px;
+  mask-image: url("/images/social-media/linkedin.png");
+  width: 12px;
+}
+
+.social-tiktok {
+  height: 11px;
+  mask-image: url("/images/social-media/tiktok.png");
+  width: 13px;
+}
+
+.social-twitter {
+  height: 14px;
+  mask-image: url("/images/social-media/twitter.png");
+  width: 11px;
+}
+
+.social-youtube {
+  height: 13px;
+  mask-image: url("/images/social-media/youtube.png");
+  width: 9px;
+}
+
 .user-add-icon {
   height: 22px;
   mask-image: url("/images/icons/user-add.svg");
   width: 22px;
+}
+
+.v-hellip-icon {
+  height: 18px;
+  mask-image: url("/images/icons/v-hellip-double.svg");
+  width: 18px;
 }

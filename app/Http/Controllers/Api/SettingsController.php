@@ -24,7 +24,9 @@ class SettingsController extends BasicApiController
     protected array $settings_list = [
         'fav_icon',
         'footer_code',
+        'footer_color',
         'header_code',
+        'legal_address',
         'login_bg_color',
         'login_bg_img',
         'login_btn',
@@ -36,6 +38,7 @@ class SettingsController extends BasicApiController
         'menu_colors',
         'override_css',
         'primary_btn',
+        'privacy_policy',
         'site_custom_url',//
         'site_title',
         'site_timezone',
@@ -46,6 +49,7 @@ class SettingsController extends BasicApiController
         'smtp_password',
         'smtp_port',
         'smtp_username',
+        'terms_of_service'
     ];
 
     /**
@@ -249,7 +253,10 @@ class SettingsController extends BasicApiController
                     break;
                 case 'footer_code':
                 case 'header_code':
+                case 'legal_address':
+                case 'privacy_policy':
                 case 'smtp_from_name':
+                case 'terms_of_service':
                     $result['rules'] = ['nullable'];
                     $result['data'][$key] = empty($val) || is_string($val) || is_int($val) ? $val : json_encode($val);
                     break;
@@ -295,6 +302,7 @@ class SettingsController extends BasicApiController
                 case 'site_custom_url':
                     // TODO send request to admin.copemember
                     break;
+                case 'footer_color':
                 case 'login_bg_color':
                 case 'login_form_bg_color':
                 case 'login_form_text_color':

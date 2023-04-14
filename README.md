@@ -37,10 +37,12 @@
 - Email
   - ~~Smtp settings~~
   - ~~Need help modal~~
-  - Email Global Settings
+  - ~~Email Global Settings~~
   - Social Media Links
-    - Superuser
-    - Admin
+    - ~~store~~
+    - ~~remove~~
+    - ~~update~~
+    - sort
   - Templates
     - Create
       - Form
