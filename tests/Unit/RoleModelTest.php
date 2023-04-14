@@ -38,7 +38,7 @@ class RoleModelTest extends ModelTestCase
                 'name' => $model->name,
                 'slug' => $model->slug,
                 'level' => $model->level
-            ],
+            ]
         );
     }
 

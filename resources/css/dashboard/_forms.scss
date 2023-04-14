@@ -5,7 +5,7 @@
   margin-bottom: 20px;
   position: relative;
 
-  .caption {
+  .caption, .small-caption {
     > span {
       color: $secondary;
       display: block;
@@ -13,6 +13,8 @@
       line-height: 16px;
     }
   }
+
+  .small-caption > span {font-size: 12px}
 
   .form-checkbox {
     accent-color: $blue;
@@ -48,6 +50,10 @@
     margin-top: 6px;
     padding: 0 15px;
     width: 100%;
+
+    .contain-image {
+      position: relative;
+    }
   }
 
   .form-textarea {
@@ -114,6 +120,65 @@
     }
   }
 }
+
+.drag-list, .select2-results {
+  position: relative;
+  width: 100%;
+
+  li {
+    align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: 5px;
+  }
+
+  .drag-list-handle {
+    cursor: grab;
+    padding: 4px 8px 4px 0;
+
+    .icon {transform: scale(1.2)}
+  }
+
+  .drag-list-dropdown {
+    .select2-container {
+      min-width: 120px;
+
+      .select2-selection--single {height: 40px; border-color: $borderColor}
+
+      .select2-selection__arrow {height: 36px}
+
+      .select2-selection__rendered {padding-left: 0}
+    }
+  }
+
+  .option-small {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    font-size: 14px;
+    height: 40px;
+    line-height: 18px;
+    padding: 0 5px;
+
+    .icon {
+      background-color: $primary;
+      display: block;
+      height: 12px;
+      transform: scale(1.2);
+      width: 20px;
+    }
+  }
+
+  .drag-list-url {
+    padding-left: 4px;
+    width: 100%;
+
+    .form-input {margin: 0}
+  }
+}
+
+.select2-results .option-small {height: 20px}
 
 .buttons-settings-wrap {
   margin: 10px 0 20px;

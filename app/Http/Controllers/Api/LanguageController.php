@@ -21,10 +21,12 @@ class LanguageController extends BasicApiController
      */
     public function store(LanguageStoreRequest $request): JsonResponse
     {
+        // Get request data
         $args = $request->validated();
 
         // Get language translations file path
         $vendor_path = base_path('vendor/laravel-lang/lang/locales/' . $args['lang'] . '/php.json');
+
         // Check the translation file exists
         if (!file_exists($vendor_path)) {
             return response()->json([
@@ -33,12 +35,15 @@ class LanguageController extends BasicApiController
                 ]
             ], 404);
         }
+
         // Reinstall language package if it already exists
         if (file_exists(lang_path($args['lang']))) {
             FileHelper::recursiveRemove(lang_path($args['lang']));
         }
+
         // Source translation data
         $source_data = json_decode(file_get_contents(app_path('Console/Commands/InstallationData/lang_en.json')), 1);
+
         // Installable language package data
         $locale_data = json_decode(file_get_contents($vendor_path), 1);
 

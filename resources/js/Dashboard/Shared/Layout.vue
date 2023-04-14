@@ -23,6 +23,8 @@
       <img src="/images/preloader.svg" alt="Loading. Please, wait for a while&hellip;">
     </div>
   </div>
+
+  <slot name="popup"></slot>
 </template>
 
 <script>
@@ -45,7 +47,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

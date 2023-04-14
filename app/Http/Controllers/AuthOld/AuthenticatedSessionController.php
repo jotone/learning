@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\AuthOld;
+namespace App\Http\Controllers\AuthOld;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;

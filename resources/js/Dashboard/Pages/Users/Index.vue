@@ -69,6 +69,7 @@
 import {ContentTableMixin} from "../../Mixins/content-table-mixin";
 
 export default {
+  mixins: [ContentTableMixin],
   name: "Users/Index",
   methods: {
     userEdit(model) {
@@ -79,7 +80,6 @@ export default {
       return this.$attrs.routes.users.destroy.replace(/0$/, id)
     }
   },
-  mixins: [ContentTableMixin],
   beforeMount() {
     this.url = this.$attrs.routes.users.list
   }

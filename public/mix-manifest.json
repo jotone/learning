@@ -1,5 +1,7 @@
 {
-    "/js/dashboard.js": "/js/dashboard.js?id=cf39a5a24c136fb9ccd8d5619d0b08e9",
-    "/css/dashboard/main.css": "/css/dashboard/main.css?id=62d4bfd3f88d10ede581d985d8520fa5",
-    "/css/reset.css": "/css/reset.css?id=df9761d83a99dcc49eee87d39f55e098"
+    "/js/dashboard.js": "/js/dashboard.js?id=ace231240a1e7b9044e444dbdac0c11e",
+    "/js/manifest.js": "/js/manifest.js?id=4f93e2700744c3182da3dfd423beb0c3",
+    "/css/dashboard/main.css": "/css/dashboard/main.css?id=ec40e292dcee65e2e3aecde23786e913",
+    "/css/reset.css": "/css/reset.css?id=df9761d83a99dcc49eee87d39f55e098",
+    "/js/vendor.js": "/js/vendor.js?id=21e426992951832e04e14793297d556d"
 }

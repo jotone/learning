@@ -11,6 +11,8 @@
 </head>
 <body>
 <div id="app" class="h-full" data-page="{{ json_encode($page) }}"></div>
+<script src="/js/manifest.js"></script>
+<script src="/js/vendor.js"></script>
 <script src="/js/dashboard.js" defer></script>
 </body>
 </html>

@@ -94,21 +94,20 @@
 
 import ImageUpload from "../../Shared/Form/ImageUpload.vue";
 import InputText from "../../Shared/Form/InputText.vue";
-import Layout from "../../Shared/Layout.vue";
 import TextArea from "../../Shared/Form/TextArea.vue";
 import {FormMixin} from "../../Mixins/form-mixin";
 import {Timezone} from "../../../libs/timezone";
 import 'country-select-js/build/js/countrySelect'
 
 export default {
-  components: {ImageUpload, InputText, Layout, TextArea},
+  components: {ImageUpload, InputText, TextArea},
   data() {
     return {
       timezones: Timezone
     }
   },
-  name: "Users/Form",
   mixins: [FormMixin],
+  name: "Users/Form",
   mounted() {
     $('input[name="country"]').countrySelect({
       defaultCountry: [this.$attrs.model ?? $('html').attr('lang')],

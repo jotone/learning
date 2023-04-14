@@ -20,7 +20,7 @@
   position: fixed;
   right: 0;
   top: 0;
-  z-index: 2000;
+  z-index: 200;
 
   a.logo {
     background-image: url("/images/logo-dashboard.png");
@@ -61,12 +61,26 @@
   position: relative;
 
   .card-title {
+    align-items: center;
     color: $primary;
+    display: flex;
+    justify-content: space-between;
     font-size: 16px;
     font-weight: 500;
     line-height: 18px;
     margin-bottom: 20px;
     position: relative;
+  }
+
+  .card-title-link {
+    color: $blue;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    
+    .icon {
+      margin-right: 8px;
+    }
   }
 
   .card-text {
@@ -113,6 +127,19 @@
   }
 }
 
+a.remove {
+  background-color: $secondary;
+  display: inline-block;
+  height: 14px;
+  mask-image: url("/images/icons/trash.svg");
+  mask-position: 50%;
+  mask-repeat: no-repeat;
+  padding: 10px 20px;
+  width: 16px;
+
+  &:hover {background-color: $red}
+}
+
 .avatar-wrap {
   align-items: center;
   border-radius: 50%;
@@ -127,7 +154,12 @@
   width: 50px;
 }
 
+@media (max-width: 1240px) {
+  .col-1-3 {width: calc(50% - 10px)}
+}
+
 @media (max-width: 1024px) {
+
   .cut-form {max-width: 100%}
 }
 

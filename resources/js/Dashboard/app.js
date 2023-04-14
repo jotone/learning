@@ -1,8 +1,7 @@
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
-import { InertiaProgress } from "@inertiajs/progress"
 import axios from "axios";
-import jquery from 'jquery'
+import jquery from "jquery"
 
 window.$ = jquery
 window.$.axios = axios
@@ -14,9 +13,5 @@ createInertiaApp({
       .use(plugin)
       .mount(el)
   },
-})
-
-InertiaProgress.init({
-  color: '#005AFF'
 })
 

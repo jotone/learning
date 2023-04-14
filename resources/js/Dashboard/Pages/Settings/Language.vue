@@ -100,14 +100,14 @@
 </template>
 
 <script>
+
 import Confirmation from "../../Shared/Confirmation.vue";
-import Layout from "../../Shared/Layout.vue";
 import Method from "../../Shared/Form/Method.vue";
 import {FormMixin} from "../../Mixins/form-mixin";
 import {showNotification} from "../../../libs/notifications";
 
 export default {
-  components: {Confirmation, Method, Layout},
+  components: {Confirmation, Method},
   computed: {
     /**
      * Sorted list of available languages

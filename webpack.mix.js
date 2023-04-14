@@ -12,10 +12,14 @@ const {copyFile, exists, readFile, writeFile} = require('fs')
  */
 
 mix
-  .sass('resources/css/reset.scss', 'public/css')
-  .sass('resources/css/dashboard/main.scss', 'public/css/dashboard')
   .js('resources/js/Dashboard/app.js', 'public/js/dashboard.js')
   .vue()
+  .extract()
+  .disableNotifications()
+
+mix
+  .sass('resources/css/reset.scss', 'public/css')
+  .sass('resources/css/dashboard/main.scss', 'public/css/dashboard')
   .options({
     postCss: [
       require('postcss-discard-comments')({removeAll: true})
@@ -34,4 +38,4 @@ mix
 
 // Copying libs
 // JSColor
-exists('./public/js/jscolor.min.js', res => !res && mix.copy('node_modules/@eastdesire/jscolor/jscolor.min.js', 'public/js'));
+// exists('./public/js/jscolor.min.js', res => !res && mix.copy('node_modules/@eastdesire/jscolor/jscolor.min.js', 'public/js'));
