@@ -78,12 +78,16 @@ class SettingsController extends BasicAdminController
             request: $request,
             share: [
                 'routes'  => [
+                    'emails'   => [
+                        'create' => route('dashboard.settings.emails.create')
+                    ],
                     'settings' => [
                         'update' => route('api.settings.update')
                     ],
                     'social'   => [
                         'store'   => route('api.socials.store'),
                         'update'  => route('api.socials.update', 0),
+                        'sort'    => route('api.socials.sort'),
                         'destroy' => route('api.socials.destroy', 0)
                     ]
                 ],

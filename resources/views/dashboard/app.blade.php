@@ -14,5 +14,10 @@
 <script src="/js/manifest.js"></script>
 <script src="/js/vendor.js"></script>
 <script src="/js/dashboard.js" defer></script>
+@isset($page['props']['scripts'])
+  @foreach($page['props']['scripts'] as $script)
+    <script src="{{ $script }}"></script>
+  @endforeach
+@endisset
 </body>
 </html>

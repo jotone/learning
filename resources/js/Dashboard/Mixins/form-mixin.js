@@ -11,6 +11,10 @@ export const FormMixin = {
      * @param props
      */
     request(props) {
+      let headers = {
+        "content-type": "multipart/form-data",
+        "accept": "application/json"
+      }
       if (!props.hasOwnProperty('url')) {
         throw new RangeError('Request action method is not set')
       }
@@ -18,9 +22,13 @@ export const FormMixin = {
         props.method = 'get';
       }
 
+      if (props.hasOwnProperty('headers')) {
+        headers = Object.assign(headers, props.headers);
+      }
+
       $.axios.interceptors.request.use(config => {
-        if (props.hasOwnProperty('beforeRequest') && typeof props.beforeRequest === 'function') {
-          props.beforeRequest()
+        if (props.hasOwnProperty('beforeRequest') && (typeof props.beforeRequest === 'function' || null === props.beforeRequest)) {
+          null !== props.beforeRequest && props.beforeRequest()
         } else {
           $('.preloader').show()
         }
@@ -28,12 +36,7 @@ export const FormMixin = {
         return config;
       });
 
-      $.axios[props.method](props.url, props.data ?? [], {
-        headers: {
-          "content-type": "multipart/form-data",
-          "accept": "application/json"
-        }
-      })
+      $.axios[props.method](props.url, props.data ?? [], {headers: headers})
         .then(response => {
           $('.preloader').hide()
 

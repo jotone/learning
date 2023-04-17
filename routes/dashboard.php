@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\Dashboard\{DashboardController, RoleController, SettingsController, UserController};
+use App\Http\Controllers\Dashboard\{
+    DashboardController, EmailTemplatesController, RoleController, SettingsController, UserController
+};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('index');
@@ -20,8 +22,12 @@ Route::as('settings.')->group(function () {
     Route::get('/settings/login-page', [SettingsController::class, 'loginPage'])->name('login');
     Route::get('/settings/email', [SettingsController::class, 'email'])->name('email');
     Route::get('/settings/language', [SettingsController::class, 'language'])->name('language');
+
+    Route::as('emails.')->group(function () {
+        Route::get('/settings/emails', [EmailTemplatesController::class, 'create'])->name('create');
+    });
 });
 
 
-
+// TODO: put it onto the proper route list
 Route::get('/students', function ($id) {dd($id);})->name('student.edit');

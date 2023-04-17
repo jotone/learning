@@ -1,7 +1,11 @@
 <template>
   <nav class="content-submenu">
     <ul>
-      <li v-for="item in $page.props.topMenu" :class="{'active': isActive(item.route)}">
+      <li
+        v-for="item in $page.props.topMenu"
+        :class="{'active': isActive(item.route)}"
+        :data-name="item.name.toLowerCase().replace(/\s/, '-')"
+      >
         <Link :href="item.route">
           <span>{{ item.name }}</span>
         </Link>

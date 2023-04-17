@@ -15,9 +15,7 @@ class BasicAdminController extends Controller
     ];
 
     /**
-     * Default page render.
-     *   Adds to rendered vue component default variables: routes, admin side menu,
-     *   top menu, then merges them with shared
+     * Default list-page render. Adds to rendered vue component default filters variable
      *
      * @param string $template
      * @param Request $request
@@ -44,10 +42,27 @@ class BasicAdminController extends Controller
         );
     }
 
+    /**
+     * Default page render.
+     *   Adds to rendered vue component default variables: routes, admin side menu,
+     *   top menu, then merges them with shared
+     *
+     * @param string $template
+     * @param Request $request
+     * @param array $share
+     * @return Response
+     */
     protected function form(string $template, Request $request, array $share = []): Response
     {
-        $path_info = preg_replace('/(create|edit\/\d+)/', '', $request->getPathInfo());
-        $parent_menu = $this->getMenuParent(AdminMenu::firstWhere(['route' => rtrim($path_info, '/')]));
+        $path_info = rtrim(preg_replace('/(create|edit\/\d+)/', '', $request->getPathInfo()), '/');
+
+        // Check current item exist in the admin menu table
+        $admin_menu_item = AdminMenu::where(['route' => $path_info])->count();
+        if (!$admin_menu_item) {
+            // set parent item as current
+            $path_info = substr($path_info, 0, strrpos($path_info, '/'));
+        }
+        $parent_menu = $this->getMenuParent(AdminMenu::firstWhere(['route' => $path_info]));
 
         return Inertia::render($template, array_merge_recursive(
             [
