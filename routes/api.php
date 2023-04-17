@@ -24,6 +24,7 @@ Route::group(['as' => 'api.', 'middleware' => 'auth:sanctum'], function () {
     // Settings API
     Route::match(['patch', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
     // Social Media API
+    Route::patch('/socials', [SocialMediaLinksController::class, 'sort'])->name('socials.sort');
     Route::resource('/socials', SocialMediaLinksController::class)->only(['store', 'update', 'destroy']);
     // Language API
     Route::group(['as' => 'language.', 'prefix' => '/language'], function () {

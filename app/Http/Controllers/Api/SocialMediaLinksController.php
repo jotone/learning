@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BasicApiController;
 use App\Http\Requests\SocialMediaLink\SocialMediaLinkRequest;
+use App\Http\Requests\SocialMediaLink\SocialMediaSortRequest;
 use App\Models\SocialMediaLink;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class SocialMediaLinksController extends BasicApiController
 {
@@ -37,6 +39,23 @@ class SocialMediaLinksController extends BasicApiController
         $social->update($request->validated());
 
         return response()->json($social);
+    }
+
+    /**
+     * Set new positions to social media links
+     *
+     * @param SocialMediaSortRequest $request
+     * @return JsonResponse
+     */
+    public function sort(SocialMediaSortRequest $request): JsonResponse
+    {
+        $args = $request->validated();
+
+        foreach ($args['list'] as $position => $id) {
+            SocialMediaLink::where('id', $id)->update(['position' => $position]);
+        }
+
+        return response()->json(SocialMediaLink::orderBy('position')->get());
     }
 
     /**

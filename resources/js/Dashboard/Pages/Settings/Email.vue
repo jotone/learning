@@ -1,6 +1,11 @@
 <template>
   <Layout>
     <template v-slot:optionals>
+      <a class="btn" :href="$attrs.routes.emails.create">
+        <i class="icon plus-icon"></i>
+        <span>Create Template</span>
+      </a>
+
       <SaveButton form="email"/>
     </template>
 
@@ -131,11 +136,7 @@
               </div>
 
               <div class="form-group">
-                <ul class="drag-list">
-                  <template v-for="social in $attrs.social">
-                    <SocialMediaListItem :item="social"/>
-                  </template>
-                </ul>
+                <SocialMediaList :list="$attrs.social"/>
               </div>
 
               <div class="form-group">
@@ -205,11 +206,11 @@ import {FormMixin} from "../../Mixins/form-mixin";
 import InputText from "../../Shared/Form/InputText.vue";
 import Method from "../../Shared/Form/Method.vue";
 import InputColor from "../../Shared/Form/InputColor.vue";
-import SocialMediaListItem from "./Partials/SocialMediaListItem.vue";
+import SocialMediaList from "./Partials/SocialMediaList.vue";
 import 'select2/dist/js/select2.min'
 
 export default {
-  components: {SocialMediaListItem, InputColor, InputText, Method},
+  components: {InputColor, InputText, Method, SocialMediaList},
   computed: {
     /**
      * Default Select2 Options
@@ -226,7 +227,8 @@ export default {
   },
   data() {
     return {
-      allowRequest: true
+      allowRequest: true,
+      socialList: this.$attrs.social
     }
   },
   mixins: [FormMixin],

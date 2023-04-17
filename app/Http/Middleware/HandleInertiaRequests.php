@@ -43,7 +43,8 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => $request->user(),
+                'role' => $request->user()?->role?->slug,
+                'user' => $request->user()
             ],
             /*'ziggy' => function () use ($request) {
                 $ziggy_share = (new Ziggy)->toArray();

@@ -38,25 +38,25 @@
   - ~~Smtp settings~~
   - ~~Need help modal~~
   - ~~Email Global Settings~~
-  - Social Media Links
-    - ~~store~~
-    - ~~remove~~
-    - ~~update~~
-    - sort
+  - ~~Social Media Links~~
   - Templates
     - Create
+      - ~~CKE init~~
       - Form
       - Variables
-      - Preview
       - Store
+    - List
     - Edit
       - Form
       - Preview
       - Update
     - Remove (only superuser)
   - Welcome email (registration)
+    - Preview
   - Course Invitation
+    - Preview
   - Reset Password
+    - Preview
 - Create User
   - User form
   - User info
@@ -116,3 +116,4 @@
   - Send Course Invitation email when user finished his account activation
   - Send Course Invitation email after student update
   - /dashboard/users/create - add courses if role is "student"
+  - /dasboard/settins/emails - check superuser role for CKEDITOR "Source" button

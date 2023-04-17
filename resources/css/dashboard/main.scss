@@ -32,7 +32,9 @@
     width: 220px;
   }
 
-  .header-optionals .user-add-icon {background-color: $secondary}
+  .header-optionals {
+    a, button {margin-left: 10px}
+  }
 }
 
 .content-wrap {margin-top: 62px}
@@ -40,7 +42,7 @@
 .content {
   background-color: $background;
   margin-left: 80px;
-  min-height: 92vh;
+  min-height: 93vh;
   width: calc(100% - 80px);
 }
 
