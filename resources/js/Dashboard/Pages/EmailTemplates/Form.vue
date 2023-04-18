@@ -9,12 +9,13 @@
         <form
           class="row"
           id="template"
-          :action="$attrs.routes.email.store"
+          :action="$attrs.routes.email.form"
           data-save-message="Email template was successfully saved."
           data-success-callback="formSaved"
           method="POST"
           @submit.prevent="submit"
         >
+          <input name="_method" type="hidden" value="PUT" v-if="$attrs.hasOwnProperty('model')">
           <div class="col-1-2">
             <div class="card">
               <div class="card-title">
@@ -27,21 +28,23 @@
                 caption="Email Title"
                 name="title"
                 :required="true"
+                :value="$attrs?.model?.title"
               />
 
               <InputText
                 caption="Email Header"
                 name="subject"
+                :value="$attrs?.model?.subject"
               />
 
               <div class="form-group">
-                <textarea name="body" class="init-cke"></textarea>
+                <textarea name="body" class="init-cke">{{ $attrs?.model?.body }}</textarea>
               </div>
 
               <TextArea
                 caption="Text below action button"
                 name="footer_text"
-                placeholder=""
+                :value="$attrs?.model?.footer_text"
               />
             </div>
           </div>
@@ -66,35 +69,17 @@
                     <tbody>
                     <tr v-for="(variable, i) in variables" :data-pos="i">
                       <td>
-                        <a
-                          href="#"
-                          data-role="name"
-                          data-fancybox
-                          data-src="#variable"
-                          @click="variableEdit"
-                        >
+                        <a href="#" data-role="name" data-fancybox data-src="#variable" @click="variableEdit">
                           %{{ variable.name }}%
                         </a>
                       </td>
                       <td>
-                        <a
-                          href="#"
-                          data-role="entity"
-                          data-fancybox
-                          data-src="#variable"
-                          @click="variableEdit"
-                        >
+                        <a href="#" data-role="entity" data-fancybox data-src="#variable" @click="variableEdit">
                           {{ entities[variable.entity].name }}
                         </a>
                       </td>
                       <td>
-                        <a
-                          href="#"
-                          data-role="field"
-                          data-fancybox
-                          data-src="#variable"
-                          @click="variableEdit"
-                        >
+                        <a href="#" data-role="field" data-fancybox data-src="#variable" @click="variableEdit">
                           {{ entities[variable.entity].fields[variable.field] }}
                         </a>
                       </td>
@@ -210,7 +195,7 @@ export default {
         }
       },
       variablePosition: null,
-      variables: []
+      variables: this.$attrs.hasOwnProperty('model') ? this.parseModelVariables() : []
     }
   },
   methods: {
@@ -227,6 +212,17 @@ export default {
         CKEDITOR.instances.body.setData('')
         this.variables = []
       }
+    },
+    parseModelVariables() {
+      let result = []
+      for (let name in this.$attrs.model.variables) {
+        result.push({
+          name: name,
+          entity: this.$attrs.model.variables[name][0],
+          field: this.$attrs.model.variables[name][1]
+        })
+      }
+      return result;
     },
     /**
      * Reset variable form

@@ -182,14 +182,6 @@ class RoleApiTest extends ApiTestCase
      */
     public function testRoleDestroy(): void
     {
-        $model = $this->getRole();
-
-        $route = self::$route_prefix . 'destroy';
-        $this
-            ->actingAs(self::$actor)->assertModelExists($model)
-            ->deleteJson(route($route, $model->id))
-            ->assertNoContent();
-
-        $this->assertModelMissing($model);
+        $this->deleteTest($this->getRole());
     }
 }

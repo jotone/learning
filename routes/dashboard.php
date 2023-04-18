@@ -25,6 +25,7 @@ Route::as('settings.')->group(function () {
 
     Route::as('emails.')->group(function () {
         Route::get('/settings/emails', [EmailTemplatesController::class, 'create'])->name('create');
+        Route::get('/settings/emails/{template}', [EmailTemplatesController::class, 'edit'])->name('edit');
     });
 });
 

@@ -1,12 +1,12 @@
 <template>
   <div class="form-group">
     <label class="caption">
-      <span>{{ caption || '' }}</span>
+      <span>{{ caption }}</span>
       <textarea
         class="form-textarea"
         :name="name"
-        :placeholder="placeholder || caption + '...'"
-      >{{ value || '' }}</textarea>
+        :placeholder="placeholder"
+      >{{ value }}</textarea>
     </label>
   </div>
 </template>
@@ -14,6 +14,23 @@
 <script>
 export default {
   name: "TextArea",
-  props: ["caption", "name", "placeholder", "value"]
+  props: {
+    caption: {
+      type: String,
+      default: ''
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    placeholder: {
+      type: String,
+      default: ''
+    },
+    value: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>

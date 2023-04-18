@@ -38,10 +38,7 @@ class EmailTemplateStoreRequest extends DefaultRequest
             // The variables array is not associative
             $list = [];
             foreach ($variables as $variable) {
-                if (!isset($list[$variable['name']])) {
-                    $list[$variable['name']] = [];
-                }
-                $list[$variable['name']][$variable['entity']] = $variable['field'];
+                $list[$variable['name']] = [$variable['entity'], $variable['field']];
             }
         } else {
             // The variables array is assoc

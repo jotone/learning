@@ -118,4 +118,21 @@ class ApiTestCase extends TestCase
 
         return $this;
     }
+
+    /**
+     * Default routine for the API delete request test
+     *
+     * @param Model $model
+     * @return void
+     */
+    protected function deleteTest(Model $model): void
+    {
+        $route = self::$route_prefix . 'destroy';
+        $this
+            ->actingAs(self::$actor)->assertModelExists($model)
+            ->deleteJson(route($route, $model->id))
+            ->assertNoContent();
+
+        $this->assertModelMissing($model);
+    }
 }

@@ -41,12 +41,11 @@
   - ~~Social Media Links~~
   - Templates
     - ~~Create~~
-    - List
+    - ~~List~~
+    - ~~Remove~~
     - Edit
-      - Form
-      - Preview
+      - ~~Form~~
       - Update
-    - Remove (only superuser)
   - Welcome email (registration)
     - Preview
   - Course Invitation

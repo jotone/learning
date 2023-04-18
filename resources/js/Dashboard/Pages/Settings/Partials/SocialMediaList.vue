@@ -99,7 +99,6 @@ export default {
     socialRemove(e) {
       // document parent <a> object
       const url = $(e.target).closest('a').attr('href')
-      const id = parseInt(url.substring(url.lastIndexOf('/') + 1))
       // Sending request
       this.$parent.$parent.request({
         method: 'delete',
@@ -108,8 +107,9 @@ export default {
         onSuccess: response => {
           // If 204 No Content -> remove social list item
           if (204 === response.status) {
+            const id = parseInt(url.substring(url.lastIndexOf('/') + 1))
+            // If item id is equal to the list item id -> remove this list item
             for (let i in this.list) {
-              // If item id is equal to the list item id -> remove this list item
               this.list[i].id === id && this.list.splice(i, 1);
             }
           }

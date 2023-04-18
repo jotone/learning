@@ -59,6 +59,10 @@ class BasicAdminController extends Controller
         // Check current item exist in the admin menu table
         $admin_menu_item = AdminMenu::where(['route' => $path_info])->count();
         if (!$admin_menu_item) {
+            $str = explode('/', $path_info);
+            if (is_numeric($str[count($str) - 1])) {
+                $path_info = substr($path_info, 0, strrpos($path_info, '/'));
+            }
             // set parent item as current
             $path_info = substr($path_info, 0, strrpos($path_info, '/'));
         }

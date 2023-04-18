@@ -97,7 +97,14 @@ class SocialMediaApiTest extends ApiTestCase
         $this->assertDatabaseMissing($model->getTable(), $missing)->assertDatabaseHas($model->getTable(), $updated);
     }
 
-
+    /**
+     * Test SocialMediaLink remove
+     * @return void
+     */
+    public function testSocialMediaLinkDestroy(): void
+    {
+        $this->deleteTest($this->getModel());
+    }
 
     /**
      * @return Model
