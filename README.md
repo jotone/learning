@@ -40,11 +40,7 @@
   - ~~Email Global Settings~~
   - ~~Social Media Links~~
   - Templates
-    - Create
-      - ~~CKE init~~
-      - Form
-      - Variables
-      - Store
+    - ~~Create~~
     - List
     - Edit
       - Form
@@ -117,3 +113,4 @@
   - Send Course Invitation email after student update
   - /dashboard/users/create - add courses if role is "student"
   - /dasboard/settins/emails - check superuser role for CKEDITOR "Source" button
+    - remove, create email template can only superuser

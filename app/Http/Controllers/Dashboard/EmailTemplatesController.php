@@ -18,7 +18,7 @@ class EmailTemplatesController extends BasicAdminController
         return $this->form('EmailTemplates/Form', $request, [
             'routes' => [
                 'email' => [
-                    'store' => '#'
+                    'store' => route('api.email-templates.store')
                 ]
             ],
             'styles' => [

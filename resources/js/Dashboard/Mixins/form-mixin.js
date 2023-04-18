@@ -103,6 +103,13 @@ export const FormMixin = {
         })
       }
 
+      // Collect ckeditor instances
+      if (typeof CKEDITOR !== 'undefined') {
+        for (let inst in CKEDITOR.instances) {
+          formData.append(inst, CKEDITOR.instances[inst].getData())
+        }
+      }
+
       return formData;
     },
     /**

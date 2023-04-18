@@ -9,7 +9,7 @@ use App\Models\SocialMediaLink;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class SocialMediaLinksController extends BasicApiController
+class SocialMediaLinkController extends BasicApiController
 {
     /**
      * Create Social Media Link
