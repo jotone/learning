@@ -35,8 +35,8 @@ class EmailTemplateModelTest extends ModelTestCase
 
         $this->modelModifyingTest(
             values: [
-                'title' => $model->title,
-                'slug'  => $model->slug
+                'name' => $model->name,
+                'slug' => $model->slug
             ]
         );
     }

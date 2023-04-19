@@ -94,7 +94,7 @@ class SettingsController extends BasicAdminController
                 ],
                 'content'   => Settings::whereIn('section', ['smtp-settings', 'email-settings'])->get()->keyBy('key'),
                 'social'    => SocialMediaLink::orderBy('position')->get(),
-                'templates' => EmailTemplate::select('id', 'title')->orderBy('created_at', 'desc')->get()
+                'templates' => EmailTemplate::select('id', 'name')->orderBy('created_at', 'desc')->get()
             ]
         );
     }

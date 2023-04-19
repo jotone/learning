@@ -15,7 +15,7 @@ class EmailTemplate extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title',
+        'name',
         'slug',
         'subject',
         'body',

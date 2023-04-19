@@ -26,9 +26,9 @@
 
               <InputText
                 caption="Email Title"
-                name="title"
+                name="name"
                 :required="true"
-                :value="$attrs?.model?.title"
+                :value="$attrs?.model?.name"
               />
 
               <InputText
@@ -169,7 +169,7 @@ export default {
         course: {
           name: "Course",
           fields: {
-            title: "Name",
+            name: "Name",
             url: "Link",
             img_url: "Image",
             fb_link: "Facebook URL",

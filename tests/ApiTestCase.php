@@ -120,12 +120,59 @@ class ApiTestCase extends TestCase
     }
 
     /**
+     * Default routine for the API store request test
+     *
+     * @param array $fields
+     * @return void
+     */
+    protected function runStoreTest(array $fields): void
+    {
+        $model = self::$class::factory()->make();
+        $table = $model->getTable();
+        $values = [];
+        foreach ($fields as $field) {
+            $values[$field] = $model->{$field};
+        }
+
+        $response = $this
+            ->actingAs(self::$actor)
+            ->postJson(route(self::$route_prefix . 'store'), $values)
+            ->assertJsonFragment($values)->assertCreated();
+
+        $content = json_decode($response->content());
+        $values['id'] = $content->id;
+        $this->assertDatabaseHas($table, $values);
+    }
+
+    protected function runUpdateTest(Model $model, array $fields): void
+    {
+        $new = self::$class::factory()->make();
+
+        $missing = array_intersect_key($model->toArray(), array_flip(['id', ...$fields]));
+
+        $update = [];
+        foreach ($fields as $key) {
+            $update[$key] = $new->$key;
+        }
+
+        $updated = ['id' => $model->id, ...$update];
+
+        $this
+            ->actingAs(self::$actor)
+            ->putJson(route(self::$route_prefix . 'update', $model->id), $update)
+            ->assertJsonFragment($updated)
+            ->assertOk();
+
+        $this->assertDatabaseMissing($model->getTable(), $missing)->assertDatabaseHas($model->getTable(), $updated);
+    }
+
+    /**
      * Default routine for the API delete request test
      *
      * @param Model $model
      * @return void
      */
-    protected function deleteTest(Model $model): void
+    protected function runDeleteTest(Model $model): void
     {
         $route = self::$route_prefix . 'destroy';
         $this

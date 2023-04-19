@@ -28,7 +28,7 @@ class EmailTemplateApiTest extends ApiTestCase
             [
                 'send'   => [],
                 'assert' => [
-                    'title' => [lang('validation.required', 'title')],
+                    'name' => [lang('validation.required', 'name')],
                     'slug'  => [lang('validation.required', 'slug')]
                 ]
             ],
@@ -49,23 +49,16 @@ class EmailTemplateApiTest extends ApiTestCase
      */
     public function testEmailTemplateStore(): void
     {
-        $model = EmailTemplate::factory()->make();
+        $this->runStoreTest(['name', 'slug']);
+    }
 
-        $table = $model->getTable();
-
-        $values = [
-            'title' => $model->title,
-            'slug'  => $model->slug,
-        ];
-
-        $response = $this
-            ->actingAs(self::$actor)
-            ->postJson(route(self::$route_prefix . 'store'), $values)
-            ->assertJsonFragment($values)->assertCreated();
-
-        $content = json_decode($response->content());
-        $values['id'] = $content->id;
-        $this->assertDatabaseHas($table, $values);
+    /**
+     * Test EmailTemplate update
+     * @return void
+     */
+    public function testEmailTemplateUpdate(): void
+    {
+        $this->runUpdateTest($this->getModel(), ['name', 'slug']);
     }
 
     /**
@@ -74,7 +67,7 @@ class EmailTemplateApiTest extends ApiTestCase
      */
     public function testEmailTemplateDestroy(): void
     {
-        $this->deleteTest($this->getModel());
+        $this->runDeleteTest($this->getModel());
     }
 
     /**

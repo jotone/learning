@@ -39,13 +39,7 @@
   - ~~Need help modal~~
   - ~~Email Global Settings~~
   - ~~Social Media Links~~
-  - Templates
-    - ~~Create~~
-    - ~~List~~
-    - ~~Remove~~
-    - Edit
-      - ~~Form~~
-      - Update
+  - ~~Templates~~
   - Welcome email (registration)
     - Preview
   - Course Invitation

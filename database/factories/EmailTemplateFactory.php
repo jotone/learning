@@ -24,10 +24,10 @@ class EmailTemplateFactory extends Factory
      */
     public function definition(): array
     {
-        $title = 'Email of the ' . fake()->company;
+        $name = 'Email of the ' . fake()->company;
         return [
-            'title'     => $title,
-            'slug'      => generateUrl($title),
+            'name'      => $name,
+            'slug'      => generateUrl($name),
             'subject'   => 'Hello there, %username%',
             'body'      => fake()->text(),
             'variables' => ['%username%' => ['user' => 'full_name']]

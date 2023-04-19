@@ -14,7 +14,7 @@ class EmailTemplateStoreRequest extends DefaultRequest
     public function rules(): array
     {
         return [
-            'title'       => ['required', 'string'],
+            'name'        => ['required', 'string'],
             'slug'        => ['required', 'string', 'alpha_dash'],
             'subject'     => ['nullable', 'string'],
             'body'        => ['nullable', 'string'],
@@ -29,6 +29,17 @@ class EmailTemplateStoreRequest extends DefaultRequest
      * @return void
      */
     protected function prepareForValidation(): void
+    {
+        $this->merge([
+            // Create slug value from title if it does not exist
+            'slug'      => $this->request->has('slug')
+                ? $this->request->get('slug')
+                : generateUrl($this->request->get('name')),
+            'variables' => $this->variables()
+        ]);
+    }
+
+    protected function variables(): array
     {
         // Convert variables table
         $variables = json_decode($this->request->get('variables', '[]'), !0);
@@ -45,12 +56,6 @@ class EmailTemplateStoreRequest extends DefaultRequest
             $list = $variables;
         }
 
-        $this->merge([
-            // Create slug value from title if if does not exist
-            'slug'      => $this->request->has('slug')
-                ? $this->request->get('slug')
-                : generateUrl($this->request->get('title')),
-            'variables' => $list
-        ]);
+        return $list;
     }
 }

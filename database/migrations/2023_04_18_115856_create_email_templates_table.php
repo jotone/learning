@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('email_templates', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->string('title');
+            $table->string('name');
             $table->string('slug');
             $table->string('subject')->nullable();
             $table->longText('body')->nullable();
