@@ -34,23 +34,14 @@
 - ~~Login Settings page~~
 - ~~Login page~~
 - ~~Sanctum middleware~~
-- Email
-  - ~~Smtp settings~~
-  - ~~Need help modal~~
-  - ~~Email Global Settings~~
-  - ~~Social Media Links~~
-  - ~~Templates~~
-  - Welcome email (registration)
-    - Preview
-  - Course Invitation
-    - Preview
-  - Reset Password
-    - Preview
+- ~~Email~~
 - Create User
   - User form
   - User info
   - Store
   - Registration email
+    - Welcome email (registration)
+    - Preview on email page
   - Thumbs
 - Edit User
   - User form
@@ -58,8 +49,11 @@
 - Remove User
 - Forgot password
   - Reset password
+    - Reset Password request
+    - Reset Password email
+    - Preview on email page
   - Confirm password
-- Create role
+- Create **role**
 - Edit role
 - Remove role
 - Separate dashboard middleware
@@ -107,3 +101,4 @@
   - /dashboard/users/create - add courses if role is "student"
   - /dasboard/settins/emails - check superuser role for CKEDITOR "Source" button
     - remove, create email template can only superuser
+  - Course Invitation email & Preview
