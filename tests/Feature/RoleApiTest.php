@@ -126,24 +126,7 @@ class RoleApiTest extends ApiTestCase
      */
     public function testRoleStore(): void
     {
-        $model = Role::factory()->make();
-
-        $table = $model->getTable();
-
-        $values = [
-            'name'  => $model->name,
-            'slug'  => $model->slug,
-            'level' => $model->level,
-        ];
-
-        $response = $this
-            ->actingAs(self::$actor)
-            ->postJson(route(self::$route_prefix . 'store'), $values)
-            ->assertJsonFragment($values)->assertCreated();
-
-        $content = json_decode($response->content());
-        $values['id'] = $content->id;
-        $this->assertDatabaseHas($table, $values);
+        $this->runStoreTest(['name', 'slug', 'level']);
     }
 
     /**
@@ -152,28 +135,7 @@ class RoleApiTest extends ApiTestCase
      */
     public function testRoleUpdate(): void
     {
-        $new = Role::factory()->make();
-
-        $fields = ['name', 'level'];
-
-        $model = $this->getRole();
-
-        $missing = array_intersect_key($model->toArray(), array_flip(['id', ...$fields]));
-
-        $update = [];
-        foreach ($fields as $key) {
-            $update[$key] = $new->$key;
-        }
-
-        $updated = ['id' => $model->id, ...$update];
-
-        $this
-            ->actingAs(self::$actor)
-            ->putJson(route(self::$route_prefix . 'update', $model->id), $update)
-            ->assertJsonFragment($updated)
-            ->assertOk();
-
-        $this->assertDatabaseMissing($model->getTable(), $missing)->assertDatabaseHas($model->getTable(), $updated);
+        $this->runUpdateTest($this->getRole(), ['name', 'level']);
     }
 
     /**
@@ -182,14 +144,6 @@ class RoleApiTest extends ApiTestCase
      */
     public function testRoleDestroy(): void
     {
-        $model = $this->getRole();
-
-        $route = self::$route_prefix . 'destroy';
-        $this
-            ->actingAs(self::$actor)->assertModelExists($model)
-            ->deleteJson(route($route, $model->id))
-            ->assertNoContent();
-
-        $this->assertModelMissing($model);
+        $this->runDeleteTest($this->getRole());
     }
 }

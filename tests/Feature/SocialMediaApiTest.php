@@ -48,23 +48,7 @@ class SocialMediaApiTest extends ApiTestCase
      */
     public function testSocialMediaStore(): void
     {
-        $model = SocialMediaLink::factory()->make();
-
-        $table = $model->getTable();
-
-        $values = [
-            'type' => $model->type,
-            'url'  => $model->url,
-        ];
-
-        $response = $this
-            ->actingAs(self::$actor)
-            ->postJson(route(self::$route_prefix . 'store'), $values)
-            ->assertJsonFragment($values)->assertCreated();
-
-        $content = json_decode($response->content());
-        $values['id'] = $content->id;
-        $this->assertDatabaseHas($table, $values);
+        $this->runStoreTest(['type', 'url']);
     }
 
     /**
@@ -73,31 +57,17 @@ class SocialMediaApiTest extends ApiTestCase
      */
     public function testSocialMediaUpdate(): void
     {
-        $new = SocialMediaLink::factory()->make();
-
-        $fields = ['type', 'url'];
-
-        $model = $this->getModel();
-
-        $missing = array_intersect_key($model->toArray(), array_flip(['id', ...$fields]));
-
-        $update = [];
-        foreach ($fields as $key) {
-            $update[$key] = $new->$key;
-        }
-
-        $updated = ['id' => $model->id, ...$update];
-
-        $this
-            ->actingAs(self::$actor)
-            ->putJson(route(self::$route_prefix . 'update', $model->id), $update)
-            ->assertJsonFragment($updated)
-            ->assertOk();
-
-        $this->assertDatabaseMissing($model->getTable(), $missing)->assertDatabaseHas($model->getTable(), $updated);
+        $this->runUpdateTest($this->getModel(), ['type', 'url']);
     }
 
-
+    /**
+     * Test SocialMediaLink remove
+     * @return void
+     */
+    public function testSocialMediaLinkDestroy(): void
+    {
+        $this->runDeleteTest($this->getModel());
+    }
 
     /**
      * @return Model

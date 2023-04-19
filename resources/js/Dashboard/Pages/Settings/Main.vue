@@ -58,7 +58,7 @@
           <div class="col-1-2">
             <div class="card">
               <div class="form-group-wide">
-                <label class="card-title">
+                <label class="card-title-left">
                   <input
                     class="form-checkbox"
                     type="checkbox"

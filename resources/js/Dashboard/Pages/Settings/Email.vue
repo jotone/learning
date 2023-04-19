@@ -150,6 +150,8 @@
               <div class="card-title">
                 Templates List
               </div>
+
+              <EmailTemplateList :list="$attrs.templates"/>
             </div>
           </div>
         </div>
@@ -207,10 +209,11 @@ import InputText from "../../Shared/Form/InputText.vue";
 import Method from "../../Shared/Form/Method.vue";
 import InputColor from "../../Shared/Form/InputColor.vue";
 import SocialMediaList from "./Partials/SocialMediaList.vue";
+import EmailTemplateList from "./Partials/EmailTemplateList.vue";
 import 'select2/dist/js/select2.min'
 
 export default {
-  components: {InputColor, InputText, Method, SocialMediaList},
+  components: {EmailTemplateList, InputColor, InputText, Method, SocialMediaList},
   computed: {
     /**
      * Default Select2 Options

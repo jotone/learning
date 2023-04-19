@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BasicAdminController;
+use App\Models\EmailTemplate;
 use App\Models\Settings;
 use App\Models\SocialMediaLink;
 use Illuminate\Http\Request;
@@ -35,9 +36,7 @@ class SettingsController extends BasicAdminController
                     'custom-scripts',
                     'site-info',
                     'main-colors'
-                ])
-                    ->get()
-                    ->keyBy('key'),
+                ])->get()->keyBy('key'),
                 'overrideCss' => file_exists($override_path) ? file_get_contents($override_path) : ''
             ]
         );
@@ -77,9 +76,11 @@ class SettingsController extends BasicAdminController
             template: 'Settings/Email',
             request: $request,
             share: [
-                'routes'  => [
+                'routes'    => [
                     'emails'   => [
-                        'create' => route('dashboard.settings.emails.create')
+                        'create'  => route('dashboard.settings.emails.create'),
+                        'edit'    => route('dashboard.settings.emails.edit', 0),
+                        'destroy' => route('api.email-templates.destroy', 0)
                     ],
                     'settings' => [
                         'update' => route('api.settings.update')
@@ -91,8 +92,9 @@ class SettingsController extends BasicAdminController
                         'destroy' => route('api.socials.destroy', 0)
                     ]
                 ],
-                'content' => Settings::whereIn('section', ['smtp-settings', 'email-settings'])->get()->keyBy('key'),
-                'social'  => SocialMediaLink::orderBy('position')->get()
+                'content'   => Settings::whereIn('section', ['smtp-settings', 'email-settings'])->get()->keyBy('key'),
+                'social'    => SocialMediaLink::orderBy('position')->get(),
+                'templates' => EmailTemplate::select('id', 'name')->orderBy('created_at', 'desc')->get()
             ]
         );
     }

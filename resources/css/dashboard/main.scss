@@ -62,7 +62,7 @@
   padding: 15px 20px 0 20px;
   position: relative;
 
-  .card-title {
+  .card-title, .card-title-left {
     align-items: center;
     color: $primary;
     display: flex;
@@ -73,6 +73,8 @@
     margin-bottom: 20px;
     position: relative;
   }
+
+  .card-title-left {justify-content: flex-start}
 
   .card-title-link {
     color: $blue;
