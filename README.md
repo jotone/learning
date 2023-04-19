@@ -35,10 +35,12 @@
 - ~~Login page~~
 - ~~Sanctum middleware~~
 - ~~Email~~
+  - ~~SMTP~~
+  - ~~Email Settings~~
+  - ~~Templates~~
 - Create User
-  - User form
-  - User info
-  - Store
+  - ~~User form~~
+  - ~~Store~~
   - Registration email
     - Welcome email (registration)
     - Preview on email page
@@ -99,6 +101,7 @@
   - Send Course Invitation email when user finished his account activation
   - Send Course Invitation email after student update
   - /dashboard/users/create - add courses if role is "student"
-  - /dasboard/settins/emails - check superuser role for CKEDITOR "Source" button
+  - /dashboard/settings/emails - check superuser role for CKEDITOR "Source" button
     - remove, create email template can only superuser
   - Course Invitation email & Preview
+  - Check coaches and admins has avatars when the communities are allowed

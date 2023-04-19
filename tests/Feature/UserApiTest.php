@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Str;
 use App\Models\{Role, User};
 use Illuminate\Support\Arr;
 use Tests\ApiTestCase;
@@ -58,6 +59,94 @@ class UserApiTest extends ApiTestCase
             'first_name',
             'last_name',
             'email'
+        ]);
+    }
+
+    /**
+     * User store request validation test
+     *
+     * @return void
+     */
+    public function testUserStoreValidation(): void
+    {
+        $cases = [
+            // Send empty request body
+            [
+                'send'   => [],
+                'assert' => [
+                    'first_name'   => [lang('validation.required', 'first name')],
+                    'email'        => [lang('validation.required', 'email')],
+                    'password'     => [lang('validation.required', 'password')],
+                    'confirmation' => [lang('validation.required', 'confirmation')],
+                ],
+            ],
+            // Send already taken email
+            [
+                'send'   => [
+                    'first_name'   => $this->faker->firstName,
+                    'last_name'    => $this->faker->lastName,
+                    'email'        => User::orderBy('id', 'desc')->value('email'),
+                    'password'     => 'password',
+                    'confirmation' => 'password'
+                ],
+                'assert' => [
+                    'email' => [lang('validation.unique', 'email')]
+                ]
+            ],
+            // Send unconfirmed password
+            [
+                'send'   => [
+                    'first_name'   => $this->faker->firstName,
+                    'last_name'    => $this->faker->lastName,
+                    'email'        => $this->faker->email,
+                    'password'     => 'password',
+                    'confirmation' => Str::random()
+                ],
+                'assert' => [
+                    'confirmation' => [lang('validation.same', 'confirmation', 'password')]
+                ]
+            ]
+        ];
+        foreach ($cases as $case) {
+            $this
+                ->actingAs(self::$actor)
+                ->postJson(route(self::$route_prefix . 'store'), $case['send'])
+                ->assertJson(['errors' => $case['assert']])
+                ->assertUnprocessable();
+        }
+    }
+
+    /**
+     * Test User store
+     *
+     * @return void
+     */
+    public function testUserStore(): void
+    {
+        $model = self::$class::factory()->make();
+        $table = $model->getTable();
+        $values = [
+            'first_name'   => $model->first_name,
+            'last_name'    => $model->last_name,
+            'email'        => $model->email,
+            'password'     => 'password',
+            'confirmation' => 'password'
+        ];
+        $response = $this
+            ->actingAs(self::$actor)
+            ->postJson(route(self::$route_prefix . 'store'), $values)
+            ->assertJsonFragment([
+                'first_name' => $model->first_name,
+                'last_name'  => $model->last_name,
+                'email'      => $model->email,
+            ])->assertCreated();
+
+        $content = json_decode($response->content());
+        $this->assertDatabaseHas($table, [
+            'id'         => $content->id,
+            'first_name' => $model->first_name,
+            'last_name'  => $model->last_name,
+            'email'      => $model->email,
         ]);
     }
 }

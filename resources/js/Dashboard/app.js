@@ -15,3 +15,9 @@ createInertiaApp({
   },
 })
 
+Object.defineProperty(String.prototype, 'ucfirst', {
+  value: function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+  },
+  enumerable: false
+});

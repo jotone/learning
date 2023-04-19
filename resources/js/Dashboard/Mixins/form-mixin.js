@@ -110,6 +110,22 @@ export const FormMixin = {
         }
       }
 
+      // Collect intl tel phone data
+      if (typeof window.intlTelInputGlobals !== 'undefined') {
+        let stopIter = false, i = 0;
+        while (!stopIter) {
+          if (typeof window.intlTelInputGlobals.instances[i] !== 'object') {
+            stopIter = true
+          } else {
+            const obj = $(window.intlTelInputGlobals.instances[i].a);
+            const dialCode = '+' + window.intlTelInputGlobals.instances[i].s.dialCode;
+            // Override phone number
+            formData.set(obj.attr('name'), obj.val().startsWith(dialCode) ? obj.val() : dialCode + obj.val())
+            i++
+          }
+        }
+      }
+
       return formData;
     },
     /**

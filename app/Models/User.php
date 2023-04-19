@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ThumbnailsGenerationTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany, HasOne};
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,7 +12,14 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, ThumbnailsGenerationTrait;
+
+    /**
+     * Image thumbs settings key
+     *
+     * @var string
+     */
+    protected string $thumbnail_setup = 'user_img_processing';
 
     /**
      * The attributes that are mass assignable.
@@ -74,7 +82,7 @@ class User extends Authenticatable
      *
      * @param $value
      */
-    public function setEmailAttribute($value)
+    public function setEmailAttribute($value): void
     {
         $this->attributes['email'] = mb_strtolower($value);
     }
@@ -84,7 +92,7 @@ class User extends Authenticatable
      *
      * @param string $value
      */
-    public function setPasswordAttribute(string $value)
+    public function setPasswordAttribute(string $value): void
     {
         $this->attributes['password'] = bcrypt($value);
     }

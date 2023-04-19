@@ -70,15 +70,18 @@ class BasicAdminController extends Controller
 
         return Inertia::render($template, array_merge_recursive(
             [
+                // Side menu
                 'menu'    => AdminMenu::select(['name', 'route', 'img', 'is_top'])
                     ->whereNull('parent_id')
                     ->orderBy('position')
                     ->get()
                     ->map(function ($model) {
+                        // Set image to menu item
                         $image = public_path('images/icons/' . $model->img . '.svg');
                         $model->img = file_exists($image) ? file_get_contents($image) : null;
                         return $model;
                     }),
+                // Default routes
                 'routes'  => [
                     'auth'      => [
                         'logout' => route('auth.logout')
@@ -87,7 +90,9 @@ class BasicAdminController extends Controller
                         'index' => route('dashboard.index', [], false)
                     ]
                 ],
-                'settings' => Settings::where('section', 'hidden')->get()->pluck('value', 'key')->toArray(),
+                // Default site settings
+                'settings' => Settings::where('section', 'hidden')->pluck('value', 'key')->toArray(),
+                // Top menu
                 'topMenu' => AdminMenu::select(['name', 'route'])
                     ->where('parent_id', $parent_menu->id)
                     ->orderBy('position')

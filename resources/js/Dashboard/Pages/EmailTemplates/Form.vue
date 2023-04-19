@@ -115,6 +115,7 @@
             :required="true"
             :style="'min-width: 420px'"
           />
+
           <div class="form-group">
             <label class="caption">
               <span>Variable Entity</span>
@@ -125,17 +126,9 @@
               </select>
             </label>
           </div>
-          <div class="form-group">
-            <label class="caption">
-              <span>Variable Entity Field</span>
 
-              <select name="var_field" class="form-select">
-                <option v-for="(field, type) in entities[chosenEntity].fields" :value="type">
-                  {{ field }}
-                </option>
-              </select>
-            </label>
-          </div>
+          <Selector caption="Variable Entity Field" name="var_field" :options="entities[chosenEntity].fields"/>
+
           <div class="form-group">
             <button class="btn blue" type="submit">
               Save
@@ -152,10 +145,11 @@ import {Fancybox} from "@fancyapps/ui";
 import {FormMixin} from "../../Mixins/form-mixin";
 import ContentTableHead from "../../Shared/CotentTable/ContentTableHead.vue";
 import InputText from "../../Shared/Form/InputText.vue";
+import Selector from "../../Shared/Form/Selector.vue";
 import TextArea from "../../Shared/Form/TextArea.vue";
 
 export default {
-  components: {ContentTableHead, InputText, TextArea},
+  components: {ContentTableHead, InputText, Selector, TextArea},
   data() {
     return {
       chosenEntity: 'date',

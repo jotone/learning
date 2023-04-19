@@ -25,10 +25,9 @@ class FileHelper
      * OSave $file to $path directory
      * @param UploadedFile $file
      * @param string $path
-     * @param string|null $settings_key
      * @return string
      */
-    public static function saveFile(UploadedFile $file, string $path, ?string $settings_key = null): string
+    public static function saveFile(UploadedFile $file, string $path): string
     {
         $path = FileHelper::createFolder(public_path($path));
         $filename = $file->getClientOriginalName();
