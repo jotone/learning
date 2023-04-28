@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BasicAdminController;
-use App\Models\Role;
+use App\Models\{Role, Settings};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
@@ -45,21 +45,22 @@ class UserController extends BasicAdminController
      */
     public function create(Request $request): Response
     {
-        return $this->view(
+        return $this->form(
             template: 'Users/Form',
             request: $request,
             share: [
-                'routes' => [
+                'enums'    => config('enums')['user'],
+                'routes'   => [
                     'users' => [
-                        'store' => route('api.users.store')
+                        'form' => route('api.users.store')
                     ]
                 ],
-                'roles'  => Role::where('level', '>=', Auth::user()->role->level)
+                'roles'    => Role::where('level', '>=', Auth::user()->role->level)
                     ->orderBy('level')
                     ->get()
-                    ->pluck('name', 'id')
-            ],
-            prevent_filters: true
+                    ->pluck('name', 'id'),
+                'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray()
+            ]
         );
     }
 }

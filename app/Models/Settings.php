@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Settings extends Model
@@ -32,16 +33,18 @@ class Settings extends Model
      *
      * @return mixed
      */
-    public function getValAttribute(): mixed
+    protected function val(): Attribute
     {
-        return match ($this->attributes['data_type']) {
-            'boolean' => (bool)(int)$this->attributes['value'],
-            'array' => json_decode($this->attributes['value']),
-            'timestamp' => !empty($this->attributes['value'])
-                ? Carbon::createFromFormat('Y-m-d H:i:s', $this->attributes['value'])
-                : null,
-            default => $this->attributes['value'],
-        };
+        return Attribute::make(
+            get: fn(mixed $value, array $attributes) => match ($attributes['data_type']) {
+                'boolean'   => (bool)(int)$attributes['value'],
+                'array'     => json_decode($attributes['value']),
+                'timestamp' => !empty($attributes['value'])
+                    ? Carbon::createFromFormat('Y-m-d H:i:s', $attributes['value'])
+                    : null,
+                default => $attributes['value'],
+            }
+        );
     }
 
     /**

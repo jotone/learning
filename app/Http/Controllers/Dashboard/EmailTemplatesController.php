@@ -17,16 +17,20 @@ class EmailTemplatesController extends BasicAdminController
      */
     public function create(Request $request): Response
     {
-        return $this->form('EmailTemplates/Form', $request, [
-            'routes'  => [
-                'email' => [
-                    'form' => route('api.email-templates.store'),
+        return $this->form(
+            template: 'EmailTemplates/Form',
+            request: $request,
+            share: [
+                'routes'  => [
+                    'email' => [
+                        'form' => route('api.email-templates.store'),
+                    ]
+                ],
+                'scripts' => [
+                    '/js/ckeditor/ckeditor.js',
                 ]
-            ],
-            'scripts' => [
-                '/js/ckeditor/ckeditor.js',
             ]
-        ]);
+        );
     }
 
     /**
@@ -38,16 +42,20 @@ class EmailTemplatesController extends BasicAdminController
      */
     public function edit(EmailTemplate $template, Request $request): Response
     {
-        return $this->form('EmailTemplates/Form', $request, [
-            'routes'  => [
-                'email' => [
-                    'form' => route('api.email-templates.update', $template->id)
+        return $this->form(
+            template: 'EmailTemplates/Form',
+            request: $request,
+            share: [
+                'model'   => $template,
+                'routes'  => [
+                    'email' => [
+                        'form' => route('api.email-templates.update', $template->id)
+                    ]
+                ],
+                'scripts' => [
+                    '/js/ckeditor/ckeditor.js',
                 ]
-            ],
-            'model'   => $template,
-            'scripts' => [
-                '/js/ckeditor/ckeditor.js',
             ]
-        ]);
+        );
     }
 }

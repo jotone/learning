@@ -4,13 +4,13 @@
 /public/css/login.css
 /public/css/override.css
 /public/favicon
-/public/images
 !/public/images/icons
 !/public/images/social-media
 !/public/images/vendor
 !/public/images/logo-dashboard.png
 !/public/images/logo-dashboard-mobile.png
 !/public/images/preloader.svg
+/public/images
 /storage/*.key
 /vendor
 .env

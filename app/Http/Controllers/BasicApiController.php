@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use Illuminate\Database\Eloquent\{Builder, Model};
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,8 +38,7 @@ class BasicApiController extends Controller
                 // Cut rows
                 case 'row':
                     $temp = explode("\n", $model->$field);
-                    $model->$field = implode("\n", count($temp) > $options[1] ? array_slice($temp, 0, $options[1])
-                        : $temp);
+                    $model->$field = implode("\n", count($temp) > $options[1] ? array_slice($temp, 0, $options[1]) : $temp);
                     $model->$field .= count($temp) > $options[1] ? '...' : '';
                     break;
                 // Cut words

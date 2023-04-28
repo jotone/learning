@@ -92,11 +92,9 @@ import {FormMixin} from "../../Mixins/form-mixin";
 
 export default {
   components: {ButtonSettings, ImageUpload, InputColor, Method},
-  data() {
-    return {
-      messages: {
-        saved: 'Login page settings were successfully saved.'
-      }
+  methods: {
+    saveMessage() {
+      return 'Login page settings were successfully saved.'
     }
   },
   mixins: [FormMixin],

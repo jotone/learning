@@ -47,7 +47,7 @@ export const FormMixin = {
           if (!props.hasOwnProperty('preventNotification')) {
             showNotification({
               type: 'success',
-              text: [props.msg || this.messages.saved]
+              text: [props.msg || this.saveMessage(response)]
             })
           }
         })
@@ -107,6 +107,22 @@ export const FormMixin = {
       if (typeof CKEDITOR !== 'undefined') {
         for (let inst in CKEDITOR.instances) {
           formData.append(inst, CKEDITOR.instances[inst].getData())
+        }
+      }
+
+      // Collect intl tel phone data
+      if (typeof window.intlTelInputGlobals !== 'undefined') {
+        let stopIter = false, i = 0;
+        while (!stopIter) {
+          if (typeof window.intlTelInputGlobals.instances[i] !== 'object') {
+            stopIter = true
+          } else {
+            const obj = $(window.intlTelInputGlobals.instances[i].a);
+            const dialCode = '+' + window.intlTelInputGlobals.instances[i].s.dialCode;
+            // Override phone number
+            formData.set(obj.attr('name'), obj.val().startsWith(dialCode) ? obj.val() : dialCode + obj.val())
+            i++
+          }
         }
       }
 

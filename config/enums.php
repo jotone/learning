@@ -7,9 +7,9 @@ return [
             'Small',
             'Medium',
             'Large',
-            'X-Large',
-            'XX-Large',
-            'XXX-Large'
+            'XL-Large',
+            'XXL-Large',
+            'XXXL-Large'
         ],
         'statuses' => [
             'active',

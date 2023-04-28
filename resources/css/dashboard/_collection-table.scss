@@ -121,9 +121,23 @@
       }
     }
 
-    td {padding: 13px 25px}
+    td {padding: 13px 25px;vertical-align: middle}
 
     a {color: $primary; text-decoration: none}
+
+    a.img-container {
+      display: block;
+      height: 100%;
+      max-width: 150px;
+      text-align: center;
+      width: 100%;
+
+      img {
+        max-height: 100px;
+        object-fit: contain;
+        width: 100%;
+      }
+    }
 
     tr:hover a {color: $blue}
   }

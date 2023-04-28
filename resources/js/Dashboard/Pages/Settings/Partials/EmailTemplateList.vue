@@ -4,13 +4,13 @@
       <table>
         <thead>
         <tr>
-          <th><span>Title</span></th>
+          <th><span>Name</span></th>
           <th><span>Actions</span></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="template in list">
-          <td><a :href="editLink(template.id)">{{ template.title }}</a></td>
+          <td><a :href="editLink(template.id)">{{ template.name }}</a></td>
           <td>
             <a
               class="remove"
