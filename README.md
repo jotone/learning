@@ -43,6 +43,8 @@
   - User form
   - Update user
 - Remove User
+  - ~~Remove~~
+  - Check if self remove & role level
 - Forgot password
   - Reset password
     - Reset Password request
