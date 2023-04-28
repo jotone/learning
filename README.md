@@ -39,6 +39,7 @@
   - ~~Email Settings~~
   - ~~Templates~~
 - ~~Create User~~
+- User API store test
 - Edit User
   - User form
   - Update user
