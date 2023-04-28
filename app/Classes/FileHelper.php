@@ -64,22 +64,24 @@ class FileHelper
      */
     public static function recursiveRemove(string $path): void
     {
-        if (is_file($path)) {
-            unlink($path);
-        } else {
-            $files = new DirectoryIterator($path);
+        if (file_exists($path)) {
+            if (is_file($path)) {
+                unlink($path);
+            } else {
+                $files = new DirectoryIterator($path);
 
-            foreach ($files as $file) {
-                if (!$file->isDot()) {
-                    if ($file->isDir()) {
-                        self::recursiveRemove($file->getPathname());
-                    } else {
-                        unlink($file->getPathname());
+                foreach ($files as $file) {
+                    if (!$file->isDot()) {
+                        if ($file->isDir()) {
+                            self::recursiveRemove($file->getPathname());
+                        } else {
+                            unlink($file->getPathname());
+                        }
                     }
                 }
-            }
 
-            rmdir($path);
+                rmdir($path);
+            }
         }
     }
 }

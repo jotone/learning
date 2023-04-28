@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Registration email",
+    "slug": "registration-email",
+    "subject": "Welcome to the %course_name%",
+    "variables": {"course_name": ["course", "name"], "user_full_name": ["user", "full_name"]},
+    "body": "<p>%user_full_name%, we are super excited that you decided to join our program.</p>",
+    "footer_text": "Once you activate your account, you'll be able to log in to the %course_name% with your new account."
+  }
+]

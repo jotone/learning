@@ -47,7 +47,7 @@ export const FormMixin = {
           if (!props.hasOwnProperty('preventNotification')) {
             showNotification({
               type: 'success',
-              text: [props.msg || this.messages.saved]
+              text: [props.msg || this.saveMessage(response)]
             })
           }
         })

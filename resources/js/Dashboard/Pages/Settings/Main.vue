@@ -177,9 +177,6 @@ export default {
     return {
       customDomainEnabled: this.$attrs.content.site_custom_url.value.length > 0,
       customDomainSet: this.$attrs.content.site_custom_url.value.length > 0,
-      messages: {
-        saved: 'Settings were successfully saved.'
-      },
       timezones: Timezone
     }
   },
@@ -188,6 +185,9 @@ export default {
   methods: {
     enableCustomDomain(e) {
       this.customDomainEnabled = $(e.target).closest('input[type="checkbox"]').prop('checked')
+    },
+    saveMessage() {
+      return 'Settings were successfully saved.'
     },
     setCustomDomain(e) {
       const value = $(e.target).closest('input').val().trim()

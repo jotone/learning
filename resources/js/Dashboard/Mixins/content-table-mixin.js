@@ -1,4 +1,5 @@
 import ContentTableHead from "../Shared/CotentTable/ContentTableHead.vue";
+import Confirmation from "../Shared/Confirmation.vue";
 import Layout from "../Shared/Layout.vue";
 import Pagination from "../Shared/CotentTable/Pagination.vue";
 import SearchForm from "../Shared/CotentTable/SearchForm.vue";
@@ -6,7 +7,7 @@ import {Link} from "@inertiajs/vue3";
 import {XHRErrorHandle} from "../../libs/notifications";
 
 export const ContentTableMixin = {
-  components: {ContentTableHead, Layout, Link, Pagination, SearchForm},
+  components: {ContentTableHead, Confirmation, Layout, Link, Pagination, SearchForm},
   data() {
     return {
       collection: [],

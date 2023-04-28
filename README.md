@@ -38,13 +38,7 @@
   - ~~SMTP~~
   - ~~Email Settings~~
   - ~~Templates~~
-- Create User
-  - ~~User form~~
-  - ~~Store~~
-  - Registration email
-    - Welcome email (registration)
-    - Preview on email page
-  - Thumbs
+- ~~Create User~~
 - Edit User
   - User form
   - Update user
@@ -103,5 +97,10 @@
   - /dashboard/users/create - add courses if role is "student"
   - /dashboard/settings/emails - check superuser role for CKEDITOR "Source" button
     - remove, create email template can only superuser
+  - Registration email
+    - Apply variables (Course, Date)
+    - Welcome email (registration)
+    - Preview on email page
+    - Activation URL
   - Course Invitation email & Preview
   - Check coaches and admins has avatars when the communities are allowed

@@ -125,6 +125,13 @@ export default {
       timezones: Timezone
     }
   },
+  methods: {
+    saveMessage(response) {
+      return 201 === response.status
+        ? `User "${response.data.email}" was successfully created.`
+        : `User "${response.data.email}" was successfully modified.`
+    }
+  },
   mixins: [FormMixin],
   name: "Users/Form",
   mounted() {

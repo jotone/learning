@@ -6,6 +6,7 @@ use App\Classes\FileHelper;
 use App\Http\Controllers\BasicApiController;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Resources\UserResource;
+use App\Jobs\SendRegistrationEmail;
 use App\Models\{Role, User, UserInfo};
 use Illuminate\Http\{JsonResponse, Request, UploadedFile};
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -79,10 +80,12 @@ class UserController extends BasicApiController
                 $user->save();
             }
 
+            SendRegistrationEmail::dispatch($user);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e->getMessage());
+            dd($e->getMessage(), $e->getTrace());
         }
 
         return response()->json($user, 201);
@@ -93,9 +96,17 @@ class UserController extends BasicApiController
 
     }
 
-    public function destroy()
+    /**
+     * Remove User
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function destroy(User $user): JsonResponse
     {
+        $user->delete();
 
+        return response()->json([], 204);
     }
 
     /**

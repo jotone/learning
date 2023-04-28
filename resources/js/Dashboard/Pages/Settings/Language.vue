@@ -159,8 +159,7 @@ export default {
       } else {
         const confirm = this.$refs.confirmation.open()
 
-        confirm.then(() => {
-          this.request({
+        confirm.then(res => res && this.request({
             method: 'delete',
             url: btn.data('url').replace(/0$/, lang.short),
             msg: `Language package "${lang.short}" was successfully removed.`,
@@ -169,7 +168,7 @@ export default {
               this.$page.props.installed = this.$page.props.installed.filter(e => e !== lang.short)
             }
           })
-        })
+        )
       }
     },
     /**

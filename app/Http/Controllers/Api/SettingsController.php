@@ -33,7 +33,7 @@ class SettingsController extends BasicApiController
         'login_form_bg_color',
         'login_form_text_color',
         'login_logo_bg_color',
-        'logo_img_url',
+        'logo_img',
         'main_language',
         'menu_colors',
         'override_css',

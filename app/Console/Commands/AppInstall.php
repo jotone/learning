@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\{Role, Settings, User};
+use App\Models\{EmailTemplate, Role, Settings, User};
 use App\Traits\{CommandsTrait, LanguageHelper, SettingsTrait};
 use Illuminate\Console\Command;
 
@@ -34,11 +34,12 @@ class AppInstall extends Command
         $install_path = base_path('app/Console/Commands/InstallationData/');
 
         $files = [
-            'admin_menu' => null,
-            'lang_en'    => null,
-            'lang_de'    => null,
-            'roles'      => null,
-            'settings'   => null,
+            'admin_menu'      => null,
+            'email_templates' => null,
+            'lang_en'         => null,
+            'lang_de'         => null,
+            'roles'           => null,
+            'settings'        => null,
         ];
 
         foreach ($files as $file => $data) {
@@ -74,6 +75,12 @@ class AppInstall extends Command
                 ]);
         });
 
+        $this->runWithTimer('Creating email templates', function () use ($files) {
+            foreach ($files['email_templates'] as $template) {
+                EmailTemplate::create($template);
+            }
+        });
+
         $this->runWithTimer('Installing settings', function () use ($files) {
             foreach ($files['settings'] as $section => $settings) {
                 foreach ($settings as $setting) {
@@ -81,10 +88,10 @@ class AppInstall extends Command
                         $setting['value'] = now();
                     }
                     Settings::create([
-                        'key'      => $setting['key'],
-                        'value'    => $setting['value'],
-                        'section'  => $section,
-                        'about'    => $setting['about'] ?? '',
+                        'key'     => $setting['key'],
+                        'value'   => $setting['value'],
+                        'section' => $section,
+                        'about'   => $setting['about'] ?? '',
                     ]);
                 }
             }
@@ -95,8 +102,8 @@ class AppInstall extends Command
         });
 
         // Generate login css
-        $this->runWithTimer('Generating css files', fn () => $this->generateLoginCSS());
+        $this->runWithTimer('Generating css files', fn() => $this->generateLoginCSS());
 
-        $this->runWithTimer('Creating dashboard side menu', fn () => $this->installAdminMenu($files));
+        $this->runWithTimer('Creating dashboard side menu', fn() => $this->installAdminMenu($files));
     }
 }

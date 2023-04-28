@@ -5,9 +5,7 @@
         <i class="icon times-icon"></i>
       </div>
       <div class="popup-content">
-        <div class="question-text">
-          {{ text }}
-        </div>
+        <div class="question-text" v-html="text"></div>
       </div>
       <div class="buttons-wrap">
         <button name="apply" type="button" class="btn" :class="okBtnClass">{{ okText }}</button>
@@ -71,7 +69,7 @@ export default {
       return new Promise(resolve => {
         overlay
           .on('click', 'button[name="apply"]', () => this.handler(resolve, true))
-          .on('click', 'button[name="cancel"]', () => this.handler(resolve, true))
+          .on('click', 'button[name="cancel"]', () => this.handler(resolve, false))
       })
     }
   }

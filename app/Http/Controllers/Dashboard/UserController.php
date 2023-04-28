@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BasicAdminController;
-use App\Models\Role;
-use App\Models\Settings;
+use App\Models\{Role, Settings};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;

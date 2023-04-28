@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Classes\FileHelper;
 use App\Traits\ThumbnailsGenerationTrait;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany, HasOne};
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -15,11 +16,14 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, ThumbnailsGenerationTrait;
 
     /**
-     * Image thumbs settings key
+     * Thumb images settings
      *
-     * @var string
+     * @var array
      */
-    protected string $thumbnail_setup = 'user_img_processing';
+    protected array $thumbnail = [
+        'folder' => '/images/users/',
+        'key'    => 'user_img_processing'
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -57,44 +61,61 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'activated_at' => 'datetime',
-        'last_activity' => 'datetime',
+        'activated_at'      => 'datetime',
+        'last_activity'     => 'datetime',
     ];
 
     /**
-     * @return string
+     * Get the user's first name.
      */
-    public function getFirstNameAttribute(): string
+    protected function firstName(): Attribute
     {
-        return Str::ucfirst(mb_strtolower($this->attributes['first_name']));
+        return Attribute::make(get: fn(string $value) => mb_convert_case($value, MB_CASE_TITLE));
     }
 
     /**
-     * @return string
+     * Get the user's last name.
      */
-    public function getLastNameAttribute(): string
+    protected function lastName(): Attribute
     {
-        return Str::ucfirst(mb_strtolower($this->attributes['last_name']));
+        return Attribute::make(get: fn(?string $value) => empty($value) ? '' : mb_convert_case($value, MB_CASE_TITLE));
     }
 
     /**
-     * Set email value
+     * Get user's full name
      *
-     * @param $value
+     * @return Attribute
      */
-    public function setEmailAttribute($value): void
+    protected function fullName(): Attribute
     {
-        $this->attributes['email'] = mb_strtolower($value);
+        return Attribute::make(
+            get: fn(?string $value, array $attributes) => mb_convert_case(
+                $attributes['first_name'] . ' ' . $attributes['last_name'], MB_CASE_TITLE
+            )
+        );
+    }
+
+    /**
+     * Get or Set email value
+     *
+     * @return Attribute
+     */
+    protected function email(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => mb_strtolower($value),
+            set: fn(string $value) => mb_strtolower($value)
+        );
     }
 
     /**
      * Set password value
      *
-     * @param string $value
+     * @return Attribute
      */
-    public function setPasswordAttribute(string $value): void
+    protected function password(): Attribute
     {
-        $this->attributes['password'] = bcrypt($value);
+        return Attribute::make(set: fn(string $value) => bcrypt($value));
     }
 
     /**
@@ -129,8 +150,10 @@ class User extends Authenticatable
 
     /**
      * Extend model behavior
+     *
+     * @return void
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -139,6 +162,8 @@ class User extends Authenticatable
             $model->info()->delete();
             // Remove login history
             $model->loginHistory()->each(fn($entity) => $entity->delete());
+            // Remove user files
+            FileHelper::recursiveRemove(public_path('images/users/' . $model->id));
         });
     }
 }
