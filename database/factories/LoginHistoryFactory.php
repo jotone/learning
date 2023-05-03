@@ -29,8 +29,8 @@ class LoginHistoryFactory extends Factory
     {
         $user = $this->generateUser();
         return [
-            'user_id' => $user->id,
-            'ip' => fake()->ipv4,
+            'user_id'    => $user->id,
+            'ip'         => fake()->ipv4,
             'user_agent' => fake()->userAgent
         ];
     }

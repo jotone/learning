@@ -26,8 +26,8 @@ class RoleFactory extends Factory
     {
         $name = fake()->jobTitle;
         return [
-            'name' => $name,
-            'slug' => generateUrl($name),
+            'name'  => $name,
+            'slug'  => generateUrl($name),
             'level' => mt_rand(128, 200)
         ];
     }

@@ -29,15 +29,15 @@ class UserInfoFactory extends Factory
         $user = User::factory()->create();
 
         return [
-            'user_id' => $user->id,
-            'timezone' => fake()->timezone,
-            'country' => fake()->country,
-            'city' => fake()->city,
-            'state_region' => fake()->word,
-            'address' => fake()->address,
-            'extended_address' => fake()->buildingNumber,
-            'zip' => fake()->postcode,
-            'phone' => fake()->e164PhoneNumber,
+            'user_id'    => $user->id,
+            'timezone'   => fake()->timezone,
+            'country'    => fake()->country,
+            'city'       => fake()->city,
+            'region'     => fake()->word,
+            'address'    => fake()->address,
+            'ext_addr'   => fake()->buildingNumber,
+            'zip'        => fake()->postcode,
+            'phone'      => fake()->e164PhoneNumber,
             'shirt_size' => $size
         ];
     }

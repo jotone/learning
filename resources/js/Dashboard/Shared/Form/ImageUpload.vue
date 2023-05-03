@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <label class="caption">
-      <span>{{ getCaption }}</span>
+      <span>{{ caption }}</span>
       <input
         type="file"
         style="display: none"
@@ -13,14 +13,14 @@
       <span class="form-image-upload">
         <i class="image-holder" v-if="empty"></i>
         <span class="image-preview" v-if="!empty">
-          <img :src="imgSrc" alt="" v-if="!isSvg">
+          <img :src="value || imgSrc" alt="" v-if="!isSvg">
           <span v-if="isSvg" v-html="imgSrc"></span>
         </span>
         <span class="image-text">
           Drag your image here, or <span> choose an<br> image file on your computer </span> to upload
         </span>
         <span class="image-info">
-          Your image should be in {{ getFormats() }} format and <br> smaller than {{ getSize }}.<br>
+          Your image should be in {{ getFormats() }} format and <br> smaller than {{ size }}.<br>
           The recommended image size should be greater than {{ getDimensions }} pixels.
         </span>
       </span>
@@ -31,11 +31,36 @@
 <script>
 export default {
   name: "ImageUpload",
-  props: ["caption", "dimensions", "formats", "name", "size"],
+  props: {
+    caption: {
+      type: String,
+      default: ''
+    },
+    dimensions: {
+      type: Array,
+      default: () => null
+    },
+    formats: {
+      type: [String, Array],
+      default: () => null
+    },
+    name: {
+      type: String,
+      default: ''
+    },
+    size: {
+      type: String,
+      default: '300KB'
+    },
+    value: {
+      type: String,
+      default: () => null
+    }
+  },
   data() {
     return {
       accept: '', // accept attribute
-      empty: true, // image is not uploaded marker
+      empty: !this.value, // image is not uploaded marker
       imgSrc: '', // image value (src attribute or svg tag)
       isSvg: false, // image is SVG marker
       mimes: {  // allowed mime-types
@@ -52,26 +77,12 @@ export default {
   },
   computed: {
     /**
-     * Set Caption
-     * @returns {*|string}
-     */
-    getCaption() {
-      return this.caption || ''
-    },
-    /**
      * Set dimensions
      * @returns {string}
      */
     getDimensions() {
-      const dimensions = this.dimensions ?? [380, 144]
+      const dimensions = this.dimensions || [380, 144]
       return dimensions.join(' x ')
-    },
-    /**
-     * Set image size
-     * @returns {*|string}
-     */
-    getSize() {
-      return this.size || '300KB'
     }
   },
   methods: {
@@ -93,12 +104,12 @@ export default {
       // Check if formats are an array
       if (Array.isArray(formats)) {
         // Prepare accept attribute for file input
-        let accept= []
+        let accept = []
         for (let i = 0, n = formats.length; i < n; i++) {
           // The given file format is unknown
           let unknownFormat = true;
           for (let k in this.mimes) {
-            if(this.mimes[k].indexOf(formats[i]) >= 0) {
+            if (this.mimes[k].indexOf(formats[i]) >= 0) {
               // Fill accept array with the file mime-type
               accept.push(k)
               // Remove unknown format marker

@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Classes\FileHelper;
 use App\Http\Controllers\BasicApiController;
 use App\Http\Requests\User\UserStoreRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Jobs\SendRegistrationEmail;
+use Illuminate\Support\Facades\Validator;
 use App\Models\{Role, User, UserInfo};
 use Illuminate\Http\{JsonResponse, Request, UploadedFile};
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -75,10 +77,9 @@ class UserController extends BasicApiController
             // User Info entity
             UserInfo::create($this->buildUserInfo($user, $args));
             // Save user's image
-            if (!empty($args['img_url']) && $args['img_url'] instanceof UploadedFile) {
-                $user->img_url = FileHelper::saveFile($args['img_url'], 'images/users/' . $user->id);
-                $user->save();
-            }
+            $user->img_url = $this->saveImage($user->id, $args);
+
+            $user->save();
 
             SendRegistrationEmail::dispatch($user);
 
@@ -91,9 +92,54 @@ class UserController extends BasicApiController
         return response()->json($user, 201);
     }
 
-    public function update()
+    /**
+     * Update user
+     *
+     * @param User $user
+     * @param UserUpdateRequest $request
+     * @return JsonResponse
+     */
+    public function update(User $user, UserUpdateRequest $request): JsonResponse
     {
+        $args = $request->validated();
+        // UserInfo Entity
+        $info = $user->info;
 
+        foreach ($args as $key => $val) {
+            if (in_array($key, ['about', 'email', 'first_name', 'last_name', 'role_id', 'status'])) {
+                // Update user entity fields
+                $user->$key = $val;
+            } elseif (in_array($key, [
+                'address',
+                'city',
+                'country',
+                'ext_addr',
+                'phone',
+                'shirt_size',
+                'region',
+                'timezone',
+                'zip'
+            ])) {
+                // Update user info fields
+                $info->$key = $val;
+            } elseif ($key === 'img_url') {
+                // Store user image
+                $user->$key = $this->saveImage($user->id, $args);
+            } elseif ($key === 'password' && !empty($val)) {
+                $user->$key = $val;
+            }
+        }
+
+        // Update user's entity
+        if ($user->isDirty()) {
+            $user->save();
+        }
+        // Update user info
+        if (!empty($info) && $info->isDirty()) {
+            $info->save();
+        }
+
+        return response()->json(User::with('info')->find($user->id));
     }
 
     /**
@@ -157,16 +203,30 @@ class UserController extends BasicApiController
     protected function buildUserInfo(User $user, array $args): array
     {
         return [
-            'user_id'          => $user->id,
-            'timezone'         => $args['timezone'] ?? null,
-            'country'          => $args['country'] ?? null,
-            'state_region'     => $args['state_region'] ?? null,
-            'city'             => $args['city'] ?? null,
-            'address'          => $args['address'] ?? null,
-            'extended_address' => $args['extended_address'] ?? null,
-            'zip'              => $args['zip'] ?? null,
-            'phone'            => $args['phone'] ?? null,
-            'shirt_size'       => $args['shirt_size'] ?? null
+            'user_id'    => $user->id,
+            'timezone'   => $args['timezone'] ?? null,
+            'country'    => $args['country'] ?? null,
+            'region'     => $args['region'] ?? null,
+            'city'       => $args['city'] ?? null,
+            'address'    => $args['address'] ?? null,
+            'ext_addr'   => $args['ext_addr'] ?? null,
+            'zip'        => $args['zip'] ?? null,
+            'phone'      => $args['phone'] ?? null,
+            'shirt_size' => $args['shirt_size'] ?? null
         ];
+    }
+
+    /**
+     * Set avatar image to user's entity
+     *
+     * @param int $id
+     * @param array $args
+     * @return string
+     */
+    protected function saveImage(int $id, array $args): string
+    {
+        return !empty($args['img_url']) && $args['img_url'] instanceof UploadedFile
+            ? FileHelper::saveFile($args['img_url'], 'images/users/' . $id)
+            : ($args['img_url'] ?? '');
     }
 }
