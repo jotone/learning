@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BasicAdminController;
-use App\Models\{Role, Settings};
+use Illuminate\Support\Facades\Session;
+use App\Models\{Role, Settings, User};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
@@ -53,6 +54,35 @@ class UserController extends BasicAdminController
                 'routes'   => [
                     'users' => [
                         'form' => route('api.users.store')
+                    ]
+                ],
+                'roles'    => Role::where('level', '>=', Auth::user()->role->level)
+                    ->orderBy('level')
+                    ->get()
+                    ->pluck('name', 'id'),
+                'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray()
+            ]
+        );
+    }
+
+    /**
+     * User edit page
+     *
+     * @param User $user
+     * @param Request $request
+     * @return Response
+     */
+    public function edit(User $user, Request $request): Response
+    {
+        return $this->form(
+            template: 'Users/Form',
+            request: $request,
+            share: [
+                'enums'    => config('enums')['user'],
+                'model'    => $user,
+                'routes'   => [
+                    'users' => [
+                        'form' => route('api.users.update', $user->id)
                     ]
                 ],
                 'roles'    => Role::where('level', '>=', Auth::user()->role->level)

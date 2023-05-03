@@ -16,10 +16,10 @@ return new class extends Migration
             $table->unsignedInteger('user_id')->index();
             $table->string('timezone')->nullable();
             $table->string('country', 127)->nullable();
-            $table->string('state_region')->nullable();
+            $table->string('region')->nullable();
             $table->string('city')->nullable();
             $table->string('address')->nullable();
-            $table->string('extended_address')->nullable();
+            $table->string('ext_addr')->nullable();
             $table->string('zip', 31)->nullable();
             $table->string('phone', 31)->nullable();
             $table->unsignedSmallInteger('shirt_size')->nullable();

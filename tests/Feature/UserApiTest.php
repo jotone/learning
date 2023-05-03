@@ -149,4 +149,13 @@ class UserApiTest extends ApiTestCase
             'email'      => $model->email,
         ]);
     }
+
+    /**
+     * Test User update
+     * @return void
+     */
+    public function testUserUpdate(): void
+    {
+        $this->runUpdateTest($this->getUser(), ['first_name', 'last_name', 'email']);
+    }
 }

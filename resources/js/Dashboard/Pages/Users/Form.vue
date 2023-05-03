@@ -11,6 +11,7 @@
         method="POST"
         @submit.prevent="submit"
       >
+        <input name="_method" type="hidden" value="PUT" v-if="$attrs.hasOwnProperty('model')">
         <div class="row">
           <div class="col-1-2">
             <div class="card">
@@ -29,7 +30,7 @@
 
               <TextArea caption="Short bio" name="about" :value="$attrs?.model?.about"/>
 
-              <ImageUpload caption="Profile Image" name="img_url" :dimensions="[200, 200]"/>
+              <ImageUpload caption="Profile Image" name="img_url" :dimensions="[200, 200]" :value="$attrs?.model?.img_url"/>
             </div>
           </div>
 
@@ -64,13 +65,13 @@
 
                 <InputText caption="Country" name="country" :value="$attrs?.model?.country"/>
 
-                <InputText caption="State / Region" name="state_region" :value="$attrs?.model?.country"/>
+                <InputText caption="State / Region" name="region" :value="$attrs?.model?.region"/>
 
                 <InputText caption="City" name="city" :value="$attrs?.model?.city"/>
 
                 <InputText caption="Address" name="address" :value="$attrs?.model?.address"/>
 
-                <InputText caption="Extended address" name="extended_address" :value="$attrs?.model?.extended_address"/>
+                <InputText caption="Extended address" name="ext_addr" :value="$attrs?.model?.extended_address"/>
 
                 <InputText caption="Zip" name="zip" :value="$attrs?.model?.zip"/>
               </template>

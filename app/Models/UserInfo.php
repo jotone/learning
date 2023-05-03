@@ -34,15 +34,15 @@ class UserInfo extends Model
         'timezone',
         'country',
         'city',
-        'state_region',
+        'region',
         'address',
-        'extended_address',
+        'ext_addr',
         'zip',
         'phone',
         'shirt_size',
         'signature',
         'signature_ip',
-        'signature_date',
+        'signature_date'
     ];
 
     /**

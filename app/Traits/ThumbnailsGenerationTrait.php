@@ -53,7 +53,7 @@ trait ThumbnailsGenerationTrait
         // Save image
         $this->attributes['img_url'] = $value;
         // Check if settings setup key exists
-        if (isset($this->thumbnail) && isset($this->attributes['id'])) {
+        if (isset($this->thumbnail) && isset($this->attributes['id']) && !str_starts_with('http', $value)) {
             // Get thumbnails settings
             $settings = Settings::where('key', $this->thumbnail['key'])->first();
             // Get user's thumbnails folder
