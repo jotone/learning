@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BasicAdminController;
-use Illuminate\Support\Facades\Session;
 use App\Models\{Role, Settings, User};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

@@ -151,11 +151,59 @@ class UserApiTest extends ApiTestCase
     }
 
     /**
+     * Test user with the lower role level cannot update user with the greater role level
+     *
+     * @return void
+     */
+    public function testLowerLevelRoleUserUpdate()
+    {
+        $this->actingAs($this->getUser())
+            ->putJson(route(self::$route_prefix . 'update', self::$actor->id), [
+                'first_name' => Str::random()
+            ])
+            ->assertForbidden();
+    }
+
+    /**
      * Test User update
+     *
      * @return void
      */
     public function testUserUpdate(): void
     {
         $this->runUpdateTest($this->getUser(), ['first_name', 'last_name', 'email']);
+    }
+
+    /**
+     * Test user with the lower role level cannot remove user with the greater role level
+     *
+     * @return void
+     */
+    public function testLowerLevelRoleUserRemove()
+    {
+        $this->actingAs($this->getUser())
+            ->deleteJson(route(self::$route_prefix . 'destroy', self::$actor->id))
+            ->assertForbidden();
+    }
+
+    /**
+     * Test user cannot remove himself
+     *
+     * @return void
+     */
+    public function testUserSelfRemove()
+    {
+        $this->actingAs(self::$actor)
+            ->deleteJson(route(self::$route_prefix . 'destroy', self::$actor->id))
+            ->assertForbidden();
+    }
+
+    /**
+     * Test User remove
+     * @return void
+     */
+    public function testUserDestroy(): void
+    {
+        $this->runDeleteTest($this->getUser());
     }
 }

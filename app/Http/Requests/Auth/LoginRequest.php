@@ -42,15 +42,13 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         $user = User::firstWhere('email', $this->get('email'));
-        $login_failed = false;
 
-        if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (!Auth::attempt($this->only(['email', 'password']), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             if ($user) {
                 $this->createLoginHistoryRecord($user->id, true);
                 $this->increaseUserSuspicionLevel($user->id);
-                $login_failed = true;
             }
 
             throw ValidationException::withMessages([

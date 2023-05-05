@@ -39,7 +39,9 @@ class ApiTestCase extends TestCase
     {
         parent::setUp();
 
-        self::$actor = User::leftJoin('roles', 'users.role_id', '=', 'roles.id')->firstWhere('roles.slug', 'superuser');
+        self::$actor = User::select('users.*')
+            ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
+            ->firstWhere('roles.slug', 'superuser');
     }
 
 
@@ -87,6 +89,8 @@ class ApiTestCase extends TestCase
 
         // Compare db query and api request
         $this->assertEmpty(array_diff($query, collect($content->data)->pluck('id')->toArray()));
+
+        $callback($content, $models);
 
         return $this;
     }
@@ -144,6 +148,13 @@ class ApiTestCase extends TestCase
         $this->assertDatabaseHas($table, $values);
     }
 
+    /**
+     * Default routine for the API update request test
+     *
+     * @param Model $model
+     * @param array $fields
+     * @return void
+     */
     protected function runUpdateTest(Model $model, array $fields): void
     {
         $new = self::$class::factory()->make();
@@ -155,15 +166,15 @@ class ApiTestCase extends TestCase
             $update[$key] = $new->$key;
         }
 
-        $updated = ['id' => $model->id, ...$update];
+        $modified = ['id' => $model->id, ...$update];
 
         $this
             ->actingAs(self::$actor)
             ->putJson(route(self::$route_prefix . 'update', $model->id), $update)
-            ->assertJsonFragment($updated)
+            ->assertJsonFragment($modified)
             ->assertOk();
 
-        $this->assertDatabaseMissing($model->getTable(), $missing)->assertDatabaseHas($model->getTable(), $updated);
+        $this->assertDatabaseMissing($model->getTable(), $missing)->assertDatabaseHas($model->getTable(), $modified);
     }
 
     /**
