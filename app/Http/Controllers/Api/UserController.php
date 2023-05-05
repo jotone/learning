@@ -8,7 +8,7 @@ use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Jobs\SendRegistrationEmail;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use App\Models\{Role, User, UserInfo};
 use Illuminate\Http\{JsonResponse, Request, UploadedFile};
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -101,6 +101,10 @@ class UserController extends BasicApiController
      */
     public function update(User $user, UserUpdateRequest $request): JsonResponse
     {
+        // Check the user's role gives allowance to update another user
+        if (Auth::id() !== $user->id && Auth::user()->role->level > $user->role->level) {
+            return response()->json([], 403);
+        }
         $args = $request->validated();
         // UserInfo Entity
         $info = $user->info;
@@ -150,6 +154,11 @@ class UserController extends BasicApiController
      */
     public function destroy(User $user): JsonResponse
     {
+        // User cannot remove himself. Check user is allowed to remove another
+        if (Auth::id() === $user->id || Auth::user()->role->level > $user->role->level) {
+            return response()->json([], 403);
+        }
+        // Remove user
         $user->delete();
 
         return response()->json([], 204);

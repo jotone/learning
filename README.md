@@ -65,9 +65,7 @@ npm i && npm run prod
   - ~~Templates~~
 - ~~Create User~~
 - ~~Edit User~~
-- Remove User
-  - ~~Remove~~
-  - Check if self remove & role level
+- ~~Remove User~~
 - Forgot password
   - Reset password
     - Reset Password request
