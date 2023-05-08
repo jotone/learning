@@ -61,7 +61,9 @@
 
 .form-switch.active {display: block}
 
-.form-input, .form-submit {margin-bottom: 20px}
+.form-input, .form-submit, .form-text {margin-bottom: 20px}
+
+.form-text p {color: {{ $settings['login_form_text_color']->val }}}
 
 .form-input label {
   color: {{ $settings['login_form_text_color']->val }};
@@ -119,7 +121,7 @@
 .form-errors {list-style: none}
 
 .form-errors li {
-  color: #d6e0ff;
+  color: #c5cbdd;
   font-size: 14px;
   margin: 10px 0
 }

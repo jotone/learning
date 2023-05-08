@@ -7,18 +7,18 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailables\{Content, Envelope};
 use Illuminate\Queue\SerializesModels;
 
-class RegistrationEmail extends AbstractMailable
+class ForgotPasswordEmail extends AbstractMailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(protected User $user)
+    public function __construct(protected User $user, protected string $token)
     {
         parent::__construct();
 
-        $this->template = EmailTemplate::firstWhere('slug', 'registration-email');
+        $this->template = EmailTemplate::firstWhere('slug', 'reset-password');
     }
 
     /**
@@ -27,29 +27,27 @@ class RegistrationEmail extends AbstractMailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Registration Email',
+            subject: 'Forgot Password Email',
         );
     }
 
     /**
      * Get the message content definition.
-     *
-     * @return Content
      */
     public function content(): Content
     {
         return new Content(
-            view: 'email.registration',
+            view: 'email.forgot-password',
             with: [
-                'activation_url' => '#',
-                'content'        => $this->applyVariables([
+                'reset_url'    => route('reset.index', $this->token),
+                'content'      => $this->applyVariables([
                     'body'        => $this->template->body,
                     'footer_text' => $this->template->footer_text,
                     'subject'     => $this->template->subject
                 ]),
-                'settings'       => $this->settings,
-                'social_links'   => SocialMediaLink::select(['type', 'url'])->orderBy('position')->get(),
-                'variables'      => $this->template->variables
+                'settings'     => $this->settings,
+                'social_links' => SocialMediaLink::select(['type', 'url'])->orderBy('position')->get(),
+                'variables'    => $this->template->variables
             ]
         );
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BasicAdminController;
 use App\Models\EmailTemplate;
+use App\Models\Settings;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
@@ -21,12 +22,12 @@ class EmailTemplatesController extends BasicAdminController
             template: 'EmailTemplates/Form',
             request: $request,
             share: [
-                'routes'  => [
+                'routes'         => [
                     'email' => [
                         'form' => route('api.email-templates.store'),
                     ]
                 ],
-                'scripts' => [
+                'scripts'        => [
                     '/js/ckeditor/ckeditor.js',
                 ]
             ]

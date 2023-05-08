@@ -3,8 +3,16 @@
     "name": "Registration email",
     "slug": "registration-email",
     "subject": "Welcome to the %course_name%",
-    "variables": {"course_name": ["course", "name"], "user_full_name": ["user", "full_name"]},
+    "variables": {"link_text": ["custom", "Activate Your Account"], "course_name": ["course", "name"], "user_full_name": ["user", "full_name"]},
     "body": "<p>%user_full_name%, we are super excited that you decided to join our program.</p>",
     "footer_text": "Once you activate your account, you'll be able to log in to the %course_name% with your new account."
+  },
+  {
+    "name": "Reset Password",
+    "slug": "reset-password",
+    "subject": "Hello, %user_full_name%!",
+    "variables": {"link_text": ["custom", "Reset Password Now"], "user_full_name":  ["user", "full_name"], "user_email": ["user", "email"], "site_url": ["settings", "site_url"]},
+    "body": "<p>If you have not taken any action to recover your password, please ignore this email.</p>",
+    "footer_text": "If you did not request this change, you may may ignore this message and your password will not be reset."
   }
 ]

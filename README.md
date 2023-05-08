@@ -66,12 +66,9 @@ npm i && npm run prod
 - ~~Create User~~
 - ~~Edit User~~
 - ~~Remove User~~
-- Forgot password
-  - Reset password
-    - Reset Password request
-    - Reset Password email
-    - Preview on email page
-  - Confirm password
+- ~~Forgot password~~
+  - ~~Reset password~~
+  - ~~Confirm password~~
 - Create **role**
 - Edit role
 - Remove role

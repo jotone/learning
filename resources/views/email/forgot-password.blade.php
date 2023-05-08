@@ -29,14 +29,14 @@
 
   <div class="content-wrap">
     <div class="button-wrap">
-      <a class="button custom" href="{{ $activation_url }}">
+      <a class="button custom" href="{{ $reset_url }}">
         {{ $variables['link_text'][1] }}
       </a>
     </div>
 
     <div class="follow-wrap">
       <p>If the button is not working, click the link below:</p>
-      <a href="{{ $activation_url }}">{{ $activation_url }}</a>
+      <a href="{{ $reset_url }}">{{ $reset_url }}</a>
     </div>
 
     <div class="content-misc">
@@ -46,5 +46,5 @@
 
   @include('email.partials.footer')
 </div>
-
 </body>
+</html>

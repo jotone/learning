@@ -1,0 +1,90 @@
+@import "vars";
+
+.email-wrap {
+  background-color: #f5f6fc;
+  border-radius: 7px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  width: 100%;
+  display: block;
+
+  h1, h2, h3, h4, h5, h6, p, a {
+    font: 400 12px/24px "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  }
+
+  .top-part-wrap {
+    padding: 60px 10px 30px;
+
+    .header-title {
+      text-align: center;
+      text-transform: uppercase;
+      width: 60%;
+      margin: 0 auto 30px;
+
+      h1 {
+        line-height: 1.25;
+        font-size: 24px;
+        font-weight: 700;
+        color: #000000;
+      }
+    }
+
+    .header-text {
+      margin: 0 auto;
+      text-align: center;
+      width: 60%;
+
+      p {font-size: 16px; line-height: 24px}
+    }
+  }
+
+  .content-wrap {
+    background-color: white;
+    border: 1px solid #D6E0FF;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    margin: 0 auto 80px auto;
+    padding: 20px 5%;
+    width: 75%;
+
+    .follow-wrap {
+      padding: 25px 0;
+      text-align: center;
+      width: 70%;
+      margin: 0 auto;
+
+      p {
+        padding: 0;
+        margin: 0;
+        color: #909BBF;
+      }
+
+      a {word-break: break-all}
+    }
+
+    .button-wrap {padding: 14px 0; text-align: center}
+
+    .button {
+      background-color: #005AFF;
+      border: 1px solid #09a59a;
+      border-radius: 6px;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 13px 30px;
+      text-decoration: none;
+    }
+
+    .content-misc {
+      color: #909BBF;
+      margin: 0 auto;
+      position: relative;
+      text-align: center;
+      width: 75%;
+
+      a {color: #1155cc;text-decoration: none}
+    }
+  }
+}

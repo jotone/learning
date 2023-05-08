@@ -22,16 +22,20 @@
     transform: scale(1.5);
   }
 
-  .form-input {
+  .form-input, .form-select, .form-textarea, #cke_body {
     border: 1px solid $borderColor;
     border-radius: 4px;
     color: $primary;
     font-size: 14px;
+    overflow: hidden;
+    margin-top: 6px;
+    width: 100%;
+  }
+
+  .form-input {
     height: 40px;
     line-height: 18px;
-    margin-top: 6px;
     padding: 0 15px;
-    width: 100%;
   }
 
   .form-select {
@@ -41,15 +45,9 @@
     background-position: right 12px center;
     background-repeat: no-repeat;
     background-size: 12px;
-    border: 1px solid $borderColor;
-    border-radius: 4px;
-    color: $primary;
-    font-size: 14px;
     height: 40px;
     line-height: 40px;
-    margin-top: 6px;
     padding: 0 15px;
-    width: 100%;
 
     .contain-image {
       position: relative;
@@ -57,17 +55,11 @@
   }
 
   .form-textarea {
-    border: 1px solid $borderColor;
-    border-radius: 4px;
-    color: $primary;
     font-family: Rubik, sans-serif;
-    font-size: 14px;
     line-height: 18px;
-    margin-top: 6px;
     min-height: 200px;
     padding: 10px 15px;
     resize: vertical;
-    width: 100%;
   }
 
   .code-editor {

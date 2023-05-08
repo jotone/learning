@@ -19,7 +19,7 @@
           <div class="col-1-2">
             <div class="card">
               <div class="card-title">
-                Registration email
+                Main Data
               </div>
 
               <input type="hidden" name="variables" :value="JSON.stringify(variables)">
@@ -29,6 +29,7 @@
                 name="name"
                 :required="true"
                 :value="$attrs?.model?.name"
+                @input="preview.name = $event.target.value"
               />
 
               <InputText
@@ -38,14 +39,18 @@
               />
 
               <div class="form-group">
-                <textarea name="body" class="init-cke">{{ $attrs?.model?.body }}</textarea>
+                <label class="caption">
+                  <span>Email text</span>
+                  <textarea name="body" class="init-cke">{{ $attrs?.model?.body }}</textarea>
+                </label>
               </div>
 
               <TextArea
                 caption="Text below action button"
                 name="footer_text"
                 :value="$attrs?.model?.footer_text"
-              />
+                @input="preview.footer_text = $event.target.value"
+              />`~
             </div>
           </div>
 
@@ -79,7 +84,13 @@
                         </a>
                       </td>
                       <td>
-                        <a href="#" data-role="field" data-fancybox data-src="#variable" @click="variableEdit">
+                        <a
+                          href="#"
+                          data-role="field"
+                          data-fancybox data-src="#variable"
+                          v-if="'custom' !== variable.entity"
+                          @click="variableEdit"
+                        >
                           {{ entities[variable.entity].fields[variable.field] }}
                         </a>
                       </td>
@@ -95,6 +106,37 @@
                   <a class="btn blue" href="#" data-fancybox data-src="#variable" @click="resetVariableForm">
                     Add Variable
                   </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">
+                Email Preview
+              </div>
+
+              <div class="email-wrap">
+                <div class="top-part-wrap">
+                  <div class="header-title">
+                    <h1>{{ preview.name }}</h1>
+                  </div>
+
+                  <div class="header-text" v-html="preview.body"></div>
+                </div>
+
+                <div class="content-wrap">
+                  <div class="button-wrap">
+                    <a class="button custom" href="#">
+                      Custom Link Text
+                    </a>
+                  </div>
+
+                  <div class="follow-wrap">
+                    <p>If the button is not working, click the link below:</p>
+                    <a href="#">link goes here</a>
+                  </div>
+
+                  <div class="content-misc" v-html="preview.footer_text"></div>
                 </div>
               </div>
             </div>
@@ -127,7 +169,13 @@
             </label>
           </div>
 
-          <Selector caption="Variable Entity Field" name="var_field" :options="entities[chosenEntity].fields"/>
+          <template v-if="null === entities[chosenEntity].fields">
+            <InputText caption="Variable Value" name="var_field"/>
+          </template>
+
+          <template v-else>
+            <Selector caption="Variable Entity Field" name="var_field" :options="entities[chosenEntity].fields"/>
+          </template>
 
           <div class="form-group">
             <button class="btn blue" type="submit">
@@ -154,12 +202,6 @@ export default {
     return {
       chosenEntity: 'date',
       entities: {
-        date: {
-          name: "Date",
-          fields: {
-            now: "Now"
-          }
-        },
         course: {
           name: "Course",
           fields: {
@@ -168,6 +210,16 @@ export default {
             img_url: "Image",
             fb_link: "Facebook URL",
             created_at: "Creation date"
+          }
+        },
+        custom: {
+          name: "Custom Text",
+          fields: null
+        },
+        date: {
+          name: "Date",
+          fields: {
+            now: "Now"
           }
         },
         settings: {
@@ -188,6 +240,11 @@ export default {
           }
         }
       },
+      preview: {
+        body: this.$attrs?.model?.body || '',
+        footer_text: this.$attrs?.model?.footer_text || '',
+        name: this.$attrs?.model?.name || ''
+      },
       variablePosition: null,
       variables: this.$attrs.hasOwnProperty('model') ? this.parseModelVariables() : []
     }
@@ -200,6 +257,10 @@ export default {
     changeEntity(e) {
       this.chosenEntity = $(e.target).closest('select').val()
     },
+    /**
+     * Email form saving callback function
+     * @param response
+     */
     formSaved(response) {
       if (201 === response.status) {
         $('#template')[0].reset()
@@ -252,8 +313,13 @@ export default {
         form.find('select[name="var_entity"]').val(variable.entity)
         resolve({})
       }).then(() => {
-        // Set the "var_field select" selected value
-        form.find('select[name="var_field"]').val(variable.field).change()
+        if ('custom' === variable.entity) {
+          // Set the "var_field" for custom entity
+          form.find('input[name="var_field"]').val(variable.field)
+        } else {
+          // Set the "var_field select" selected value
+          form.find('select[name="var_field"]').val(variable.field).change()
+        }
       })
     },
     /**
@@ -269,10 +335,12 @@ export default {
      */
     variableSave(e) {
       const form = $(e.target).closest('form')
+      const entity = form.find('select[name="var_entity"]').val()
+      const fieldSelector = 'custom' === entity ? 'input' : 'select'
       const data = {
         name: form.find('input[name="var_name"]').val().trim().replace(/^%|%$/g, ''),
-        entity: form.find('select[name="var_entity"]').val(),
-        field: form.find('select[name="var_field"]').val()
+        entity: entity,
+        field: form.find(`${fieldSelector}[name="var_field"]`).val().trim()
       }
 
       if (null === this.variablePosition) {
@@ -289,7 +357,6 @@ export default {
     }
   },
   mixins: [FormMixin],
-  name: "EmailTemplates/Form",
   mounted() {
     $('.content-submenu').find('li[data-name="email"]').addClass('active');
 
@@ -312,10 +379,16 @@ export default {
       ],
       removeButtons: ''
     });
-  }
+
+    CKEDITOR.instances.body.on('change', () => {
+      this.preview.body = CKEDITOR.instances.body.getData()
+    });
+  },
+  name: "EmailTemplates/Form"
 }
 </script>
 
 <style>
 @import "/node_modules/@fancyapps/ui/dist/fancybox/fancybox.css";
+@import "/public/css/dashboard/email-preview.css";
 </style>

@@ -16,87 +16,90 @@
   @endif
 </head>
 <body>
-  <div class="login-page">
-    <div class="content-clear">
-      <div class="login-form">
+<div class="login-page">
+  <div class="content-clear">
+    <div class="login-form">
 
-        <div class="logo-wrap">
-          @if (!empty($settings['logo_img']->value))
-            <picture>
-              <img src="{{ asset($settings['logo_img']->val) }}" alt="">
-            </picture>
-          @endif
-        </div>
+      <div class="logo-wrap">
+        @if (!empty($settings['logo_img']->value))
+          <picture>
+            <img src="{{ asset($settings['logo_img']->val) }}" alt="">
+          </picture>
+        @endif
+      </div>
 
-        <div class="form">
-          @if(!empty($errors->all()))
-            <ul class="form-errors">
-              @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-          @endif
+      <div class="form">
+        @if(!empty($errors->all()))
+          <ul class="form-errors">
+            @foreach($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        @endif
 
-          <form class="form-switch active" data-trigger="login" action="{{ route('auth.login') }}" method="POST">
-            @csrf
-            <div class="form-input">
-              <label for="email">E-Mail</label>
-              <input
-                autofocus=""
-                autocomplete="off"
-                id="email"
-                name="email"
-                placeholder="example@email.com"
-                required=""
-                type="email"
-              >
-            </div>
-
-            <div class="form-input">
-              <label for="password">
-                Password
-              </label>
-              <input
-                autocomplete="off"
-                id="password"
-                name="password"
-                required=""
-                type="password"
-              >
-            </div>
-
-            <div class="form-submit">
-              <button>Login</button>
-            </div>
-          </form>
-
-          <form class="form-switch" data-trigger="forgot" action="{{ route('forgot.send') }}" method="POST">
-            @csrf
-
-            <div class="form-input">
-              <label for="forgot-email">E-Mail</label>
-              <input autocomplete="off" id="forgot-email" name="email" class="form-input" type="email" required="" >
-            </div>
-
-            <div class="form-submit">
-              <button>Submit</button>
-            </div>
-          </form>
-
-          <div class="form-optional-link">
-            <a class="active" href="#" data-target="forgot">Forgot password?</a>
-            <a href="#" data-target="login" class="">Cancel</a>
+        <form class="form-switch" data-trigger="login" action="{{ route('auth.login') }}" method="POST">
+          @csrf
+          <div class="form-input">
+            <label for="email">E-Mail</label>
+            <input
+              autofocus=""
+              autocomplete="off"
+              id="email"
+              name="email"
+              placeholder="example@email.com"
+              required=""
+              type="email"
+            >
           </div>
+
+          <div class="form-input">
+            <label for="password">
+              Password
+            </label>
+            <input
+              autocomplete="off"
+              id="password"
+              name="password"
+              required=""
+              type="password"
+            >
+          </div>
+
+          <div class="form-submit">
+            <button type="submit">Login</button>
+          </div>
+        </form>
+
+        <form class="form-switch" data-trigger="forgot" action="{{ route('reset.send') }}" method="POST">
+          @csrf
+
+          <div class="form-input">
+            <label for="forgot-email">E-Mail</label>
+            <input autocomplete="off" id="forgot-email" name="email" class="form-input" type="email" required="">
+          </div>
+
+          <div class="form-submit">
+            <button>Submit</button>
+          </div>
+        </form>
+
+        <div class="form-optional-link">
+          <a href="#" data-target="forgot">Forgot password?</a>
+          <a href="#" data-target="login" class="">Cancel</a>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  @if(!empty($settings['footer_code']->value ))
-    {!! $settings['footer_code']->val !!}
-  @endif
+@if(!empty($settings['footer_code']->value ))
+  {!! $settings['footer_code']->val !!}
+@endif
 
-<script>{{--
+<script>
+  {{--
+  document.querySelector('form[data-trigger="' + ('#forgot' === window.location.hash ? 'forgot' : 'login') + '"]').classList.add('active')
+  document.querySelector('.form-optional-link a[data-target="' + ('#forgot' === window.location.hash ? 'login' : 'forgot' + '"]')).classList.add('active')
   var switchForm = function (obj) {
     const target = obj.getAttribute('data-target')
     document.querySelector('form.form-switch.active').classList.remove('active')
@@ -106,11 +109,26 @@
   }
   var controls = document.querySelectorAll('a[data-target]');
   for (var i = 0, n = controls.length; i < n; i++) {
-    controls[i].addEventListener('click',function(e){e.preventDefault();switchForm(e.target)},!1);
-  }
-  // minimized
-  --}}
-  let d=document,f="classList",a="active",h="data-target",j="querySelector",k=".form-optional-link",g=t=>{let e=t.getAttribute(h);d[j](`form.form-switch.${a}`)[f].remove(a),d[j](`form[data-trigger="${e}"]`)[f].add(a),d[j](`${k} a.${a}[${h}]`)[f].remove(a),d[j](`${k} a:not([${h}="${e}"])`)[f].add(a)};for(let i=0;i<2;i++)d[j+"All"](`a[${h}]`)[i].addEventListener("click",t=>{t.preventDefault();g(t.target)},!1)
+    controls[i].addEventListener('click',function(e){
+      e.preventDefault();switchForm(e.target)
+    },!1);
+  }--}}
+
+  let a = "active", b = "data-target", c = "classList", d = document, e = "data-trigger", f = ".form-optional-link",
+    g = "forgot", j = "remove", k = "add", l = "login", q = "querySelector", z = `#${g}` === window.location.hash,
+    h = d[`${q}All`](`a[${b}]`), s = o => {
+      let t = o.getAttribute(b);
+      d[q](`form.form-switch.${a}`)[c][j](a);
+      d[q](`form[${e}="${t}"]`)[c][k](a);
+      d[q](`${f}>a.${a}[${b}]`)[c][j](a);
+      d[q](`${f}>a:not([${b}="${t}"])`)[c][k](a)
+    };
+  d[q](`form[${e}="${z ? g : l}"]`)[c][k](a);
+  d[q](`${f}>a[${b}="${z ? l : g}"]`)[c][k](a);
+  for (let i = 0, n = h.length; i < n; i++) h[i].addEventListener("click", E => {
+    E.preventDefault();
+    s(E.target)
+  }, !1)
 </script>
 </body>
 </html>

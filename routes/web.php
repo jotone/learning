@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\{AuthController, ForgotPasswordController};
+use App\Http\Controllers\Auth\{AuthController, ResetPasswordController};
 use App\Http\Controllers\Main\HomeController;
 use Illuminate\Support\Facades\Route;
 /*
@@ -14,13 +14,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
-Route::get('/user/login', [AuthController::class, 'index'])->name('auth.index');
-
-Route::post('/user/login', [AuthController::class, 'login'])->name('auth.login');
-Route::any('/user/logout', [AuthController::class, 'logout'])->name('auth.logout');
-Route::post('/forgot-password', [ForgotPasswordController::class, 'sendMail'])->name('forgot.send');
+// Authentication routes
+Route::group(['as' => 'auth.', 'prefix' => '/user'], function () {
+    Route::get('/login', [AuthController::class, 'index'])->name('index');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::any('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+// Forgot password routes
+Route::group(['as' => 'reset.', 'prefix' => '/reset-password'], function () {
+    // Reset password form
+    Route::get('/{token}', [ResetPasswordController::class, 'index'])->name('index');
+    Route::group(['middleware' => 'throttle:6,1'], function () {
+        // Create reset password entry
+        Route::post('/', [ResetPasswordController::class, 'send'])->name('send');
+        // Reset Password handler
+        Route::post('/{token}', [ResetPasswordController::class, 'update'])->name('update');
+    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
