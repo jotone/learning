@@ -73,7 +73,7 @@
       </div>
 
       <Confirmation
-        :text='`Do you really want to remove user "<b>${userEmail}</b>" with all his data and progress?`'
+        :text='`Do you really want to remove user "<b>${removalEntity}</b>" with all his data and progress?`'
         ref="confirmation"
         okBtnClass="danger"
         okText="Remove"
@@ -87,11 +87,6 @@
 import {ContentTableMixin} from "../../Mixins/content-table-mixin";
 
 export default {
-  data() {
-    return {
-      userEmail: ''
-    }
-  },
   mixins: [ContentTableMixin],
   name: "Users/Index",
   methods: {
@@ -112,18 +107,13 @@ export default {
     userRemove(id) {
       return this.$attrs.routes.users.destroy.replace(/0$/, id)
     },
-
+    /**
+     * Remove user
+     * @param e
+     */
     userRemoveAction(e) {
-      const obj = $(e.target).closest('a');
-      if (typeof obj.attr('href') !== 'undefined') {
-        this.userEmail = obj.closest('tr').find('[data-role]').text().trim()
-
-        this.$refs.confirmation
-          .open()
-          .then(res => res && $.axios.delete(obj.attr('href'))
-            .then(response => 204 === response.status && this.getCollection()))
-      }
-    },
+      this.removeEntity($(e.target).closest('a'), 'User ":entity" was successfully removed.')
+    }
   },
   beforeMount() {
     this.url = this.$attrs.routes.users.list
