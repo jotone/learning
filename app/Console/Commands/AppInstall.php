@@ -133,6 +133,6 @@ class AppInstall extends Command
         // Generate login css
         $this->runWithTimer('Generating css files', fn() => $this->generateLoginCSS());
 
-        $this->runWithTimer('Creating dashboard side menu', fn() => $this->installAdminMenu($files));
+        $this->runWithTimer('Creating dashboard side menu', fn() => $this->installAdminMenu($files['admin_menu']));
     }
 }

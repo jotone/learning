@@ -34,11 +34,10 @@ class EmailTemplateApiTest extends ApiTestCase
             ],
         ];
         foreach ($cases as $case) {
-            $this
-                ->actingAs(self::$actor)
+            $this->actingAs(self::$actor)
                 ->postJson(route(self::$route_prefix . 'store'), $case['send'])
-                ->assertJson(['errors' => $case['assert']])
-                ->assertUnprocessable();
+                ->assertUnprocessable()
+                ->assertJson(['errors' => $case['assert']]);
         }
     }
 

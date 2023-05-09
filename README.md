@@ -72,7 +72,7 @@ npm i && npm run prod
 - ~~Create role~~
 - ~~Edit role~~
 - ~~Remove role~~
-- Separate dashboard middleware
+- ~~Separate dashboard middleware~~
 - Coaches list page
 - Create Coach
   - Add permission to coach
@@ -116,8 +116,6 @@ npm i && npm run prod
   - Send Course Invitation email when user finished his account activation
   - Send Course Invitation email after student update
   - /dashboard/users/create - add courses if role is "student"
-  - /dashboard/settings/emails - check superuser role for CKEDITOR "Source" button
-    - remove, create email template can only superuser
   - Registration email
     - Apply variables (Course, Date)
     - Welcome email (registration)

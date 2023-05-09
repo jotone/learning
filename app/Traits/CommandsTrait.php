@@ -61,12 +61,12 @@ trait CommandsTrait
     /**
      * Create admin menu
      *
-     * @param $files
+     * @param array $admin_menu
      * @return void
      */
-    protected function installAdminMenu($files): void
+    protected function installAdminMenu(array $admin_menu): void
     {
-        foreach ($files['admin_menu'] as $top => $menu) {
+        foreach ($admin_menu as $top => $menu) {
             foreach ($menu as $position => $item) {
                 $this->createAdminMenuItem($item, $top === 'top', $position);
             }

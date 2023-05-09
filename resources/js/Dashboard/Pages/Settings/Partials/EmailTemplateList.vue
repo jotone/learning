@@ -5,13 +5,13 @@
         <thead>
         <tr>
           <th><span>Name</span></th>
-          <th><span>Actions</span></th>
+          <th v-if="$page.props.auth.role.level === 0"><span>Actions</span></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="template in list">
           <td><a :href="editLink(template.id)">{{ template.name }}</a></td>
-          <td>
+          <td v-if="$page.props.auth.role.level === 0">
             <a
               class="remove"
               :href="removeLink(template.id)"

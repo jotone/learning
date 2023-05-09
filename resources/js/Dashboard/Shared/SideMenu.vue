@@ -17,12 +17,12 @@
               <Avatar/>
             </div>
             <div class="user-link-info">
-              <span class="user-link-info-name">
+              <div class="user-link-info-name">
                 {{ $page.props.auth.first_name }} {{ $page.props.auth.last_name }}
-              </span>
-              <span class="user-link-info-email">
+              </div>
+              <div class="user-link-info-email">
                 {{ $page.props.auth.email }}
-              </span>
+              </div>
             </div>
           </li>
           <li>

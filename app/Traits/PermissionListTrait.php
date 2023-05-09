@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Collection;
+
 trait PermissionListTrait
 {
     /**
@@ -41,6 +43,22 @@ trait PermissionListTrait
                 }
             }
         }
+        return $result;
+    }
+
+    /**
+     * Build user permission list
+     *
+     * @param Collection $permissions
+     * @return array
+     */
+    protected function userPermissions(Collection $permissions): array
+    {
+        $result = [];
+        foreach ($permissions as $item) {
+            $result[$item->controller] = $item->allowed_methods;
+        }
+
         return $result;
     }
 }
