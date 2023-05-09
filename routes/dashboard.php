@@ -9,8 +9,8 @@ Route::get('/', [DashboardController::class, 'index'])->name('index');
 
 Route::as('users.')->group(function () {
     Route::get('/users/roles', [RoleController::class, 'index'])->name('roles.index');
-    Route::get('/users/role/create', [RoleController::class, 'create'])->name('roles.create');
-    Route::get('/users/role/{role}', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::get('/users/roles/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::get('/users/roles/{role}', [RoleController::class, 'edit'])->name('roles.edit');
 
     Route::get('/users', [UserController::class, 'index'])->name('index');
     Route::get('/users/create', [UserController::class, 'create'])->name('create');

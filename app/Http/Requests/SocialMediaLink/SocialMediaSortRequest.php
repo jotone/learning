@@ -14,7 +14,7 @@ class SocialMediaSortRequest extends DefaultRequest
     public function rules(): array
     {
         return [
-            'list'   => ['required', 'array'],
+            'list' => ['required', 'array'],
             'list.*' => ['exists:social_media_links,id'],
         ];
     }

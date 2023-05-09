@@ -22,6 +22,7 @@ mix
   .sass('resources/css/reset.scss', 'public/css')
   .sass('resources/css/dashboard/email-preview.scss', 'public/css/dashboard')
   .sass('resources/css/dashboard/main.scss', 'public/css/dashboard')
+  .sass('resources/css/dashboard/permissions.scss', 'public/css/dashboard')
   .options({
     postCss: [
       require('postcss-discard-comments')({removeAll: true})

@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AdminMenu;
-use App\Models\Settings;
+use App\Models\{AdminMenu, Settings};
 use Illuminate\Http\Request;
 use Inertia\{Inertia, Response};
 
 class BasicAdminController extends Controller
 {
     protected array $order = [
-        'by'  => 'created_at',
+        'by' => 'created_at',
         'dir' => 'desc'
     ];
 
@@ -30,13 +29,13 @@ class BasicAdminController extends Controller
             request: $request,
             share: array_merge_recursive([
                 'filters' => [
-                    'order'  => [
-                        'by'  => $this->order['by'],
+                    'order' => [
+                        'by' => $this->order['by'],
                         'dir' => $this->order['dir']
                     ],
-                    'page'   => $request->get('page', 1),
+                    'page' => $request->get('page', 1),
                     'search' => $request->get('search', ''),
-                    'take'   => $this->take
+                    'take' => $this->take
                 ]
             ], $share)
         );
@@ -71,7 +70,7 @@ class BasicAdminController extends Controller
         return Inertia::render($template, array_merge_recursive(
             [
                 // Side menu
-                'menu'    => AdminMenu::select(['name', 'route', 'img', 'is_top'])
+                'menu' => AdminMenu::select(['name', 'route', 'img', 'is_top'])
                     ->whereNull('parent_id')
                     ->orderBy('position')
                     ->get()
@@ -82,8 +81,8 @@ class BasicAdminController extends Controller
                         return $model;
                     }),
                 // Default routes
-                'routes'  => [
-                    'auth'      => [
+                'routes' => [
+                    'auth' => [
                         'logout' => route('auth.logout')
                     ],
                     'dashboard' => [

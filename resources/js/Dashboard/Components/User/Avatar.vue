@@ -14,7 +14,7 @@ export default {
   name: "Avatar",
   computed: {
     avatarOptions() {
-      return userAvatarColors(this.$page.props.auth.user)
+      return userAvatarColors(this.$page.props.auth)
     }
   }
 }

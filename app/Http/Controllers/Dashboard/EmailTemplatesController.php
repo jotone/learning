@@ -22,12 +22,12 @@ class EmailTemplatesController extends BasicAdminController
             template: 'EmailTemplates/Form',
             request: $request,
             share: [
-                'routes'         => [
+                'routes' => [
                     'email' => [
                         'form' => route('api.email-templates.store'),
                     ]
                 ],
-                'scripts'        => [
+                'scripts' => [
                     '/js/ckeditor/ckeditor.js',
                 ]
             ]
@@ -47,8 +47,8 @@ class EmailTemplatesController extends BasicAdminController
             template: 'EmailTemplates/Form',
             request: $request,
             share: [
-                'model'   => $template,
-                'routes'  => [
+                'model' => $template,
+                'routes' => [
                     'email' => [
                         'form' => route('api.email-templates.update', $template->id)
                     ]

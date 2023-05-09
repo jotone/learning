@@ -177,10 +177,10 @@ class UserController extends BasicApiController
         // User data array
         $data = [
             'first_name' => $args['first_name'],
-            'last_name'  => $args['last_name'],
-            'email'      => $args['email'],
-            'about'      => $args['about'] ?? null,
-            'role_id'    => $args['role_id'] ?? Role::where('slug', 'student')->value('id')
+            'last_name' => $args['last_name'],
+            'email' => $args['email'],
+            'about' => $args['about'] ?? null,
+            'role_id' => $args['role_id'] ?? Role::where('slug', 'student')->value('id')
         ];
         // Set user password
         if (isset($args['password'])) {
@@ -212,15 +212,15 @@ class UserController extends BasicApiController
     protected function buildUserInfo(User $user, array $args): array
     {
         return [
-            'user_id'    => $user->id,
-            'timezone'   => $args['timezone'] ?? null,
-            'country'    => $args['country'] ?? null,
-            'region'     => $args['region'] ?? null,
-            'city'       => $args['city'] ?? null,
-            'address'    => $args['address'] ?? null,
-            'ext_addr'   => $args['ext_addr'] ?? null,
-            'zip'        => $args['zip'] ?? null,
-            'phone'      => $args['phone'] ?? null,
+            'user_id' => $user->id,
+            'timezone' => $args['timezone'] ?? null,
+            'country' => $args['country'] ?? null,
+            'region' => $args['region'] ?? null,
+            'city' => $args['city'] ?? null,
+            'address' => $args['address'] ?? null,
+            'ext_addr' => $args['ext_addr'] ?? null,
+            'zip' => $args['zip'] ?? null,
+            'phone' => $args['phone'] ?? null,
             'shirt_size' => $args['shirt_size'] ?? null
         ];
     }

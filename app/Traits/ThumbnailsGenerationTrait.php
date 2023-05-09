@@ -23,7 +23,7 @@ trait ThumbnailsGenerationTrait
         $result = [
             'original' => $this->attributes['img_url']
         ];
-        if (str_starts_with($this->attributes['img_url'] ,'http')) {
+        if (str_starts_with($this->attributes['img_url'], 'http')) {
             return $result;
         }
         // Get user's thumbnails folder

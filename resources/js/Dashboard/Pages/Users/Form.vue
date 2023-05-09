@@ -1,12 +1,13 @@
 <template>
   <Layout>
     <template v-slot:optionals>
-      <SaveButton form="userCreate"/>
+      <SaveButton form="userForm"/>
     </template>
+
     <template v-slot:content>
       <form
         class="page-content-wrap"
-        id="userCreate"
+        id="userForm"
         :action="$attrs.routes.users.form"
         method="POST"
         @submit.prevent="submit"

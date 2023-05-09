@@ -111,18 +111,18 @@ class SettingsController extends BasicApiController
         file_put_contents(public_path($dir . '/manifest.webmanifest'), json_encode([
             'icons' => [
                 [
-                    'src'   => $dir . '/icon-32.png',
-                    'type'  => 'image/png',
+                    'src' => $dir . '/icon-32.png',
+                    'type' => 'image/png',
                     'sizes' => '32x32'
                 ],
                 [
-                    'src'   => $dir . '/icon-192.png',
-                    'type'  => 'image/png',
+                    'src' => $dir . '/icon-192.png',
+                    'type' => 'image/png',
                     'sizes' => '192x192'
                 ],
                 [
-                    'src'   => $dir . '/icon-512.png',
-                    'type'  => 'image/png',
+                    'src' => $dir . '/icon-512.png',
+                    'type' => 'image/png',
                     'sizes' => '512x512'
                 ]
             ],
@@ -186,7 +186,7 @@ class SettingsController extends BasicApiController
     protected function treatRequestData(array $args): array
     {
         $result = [
-            'data'  => [],
+            'data' => [],
             'rules' => []
         ];
         foreach ($args as $key => $val) {
