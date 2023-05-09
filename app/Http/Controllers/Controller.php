@@ -21,7 +21,7 @@ class Controller extends BaseController
      * @var array
      */
     protected array $order = [
-        'by'  => ['id'],
+        'by' => ['id'],
         'dir' => 'desc'
     ];
 

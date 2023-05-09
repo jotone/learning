@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+
 //TODO: REMOVE
 class ProfileUpdateRequest extends FormRequest
 {
@@ -17,7 +18,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'email' => ['email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'name'  => ['string', 'max:255']
+            'name' => ['string', 'max:255']
         ];
     }
 }

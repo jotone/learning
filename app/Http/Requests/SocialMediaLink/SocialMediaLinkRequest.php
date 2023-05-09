@@ -15,7 +15,7 @@ class SocialMediaLinkRequest extends DefaultRequest
     {
         return [
             'type' => ['required', 'string'],
-            'url'  => ['nullable', 'string'],
+            'url' => ['nullable', 'string'],
         ];
     }
 }

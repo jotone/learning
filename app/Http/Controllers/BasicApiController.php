@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Database\Eloquent\{Builder, Model};
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\{JsonResponse, Request};
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Str;
 
@@ -38,7 +37,8 @@ class BasicApiController extends Controller
                 // Cut rows
                 case 'row':
                     $temp = explode("\n", $model->$field);
-                    $model->$field = implode("\n", count($temp) > $options[1] ? array_slice($temp, 0, $options[1]) : $temp);
+                    $model->$field = implode("\n", count($temp) > $options[1] ? array_slice($temp, 0, $options[1])
+                        : $temp);
                     $model->$field .= count($temp) > $options[1] ? '...' : '';
                     break;
                 // Cut words
@@ -98,7 +98,7 @@ class BasicApiController extends Controller
             ->paginate($this->take, $this->select);
 
         return $resource::collection(
-            // Modify collection
+        // Modify collection
             $collection->setCollection(
                 $collection->getCollection()
                     // Apply map function

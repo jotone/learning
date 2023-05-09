@@ -11,6 +11,8 @@ class RoleApiTest extends ApiTestCase
 {
     use ModelGeneratorsTrait;
 
+    const CONTROLLER = 'App\Http\Controllers\Dashboard\DashboardController';
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -67,31 +69,31 @@ class RoleApiTest extends ApiTestCase
         $cases = [
             // Send empty request body
             [
-                'send'   => [],
+                'send' => [],
                 'assert' => [
-                    'name'  => [lang('validation.required', 'name')],
-                    'slug'  => [lang('validation.required', 'slug')],
+                    'name' => [lang('validation.required', 'name')],
+                    'slug' => [lang('validation.required', 'slug')],
                     'level' => [lang('validation.required', 'level')]
                 ]
             ],
             // Send request body with empty values
             [
-                'send'   => [
-                    'name'  => null,
-                    'slug'  => null,
+                'send' => [
+                    'name' => null,
+                    'slug' => null,
                     'level' => null,
                 ],
                 'assert' => [
-                    'name'  => [lang('validation.required', 'name')],
-                    'slug'  => [lang('validation.required', 'slug')],
+                    'name' => [lang('validation.required', 'name')],
+                    'slug' => [lang('validation.required', 'slug')],
                     'level' => [lang('validation.required', 'level')]
                 ]
             ],
             // Send fail level value
             [
-                'send'   => [
-                    'name'  => $this->faker->name,
-                    'slug'  => $this->faker->slug,
+                'send' => [
+                    'name' => $this->faker->name,
+                    'slug' => $this->faker->slug,
                     'level' => $this->faker->name,
                 ],
                 'assert' => [
@@ -100,9 +102,9 @@ class RoleApiTest extends ApiTestCase
             ],
             // Send fail outbound level value
             [
-                'send'   => [
-                    'name'  => $this->faker->name,
-                    'slug'  => $this->faker->slug,
+                'send' => [
+                    'name' => $this->faker->name,
+                    'slug' => $this->faker->slug,
                     'level' => 256,
                 ],
                 'assert' => [
@@ -126,7 +128,33 @@ class RoleApiTest extends ApiTestCase
      */
     public function testRoleStore(): void
     {
-        $this->runStoreTest(['name', 'slug', 'level']);
+        $model = self::$class::factory()->make();
+        $table = $model->getTable();
+
+        $response = $this
+            ->actingAs(self::$actor)
+            ->postJson(route(self::$route_prefix . 'store'), [
+                'name' => $model->name,
+                'slug' => $model->slug,
+                'level' => $model->level,
+                'permissions' => [
+                    self::CONTROLLER => ['index' => 1]
+                ]
+            ])
+            ->assertJsonStructure(['id', 'name', 'slug', 'level'])
+            ->assertCreated();
+
+        $content = json_decode($response->content());
+
+        $this->assertDatabaseHas($table, [
+            'id' => $content->id,
+            'name' => $model->name,
+            'slug' => $model->slug,
+            'level' => $model->level
+        ])->assertDatabaseHas('permissions', [
+            'role_id' => $content->id,
+            'controller' => self::CONTROLLER
+        ]);
     }
 
     /**

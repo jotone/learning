@@ -39,15 +39,15 @@ class ForgotPasswordEmail extends AbstractMailable
         return new Content(
             view: 'email.forgot-password',
             with: [
-                'reset_url'    => route('reset.index', $this->token),
-                'content'      => $this->applyVariables([
-                    'body'        => $this->template->body,
+                'reset_url' => route('reset.index', $this->token),
+                'content' => $this->applyVariables([
+                    'body' => $this->template->body,
                     'footer_text' => $this->template->footer_text,
-                    'subject'     => $this->template->subject
+                    'subject' => $this->template->subject
                 ]),
-                'settings'     => $this->settings,
+                'settings' => $this->settings,
                 'social_links' => SocialMediaLink::select(['type', 'url'])->orderBy('position')->get(),
-                'variables'    => $this->template->variables
+                'variables' => $this->template->variables
             ]
         );
     }

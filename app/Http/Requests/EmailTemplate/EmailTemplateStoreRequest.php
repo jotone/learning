@@ -14,13 +14,13 @@ class EmailTemplateStoreRequest extends DefaultRequest
     public function rules(): array
     {
         return [
-            'name'        => ['required', 'string'],
-            'slug'        => ['required', 'string', 'alpha_dash'],
-            'subject'     => ['nullable', 'string'],
-            'body'        => ['nullable', 'string'],
+            'name' => ['required', 'string'],
+            'slug' => ['required', 'string', 'alpha_dash'],
+            'subject' => ['nullable', 'string'],
+            'body' => ['nullable', 'string'],
             'footer_text' => ['nullable', 'string'],
-            'styles'      => ['nullable', 'string'],
-            'variables'   => ['nullable', 'array'],
+            'styles' => ['nullable', 'string'],
+            'variables' => ['nullable', 'array'],
         ];
     }
 
@@ -32,7 +32,7 @@ class EmailTemplateStoreRequest extends DefaultRequest
     {
         $this->merge([
             // Create slug value from title if it does not exist
-            'slug'      => $this->request->has('slug')
+            'slug' => $this->request->has('slug')
                 ? $this->request->get('slug')
                 : generateUrl($this->request->get('name')),
             'variables' => $this->variables()

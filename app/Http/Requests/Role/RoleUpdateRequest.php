@@ -15,7 +15,7 @@ class RoleUpdateRequest extends DefaultRequest
     {
         return [
             'level' => ['required', 'numeric', 'min:0', 'max:255'],
-            'name'  => ['required', 'string']
+            'name' => ['required', 'string']
         ];
     }
 }

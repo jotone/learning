@@ -42,14 +42,14 @@ class RegistrationEmail extends AbstractMailable
             view: 'email.registration',
             with: [
                 'activation_url' => '#',
-                'content'        => $this->applyVariables([
-                    'body'        => $this->template->body,
+                'content' => $this->applyVariables([
+                    'body' => $this->template->body,
                     'footer_text' => $this->template->footer_text,
-                    'subject'     => $this->template->subject
+                    'subject' => $this->template->subject
                 ]),
-                'settings'       => $this->settings,
-                'social_links'   => SocialMediaLink::select(['type', 'url'])->orderBy('position')->get(),
-                'variables'      => $this->template->variables
+                'settings' => $this->settings,
+                'social_links' => SocialMediaLink::select(['type', 'url'])->orderBy('position')->get(),
+                'variables' => $this->template->variables
             ]
         );
     }

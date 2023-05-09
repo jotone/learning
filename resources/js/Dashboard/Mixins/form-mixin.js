@@ -62,6 +62,10 @@ export const FormMixin = {
     serializeForm(form) {
       let formData = new FormData(form[0])
 
+      form.find('input[type="checkbox"]').each(function () {
+        formData.append($(this).attr('name'), $(this).prop('checked') ? 1 : 0)
+      })
+
       if (typeof form.attr('id') !== 'undefined') {
         const formID = form.attr('id')
         $('#app').find(`[form="${formID}"]`).each(function () {
@@ -75,9 +79,6 @@ export const FormMixin = {
                   formData.append(name, $(this).val())
                 } else {
                   switch (type.toLowerCase()) {
-                    case 'checkbox':
-                      formData.append(name, $(this).prop('checked'))
-                      break;
                     case 'radio':
                       formData.append(name, $(`${tag}[name="${name}"]:checked`).val())
                       break;

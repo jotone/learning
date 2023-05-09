@@ -30,8 +30,8 @@ class ResetPasswordController extends Controller
         }
         // View the reset password form
         return view('auth.reset-password', [
-            'email'    => $reset->user->email,
-            'token'    => $token,
+            'email' => $reset->user->email,
+            'token' => $token,
             'settings' => Settings::whereIn('key', ['site_title', 'header_code', 'footer_code', 'logo_img'])
                 ->get()
                 ->keyBy('key')
@@ -67,7 +67,7 @@ class ResetPasswordController extends Controller
         PasswordResetToken::updateOrCreate([
             'email' => $user->email
         ], [
-            'token'      => $token,
+            'token' => $token,
             'created_at' => now()
         ]);
         // Send email

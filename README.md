@@ -69,12 +69,13 @@ npm i && npm run prod
 - ~~Forgot password~~
   - ~~Reset password~~
   - ~~Confirm password~~
-- Create **role**
+- ~~Create role~~
 - Edit role
 - Remove role
 - Separate dashboard middleware
 - Coaches list page
 - Create Coach
+  - Add permission to coach
 - Edit Coach
 - Remove Coach
 - Admin Profile

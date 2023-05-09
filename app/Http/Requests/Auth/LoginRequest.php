@@ -27,7 +27,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'    => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
         ];
     }
@@ -132,10 +132,10 @@ class LoginRequest extends FormRequest
     protected function createLoginHistoryRecord(int $id, bool $fail = false): LoginHistory
     {
         return LoginHistory::create([
-            'user_id'    => $id,
-            'ip'         => $this->ip(),
+            'user_id' => $id,
+            'ip' => $this->ip(),
             'user_agent' => $this->userAgent(),
-            'failed'     => $fail
+            'failed' => $fail
         ]);
     }
 

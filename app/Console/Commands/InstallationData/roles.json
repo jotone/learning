@@ -1,22 +1,30 @@
 {
   "student": {
     "name": "Student",
-    "level": 255,
-    "permissions": []
+    "level": 255
   },
   "coach": {
     "name": "Coach",
     "level": 127,
-    "permissions": []
+    "permissions": {
+      "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"]
+    }
   },
   "admin": {
     "name": "Administrator",
     "level": 63,
-    "permissions": []
+    "permissions": {
+      "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\EmailTemplatesController": ["create", "edit"],
+      "App\\Http\\Controllers\\Dashboard\\SettingsController": ["main", "loginPage", "email", "language"],
+      "App\\Http\\Controllers\\Api\\EmailTemplateController": ["store", "update", "destroy"],
+      "App\\Http\\Controllers\\Api\\SocialMediaLinkController": ["store", "update", "sort", "destroy"],
+      "App\\Http\\Controllers\\Api\\SettingsController": ["update"],
+      "App\\Http\\Controllers\\Api\\LanguageController": ["store", "destroy"]
+    }
   },
   "superuser": {
     "name": "SuperUser",
-    "level": 0,
-    "permissions": []
+    "level": 0
   }
 }

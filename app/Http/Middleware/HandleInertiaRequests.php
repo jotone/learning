@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -42,10 +43,11 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'auth' => [
-                'role' => $request->user()?->role?->slug,
-                'user' => $request->user()
-            ],
+            'auth' => $request->user()
+                ? User::select(['id', 'email', 'first_name', 'last_name', 'img_url', 'role_id'])
+                    ->with(['role' => fn($q) => $q->select(['id', 'name', 'level'])])
+                    ->findOrFail($request->user()->id)
+                : null,
             /*'ziggy' => function () use ($request) {
                 $ziggy_share = (new Ziggy)->toArray();
                 unset($ziggy_share['routes']);

@@ -6,6 +6,8 @@
         autocomplete="off"
         class="form-input"
         :disabled="disabled"
+        :min="min !== '' ? min : null"
+        :max="max !== '' ? max : null"
         :name="name"
         :placeholder="caption.length ? caption + '...' : caption"
         :required="required"
@@ -30,6 +32,14 @@ export default {
       type: Boolean,
       default: false
     },
+    max: {
+      type: [Number, String],
+      default: ''
+    },
+    min: {
+      type: [Number, String],
+      default: ''
+    },
     name: {
       type: String,
       default: ''
@@ -43,7 +53,7 @@ export default {
       default: 'text'
     },
     value: {
-      type: String,
+      type: [Number, String],
       default: ''
     }
   }

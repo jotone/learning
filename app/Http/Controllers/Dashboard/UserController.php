@@ -26,10 +26,10 @@ class UserController extends BasicAdminController
                     'students' => [
                         'edit' => route('dashboard.users.edit', 0)
                     ],
-                    'users'    => [
-                        'list'    => route('api.users.index'),
-                        'create'  => route('dashboard.users.create'),
-                        'edit'    => route('dashboard.users.edit', 0),
+                    'users' => [
+                        'list' => route('api.users.index'),
+                        'create' => route('dashboard.users.create'),
+                        'edit' => route('dashboard.users.edit', 0),
                         'destroy' => route('api.users.destroy', 0)
                     ]
                 ]
@@ -49,13 +49,13 @@ class UserController extends BasicAdminController
             template: 'Users/Form',
             request: $request,
             share: [
-                'enums'    => config('enums')['user'],
-                'routes'   => [
+                'enums' => config('enums')['user'],
+                'routes' => [
                     'users' => [
                         'form' => route('api.users.store')
                     ]
                 ],
-                'roles'    => Role::where('level', '>=', Auth::user()->role->level)
+                'roles' => Role::where('level', '>=', Auth::user()->role->level)
                     ->orderBy('level')
                     ->get()
                     ->pluck('name', 'id'),
@@ -77,14 +77,14 @@ class UserController extends BasicAdminController
             template: 'Users/Form',
             request: $request,
             share: [
-                'enums'    => config('enums')['user'],
-                'model'    => $user,
-                'routes'   => [
+                'enums' => config('enums')['user'],
+                'model' => $user,
+                'routes' => [
                     'users' => [
                         'form' => route('api.users.update', $user->id)
                     ]
                 ],
-                'roles'    => Role::where('level', '>=', Auth::user()->role->level)
+                'roles' => Role::where('level', '>=', Auth::user()->role->level)
                     ->orderBy('level')
                     ->get()
                     ->pluck('name', 'id'),

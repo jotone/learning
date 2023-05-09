@@ -5,7 +5,7 @@
   margin-bottom: 20px;
   position: relative;
 
-  .caption, .small-caption {
+  .caption, .small-caption, .inline-caption {
     > span {
       color: $secondary;
       display: block;
@@ -16,10 +16,12 @@
 
   .small-caption > span {font-size: 12px}
 
+  .inline-caption > span {display: inline-block}
+
   .form-checkbox {
     accent-color: $blue;
     margin-right: 10px;
-    transform: scale(1.5);
+    transform: scale(1.3);
   }
 
   .form-input, .form-select, .form-textarea, #cke_body {
