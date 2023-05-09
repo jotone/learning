@@ -35,7 +35,7 @@
               </thead>
               <tbody>
               <tr v-for="model in collection">
-                <td>
+                <td data-role="name">
                   <Link :href="roleEdit(model.id)">{{ model.name }}</Link>
                 </td>
                 <td>
@@ -45,7 +45,7 @@
                   <Link :href="roleEdit(model.id)">{{ model.created_at }}</Link>
                 </td>
                 <td>
-                  <Link :href="roleRemove(model.id)" class="remove"></Link>
+                  <a :href="roleRemove(model.id)" class="remove" @click.prevent="roleRemoveAction"></a>
                 </td>
               </tr>
               </tbody>
@@ -53,6 +53,14 @@
           </div>
         </div>
       </div>
+
+      <Confirmation
+        :text='`Do you really want to remove role "<b>${removalEntity}</b>" with all it&apos;s data and user permissions?`'
+        ref="confirmation"
+        okBtnClass="danger"
+        okText="Remove"
+        noText="Cancel"
+      />
     </template>
   </Layout>
 </template>
@@ -65,12 +73,29 @@ export default {
   name: "Roles/Index",
   mixins: [ContentTableMixin],
   methods: {
+    /**
+     * Generate role edit url
+     * @param id
+     * @return {string}
+     */
     roleEdit(id) {
       return this.$attrs.routes.roles.edit.replace(/0$/, id)
     },
+    /**
+     * Generate role remove url
+     * @param id
+     * @return {string}
+     */
     roleRemove(id) {
       return this.$attrs.routes.roles.destroy.replace(/0$/, id)
-    }
+    },
+    /**
+     * Remove role
+     * @param e
+     */
+    roleRemoveAction(e) {
+      this.removeEntity($(e.target).closest('a'), 'Role ":entity" was successfully removed.')
+    },
   },
   beforeMount() {
     this.url = this.$attrs.routes.roles.list

@@ -8,7 +8,7 @@ export function showNotification(messages) {
     let message = ''
     for (let text of msg.text) {
       const caption = msg.hasOwnProperty('caption') && msg.caption.length
-        ? `<div className="caption">${msg.caption}</div>`
+        ? `<div class="caption">${msg.caption}</div>`
         : '';
       message += `<li class="${msg.type}">${caption}<div class="text">${text}</div></li>`
     }

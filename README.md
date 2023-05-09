@@ -70,7 +70,7 @@ npm i && npm run prod
   - ~~Reset password~~
   - ~~Confirm password~~
 - ~~Create role~~
-- Edit role
+- ~~Edit role~~
 - Remove role
 - Separate dashboard middleware
 - Coaches list page

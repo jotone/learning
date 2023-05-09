@@ -210,9 +210,8 @@ class RoleApiTest extends ApiTestCase
      */
     public function testRoleDestroy(): void
     {
-        $this->runDeleteTest(
-            $this->getRole(),
-            fn($model) => $this->assertDatabaseMissing('permissions', ['role_id' => $model->id])
-        );
+        $this->runDeleteTest($this->getRole(), fn($model) => $this->assertDatabaseMissing('permissions', [
+            'role_id' => $model->id
+        ]));
     }
 }

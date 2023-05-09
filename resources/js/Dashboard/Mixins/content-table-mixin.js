@@ -4,12 +4,13 @@ import Layout from "../Shared/Layout.vue";
 import Pagination from "../Shared/CotentTable/Pagination.vue";
 import SearchForm from "../Shared/CotentTable/SearchForm.vue";
 import {Link} from "@inertiajs/vue3";
-import {XHRErrorHandle} from "../../libs/notifications";
+import {showNotification, XHRErrorHandle} from "../../libs/notifications";
 
 export const ContentTableMixin = {
   components: {ContentTableHead, Confirmation, Layout, Link, Pagination, SearchForm},
   data() {
     return {
+      removalEntity: '',
       collection: [],
       pagination: {},
       url: ''
@@ -62,6 +63,26 @@ export const ContentTableMixin = {
         })
         .catch(error => XHRErrorHandle(error))
     },
+    removeEntity(obj, message) {
+      if (typeof obj.attr('href') !== 'undefined') {
+        this.removalEntity = obj.closest('tr').find('[data-role]').text().trim()
+
+        this.$refs.confirmation
+          .open()
+          .then(res => res && $.axios.delete(obj.attr('href'))
+            .then(response => {
+              if (204 === response.status) {
+                this.getCollection().then(() => {
+                  showNotification([{
+                    type: "warning",
+                    text: [message.replace(/:entity/, this.removalEntity)]
+                  }])
+                })
+              }
+            })
+          )
+      }
+    },
     /**
      * Figure out pagination parameters
      * @param meta
@@ -92,7 +113,8 @@ export const ContentTableMixin = {
   provide() {
     return {
       filtersToUri: this.filtersToUri,
-      getCollection: this.getCollection
+      getCollection: this.getCollection,
+      removeEntity: this.removeEntity
     }
   },
   mounted() {
