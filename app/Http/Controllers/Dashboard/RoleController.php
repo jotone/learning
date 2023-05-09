@@ -6,7 +6,6 @@ use App\Http\Controllers\BasicAdminController;
 use App\Models\Role;
 use App\Traits\PermissionListTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 
@@ -62,7 +61,7 @@ class RoleController extends BasicAdminController
                 ]
             ],
             'permissions' => $permission_list,
-            'user_permissions' => $this->userPermissions(Auth::user()->role->permissions)
+            'userPermissions' => $this->userPermissions(Auth::user()->role->permissions)
         ]);
     }
 
@@ -94,23 +93,7 @@ class RoleController extends BasicAdminController
                 ]
             ],
             'permissions' => $permission_list,
-            'user_permissions' => $this->userPermissions(Auth::user()->role->permissions)
+            'userPermissions' => $this->userPermissions(Auth::user()->role->permissions)
         ]);
-    }
-
-    /**
-     * Build user permission list
-     *
-     * @param Collection $permissions
-     * @return array
-     */
-    protected function userPermissions(Collection $permissions): array
-    {
-        $result = [];
-        foreach ($permissions as $item) {
-            $result[$item->controller] = $item->allowed_methods;
-        }
-
-        return $result;
     }
 }

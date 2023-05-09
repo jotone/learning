@@ -52,7 +52,7 @@
               </thead>
               <tbody>
               <template v-for="permission in $attrs.permissions">
-                <tr v-if="$attrs.user_permissions.hasOwnProperty(permission.class)">
+                <tr v-if="$attrs.userPermissions.hasOwnProperty(permission.class)">
                   <td class="marked">
                     {{ permission.file }}
                   </td>
@@ -61,7 +61,7 @@
                       <div class="form-group" v-for="method in permission.methods">
                         <label
                           class="inline-caption"
-                          v-if="$attrs.user_permissions[permission.class].indexOf(method) >= 0"
+                          v-if="$attrs.userPermissions[permission.class].indexOf(method) >= 0"
                         >
                           <input
                             class="form-checkbox"

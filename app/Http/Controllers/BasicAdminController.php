@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\{AdminMenu, Settings};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Inertia\{Inertia, Response};
 
 class BasicAdminController extends Controller
@@ -55,22 +57,34 @@ class BasicAdminController extends Controller
     {
         // Get trimmed url
         $path = rtrim(preg_replace('/(\/create|\/edit\/\d*)/', '', $request->getPathInfo()), '/');
-
-        $parent_menu = $this->getMenuParent(AdminMenu::firstWhere(['route' => $path]));
+        // Build parent item for the current route to build top menu
+        $parent_item = $this->getMenuParent(AdminMenu::firstWhere(['route' => $path]));
+        // Get user permissions list
+        $user_permissions = $this->getAuthUserPermissions();
+        // Get available menu route list
+        $routes = $this->getDashboardRoutes();
+        // Build side menu list
+        $side_menu = AdminMenu::select(['name', 'route', 'img', 'is_top'])
+            ->whereNull('parent_id')
+            ->orderBy('position')
+            ->get()
+            ->map(function ($model) use ($user_permissions, $routes) {
+                if (
+                    (isset($routes[$model->route]) && isset($user_permissions[$routes[$model->route]]))
+                    || str_starts_with($model->route, 'http')
+                ) {
+                    // Set image to menu item
+                    $image = public_path('images/icons/' . $model->img . '.svg');
+                    $model->img = file_exists($image) ? file_get_contents($image) : null;
+                    return $model;
+                }
+                return null;
+            });
 
         return Inertia::render($template, array_merge_recursive(
             [
                 // Side menu
-                'menu' => AdminMenu::select(['name', 'route', 'img', 'is_top'])
-                    ->whereNull('parent_id')
-                    ->orderBy('position')
-                    ->get()
-                    ->map(function ($model) {
-                        // Set image to menu item
-                        $image = public_path('images/icons/' . $model->img . '.svg');
-                        $model->img = file_exists($image) ? file_get_contents($image) : null;
-                        return $model;
-                    }),
+                'menu' => $side_menu->filter(),
                 // Default routes
                 'routes' => [
                     'auth' => [
@@ -84,12 +98,29 @@ class BasicAdminController extends Controller
                 'settings' => Settings::where('section', 'hidden')->pluck('value', 'key')->toArray(),
                 // Top menu
                 'topMenu' => AdminMenu::select(['name', 'route'])
-                    ->where('parent_id', $parent_menu->id)
+                    ->where('parent_id', $parent_item->id)
                     ->orderBy('position')
                     ->get()
             ],
             $share
         ));
+    }
+
+    /**
+     * Get user permissions list as Controller @ action array
+     *
+     * @return array
+     */
+    protected function getAuthUserPermissions(): array
+    {
+        $result = [];
+        foreach (auth()->user()->role->permissions as $permission) {
+            foreach ($permission->allowed_methods as $method) {
+                $result[] = $permission->controller . '@' . $method;
+            }
+        }
+
+        return array_flip($result);
     }
 
     /**
@@ -101,5 +132,27 @@ class BasicAdminController extends Controller
     protected function getMenuParent(AdminMenu $item): AdminMenu
     {
         return $item->parent_id ? $this->getMenuParent($item->parent) : $item;
+    }
+
+    /**
+     * Retrieve list of dashboard menu methods with actions
+     *
+     * @return array
+     */
+    protected function getDashboardRoutes(): array
+    {
+        $result = [];
+        foreach (Route::getRoutes()->getRoutes() as $route) {
+            if (
+                str_starts_with($route->uri, 'dashboard')
+                && !str_contains($route->uri, '/create')
+                && !str_contains($route->uri, '/edit')
+                && is_string($route->action['uses'])
+            ) {
+                $result[Str::start($route->uri, '/')] = $route->action['uses'];
+            }
+        }
+
+        return $result;
     }
 }

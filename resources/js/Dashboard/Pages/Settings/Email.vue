@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <template v-slot:optionals>
-      <a class="btn" :href="$attrs.routes.emails.create">
+      <a class="btn" :href="$attrs.routes.emails.create" v-if="$attrs.auth.role.level === 0">
         <i class="icon plus-icon"></i>
         <span>Create Template</span>
       </a>
