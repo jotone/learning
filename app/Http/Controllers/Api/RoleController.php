@@ -60,29 +60,10 @@ class RoleController extends BasicApiController
             $role = Role::create([
                 'name' => $args['name'],
                 'slug' => $args['slug'],
-                'level' => $args['level'],
+                'level' => $args['level']
             ]);
 
-            if (!empty($args['permissions'])) {
-                // Loop through the provided permissions
-                foreach($args['permissions'] as $controller => $controller_methods) {
-                    $methods = [];
-                    // Loop through the controller methods
-                    foreach ($controller_methods as $method => $allowance) {
-                        if ($allowance !== '0') {
-                            $methods[] = $method;
-                        }
-                    }
-                    // If there are permitted methods for this controller, create a permission
-                    if (!empty($methods)) {
-                        Permission::create([
-                            'role_id' => $role->id,
-                            'controller' => $controller,
-                            'allowed_methods' => $methods
-                        ]);
-                    }
-                }
-            }
+            $this->savePermissions($role, $args['permissions'] ?? []);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -104,7 +85,17 @@ class RoleController extends BasicApiController
      */
     public function update(Role $role, RoleUpdateRequest $request): JsonResponse
     {
-        $role->update($request->validated());
+        // Get request data
+        $args = $request->validated();
+        // Update fields
+        $role->name = $args['name'];
+        $role->level = $args['level'];
+        // Remove current role permissions
+        $role->permissions()->each(fn($entity) => $entity->delete());
+        // Set new permissions
+        $this->savePermissions($role, $args['permissions'] ?? []);
+        // Save role data
+        $role->save();
 
         return response()->json($role);
     }
@@ -120,5 +111,36 @@ class RoleController extends BasicApiController
         $role->delete();
 
         return response()->json([], 204);
+    }
+
+    /**
+     * Save role pemissions
+     *
+     * @param Role $role
+     * @param array $permissions
+     * @return void
+     */
+    protected function savePermissions(Role $role, array $permissions): void
+    {
+        if (!empty($permissions)) {
+            // Loop through the provided permissions
+            foreach ($permissions as $controller => $controller_methods) {
+                $methods = [];
+                // Loop through the controller methods
+                foreach ($controller_methods as $method => $allowance) {
+                    if ($allowance !== '0') {
+                        $methods[] = $method;
+                    }
+                }
+                // If there are permitted methods for this controller, create a permission
+                if (!empty($methods)) {
+                    Permission::create([
+                        'role_id' => $role->id,
+                        'controller' => $controller,
+                        'allowed_methods' => $methods
+                    ]);
+                }
+            }
+        }
     }
 }

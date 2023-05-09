@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Role;
+use App\Models\{Permission, Role};
 use Illuminate\Support\Arr;
 use Tests\ApiTestCase;
 use Tests\Traits\ModelGeneratorsTrait;
@@ -129,7 +129,6 @@ class RoleApiTest extends ApiTestCase
     public function testRoleStore(): void
     {
         $model = self::$class::factory()->make();
-        $table = $model->getTable();
 
         $response = $this
             ->actingAs(self::$actor)
@@ -141,12 +140,16 @@ class RoleApiTest extends ApiTestCase
                     self::CONTROLLER => ['index' => 1]
                 ]
             ])
-            ->assertJsonStructure(['id', 'name', 'slug', 'level'])
+            ->assertJsonFragment([
+                'name' => $model->name,
+                'slug' => $model->slug,
+                'level' => $model->level
+            ])
             ->assertCreated();
 
         $content = json_decode($response->content());
 
-        $this->assertDatabaseHas($table, [
+        $this->assertDatabaseHas('roles', [
             'id' => $content->id,
             'name' => $model->name,
             'slug' => $model->slug,
@@ -159,19 +162,57 @@ class RoleApiTest extends ApiTestCase
 
     /**
      * Test Role update
+     *
      * @return void
      */
     public function testRoleUpdate(): void
     {
-        $this->runUpdateTest($this->getRole(), ['name', 'level']);
+        $model = $this->getRole();
+
+        $new = self::$class::factory()->make();
+
+        $this->actingAs(self::$actor)
+            ->putJson(route(self::$route_prefix . 'update', $model->id), [
+                'name' => $new->name,
+                'level' => $new->level,
+                'permissions' => [
+                    self::CONTROLLER => ['show' => 1]
+                ]
+            ])
+            ->assertJsonFragment([
+                'id' => $model->id,
+                'name' => $new->name,
+                'slug' => $model->slug,
+                'level' => $new->level
+            ])
+            ->assertOk();
+
+        $this->assertDatabaseMissing('roles', [
+            'id' => $model->id,
+            'name' => $model->name,
+            'level' => $model->level
+        ])->assertDatabaseHas('roles', [
+            'id' => $model->id,
+            'name' => $new->name,
+            'level' => $new->level
+        ]);
+
+        $this->assertEquals(['show'], Permission::firstWhere([
+            'role_id' => $model->id,
+            'controller' => self::CONTROLLER
+        ])->allowed_methods);
     }
 
     /**
      * Test Role remove
+     *
      * @return void
      */
     public function testRoleDestroy(): void
     {
-        $this->runDeleteTest($this->getRole());
+        $this->runDeleteTest(
+            $this->getRole(),
+            fn($model) => $this->assertDatabaseMissing('permissions', ['role_id' => $model->id])
+        );
     }
 }

@@ -10,22 +10,22 @@ Route::get('/', [DashboardController::class, 'index'])->name('index');
 Route::as('users.')->group(function () {
     Route::get('/users/roles', [RoleController::class, 'index'])->name('roles.index');
     Route::get('/users/roles/create', [RoleController::class, 'create'])->name('roles.create');
-    Route::get('/users/roles/{role}', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::get('/users/roles/edit/{role}', [RoleController::class, 'edit'])->name('roles.edit');
 
     Route::get('/users', [UserController::class, 'index'])->name('index');
     Route::get('/users/create', [UserController::class, 'create'])->name('create');
-    Route::get('/users/{user}', [UserController::class, 'edit'])->name('edit');
+    Route::get('/users/edit/{user}', [UserController::class, 'edit'])->name('edit');
 });
 
 Route::as('settings.')->group(function () {
     Route::get('/settings', [SettingsController::class, 'main'])->name('main');
     Route::get('/settings/login-page', [SettingsController::class, 'loginPage'])->name('login');
-    Route::get('/settings/email', [SettingsController::class, 'email'])->name('email');
+    Route::get('/settings/emails', [SettingsController::class, 'email'])->name('email');
     Route::get('/settings/language', [SettingsController::class, 'language'])->name('language');
 
     Route::as('emails.')->group(function () {
-        Route::get('/settings/emails', [EmailTemplatesController::class, 'create'])->name('create');
-        Route::get('/settings/emails/{template}', [EmailTemplatesController::class, 'edit'])->name('edit');
+        Route::get('/settings/emails/create', [EmailTemplatesController::class, 'create'])->name('create');
+        Route::get('/settings/emails/edit/{template}', [EmailTemplatesController::class, 'edit'])->name('edit');
     });
 });
 

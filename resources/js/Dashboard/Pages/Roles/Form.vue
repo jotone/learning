@@ -67,6 +67,7 @@
                             class="form-checkbox"
                             type="checkbox"
                             :name="`permissions[${permission.class}][${method}]`"
+                            :checked="$attrs?.model?.permission_list.hasOwnProperty(permission.class) && $attrs?.model?.permission_list[permission.class].indexOf(method) >= 0"
                           >
                           <span>{{ method.ucfirst() }}</span>
                         </label>

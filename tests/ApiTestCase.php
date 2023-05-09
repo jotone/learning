@@ -181,9 +181,10 @@ class ApiTestCase extends TestCase
      * Default routine for the API delete request test
      *
      * @param Model $model
+     * @param ?callable $callback
      * @return void
      */
-    protected function runDeleteTest(Model $model): void
+    protected function runDeleteTest(Model $model, ?callable $callback = null): void
     {
         $route = self::$route_prefix . 'destroy';
         $this
@@ -192,5 +193,9 @@ class ApiTestCase extends TestCase
             ->assertNoContent();
 
         $this->assertModelMissing($model);
+
+        if ($callback) {
+            $callback($model);
+        }
     }
 }

@@ -53,19 +53,10 @@ class BasicAdminController extends Controller
      */
     protected function form(string $template, Request $request, array $share = []): Response
     {
-        $path_info = rtrim(preg_replace('/(create|edit\/\d+)/', '', $request->getPathInfo()), '/');
+        // Get trimmed url
+        $path = rtrim(preg_replace('/(\/create|\/edit\/\d*)/', '', $request->getPathInfo()), '/');
 
-        // Check current item exist in the admin menu table
-        $admin_menu_item = AdminMenu::where(['route' => $path_info])->count();
-        if (!$admin_menu_item) {
-            $str = explode('/', $path_info);
-            if (is_numeric($str[count($str) - 1])) {
-                $path_info = substr($path_info, 0, strrpos($path_info, '/'));
-            }
-            // set parent item as current
-            $path_info = substr($path_info, 0, strrpos($path_info, '/'));
-        }
-        $parent_menu = $this->getMenuParent(AdminMenu::firstWhere(['route' => $path_info]));
+        $parent_menu = $this->getMenuParent(AdminMenu::firstWhere(['route' => $path]));
 
         return Inertia::render($template, array_merge_recursive(
             [

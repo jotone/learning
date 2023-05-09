@@ -6,6 +6,7 @@ use App\Http\Controllers\BasicAdminController;
 use App\Models\Role;
 use App\Traits\PermissionListTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 
@@ -37,6 +38,12 @@ class RoleController extends BasicAdminController
         );
     }
 
+    /**
+     * Role create page
+     *
+     * @param Request $request
+     * @return Response
+     */
     public function create(Request $request): Response
     {
         try {
@@ -55,24 +62,52 @@ class RoleController extends BasicAdminController
                 ]
             ],
             'permissions' => $permission_list,
-            'user_permissions' => $this->userPermissions()
+            'user_permissions' => $this->userPermissions(Auth::user()->role->permissions)
         ]);
     }
 
-
+    /**
+     * Role edit page
+     *
+     * @param Role $role
+     * @param Request $request
+     * @return Response
+     */
     public function edit(Role $role, Request $request): Response
     {
-        return $this->view('Roles/Form', $request);
+        try {
+            $permission_list = $this->permissionList([
+                app_path('Http/Controllers/Api/'),
+                app_path('Http/Controllers/Dashboard/')
+            ]);
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
+
+        $role->permission_list = $this->userPermissions($role->permissions);
+
+        return $this->view('Roles/Form', $request, [
+            'model' => $role,
+            'routes' => [
+                'roles' => [
+                    'form' => route('api.roles.update', $role->id)
+                ]
+            ],
+            'permissions' => $permission_list,
+            'user_permissions' => $this->userPermissions(Auth::user()->role->permissions)
+        ]);
     }
 
     /**
      * Build user permission list
-     * @param array $result
+     *
+     * @param Collection $permissions
      * @return array
      */
-    protected function userPermissions(array $result = []): array
+    protected function userPermissions(Collection $permissions): array
     {
-        foreach (Auth::user()->role->permissions as $item) {
+        $result = [];
+        foreach ($permissions as $item) {
             $result[$item->controller] = $item->allowed_methods;
         }
 
