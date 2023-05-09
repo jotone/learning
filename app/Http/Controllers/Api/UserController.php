@@ -70,6 +70,7 @@ class UserController extends BasicApiController
         // Get request data
         $args = $request->validated();
 
+
         DB::beginTransaction();
         try {
             // Create user entity

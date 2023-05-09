@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BasicAdminController;
-use App\Models\{EmailTemplate, Settings, SocialMediaLink};
+use App\Models\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Response;
@@ -58,41 +58,6 @@ class SettingsController extends BasicAdminController
                     ]
                 ],
                 'content' => Settings::where('section', 'login-page')->get()->keyBy('key'),
-            ]
-        );
-    }
-
-    /**
-     * Email Settings page
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function email(Request $request): Response
-    {
-        return $this->form(
-            template: 'Settings/Email',
-            request: $request,
-            share: [
-                'routes' => [
-                    'emails' => [
-                        'create' => route('dashboard.settings.emails.create'),
-                        'edit' => route('dashboard.settings.emails.edit', 0),
-                        'destroy' => route('api.email-templates.destroy', 0)
-                    ],
-                    'settings' => [
-                        'update' => route('api.settings.update')
-                    ],
-                    'social' => [
-                        'store' => route('api.socials.store'),
-                        'update' => route('api.socials.update', 0),
-                        'sort' => route('api.socials.sort'),
-                        'destroy' => route('api.socials.destroy', 0)
-                    ]
-                ],
-                'content' => Settings::whereIn('section', ['smtp-settings', 'email-settings'])->get()->keyBy('key'),
-                'social' => SocialMediaLink::orderBy('position')->get(),
-                'templates' => EmailTemplate::select('id', 'name')->orderBy('created_at', 'desc')->get()
             ]
         );
     }

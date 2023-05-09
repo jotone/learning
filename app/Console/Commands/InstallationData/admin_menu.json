@@ -56,7 +56,7 @@
         },
         {
           "name": "Email",
-          "route": "dashboard.settings.email"
+          "route": "dashboard.settings.emails.index"
         },
         {
           "name": "Help",
@@ -72,7 +72,7 @@
         },
         {
           "name": "Coaches",
-          "route": "#"
+          "route": "dashboard.settings.coaches.index"
         }
       ]
     }

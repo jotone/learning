@@ -7,20 +7,24 @@
     "name": "Coach",
     "level": 127,
     "permissions": {
-      "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"]
+      "App\\Http\\Controllers\\Dashboard\\CoachesController": ["index", "create", "edit"],
+      "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"],
+      "App\\Http\\Controllers\\Api\\UserController": ["index", "store", "update", "destroy"]
     }
   },
   "admin": {
     "name": "Administrator",
     "level": 63,
     "permissions": {
+      "App\\Http\\Controllers\\Dashboard\\CoachesController": ["index", "create", "edit"],
       "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"],
-      "App\\Http\\Controllers\\Dashboard\\EmailTemplatesController": ["create", "edit"],
-      "App\\Http\\Controllers\\Dashboard\\SettingsController": ["main", "loginPage", "email", "language"],
+      "App\\Http\\Controllers\\Dashboard\\EmailTemplatesController": ["index", "create", "edit"],
+      "App\\Http\\Controllers\\Dashboard\\SettingsController": ["main", "loginPage", "language"],
       "App\\Http\\Controllers\\Api\\EmailTemplateController": ["store", "update", "destroy"],
       "App\\Http\\Controllers\\Api\\SocialMediaLinkController": ["store", "update", "sort", "destroy"],
       "App\\Http\\Controllers\\Api\\SettingsController": ["update"],
-      "App\\Http\\Controllers\\Api\\LanguageController": ["store", "destroy"]
+      "App\\Http\\Controllers\\Api\\LanguageController": ["store", "destroy"],
+      "App\\Http\\Controllers\\Api\\UserController": ["index", "store", "update", "destroy"]
     }
   },
   "superuser": {

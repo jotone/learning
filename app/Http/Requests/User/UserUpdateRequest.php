@@ -44,7 +44,7 @@ class UserUpdateRequest extends DefaultRequest
             'courses' => ['nullable', 'array'] // TODO
         ];
 
-        if ($this->request->has('password')) {
+        if ($this->request->has('password') && !empty($this->request->get('password'))) {
             $rules['password'] = ['required', 'string', 'min:8'];
             $rules['confirmation'] = ['required', 'string', 'same:password'];
         }

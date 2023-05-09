@@ -73,11 +73,10 @@ npm i && npm run prod
 - ~~Edit role~~
 - ~~Remove role~~
 - ~~Separate dashboard middleware~~
-- Coaches list page
-- Create Coach
-  - Add permission to coach
-- Edit Coach
-- Remove Coach
+- ~~Coaches list page~~
+- ~~Create Coach~~
+- ~~Edit Coach~~
+- ~~Remove Coach~~
 - Admin Profile
   - Menu Item
 - Login page settings -> preview

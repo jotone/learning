@@ -1,10 +1,19 @@
 import Layout from "../Shared/Layout.vue";
 import SaveButton from "../Shared/Form/SaveButton.vue";
 import {showNotification, XHRErrorHandle} from "../../libs/notifications";
+import ImageUpload from "../Shared/Form/ImageUpload.vue";
 
 export const FormMixin = {
   components: {Layout, SaveButton},
   methods: {
+    /**
+     * Reset all page forms
+     */
+    resetForm(response) {
+      201 === response.status && $('body form').each(function () {
+        $(this).trigger("reset");
+      })
+    },
     /**
      * Send XHR request
      *

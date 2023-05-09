@@ -208,8 +208,8 @@ import {FormMixin} from "../../Mixins/form-mixin";
 import InputText from "../../Shared/Form/InputText.vue";
 import Method from "../../Shared/Form/Method.vue";
 import InputColor from "../../Shared/Form/InputColor.vue";
-import SocialMediaList from "./Partials/SocialMediaList.vue";
-import EmailTemplateList from "./Partials/EmailTemplateList.vue";
+import SocialMediaList from "../Settings/Partials/SocialMediaList.vue";
+import EmailTemplateList from "../Settings/Partials/EmailTemplateList.vue";
 import 'select2/dist/js/select2.min'
 
 export default {
@@ -235,7 +235,7 @@ export default {
     }
   },
   mixins: [FormMixin],
-  name: "Settings/Email",
+  name: "EmailTemplates/Index",
   methods: {
     /**
      * Add social media entity

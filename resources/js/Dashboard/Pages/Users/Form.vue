@@ -7,6 +7,7 @@
     <template v-slot:content>
       <form
         class="page-content-wrap"
+        data-success-callback="resetForm"
         id="userForm"
         :action="$attrs.routes.users.form"
         method="POST"
@@ -128,6 +129,12 @@ export default {
     }
   },
   methods: {
+    /**
+     * Show one of these message after request
+     *
+     * @param response
+     * @returns {string}
+     */
     saveMessage(response) {
       return 201 === response.status
         ? `User "${response.data.email}" was successfully created.`

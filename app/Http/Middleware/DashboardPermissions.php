@@ -27,25 +27,22 @@ class DashboardPermissions
             return $next($request);
         }
         // Get request token or session token value
-        $token = Session::get('api-token') ?? $request->bearerToken();
-        abort_if(!$token, 403);
-
-        try {
-            // Request token entity
-            $token_entity = PersonalAccessToken::findToken($token);
-            // Get user from token entity
-            $user = $token_entity->tokenable_type::with('role')->find($token_entity->tokenable_id);
-            // Prepare user permissions
-            $permissions = $this->userPermissions($user->role->permissions);
-            // Check if user permission exists for current request action
-            if (
-                isset($permissions[$request->route()->getControllerClass()])
-                && in_array($request->route()->getActionMethod(), $permissions[$request->route()->getControllerClass()])
-            ) {
-                return $next($request);
-            }
-        } catch (\Exception) {
-            abort(403);
+        $token = Session::get('api-token') ?? $request->bearerToken() ?? null;
+        // Request token entity
+        $token_entity = PersonalAccessToken::findToken($token);
+        abort_if(!$token_entity, 403);
+        // Get user from token entity
+        $user = $token_entity->tokenable_type::with('role')->find($token_entity->tokenable_id);
+        abort_if(!$user, 403);
+        // Prepare user permissions
+        $permissions = $this->userPermissions($user->role->permissions);
+        // Check if user permission exists for current request action
+        if (
+            isset($permissions[$request->route()->getControllerClass()])
+            && in_array($request->route()->getActionMethod(), $permissions[$request->route()->getControllerClass()])
+        ) {
+            return $next($request);
         }
+        abort(403);
     }
 }

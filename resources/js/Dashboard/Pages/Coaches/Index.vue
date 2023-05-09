@@ -1,9 +1,9 @@
 <template>
   <Layout>
     <template v-slot:optionals>
-      <a class="btn" :href="$attrs.routes.roles.create">
+      <a class="btn" :href="$attrs.routes.coaches.create">
         <i class="icon plus-icon"></i>
-        <span>Create Role</span>
+        <span>Create Coach</span>
       </a>
     </template>
 
@@ -25,8 +25,9 @@
             <table>
               <thead>
               <tr>
-                <ContentTableHead field="name" name="Name"/>
-                <ContentTableHead field="level" name="Level"/>
+                <ContentTableHead field="first_name" name="First Name"/>
+                <ContentTableHead field="last_name" name="Last Name"/>
+                <ContentTableHead field="email" name="Email"/>
                 <ContentTableHead field="created_at" name="Created At"/>
                 <th>
                   <span>Actions</span>
@@ -35,17 +36,20 @@
               </thead>
               <tbody>
               <tr v-for="model in collection">
-                <td data-role="name">
-                  <Link :href="roleEdit(model.id)">{{ model.name }}</Link>
+                <td>
+                  <Link :href="userEdit(model)">{{ model.first_name }}</Link>
                 </td>
                 <td>
-                  <Link :href="roleEdit(model.id)">{{ model.level }}</Link>
+                  <Link :href="userEdit(model)">{{ model.last_name }}</Link>
+                </td>
+                <td data-role="email">
+                  <Link :href="userEdit(model)">{{ model.email }}</Link>
                 </td>
                 <td>
-                  <Link :href="roleEdit(model.id)">{{ model.created_at }}</Link>
+                  <Link :href="userEdit(model)">{{ model.created_at }}</Link>
                 </td>
                 <td>
-                  <a :href="roleRemove(model.id)" class="remove" @click.prevent="roleRemoveAction"></a>
+                  <a :href="userRemove(model.id)" class="remove" @click.prevent="userRemoveAction"></a>
                 </td>
               </tr>
               </tbody>
@@ -55,7 +59,7 @@
       </div>
 
       <Confirmation
-        :text='`Do you really want to remove role "<b>${removalEntity}</b>" with all it&apos;s data and user permissions?`'
+        :text='`Do you really want to remove coach "<b>${removalEntity}</b>"?`'
         ref="confirmation"
         okBtnClass="danger"
         okText="Remove"
@@ -69,35 +73,35 @@
 import {ContentTableMixin} from "../../Mixins/content-table-mixin";
 
 export default {
-  name: "Roles/Index",
+  name: "Coaches/Index",
   mixins: [ContentTableMixin],
   methods: {
     /**
-     * Generate role edit url
+     * Generate user edit url
+     * @param model
+     * @return {string}
+     */
+    userEdit(model) {
+      return this.$attrs.routes.coaches.edit.replace(/0$/, model.id);
+    },
+    /**
+     * Generate user remove url
      * @param id
      * @return {string}
      */
-    roleEdit(id) {
-      return this.$attrs.routes.roles.edit.replace(/0$/, id)
+    userRemove(id) {
+      return this.$attrs.routes.coaches.destroy.replace(/0$/, id)
     },
     /**
-     * Generate role remove url
-     * @param id
-     * @return {string}
-     */
-    roleRemove(id) {
-      return this.$attrs.routes.roles.destroy.replace(/0$/, id)
-    },
-    /**
-     * Remove role
+     * Remove user
      * @param e
      */
-    roleRemoveAction(e) {
-      this.removeEntity($(e.target).closest('a'), 'Role ":entity" was successfully removed.')
-    },
+    userRemoveAction(e) {
+      this.removeEntity($(e.target).closest('a'), 'User ":entity" was successfully removed.')
+    }
   },
   beforeMount() {
-    this.url = this.$attrs.routes.roles.list
+    this.url = this.$attrs.routes.coaches.list
   }
 }
 </script>
