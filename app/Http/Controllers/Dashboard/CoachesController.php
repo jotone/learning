@@ -65,6 +65,11 @@ class CoachesController extends BasicAdminController
      */
     public function edit(User $coach, Request $request): Response
     {
+        // Coach role
+        $role = Role::firstWhere('slug', 'coach');
+        // Check if user is not a coach
+        abort_if($role->id !== $coach->role_id, 404);
+
         return $this->form(
             template: 'Coaches/Form',
             request: $request,
@@ -75,7 +80,7 @@ class CoachesController extends BasicAdminController
                         'form' => route('api.users.update', $coach->id)
                     ]
                 ],
-                'role' => Role::firstWhere('slug', 'coach')->id,
+                'role' => $role->id,
             ]
         );
     }

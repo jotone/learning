@@ -15,6 +15,7 @@ Route::as('users.')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('index');
     Route::get('/users/create', [UserController::class, 'create'])->name('create');
     Route::get('/users/edit/{user}', [UserController::class, 'edit'])->name('edit');
+    Route::get('/users/me', [UserController::class, 'me'])->name('me');
 });
 
 Route::as('settings.')->group(function () {

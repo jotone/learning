@@ -26,7 +26,7 @@
             </div>
           </li>
           <li>
-            <a href="#">Edit my profile</a>
+            <a :href="$page.props.routes.auth.me">Edit my profile</a>
           </li>
           <li>
             <a :href="$page.props.routes.auth.logout">Logout</a>

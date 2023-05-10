@@ -77,8 +77,7 @@ npm i && npm run prod
 - ~~Create Coach~~
 - ~~Edit Coach~~
 - ~~Remove Coach~~
-- Admin Profile
-  - Menu Item
+- ~~Admin Profile~~
 - Login page settings -> preview
 - Pages
   - How to help

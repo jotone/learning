@@ -27,7 +27,7 @@ export default {
      * @returns {boolean}
      */
     isActive(route) {
-      return window.location.pathname.replace(/(\/create|\/edit\/\d+)/, "") === route;
+      return window.location.pathname.replace(/(\/create|\/me|\/edit\/\d+)/, "") === route;
     }
   }
 }
