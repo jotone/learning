@@ -390,5 +390,5 @@ export default {
 
 <style>
 @import "/node_modules/@fancyapps/ui/dist/fancybox/fancybox.css";
-@import "/public/css/dashboard/email-preview.css";
+@import "/public/css/dashboard/preview.css";
 </style>

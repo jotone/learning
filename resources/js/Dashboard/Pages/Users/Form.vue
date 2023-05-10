@@ -16,24 +16,7 @@
         <input name="_method" type="hidden" value="PUT" v-if="$attrs.hasOwnProperty('model')">
         <div class="row">
           <div class="col-1-2">
-            <div class="card">
-              <div class="card-title">
-                Profile Data
-              </div>
-              <InputText caption="First Name" name="first_name" :value="$attrs?.model?.first_name"/>
-
-              <InputText caption="Last Name" name="last_name" :value="$attrs?.model?.last_name"/>
-
-              <InputText caption="E-mail" name="email" :value="$attrs?.model?.email"/>
-
-              <InputText caption="Password" name="password" type="password"/>
-
-              <InputText caption="Confirm Password" name="confirmation" type="password"/>
-
-              <TextArea caption="Short bio" name="about" :value="$attrs?.model?.about"/>
-
-              <ImageUpload caption="Profile Image" name="img_url" :dimensions="[200, 200]" :value="$attrs?.model?.img_url"/>
-            </div>
+            <SimpleUserForm :model="$attrs?.model"/>
           </div>
 
           <div
@@ -120,9 +103,10 @@ import {FormMixin} from "../../Mixins/form-mixin";
 import {Timezone} from "../../../libs/timezone";
 import "country-select-js/build/js/countrySelect";
 import "intl-tel-input/build/js/intlTelInput-jquery.min"
+import SimpleUserForm from "./Partials/SimpleUserForm.vue";
 
 export default {
-  components: {ImageUpload, InputText, Selector, TextArea},
+  components: {SimpleUserForm, ImageUpload, InputText, Selector, TextArea},
   data() {
     return {
       timezones: Timezone

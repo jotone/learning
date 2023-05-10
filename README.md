@@ -78,7 +78,7 @@ npm i && npm run prod
 - ~~Edit Coach~~
 - ~~Remove Coach~~
 - ~~Admin Profile~~
-- Login page settings -> preview
+- ~~Login page settings -> preview~~
 - Pages
   - How to help
   - terms of service

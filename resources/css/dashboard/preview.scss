@@ -1,5 +1,86 @@
 @import "vars";
 
+.login-page-preview {
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 20px;
+
+  .login-form-wrap {
+    background: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(29, 33, 91, .2);
+    margin: auto;
+    max-width: 410px;
+  }
+
+  .logo-wrap {
+    align-items: center;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    height: 286px;
+    justify-content: center;
+    overflow: hidden;
+    padding: 26px;
+
+    img {
+      object-fit: contain;
+      width: 100%
+    }
+  }
+
+  .form-wrap {
+    padding: 10px;
+
+    .form-input {margin-bottom: 17px}
+
+    label {
+      display: inline-block;
+      font-size: 14px;
+      line-height: 16px;
+    }
+
+    input {
+      border: 1px solid #d6e0ff;
+      border-radius: 4px;
+      color: #00145e;
+      font-family: Rubik, sans-serif;
+      font-size: 14px;
+      margin-top: 6px;
+      width: 100%;
+      height: 40px;
+      line-height: 18px;
+      padding: 0 15px;
+    }
+  }
+
+  .form-submit {
+    margin-bottom: 15px;
+
+    button {
+      border: 2px solid #0061F6;
+      border-radius: 6px;
+      color: #FFFFFF;
+      cursor: pointer;
+      font: 500 14px/16px Rubik,sans-serif;
+      padding: 14px 30px;
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  .form-optional-link {
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 15px;
+    text-align: center;
+
+    a {
+      color: #909bbf;
+      text-decoration: none;
+    }
+  }
+}
+
 .email-wrap {
   background-color: #f5f6fc;
   border-radius: 7px;
@@ -40,7 +121,7 @@
 
   .content-wrap {
     background-color: white;
-    border: 1px solid #D6E0FF;
+    border: 1px solid #d6e0ff;
     border-radius: 4px;
     font-size: 16px;
     font-weight: 400;
@@ -58,7 +139,7 @@
       p {
         padding: 0;
         margin: 0;
-        color: #909BBF;
+        color: #909bbf;
       }
 
       a {word-break: break-all}
@@ -67,7 +148,7 @@
     .button-wrap {padding: 14px 0; text-align: center}
 
     .button {
-      background-color: #005AFF;
+      background-color: #005aff;
       border: 1px solid #09a59a;
       border-radius: 6px;
       color: white;
@@ -78,7 +159,7 @@
     }
 
     .content-misc {
-      color: #909BBF;
+      color: #909bbf;
       margin: 0 auto;
       position: relative;
       text-align: center;

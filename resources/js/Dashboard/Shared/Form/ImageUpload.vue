@@ -36,6 +36,10 @@ export default {
       type: String,
       default: ''
     },
+    change: {
+      type: Function,
+      default: null
+    },
     dimensions: {
       type: Array,
       default: () => null
@@ -143,6 +147,9 @@ export default {
       // Set image body to source
       reader.onload = () => {
         this.imgSrc = reader.result
+        if (typeof this.change === 'function') {
+          this.change(reader)
+        }
       }
       // Check if uploaded image is an SVG file
       if (file.type === 'image/svg+xml') {
