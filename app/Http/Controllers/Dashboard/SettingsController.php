@@ -57,7 +57,10 @@ class SettingsController extends BasicAdminController
                         'update' => route('api.settings.update')
                     ]
                 ],
-                'content' => Settings::where('section', 'login-page')->get()->keyBy('key'),
+                'content' => Settings::whereIn('section', ['login-page', 'login-page'])
+                    ->orWhere('key', 'logo_img')
+                    ->get()
+                    ->keyBy('key'),
             ]
         );
     }

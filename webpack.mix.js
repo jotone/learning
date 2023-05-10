@@ -13,14 +13,8 @@ const {minify, combine} = require("laravel-mix");
  */
 
 mix
-  .js('resources/js/Dashboard/app.js', 'public/js/dashboard.js')
-  .vue()
-  .extract()
-  .disableNotifications()
-
-mix
   .sass('resources/css/reset.scss', 'public/css')
-  .sass('resources/css/dashboard/email-preview.scss', 'public/css/dashboard')
+  .sass('resources/css/dashboard/preview.scss', 'public/css/dashboard')
   .sass('resources/css/dashboard/main.scss', 'public/css/dashboard')
   .sass('resources/css/dashboard/permissions.scss', 'public/css/dashboard')
   .options({
@@ -37,6 +31,12 @@ mix
     }
   })
   .version()
+  .disableNotifications()
+
+mix
+  .js('resources/js/Dashboard/app.js', 'public/js/dashboard.js')
+  .vue()
+  .extract()
   .disableNotifications()
 
 // Copying libs
