@@ -56,7 +56,7 @@ class BasicAdminController extends Controller
     protected function form(string $template, Request $request, array $share = []): Response
     {
         // Get trimmed url
-        $path = rtrim(preg_replace('/(\/create|\/edit\/\d*)/', '', $request->getPathInfo()), '/');
+        $path = rtrim(preg_replace('/(\/create|\/me|\/edit\/\d*)/', '', $request->getPathInfo()), '/');
         // Build parent item for the current route to build top menu
         $parent_item = $this->getMenuParent(AdminMenu::firstWhere(['route' => $path]));
         // Get user permissions list
@@ -88,6 +88,7 @@ class BasicAdminController extends Controller
                 // Default routes
                 'routes' => [
                     'auth' => [
+                        'me' => route('dashboard.users.me'),
                         'logout' => route('auth.logout')
                     ],
                     'dashboard' => [

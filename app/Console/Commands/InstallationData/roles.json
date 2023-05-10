@@ -9,6 +9,7 @@
     "permissions": {
       "App\\Http\\Controllers\\Dashboard\\CoachesController": ["index", "create", "edit"],
       "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\UserController": ["me"],
       "App\\Http\\Controllers\\Api\\UserController": ["index", "store", "update", "destroy"]
     }
   },
@@ -20,6 +21,7 @@
       "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"],
       "App\\Http\\Controllers\\Dashboard\\EmailTemplatesController": ["index", "create", "edit"],
       "App\\Http\\Controllers\\Dashboard\\SettingsController": ["main", "loginPage", "language"],
+      "App\\Http\\Controllers\\Dashboard\\UserController": ["me"],
       "App\\Http\\Controllers\\Api\\EmailTemplateController": ["store", "update", "destroy"],
       "App\\Http\\Controllers\\Api\\SocialMediaLinkController": ["store", "update", "sort", "destroy"],
       "App\\Http\\Controllers\\Api\\SettingsController": ["update"],

@@ -92,4 +92,20 @@ class UserController extends BasicAdminController
             ]
         );
     }
+
+    public function me(Request $request): Response
+    {
+        $user = auth()->user();
+
+        return $this->form(
+            template: 'Users/AdminForm',
+            request: $request,
+            share: [
+                'routes' => [
+                    'update' => route('api.users.update', $user->id)
+                ],
+                'model' => $user
+            ]
+        );
+    }
 }
