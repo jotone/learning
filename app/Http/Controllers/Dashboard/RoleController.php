@@ -29,8 +29,8 @@ class RoleController extends BasicAdminController
                     'roles' => [
                         'list' => route('api.roles.index'),
                         'create' => route('dashboard.users.roles.create'),
-                        'edit' => route('dashboard.users.roles.edit', 0),
-                        'destroy' => route('api.roles.destroy', 0)
+                        'edit' => route('dashboard.users.roles.edit', ':id'),
+                        'destroy' => route('api.roles.destroy', ':id')
                     ]
                 ]
             ]

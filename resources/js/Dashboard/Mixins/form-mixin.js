@@ -20,17 +20,21 @@ export const FormMixin = {
      * @param props
      */
     request(props) {
-      let headers = {
-        "content-type": "multipart/form-data",
-        "accept": "application/json"
-      }
       if (!props.hasOwnProperty('url')) {
         throw new RangeError('Request action method is not set')
       }
+      // Set default request method of not exists
       if (!props.hasOwnProperty('method')) {
         props.method = 'get';
       }
-
+      // Lowercase method name
+      props.method = props.method.toLowerCase();
+      // Set default headers
+      let headers = {
+        "content-type": props.method === "patch" ? "application/x-www-form-urlencoded" : "multipart/form-data",
+        "accept": "application/json"
+      }
+      // Set custom headers
       if (props.hasOwnProperty('headers')) {
         headers = Object.assign(headers, props.headers);
       }

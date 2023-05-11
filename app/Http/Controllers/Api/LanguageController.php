@@ -4,14 +4,32 @@ namespace App\Http\Controllers\Api;
 
 use App\Classes\FileHelper;
 use App\Http\Controllers\BasicApiController;
-use App\Http\Requests\Language\LanguageStoreRequest;
+use App\Http\Requests\Language\{LanguageStoreRequest, LanguageUpdateRequest};
 use App\Traits\LanguageHelper;
 use Illuminate\Http\JsonResponse;
-use Inertia\Response;
 
 class LanguageController extends BasicApiController
 {
     use LanguageHelper;
+
+    /**
+     * Get language file content
+     *
+     * @param string $lang
+     * @param string $file
+     * @return JsonResponse
+     */
+    public function show(string $lang, string $file): JsonResponse
+    {
+        $path = lang_path($lang . '/' . $file . '.php');
+
+        abort_if(!file_exists($path), 404);
+
+        return response()->json([
+            'list' => require $path,
+            'origin' => require lang_path('en/' . $file . '.php')
+        ]);
+    }
 
     /**
      * Create language package
@@ -50,6 +68,29 @@ class LanguageController extends BasicApiController
         $this->writeTranslationsToFiles($source_data, $locale_data, $args['lang']);
 
         return response()->json($args['lang'], 201);
+    }
+
+    /**
+     * Update language file content
+     *
+     * @param LanguageUpdateRequest $request
+     * @return JsonResponse
+     */
+    public function update(LanguageUpdateRequest $request): JsonResponse
+    {
+        // Request data
+        $args = $request->validated();
+        // File path
+        $path = lang_path($args['lang'] . '/' . $args['file'] . '.php');
+        // Check if file exists
+        abort_if(!file_exists($path), 404);
+
+        $file_data = require $path;
+        $file_data[$args['key']] = $args['value'];
+
+        $this->writeTranslationsToFiles([$args['file'] => $file_data], [], $args['lang'], true);
+
+        return response()->json([]);
     }
 
     /**

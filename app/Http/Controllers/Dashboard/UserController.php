@@ -24,13 +24,13 @@ class UserController extends BasicAdminController
             share: [
                 'routes' => [
                     'students' => [
-                        'edit' => route('dashboard.users.edit', 0)
+                        'edit' => route('dashboard.users.edit', ':id')
                     ],
                     'users' => [
                         'list' => route('api.users.index'),
                         'create' => route('dashboard.users.create'),
-                        'edit' => route('dashboard.users.edit', 0),
-                        'destroy' => route('api.users.destroy', 0)
+                        'edit' => route('dashboard.users.edit', ':id'),
+                        'destroy' => route('api.users.destroy', ':id')
                     ]
                 ]
             ]

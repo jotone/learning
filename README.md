@@ -79,18 +79,12 @@ npm i && npm run prod
 - ~~Remove Coach~~
 - ~~Admin Profile~~
 - ~~Login page settings -> preview~~
-- Pages
-  - How to help
-  - terms of service
-  - Privacy policy
-  - Corp. address
 - Language settings
   - ~~Add language~~
   - ~~Select main language~~
   - ~~Remove language package~~
-  - Translation files
-  - View translations form
-  - Save translations
+  - ~~View translations form~~
+  - ~~Save translations~~
   - Apply translations to pages
     - Notifications
     - User list
@@ -103,6 +97,11 @@ npm i && npm run prod
       - Image upload
     - Admin Menu
   - app:reset command
+- Courses////
+- Pages
+  - How to help
+  - Terms of service
+  - Privacy policy
 
 ### Technical debt
 

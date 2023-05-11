@@ -26,8 +26,8 @@ class CoachesController extends BasicAdminController
                     'coaches' => [
                         'list' => route('api.users.index') . '?where[role_id]=' . $coach_role->id,
                         'create' => route('dashboard.settings.coaches.create'),
-                        'edit' => route('dashboard.settings.coaches.edit', 0),
-                        'destroy' => route('api.users.destroy', 0)
+                        'edit' => route('dashboard.settings.coaches.edit',':id'),
+                        'destroy' => route('api.users.destroy', ':id')
                     ]
                 ]
             ]

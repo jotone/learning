@@ -26,8 +26,12 @@ Route::group(['as' => 'api.', 'middleware' => 'auth:sanctum'], function () {
     Route::apiResource('/email-templates', EmailTemplateController::class)->only(['store', 'update', 'destroy']);
     // Language API
     Route::group(['as' => 'language.', 'prefix' => '/language'], function () {
+        // Get language file content
+        Route::get('/{lang}/{file}', [LanguageController::class, 'show'])->name('show');
         // Install language
         Route::post('/', [LanguageController::class, 'store'])->name('store');
+        // Update language translation
+        Route::patch('/', [LanguageController::class, 'update'])->name('update');
         // Remove language package
         Route::delete('/{name}', [LanguageController::class, 'destroy'])->name('destroy');
     });

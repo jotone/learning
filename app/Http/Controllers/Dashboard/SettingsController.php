@@ -85,13 +85,16 @@ class SettingsController extends BasicAdminController
                 ),
                 'routes' => [
                     'language' => [
-                        'destroy' => route('api.language.destroy', 0),
+                        'show' => route('api.language.show', [':lang', ':file']),
                         'store' => route('api.language.store'),
+                        'update' => route('api.language.update'),
+                        'destroy' => route('api.language.destroy', ':lang')
                     ],
                     'settings' => [
                         'update' => route('api.settings.update')
                     ]
-                ]
+                ],
+                'files' => array_map(fn($file) => pathinfo($file, PATHINFO_FILENAME), glob(lang_path('en') . '/*.php'))
             ]
         );
     }

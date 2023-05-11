@@ -83,6 +83,8 @@
     border-collapse: collapse;
     width: 100%;
 
+    tr:nth-child(even) {background-color: $lightBg}
+
     th {
       border-bottom: 1px solid $borderColor;
       color: $light;

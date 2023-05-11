@@ -67,7 +67,7 @@ export default {
      * @returns {*}
      */
     removeLink(id) {
-      return this.$page.props.routes.social.destroy.replace(/0$/, id)
+      return this.$page.props.routes.social.destroy.replace(/:id/, id)
     },
     /**
      * Update social media item
@@ -81,7 +81,7 @@ export default {
 
       this.$parent.$parent.request({
         method: 'post',
-        url: this.$page.props.routes.social.update.replace(/0$/, obj.data('id')),
+        url: this.$page.props.routes.social.update.replace(/:id/, obj.data('id')),
         data: formData,
         msg: "Social Media Link was successfully saved."
       })

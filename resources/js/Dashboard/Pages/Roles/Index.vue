@@ -78,7 +78,7 @@ export default {
      * @return {string}
      */
     roleEdit(id) {
-      return this.$attrs.routes.roles.edit.replace(/0$/, id)
+      return this.$attrs.routes.roles.edit.replace(/:id$/, id)
     },
     /**
      * Generate role remove url
@@ -86,7 +86,7 @@ export default {
      * @return {string}
      */
     roleRemove(id) {
-      return this.$attrs.routes.roles.destroy.replace(/0$/, id)
+      return this.$attrs.routes.roles.destroy.replace(/:id$/, id)
     },
     /**
      * Remove role
