@@ -128,6 +128,7 @@ class AppInstall extends Command
 
         $this->runWithTimer('Installing language packages', function () use ($files) {
             $this->writeTranslationsToFiles($files['lang_en'], [], 'en', true);
+            $this->writeTranslationsToFiles($files['lang_de'], [], 'de', true);
         });
 
         // Generate login css

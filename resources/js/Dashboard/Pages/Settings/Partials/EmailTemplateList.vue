@@ -34,7 +34,7 @@ export default {
      * @return {string}
      */
     editLink(id) {
-      return this.$page.props.routes.emails.edit.replace(/0$/, id)
+      return this.$page.props.routes.emails.edit.replace(/:id/, id)
     },
     /**
      * Remove email template url
@@ -42,7 +42,7 @@ export default {
      * @return {string}
      */
     removeLink(id) {
-      return this.$page.props.routes.emails.destroy.replace(/0$/, id)
+      return this.$page.props.routes.emails.destroy.replace(/:id/, id)
     },
     /**
      * Remove email template

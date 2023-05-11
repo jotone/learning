@@ -82,7 +82,7 @@ export default {
      * @return {string}
      */
     userEdit(model) {
-      return this.$attrs.routes.coaches.edit.replace(/0$/, model.id);
+      return this.$attrs.routes.coaches.edit.replace(/:id/, model.id);
     },
     /**
      * Generate user remove url
@@ -90,7 +90,7 @@ export default {
      * @return {string}
      */
     userRemove(id) {
-      return this.$attrs.routes.coaches.destroy.replace(/0$/, id)
+      return this.$attrs.routes.coaches.destroy.replace(/:id/, id)
     },
     /**
      * Remove user

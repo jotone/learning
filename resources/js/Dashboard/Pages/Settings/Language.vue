@@ -46,7 +46,6 @@
                   </button>
                 </div>
               </form>
-
             </div>
           </div>
 
@@ -77,12 +76,67 @@
                 </div>
 
                 <div class="form-group shift-right">
-                  <button name="apply" class="btn blue">
-                    Add
-                  </button>
+                  <button name="apply" class="btn blue">Add</button>
                 </div>
               </form>
 
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="card col-1">
+            <div class="buttons-settings-wrap short">
+              <ul class="button-settings-bookmarks">
+                <li
+                  v-for="lang in $attrs.installed"
+                  :class="{active: lang === active.lang}"
+                  :data-lang="lang"
+                  @click="viewLang"
+                >
+                  {{ $attrs.available[lang].ucfirst() }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="language-files-wrap">
+              <ul class="language-files-list-wrap">
+                <li
+                  v-for="file in $attrs.files"
+                  :class="{active: file === active.file}"
+                  :data-file="file"
+                  @click="viewFile"
+                >
+                  {{ file.ucfirst() }}
+                </li>
+              </ul>
+
+              <div class="table-group translations-table">
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                    <tr>
+                      <th>
+                        <span>Denotation</span>
+                      </th>
+                      <th>
+                        <span>Value</span>
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(value, field) in translations">
+                      <td>
+                        <span v-html="field.ucfirst()"></span>
+                      </td>
+                      <td>
+                        <InputText :name="field" :value="value" :title="origin[field]"/>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -101,13 +155,15 @@
 
 <script>
 
+import debounce from "debounce"
 import Confirmation from "../../Shared/Confirmation.vue";
 import Method from "../../Shared/Form/Method.vue";
 import {FormMixin} from "../../Mixins/form-mixin";
 import {showNotification} from "../../../libs/notifications";
+import InputText from "../../Shared/Form/InputText.vue";
 
 export default {
-  components: {Confirmation, Method},
+  components: {InputText, Confirmation, Method},
   computed: {
     /**
      * Sorted list of available languages
@@ -133,12 +189,18 @@ export default {
   },
   data() {
     return {
+      active: {
+        lang: 'en',
+        file: 'auth'
+      },
       // Clone available languages object
-      availableLanguages: {...this.$page.props.available}
+      availableLanguages: {...this.$page.props.available},
+      // Origin english field value
+      origin: [],
+      // Translated field values
+      translations: []
     }
   },
-  mixins: [FormMixin],
-  name: "Settings/Language",
   methods: {
     /**
      * Remove language package click
@@ -161,7 +223,7 @@ export default {
 
         confirm.then(res => res && this.request({
             method: 'delete',
-            url: btn.data('url').replace(/0$/, lang.short),
+            url: btn.data('url').replace(/:lang/, lang.short),
             msg: `Language package "${lang.short}" was successfully removed.`,
             onSuccess: () => {
               this.availableLanguages[lang.short] = lang.full
@@ -172,13 +234,80 @@ export default {
       }
     },
     /**
+     * Get file translations for selected language
+     */
+    fileTranslations() {
+      $.axios
+        .get(this.$attrs.routes.language.show.replace(/:lang/, this.active.lang).replace(/:file/, this.active.file))
+        .then(response => {
+          if (200 === response.status) {
+            let translations = {}, origin = {}
+            for (let field in response.data.list) {
+              const value = response.data.list[field]
+              const originValue = response.data.origin[field]
+              if (typeof value === 'object') {
+                for (let key in value) {
+                  const innerKey = `<b>${field}</b>.${key}`
+                  translations[innerKey] = value[key]
+                  origin[innerKey] = originValue[key]
+                }
+              } else {
+                translations[field] = value
+                origin[field] = originValue
+              }
+            }
+            this.translations = translations
+            this.origin = origin
+          }
+        })
+    },
+    /**
      * Remove selected language from the list of available packages
      * @param response
      */
     removeAvailableLang(response) {
       this.$page.props.installed.push(response.data)
       delete this.availableLanguages[response.data]
+    },
+    /**
+     * Select file
+     * @param e
+     */
+    viewFile(e) {
+      this.active.file = $(e.target).closest('li').attr('data-file')
+      this.fileTranslations()
+    },
+    /**
+     * Select language
+     * @param e
+     */
+    viewLang(e) {
+      this.active.lang = $(e.target).closest('li').attr('data-lang')
+      this.fileTranslations()
     }
-  }
+  },
+  mixins: [FormMixin],
+  mounted() {
+    this.active.lang = $('.buttons-settings-wrap li.active').attr('data-lang')
+    this.active.file = $('.language-files-list-wrap li.active').attr('data-file')
+    this.fileTranslations()
+
+    $('.translations-table').on('keyup', 'input[type="text"]', debounce(e => {
+      const _this = $(e.target).closest('input')
+      const data = {
+        lang: this.active.lang,
+        file: this.active.file,
+        key: _this.attr('name'),
+        value: _this.val().trim()
+      };
+      this.request({
+        method: 'patch',
+        url: this.$attrs.routes.language.update,
+        data: data,
+        msg: `Translation for the field "${data.key}" was successfully saved.`
+      })
+    }, 500))
+  },
+  name: "Settings/Language"
 }
 </script>

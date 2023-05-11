@@ -24,6 +24,28 @@ class LanguageApiTest extends TestCase
     }
 
     /**
+     * Test getting the language file content
+     *
+     * @return void
+     */
+    public function testGetTranslationsList()
+    {
+        $folder = Arr::random(glob(lang_path('/*'), GLOB_ONLYDIR));
+
+        $file = pathinfo(Arr::random(glob($folder . '/*.php')), PATHINFO_FILENAME);
+
+        $lang = substr($folder, strrpos($folder, '/') + 1);
+
+        $this->actingAs(self::$actor)
+            ->get(route('api.language.show', [$lang, $file]))
+            ->assertOk()
+            ->assertJsonStructure([
+                'list',
+                'origin'
+            ]);
+    }
+
+    /**
      * Language installation test
      *
      * @return void
@@ -47,6 +69,31 @@ class LanguageApiTest extends TestCase
     }
 
     /**
+     * Test updating the language file content
+     *
+     * @return void
+     */
+    public function testUpdateTranslation()
+    {
+        $path = lang_path('en/auth.php');
+        $origin_translations = require $path;
+
+        $key = Arr::random(array_keys($origin_translations));
+        $value = $this->faker->text(50);
+
+        $this->actingAs(self::$actor)
+            ->patch(route('api.language.update'), [
+                'lang' => 'en',
+                'file' => 'auth',
+                'key' => $key,
+                'value' => $value
+            ])
+            ->assertOk();
+
+        $this->assertStringContainsString($value, file_get_contents($path));
+    }
+
+    /**
      * Language remove test
      *
      * @return void
@@ -58,7 +105,7 @@ class LanguageApiTest extends TestCase
             array_filter(glob(lang_path() . '/*', GLOB_ONLYDIR), fn($item) => $item !== lang_path('en'))
         )));
 
-        $response = $this->actingAs(self::$actor)
+        $this->actingAs(self::$actor)
             ->delete(route('api.language.destroy', $lang_to_remove))
             ->assertNoContent();
 
