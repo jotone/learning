@@ -17,10 +17,12 @@ trait LanguageHelper
      */
     protected function translationRow(array $locale_data, string $data, string $row, string $key = ''): string
     {
-        $val = isset($locale_data[$row])
-            ? preg_replace('/\'/', '&apos;', $this->lowercaseAttr($locale_data[$row]))
-            : $data;
-        return sprintf("    '%s' => '%s',\n", empty($key) ? $row : $key, $val);
+        $val = isset($locale_data[$row]) ? $this->lowercaseAttr($locale_data[$row]) : $data;
+
+        return sprintf("    '%s' => '%s',\n",
+            empty($key) ? $row : $key,
+            preg_replace('/\'/', '&apos;', $val)
+        );
     }
 
     /**
