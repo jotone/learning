@@ -29,7 +29,7 @@ export default {
     },
     okText: {
       type: String,
-      default: 'Yes'
+      default: this.lang('common.yes')
     },
     noBtnClass: {
       type: String,
@@ -37,7 +37,7 @@ export default {
     },
     noText: {
       type: String,
-      default: 'No'
+      default: this.lang('common.no')
     }
   },
   methods: {

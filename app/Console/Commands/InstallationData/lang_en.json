@@ -12,7 +12,9 @@
       "info": "Your image should be in :formats format and <br> smaller than :size.<br>The recommended image size should be greater than :dimensions pixels.",
       "text": "Drag your image here, or <span> choose an<br> image file on your computer </span> to upload"
     },
-    "submit": "Submit"
+    "no": "No",
+    "submit": "Submit",
+    "yes": "Yes"
   },
   "pagination": {
     "previous": "&laquo; Previous",

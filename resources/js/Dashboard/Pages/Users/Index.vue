@@ -17,7 +17,7 @@
             <div class="table-info"></div>
 
             <div class="table-filtering">
-              <SearchForm/>
+              <SearchForm placeholder="Search for users…"/>
             </div>
           </div>
 

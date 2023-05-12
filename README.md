@@ -88,17 +88,14 @@ npm i && npm run prod
   - Apply translations to pages
     - ~~Email~~
     - ~~Auth~~
+    - Admin Menu
     - User list
     - Role list
     - Main settings
     - Login page
     - Language settings
     - Notifications
-    - Forms
-      - Button settings
-      - Image upload
-    - Admin Menu
-- Extract all libs
+    - ~~Forms~~
 - app:reset command
 - Courses////
 - Pages

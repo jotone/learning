@@ -12,7 +12,9 @@
       "info": "Dein Bild sollte im :formats Format sein und <br> kleiner als :size.<br>Die empfohlene Bildgröße sollte größer sein als :dimensions pixel.",
       "text": "Ziehe dein Bild hierher oder <span> wähle eine<br> Bilddatei auf deinem Computer </span> zum Hochladen"
     },
-    "submit": "Einreichen"
+    "no": "Nein",
+    "submit": "Einreichen",
+    "yes": "Ja"
   },
   "pagination": {
     "previous": "&laqo; Zurück",

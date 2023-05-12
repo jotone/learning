@@ -14,8 +14,8 @@
     </select>
   </div>
 </template>
-<script>
 
+<script>
 import { Timezone } from "../../../libs/timezone";
 
 export default {
