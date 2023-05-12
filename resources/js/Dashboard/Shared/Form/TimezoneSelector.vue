@@ -17,7 +17,6 @@
 <script>
 
 import { Timezone } from "../../../libs/timezone";
-import 'select2/dist/js/select2.min'
 
 export default {
   data() {
@@ -44,7 +43,3 @@ export default {
   }
 }
 </script>
-
-<style>
-@import "/node_modules/select2/dist/css/select2.min.css";
-</style>

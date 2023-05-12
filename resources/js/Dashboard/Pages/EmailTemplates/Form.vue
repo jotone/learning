@@ -387,8 +387,3 @@ export default {
   name: "EmailTemplates/Form"
 }
 </script>
-
-<style>
-@import "/node_modules/@fancyapps/ui/dist/fancybox/fancybox.css";
-@import "/public/css/dashboard/preview.css";
-</style>

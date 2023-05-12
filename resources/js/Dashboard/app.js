@@ -2,9 +2,10 @@ import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import axios from "axios";
 import jquery from "jquery";
+import "select2/dist/js/select2.min"
 
 window.$ = jquery
-window.$.axios = axios
+window.axios = axios
 
 createInertiaApp({
   resolve: name => require(`./Pages/${name}.vue`),

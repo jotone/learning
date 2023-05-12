@@ -124,7 +124,3 @@ npm i && npm run prod
   - Course Invitation email & Preview
   - Check coaches and admins has avatars when the communities are allowed
     formatOption
-
-// dashboard.js 107.2
-// manifest.js 1.5
-// vendor 833.2

@@ -38,7 +38,7 @@ export const FormMixin = {
         headers = Object.assign(headers, props.headers);
       }
 
-      $.axios.interceptors.request.use(config => {
+      axios.interceptors.request.use(config => {
         if (props.hasOwnProperty('beforeRequest') && (typeof props.beforeRequest === 'function' || null === props.beforeRequest)) {
           null !== props.beforeRequest && props.beforeRequest()
         } else {
@@ -48,7 +48,7 @@ export const FormMixin = {
         return config;
       });
 
-      $.axios[props.method](props.url, props.data ?? [], {headers: headers})
+      axios[props.method](props.url, props.data ?? [], {headers: headers})
         .then(response => {
           $('.preloader').hide()
 

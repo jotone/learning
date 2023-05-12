@@ -210,7 +210,6 @@ import Method from "../../Shared/Form/Method.vue";
 import InputColor from "../../Shared/Form/InputColor.vue";
 import SocialMediaList from "../Settings/Partials/SocialMediaList.vue";
 import EmailTemplateList from "../Settings/Partials/EmailTemplateList.vue";
-import 'select2/dist/js/select2.min'
 
 export default {
   components: {EmailTemplateList, InputColor, InputText, Method, SocialMediaList},
@@ -297,8 +296,3 @@ export default {
   }
 }
 </script>
-
-<style>
-@import "/node_modules/@fancyapps/ui/dist/fancybox/fancybox.css";
-@import "/node_modules/select2/dist/css/select2.min.css";
-</style>

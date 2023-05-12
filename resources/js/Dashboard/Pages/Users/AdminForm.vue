@@ -27,9 +27,6 @@
 
 <script>
 import {FormMixin} from "../../Mixins/form-mixin";
-import ImageUpload from "../../Shared/Form/ImageUpload.vue";
-import InputText from "../../Shared/Form/InputText.vue";
-import TextArea from "../../Shared/Form/TextArea.vue";
 import SimpleUserForm from "./Partials/SimpleUserForm.vue";
 
 export default {

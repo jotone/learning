@@ -237,8 +237,7 @@ export default {
      * Get file translations for selected language
      */
     fileTranslations() {
-      $.axios
-        .get(this.$attrs.routes.language.show.replace(/:lang/, this.active.lang).replace(/:file/, this.active.file))
+      axios.get(this.$attrs.routes.language.show.replace(/:lang/, this.active.lang).replace(/:file/, this.active.file))
         .then(response => {
           if (200 === response.status) {
             let translations = {}, origin = {}

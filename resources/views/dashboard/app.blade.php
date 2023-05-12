@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link type="text/css" rel="stylesheet" href="{{ mix('css/reset.css') }}"/>
-  <link type="text/css" rel="stylesheet" href="{{ mix('css/dashboard/main.css') }}"/>
+  <link type="text/css" rel="stylesheet" href="{{ asset('css/reset.css') }}"/>
+  <link type="text/css" rel="stylesheet" href="{{ asset('css/dashboard/libs.min.css') }}"/>
+  <link type="text/css" rel="stylesheet" href="{{ asset('css/dashboard/main.css') }}"/>
 
   <title>{{ $settings['site_title'] }}</title>
 </head>
@@ -22,6 +23,5 @@
     <script src="{{ $script }}"></script>
   @endforeach
 @endisset
-
 </body>
 </html>

@@ -130,8 +130,3 @@ export default {
   }
 }
 </script>
-
-<style>
-@import "country-select-js/build/css/countrySelect.min.css";
-@import "intl-tel-input/build/css/intlTelInput.min.css";
-</style>

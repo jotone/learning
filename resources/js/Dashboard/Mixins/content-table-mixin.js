@@ -48,13 +48,12 @@ export const ContentTableMixin = {
         url = this.url + this.filtersToUri()
       }
 
-      $.axios.interceptors.request.use(config => {
+      axios.interceptors.request.use(config => {
         $('.preloader').show()
         return config;
       });
 
-      return $.axios.get(url)
-        .then(response => {
+      return axios.get(url).then(response => {
           $('.preloader').hide()
           if (200 === response.status) {
             this.setPaginationOptions(response.data.meta)
@@ -69,7 +68,7 @@ export const ContentTableMixin = {
 
         this.$refs.confirmation
           .open()
-          .then(res => res && $.axios.delete(obj.attr('href'))
+          .then(res => res && axios.delete(obj.attr('href'))
             .then(response => {
               if (204 === response.status) {
                 this.getCollection().then(() => {

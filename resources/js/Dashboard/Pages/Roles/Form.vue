@@ -108,7 +108,3 @@ export default {
   name: "Roles/Form",
 }
 </script>
-
-<style>
-@import "/public/css/dashboard/permissions.css";
-</style>

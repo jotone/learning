@@ -1,6 +1,5 @@
 const mix = require('laravel-mix');
 const fs = require('fs')
-const {minify, combine} = require("laravel-mix");
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -13,10 +12,15 @@ const {minify, combine} = require("laravel-mix");
  */
 
 mix
+  .disableNotifications()
   .sass('resources/css/reset.scss', 'public/css')
-  .sass('resources/css/dashboard/preview.scss', 'public/css/dashboard')
   .sass('resources/css/dashboard/main.scss', 'public/css/dashboard')
-  .sass('resources/css/dashboard/permissions.scss', 'public/css/dashboard')
+  .styles([
+    'node_modules/select2/dist/css/select2.min.css',
+    'node_modules/country-select-js/build/css/countrySelect.min.css',
+    'node_modules/intl-tel-input/build/css/intlTelInput.min.css',
+    'node_modules/@fancyapps/ui/dist/fancybox/fancybox.css'
+  ], 'public/css/dashboard/libs.min.css')
   .options({
     postCss: [
       require('postcss-discard-comments')({removeAll: true})
@@ -35,9 +39,8 @@ mix
 
 mix
   .js('resources/js/Dashboard/app.js', 'public/js/dashboard.js')
-  .vue()
-  .extract()
-  .disableNotifications()
+  .vue({version: 3})
+  .extract(['vue', 'jquery', 'axios'])
 
 // Copying libs
 // CKEditor 4
@@ -86,14 +89,4 @@ try {
       }
     }
   })
-}
-
-// Copy JQuery
-try {
-  fs.accessSync('./public/js/jquery.min.js')
-} catch (e) {
-  mix.combine(
-    ['node_modules/jquery/dist/jquery.min.js', 'node_modules/axios/dist/axios.min.js'],
-    'public/js/jquery.min.js'
-  )
 }

@@ -8,7 +8,7 @@
         class="form-input"
         data-jscolor="{format:'hex', previewSize:40}"
         :name="name"
-        :value="getValue"
+        :value="value"
       >
 
     </label>
@@ -21,13 +21,18 @@ import "@eastdesire/jscolor/jscolor"
 
 export default {
   name: "InputColor",
-  props: ["caption", "name", "value"],
-  computed: {
-    getCaption() {
-      return this.caption ?? ''
+  props: {
+    caption: {
+      type: String,
+      default: ''
     },
-    getValue() {
-      return typeof this.value === 'string' ? this.value : ''
+    name: {
+      type: String,
+      default: ''
+    },
+    value: {
+      type: [Number, String],
+      default: ''
     }
   },
   mounted() {

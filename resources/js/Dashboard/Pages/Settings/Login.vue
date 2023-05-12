@@ -200,7 +200,3 @@ export default {
   name: "Settings/Login"
 }
 </script>
-
-<style>
-@import "/public/css/dashboard/preview.css";
-</style>
