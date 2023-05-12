@@ -27,7 +27,7 @@ class ForgotPasswordEmail extends AbstractMailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Forgot Password Email',
+            subject: $this->template->name
         );
     }
 

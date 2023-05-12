@@ -4,15 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Classes\FileHelper;
 use App\Http\Controllers\BasicApiController;
-use App\Http\Requests\User\UserStoreRequest;
-use App\Http\Requests\User\UserUpdateRequest;
+use App\Http\Requests\User\{UserStoreRequest, UserUpdateRequest};
 use App\Http\Resources\UserResource;
 use App\Jobs\SendRegistrationEmail;
-use Illuminate\Support\Facades\Auth;
 use App\Models\{Role, User, UserInfo};
 use Illuminate\Http\{JsonResponse, Request, UploadedFile};
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\{Auth, DB};
 
 class UserController extends BasicApiController
 {

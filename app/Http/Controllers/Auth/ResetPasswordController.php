@@ -47,19 +47,25 @@ class ResetPasswordController extends Controller
     public function send(ForgotPasswordRequest $request): RedirectResponse
     {
         $user = User::firstWhere('email', $request->get('email'));
+        // Check user exists
+        if (!$user) {
+            return redirect()->route('auth.index')->withErrors([
+                'email' => __('passwords.user')
+            ]);
+        }
         // Check if user has missing-details status
         if ('missing-details' === config('enums.user.statuses')[$user->status]) {
             // Send registration email
             SendRegistrationEmail::dispatch($user);
 
             return redirect()->route('auth.index')->withErrors([
-                'email' => 'Registration email has been resent. Please check your inbox for the registration email or contact the administrator to resend it to you.'
+                'email' => __('registration.check_inbox_msg')
             ]);
         }
         // Check if user is suspended
         if ('suspended' === config('enums.user.statuses')[$user->status]) {
             return redirect()->route('auth.index')->withErrors([
-                'email' => 'You are account has been suspended. Please contact the admin or the support.'
+                'email' => __('user.suspended_msg')
             ]);
         }
         // Generate random token
@@ -73,7 +79,9 @@ class ResetPasswordController extends Controller
         // Send email
         SendForgotPasswordEmail::dispatch($user, md5($token));
 
-        return redirect(route('auth.index') . '#forgot')->withErrors(['email' => 'Please check your email.']);
+        return redirect(route('auth.index') . '#forgot')->withErrors([
+            'email' => __('passwords.sent')
+        ]);
     }
 
     /**
@@ -91,7 +99,7 @@ class ResetPasswordController extends Controller
         // Check if reset link not exists or link has benn expired
         if (time() > $reset->created_at->addWeek()->timestamp) {
             return redirect(route('auth.index') . '#forgot')->withErrors([
-                'email' => 'The link is expired. Try sending your password reset request again.'
+                'email' => __('passwords.expired')
             ]);
         }
         // Set password
@@ -100,6 +108,6 @@ class ResetPasswordController extends Controller
         // Remove the password reset record
         $reset->delete();
 
-        return redirect()->route('auth.index')->withErrors(['email' => 'Now you can log in using new password.']);
+        return redirect()->route('auth.index')->withErrors(['email' => __('passwords.reset')]);
     }
 }

@@ -1,9 +1,10 @@
 {
-    "/js/dashboard.js": "/js/dashboard.js?id=d96c7629e5ed0af74756da2095982733",
+    "/js/dashboard.js": "/js/dashboard.js?id=6e8d50f5804328fadc9612fb72d3e976",
     "/js/manifest.js": "/js/manifest.js?id=4e4a1941a114a5d7dda5dccfec091c6a",
     "/css/dashboard/permissions.css": "/css/dashboard/permissions.css?id=430e2bda109adb386a09ac0d86a2d51e",
-    "/css/dashboard/main.css": "/css/dashboard/main.css?id=939ff4b1a2d72830c5e7eb9a8361b75e",
+    "/css/dashboard/main.css": "/css/dashboard/main.css?id=fc519826c4c865b44d23fa0c53b2aeec",
     "/css/dashboard/preview.css": "/css/dashboard/preview.css?id=e5420a0ed2083e939cbf65b77ddf7c4a",
     "/css/reset.css": "/css/reset.css?id=df9761d83a99dcc49eee87d39f55e098",
-    "/js/vendor.js": "/js/vendor.js?id=3be0d00cbd30871773d904c502fdfc8e"
+    "/js/vendor.js": "/js/vendor.js?id=3be0d00cbd30871773d904c502fdfc8e",
+    "/js/jquery.min.js": "/js/jquery.min.js?id=fc29baf35f3f0aa5948707cee84848cf"
 }

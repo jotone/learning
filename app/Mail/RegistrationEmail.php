@@ -27,7 +27,7 @@ class RegistrationEmail extends AbstractMailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Registration Email',
+            subject: $this->template->name
         );
     }
 

@@ -28,6 +28,7 @@ trait PermissionListTrait
                     $path = ucfirst(substr($file->getPath(), strlen(base_path()) + 1)) . '/' . pathinfo($file->getFilename(), PATHINFO_FILENAME);
                     // Class name
                     $class_name = preg_replace('/\//', '\\', $path);
+
                     $result[] = [
                         'file' => str_replace('App\Http\Controllers\\', '', $class_name),
                         'class' => $class_name,

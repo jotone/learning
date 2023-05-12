@@ -133,27 +133,16 @@
     .icon {transform: scale(1.2)}
   }
 
-  .drag-list-dropdown {
-    .select2-container {
-      min-width: 120px;
-
-      .select2-selection--single {height: 40px; border-color: $borderColor}
-
-      .select2-selection__arrow {height: 36px}
-
-      .select2-selection__rendered {padding-left: 0}
-    }
-  }
-
   .option-small {
     align-items: center;
     display: flex;
     justify-content: flex-start;
     flex-wrap: nowrap;
     font-size: 14px;
-    height: 40px;
+    height: 38px;
     line-height: 18px;
-    padding: 0 5px;
+    margin-left: -4px;
+    padding-right: 5px;
 
     .icon {
       background-color: $primary;
@@ -173,6 +162,24 @@
 }
 
 .select2-results .option-small {height: 20px}
+
+.card {
+  .select2-container {
+    min-width: 120px;
+
+    .select2-selection--single {
+      height: 40px;
+      border-color: $borderColor;
+
+      .select2-selection__arrow {height: 36px}
+
+      .select2-selection__rendered {
+        padding-left: 8px;
+        line-height: 40px
+      }
+    }
+  }
+}
 
 .buttons-settings-wrap {
   margin: 10px 0 20px;

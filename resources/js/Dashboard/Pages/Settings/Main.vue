@@ -114,17 +114,7 @@
               <div class="card-title">
                 Timezone
               </div>
-              <div class="form-group">
-                <select name="site_timezone" class="form-select">
-                  <option
-                    v-for="(timezone, key) in timezones"
-                    :selected="key === $attrs.content.site_timezone.value"
-                    :value="key"
-                  >
-                    {{ key }}
-                  </option>
-                </select>
-              </div>
+              <TimezoneSelector name="site_timezone" :value="$attrs.content.site_timezone.value"/>
             </div>
 
             <div class="card">
@@ -168,20 +158,17 @@ import ImageUpload from "../../Shared/Form/ImageUpload.vue";
 import InputText from "../../Shared/Form/InputText.vue";
 import Method from "../../Shared/Form/Method.vue";
 import TextArea from "../../Shared/Form/TextArea.vue";
+import TimezoneSelector from "../../Shared/Form/TimezoneSelector.vue";
 import { FormMixin } from "../../Mixins/form-mixin";
-import { Timezone } from "../../../libs/timezone";
 
 export default {
-  components: {ButtonSettings, ImageUpload, InputText, Method, TextArea},
+  components: {ButtonSettings, ImageUpload, InputText, Method, TextArea, TimezoneSelector},
   data() {
     return {
       customDomainEnabled: this.$attrs.content.site_custom_url.value.length > 0,
       customDomainSet: this.$attrs.content.site_custom_url.value.length > 0,
-      timezones: Timezone
     }
   },
-  mixins: [FormMixin],
-  name: "Settings/Main",
   methods: {
     enableCustomDomain(e) {
       this.customDomainEnabled = $(e.target).closest('input[type="checkbox"]').prop('checked')
@@ -193,6 +180,8 @@ export default {
       const value = $(e.target).closest('input').val().trim()
       this.customDomainSet = value.length > 0 && value.indexOf('.') > 0
     }
-  }
+  },
+  mixins: [FormMixin],
+  name: "Settings/Main"
 }
 </script>

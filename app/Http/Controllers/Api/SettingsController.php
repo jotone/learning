@@ -62,10 +62,8 @@ class SettingsController extends BasicApiController
     {
         // Get request data
         $args = $request->only($this->settings_list);
-
         // Convert request data and extract $rules and $data variables
         extract($this->treatRequestData($args));
-
         // Run request validation
         $validation = Validator::make($args, $rules);
         if ($validation->fails()) {

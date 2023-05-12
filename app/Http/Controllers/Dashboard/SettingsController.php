@@ -30,11 +30,9 @@ class SettingsController extends BasicAdminController
                         'update' => route('api.settings.update')
                     ]
                 ],
-                'content' => Settings::whereIn('section', [
-                    'custom-scripts',
-                    'site-info',
-                    'main-colors'
-                ])->get()->keyBy('key'),
+                'content' => Settings::whereIn('section', ['custom-scripts', 'site-info', 'main-colors'])
+                    ->get()
+                    ->keyBy('key'),
                 'overrideCss' => file_exists($override_path) ? file_get_contents($override_path) : ''
             ]
         );

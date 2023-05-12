@@ -93,6 +93,12 @@ class UserController extends BasicAdminController
         );
     }
 
+    /**
+     * Admin profile page
+     *
+     * @param Request $request
+     * @return Response
+     */
     public function me(Request $request): Response
     {
         $user = auth()->user();

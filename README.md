@@ -86,17 +86,20 @@ npm i && npm run prod
   - ~~View translations form~~
   - ~~Save translations~~
   - Apply translations to pages
-    - Notifications
+    - ~~Email~~
+    - ~~Auth~~
     - User list
     - Role list
     - Main settings
     - Login page
     - Language settings
+    - Notifications
     - Forms
       - Button settings
       - Image upload
     - Admin Menu
-  - app:reset command
+- Extract all libs
+- app:reset command
 - Courses////
 - Pages
   - How to help
@@ -120,3 +123,8 @@ npm i && npm run prod
     - Activation URL
   - Course Invitation email & Preview
   - Check coaches and admins has avatars when the communities are allowed
+    formatOption
+
+// dashboard.js 107.2
+// manifest.js 1.5
+// vendor 833.2

@@ -35,7 +35,7 @@
     </div>
 
     <div class="follow-wrap">
-      <p>If the button is not working, click the link below:</p>
+      <p>@lang('registration.email_click_link'):</p>
       <a href="{{ $activation_url }}">{{ $activation_url }}</a>
     </div>
 

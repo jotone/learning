@@ -40,10 +40,10 @@
         <form action="{{ route('reset.update', $token) }}" method="POST">
           @csrf
           <div class="form-text">
-            <p>Please set a password to activate your account</p>
+            <p>@lang('passwords.msg')</p>
           </div>
           <div class="form-input">
-            <label for="email">E-Mail</label>
+            <label for="email">@lang('profile.email')</label>
             <input
               autofocus=""
               autocomplete="off"
@@ -56,9 +56,7 @@
           </div>
 
           <div class="form-input">
-            <label for="password">
-              Password
-            </label>
+            <label for="password">@lang('profile.password')</label>
             <input
               autocomplete="off"
               id="password"
@@ -69,9 +67,7 @@
           </div>
 
           <div class="form-input">
-            <label for="password">
-              Confirm password
-            </label>
+            <label for="confirmation">@lang('profile.confirmation')</label>
             <input
               autocomplete="off"
               id="confirmation"
@@ -82,7 +78,7 @@
           </div>
 
           <div class="form-submit">
-            <button type="submit">Set password</button>
+            <button type="submit">@lang('passwords.set_btn')</button>
           </div>
         </form>
       </div>

@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Models\{AdminMenu, Permission, Role};
+use App\Models\AdminMenu;
 
 trait CommandsTrait
 {
@@ -35,30 +35,6 @@ trait CommandsTrait
     }
 
     /**
-     * Process front menu data
-     * @param int $position
-     * @param array $data
-     * @param int $parent_id
-     *
-     * protected function createFrontMenuItem(int $position, array $data, int $parent_id = 0)
-     * {
-     * $menu = FrontMenu::create([
-     * 'title'     => $data['title'],
-     * 'route'     => $data['route'],
-     * 'position'  => $position,
-     * 'parent_id' => $parent_id,
-     * 'img_url'   => $data['img_url'] ?? '',
-     * 'enabled'   => $data['enabled'] ?? true
-     * ]);
-     *
-     * if (!empty($data['inner'])) {
-     * foreach ($data['inner'] as $position => $item) {
-     * $this->createFrontMenuItem($position, $item, $menu->id);
-     * }
-     * }
-     * }*/
-
-    /**
      * Create admin menu
      *
      * @param array $admin_menu
@@ -86,8 +62,10 @@ trait CommandsTrait
         $timestamp = microtime(true);
         // Run routine
         $result = $callback();
+        // Execution time
+        $timestamp = number_format((microtime(true) - $timestamp) * 1000);
         // Show the console message
-        $this->components->twoColumnDetail($message, '<fg=gray>' . number_format((microtime(true) - $timestamp) * 1000, 0) . 'ms</> <fg=green>DONE</>');
+        $this->components->twoColumnDetail($message, '<fg=gray>' . $timestamp . 'ms</> <fg=green>DONE</>');
 
         return $result;
     }
