@@ -1,7 +1,6 @@
 import Layout from "../Shared/Layout.vue";
 import SaveButton from "../Shared/Form/SaveButton.vue";
 import {showNotification, XHRErrorHandle} from "../../libs/notifications";
-import ImageUpload from "../Shared/Form/ImageUpload.vue";
 
 export const FormMixin = {
   components: {Layout, SaveButton},

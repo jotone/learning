@@ -93,7 +93,8 @@ class BasicAdminController extends Controller
                     ],
                     'dashboard' => [
                         'index' => route('dashboard.index', [], false)
-                    ]
+                    ],
+                    'translations' => route('api.language.index')
                 ],
                 // Default site settings
                 'settings' => Settings::where('section', 'hidden')->pluck('value', 'key')->toArray(),

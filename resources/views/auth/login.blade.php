@@ -40,7 +40,7 @@
         <form class="form-switch" data-trigger="login" action="{{ route('auth.login') }}" method="POST">
           @csrf
           <div class="form-input">
-            <label for="email">E-Mail</label>
+            <label for="email">@lang('profile.email')</label>
             <input
               autofocus=""
               autocomplete="off"
@@ -53,9 +53,7 @@
           </div>
 
           <div class="form-input">
-            <label for="password">
-              Password
-            </label>
+            <label for="password">@lang('profile.password')</label>
             <input
               autocomplete="off"
               id="password"
@@ -66,7 +64,7 @@
           </div>
 
           <div class="form-submit">
-            <button type="submit">Login</button>
+            <button type="submit">@lang('auth.login')</button>
           </div>
         </form>
 
@@ -74,18 +72,18 @@
           @csrf
 
           <div class="form-input">
-            <label for="forgot-email">E-Mail</label>
+            <label for="forgot-email">@lang('profile.email')</label>
             <input autocomplete="off" id="forgot-email" name="email" class="form-input" type="email" required="">
           </div>
 
           <div class="form-submit">
-            <button>Submit</button>
+            <button>@lang('common.submit')</button>
           </div>
         </form>
 
         <div class="form-optional-link">
-          <a href="#" data-target="forgot">Forgot password?</a>
-          <a href="#" data-target="login" class="">Cancel</a>
+          <a href="#" data-target="forgot">@lang('auth.forgot_pwd')</a>
+          <a href="#" data-target="login" class="">@lang('common.cancel')</a>
         </div>
       </div>
     </div>

@@ -32,19 +32,7 @@
                 <div class="form-group">
                   <label class="caption">
                     <span>Timezone</span>
-                    <select name="timezone" class="form-select">
-                      <template v-for="(timezoneList, key) in timezones">
-                        <optgroup :label="key">
-                          <option
-                            v-for="timezone in timezoneList"
-                            :selected="$attrs.hasOwnProperty('model') && $attrs.model.timezone === key"
-                            :value="key"
-                          >
-                            {{ timezone }}
-                          </option>
-                        </optgroup>
-                      </template>
-                    </select>
+                    <TimezoneSelector name="timezone" :value="$attrs?.model?.timezone"/>
                   </label>
                 </div>
 
@@ -99,6 +87,7 @@ import ImageUpload from "../../Shared/Form/ImageUpload.vue";
 import InputText from "../../Shared/Form/InputText.vue";
 import Selector from "../../Shared/Form/Selector.vue";
 import TextArea from "../../Shared/Form/TextArea.vue";
+import TimezoneSelector from "../../Shared/Form/TimezoneSelector.vue";
 import {FormMixin} from "../../Mixins/form-mixin";
 import {Timezone} from "../../../libs/timezone";
 import "country-select-js/build/js/countrySelect";
@@ -106,7 +95,7 @@ import "intl-tel-input/build/js/intlTelInput-jquery.min"
 import SimpleUserForm from "./Partials/SimpleUserForm.vue";
 
 export default {
-  components: {SimpleUserForm, ImageUpload, InputText, Selector, TextArea},
+  components: {SimpleUserForm, ImageUpload, InputText, Selector, TextArea, TimezoneSelector},
   data() {
     return {
       timezones: Timezone

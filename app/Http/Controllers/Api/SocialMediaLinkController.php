@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BasicApiController;
-use App\Http\Requests\SocialMediaLink\SocialMediaLinkRequest;
-use App\Http\Requests\SocialMediaLink\SocialMediaSortRequest;
+use App\Http\Requests\SocialMediaLink\{SocialMediaLinkRequest, SocialMediaSortRequest};
 use App\Models\SocialMediaLink;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class SocialMediaLinkController extends BasicApiController
 {

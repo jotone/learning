@@ -1,19 +1,44 @@
 {
   "auth": {
     "failed": "These credentials do not match our records.",
+    "forgot_pwd": "Forgot password?",
+    "login": "Login",
     "password": "The provided password is incorrect.",
     "throttle": "Too many login attempts. Please try again in :seconds seconds."
+  },
+  "common": {
+    "cancel": "Cancel",
+    "image": {
+      "info": "Your image should be in :formats format and <br> smaller than :size.<br>The recommended image size should be greater than :dimensions pixels.",
+      "text": "Drag your image here, or <span> choose an<br> image file on your computer </span> to upload"
+    },
+    "submit": "Submit"
   },
   "pagination": {
     "previous": "&laquo; Previous",
     "next": "Next &raquo;"
   },
   "passwords": {
-    "reset": "Your password has been reset!",
-    "sent": "We have emailed your password reset link!",
+    "expired": "The link is expired. Try sending your password reset request again.",
+    "msg": "Please set a password to activate your account",
+    "reset": "Now you can log in using new password.",
+    "sent": "Please check your email.",
+    "set_btn": "Set password",
     "throttled": "Please wait before retrying.",
     "token": "This password reset token is invalid.",
     "user": "We can't find a user with that email address."
+  },
+  "profile": {
+    "confirmation": "Confirm password",
+    "email": "E-mail",
+    "password": "Password"
+  },
+  "registration": {
+    "check_inbox_msg": "Registration email has been resent. Please check your inbox for the registration email or contact the administrator to resend it to you.",
+    "email_click_link": "If the button is not working, click the link below"
+  },
+  "user": {
+    "suspended_msg": "Your account has been suspended. Please contact the admin or the support."
   },
   "validation": {
     "accepted": "The :attribute must be accepted.",

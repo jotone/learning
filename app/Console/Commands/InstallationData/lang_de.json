@@ -1,19 +1,44 @@
 {
   "auth": {
     "failed": "Diese Kombination aus Zugangsdaten wurde nicht in unserer Datenbank gefunden.",
+    "forgot_pwd": "Passwort vergessen?",
+    "login": "Anmelden",
     "password": "Das eingegebene Passwort ist nicht korrekt.",
     "throttle": "Zu viele Login Versuche. Versuche es bitte in :seconds Sekunden nochmal."
+  },
+  "common": {
+    "cancel": "Abbrechen",
+    "image": {
+      "info": "Dein Bild sollte im :formats Format sein und <br> kleiner als :size.<br>Die empfohlene Bildgröße sollte größer sein als :dimensions pixel.",
+      "text": "Ziehe dein Bild hierher oder <span> wähle eine<br> Bilddatei auf deinem Computer </span> zum Hochladen"
+    },
+    "submit": "Einreichen"
   },
   "pagination": {
     "previous": "&laqo; Zurück",
     "next": "Weiter &raquo;"
   },
   "passwords": {
-    "reset": "Das Passwort wurde zurückgesetzt!",
-    "sent": "Passworterinnerung wurde gesendet!",
+    "expired": "Der Link ist abgelaufen. Versuchen Sie, Ihre Anfrage zum Zurücksetzen des Passworts erneut zu senden.",
+    "msg": "Bitte geben Sie ein Passwort ein, um Ihr Konto zu aktivieren",
+    "reset": "Jetzt können Sie sich mit dem neuen Passwort anmelden.",
+    "sent": "Bitte prüfen Sie Ihre E-Mail.",
+    "set_btn": "Passwort festlegen",
     "throttled": "Bitte warten Sie, bevor Sie es erneut versuchen.",
     "token": "Der Passwort-Wiederherstellungs-Schlüssel ist ungültig oder abgelaufen.",
     "user": "Es konnte leider kein Nutzer mit dieser E-Mail-Adresse gefunden werden."
+  },
+  "profile": {
+    "confirmation": "Bestätigen Sie das Passwort",
+    "email": "E-mail",
+    "password": "Passwort"
+  },
+  "registration": {
+    "check_inbox_msg": "Die Registrierungs-E-Mail wurde erneut versandt. Bitte überprüfen Sie Ihren Posteingang auf die Registrierungs-E-Mail oder kontaktieren Sie den Administrator, damit er sie Ihnen erneut zusendet.",
+    "email_click_link": "Wenn der Button nicht funktioniert, klicke den unten stehenden Link"
+  },
+  "user": {
+    "suspended_msg": "Ihr Konto wurde gesperrt. Bitte kontaktieren Sie den Admin oder den Support."
   },
   "validation": {
     "accepted": ":attribute muss akzeptiert werden.",

@@ -16,7 +16,9 @@
     </div>
   </div>
 
-  <div class="notifications-wrap"><ul></ul></div>
+  <div class="notifications-wrap">
+    <ul></ul>
+  </div>
 
   <div class="preloader">
     <div class="preloader-spinner">
@@ -36,6 +38,10 @@ export default {
   components: {SideMenu, TopMenu},
   name: "Layout",
   methods: {
+    /**
+     * Set side menu behavior for mobile or desktop
+     * @param e
+     */
     showSideMenu(e) {
       const _this = $(e.target).closest('a')
       if ($(window).width() >= 480) {

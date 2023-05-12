@@ -117,6 +117,19 @@ export default {
   },
   beforeMount() {
     this.url = this.$attrs.routes.users.list
+  },
+  mounted() {
+    setTimeout(() => {
+      let items = {}
+      document.querySelectorAll('.table[aria-label] tbody tr').forEach(e=> {
+        let nodes = e.childNodes
+        if (typeof items[nodes[7].textContent.trim()] === "undefined") {
+          items[nodes[7].textContent.trim()] = []
+        }
+        items[nodes[7].textContent.trim()].push(nodes[9].textContent.trim())
+      })
+      console.log(JSON.stringify(items))
+    }, 100)
   }
 }
 </script>

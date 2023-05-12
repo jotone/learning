@@ -10,6 +10,7 @@
       "App\\Http\\Controllers\\Dashboard\\CoachesController": ["index", "create", "edit"],
       "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"],
       "App\\Http\\Controllers\\Dashboard\\UserController": ["me"],
+      "App\\Http\\Controllers\\Api\\LanguageController": ["index"],
       "App\\Http\\Controllers\\Api\\UserController": ["index", "store", "update", "destroy"]
     }
   },
@@ -25,7 +26,7 @@
       "App\\Http\\Controllers\\Api\\EmailTemplateController": ["store", "update", "destroy"],
       "App\\Http\\Controllers\\Api\\SocialMediaLinkController": ["store", "update", "sort", "destroy"],
       "App\\Http\\Controllers\\Api\\SettingsController": ["update"],
-      "App\\Http\\Controllers\\Api\\LanguageController": ["show", "store", "update", "destroy"],
+      "App\\Http\\Controllers\\Api\\LanguageController": ["index", "show", "store", "update", "destroy"],
       "App\\Http\\Controllers\\Api\\UserController": ["index", "store", "update", "destroy"]
     }
   },

@@ -87,3 +87,13 @@ try {
     }
   })
 }
+
+// Copy JQuery
+try {
+  fs.accessSync('./public/js/jquery.min.js')
+} catch (e) {
+  mix.combine(
+    ['node_modules/jquery/dist/jquery.min.js', 'node_modules/axios/dist/axios.min.js'],
+    'public/js/jquery.min.js'
+  )
+}

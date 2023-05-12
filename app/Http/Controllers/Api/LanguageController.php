@@ -4,13 +4,43 @@ namespace App\Http\Controllers\Api;
 
 use App\Classes\FileHelper;
 use App\Http\Controllers\BasicApiController;
-use App\Http\Requests\Language\{LanguageStoreRequest, LanguageUpdateRequest};
+use App\Http\Requests\Language\{LanguageStoreRequest, LanguageTranslationListRequest, LanguageUpdateRequest};
+use App\Models\Settings;
 use App\Traits\LanguageHelper;
 use Illuminate\Http\JsonResponse;
 
 class LanguageController extends BasicApiController
 {
     use LanguageHelper;
+
+    /**
+     * Get list of translations
+     *
+     * @param LanguageTranslationListRequest $request
+     * @return JsonResponse
+     */
+    public function index(LanguageTranslationListRequest $request): JsonResponse
+    {
+        // Request file list
+        $files = array_flip($request->input('files'));
+        // Current interface language
+        $lang = Settings::where('key', 'main_language')->value('value');
+        // Check if language is not set yet
+        if (!file_exists(lang_path($lang))) {
+            $lang = 'en';
+        }
+        // Get list of folder files
+        $result = [];
+        foreach (glob(lang_path($lang) . '/*.php') as $file) {
+            $filename = pathinfo($file, PATHINFO_FILENAME);
+            if (isset($files[$filename])) {
+                $result[$filename] = require $file;
+            }
+        }
+
+        return response()->json($result);
+    }
+
 
     /**
      * Get language file content
