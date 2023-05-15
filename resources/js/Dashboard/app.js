@@ -7,42 +7,52 @@ import "select2/dist/js/select2.min"
 window.$ = jquery
 window.axios = axios
 
-axios.get('/api/language', {params: {files: ["common"]}}).then(response => {
-  if (200 === response.status) {
-    window.translations = response.data;
+axios.interceptors.request.use(config => {
+  $('.preloader').show()
+  return config;
+});
+axios.interceptors.response.use(response => {
+  $('.preloader').hide()
+  return response
+})
 
-    createInertiaApp({
-      resolve: name => require(`./Pages/${name}.vue`),
-      setup({el, App, props, plugin}) {
-        createApp({render: () => h(App, props)})
-          .use(plugin)
-          .mixin({
-            methods: {
-              /**
-               * Make translation
-               *
-               * @param translation
-               * @param args
-               * @returns {*}
-               */
-              lang: (translation, ...args) => {
-                const path = translation.split('.')
-                let value = window.translations
-                for (let i = 0, n = path.length; i < n; i++) {
-                  if (value.hasOwnProperty(path[i])) {
-                    value = value[path[i]]
-                  } else {
-                    value = path;
-                    break;
-                  }
-                }
-                return value.replace(/:[a-z]+/g, () => args.shift())
+
+createInertiaApp({
+  resolve: name => require(`./Pages/${name}.vue`),
+  setup({el, App, props, plugin}) {
+    createApp({render: () => h(App, props)})
+      .use(plugin)
+      .mixin({
+        methods: {
+          /**
+           * Make translation
+           *
+           * @param translation
+           * @param args
+           * @returns {*}
+           */
+          __: function(translation, ...args) {
+            const path = translation.split('.')
+            let value = this.$page.props.translations
+            for (let i = 0, n = path.length; i < n; i++) {
+              if (value.hasOwnProperty(path[i])) {
+                value = value[path[i]]
+              } else {
+                value = path;
+                break;
               }
             }
-          })
-          .mount(el)
-      }
-    })
+
+            if (Array.isArray(value)) {
+              value = value.join('.')
+            } else if (typeof value === 'object') {
+              value = JSON.stringify(value)
+            }
+            return value.replace(/:[a-z]+/g, () => args.shift())
+          }
+        }
+      })
+      .mount(el)
   }
 })
 

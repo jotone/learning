@@ -1,22 +1,22 @@
 <template>
   <div class="card">
     <div class="card-title">
-      Profile Data
+      {{ __('user.profile.data') }}
     </div>
 
-    <ImageUpload caption="Profile Image" name="img_url" :dimensions="[200, 200]" :value="model?.img_url"/>
+    <ImageUpload :caption="__('user.profile.image')" name="img_url" :dimensions="[200, 200]" :value="model?.img_url"/>
 
-    <InputText caption="First Name" name="first_name" :value="model?.first_name"/>
+    <InputText :caption="__('user.profile.first_name')" name="first_name" :value="model?.first_name"/>
 
-    <InputText caption="Last Name" name="last_name" :value="model?.last_name"/>
+    <InputText :caption="__('user.profile.last_name')" name="last_name" :value="model?.last_name"/>
 
-    <InputText caption="E-mail" name="email" :value="model?.email"/>
+    <InputText :caption="__('user.profile.email')" name="email" :value="model?.email"/>
 
-    <InputText caption="Password" name="password" type="password"/>
+    <InputText :caption="__('user.password.txt')" name="password" type="password"/>
 
-    <InputText caption="Confirm Password" name="confirmation" type="password"/>
+    <InputText :caption="__('user.password.confirmation')" name="confirmation" type="password"/>
 
-    <TextArea caption="Short bio" name="about" :value="model?.about"/>
+    <TextArea :caption="__('user.profile.bio')" name="about" :value="model?.about"/>
   </div>
 </template>
 

@@ -26,8 +26,6 @@ Route::group(['as' => 'api.', 'middleware' => 'auth:sanctum'], function () {
     Route::apiResource('/email-templates', EmailTemplateController::class)->only(['store', 'update', 'destroy']);
     // Language API
     Route::group(['as' => 'language.', 'prefix' => '/language'], function () {
-        // Get list of translations
-        Route::get('/', [LanguageController::class, 'index'])->name('index');
         // Get language file content
         Route::get('/{lang}/{file}', [LanguageController::class, 'show'])->name('show');
         // Install language

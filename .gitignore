@@ -5,11 +5,12 @@
 /public/css/override.css
 /public/favicon
 !/public/images/icons
-!/public/images/social-media
-!/public/images/vendor
+!/public/images/country-select
+!/public/images/intl-tel-input
 !/public/images/logo-dashboard.png
 !/public/images/logo-dashboard-mobile.png
 !/public/images/preloader.svg
+!/public/images/social-media
 /public/images
 /storage/*.key
 /vendor

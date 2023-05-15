@@ -90,3 +90,24 @@ try {
     }
   })
 }
+
+mix.after(() => {
+  const path = './public/css/dashboard/libs.min.css'
+  // Fix css libs images paths
+  fs.readFile(path, 'utf8', (err, data) => {
+    data = data.replace(
+      /country-select\s\.flag\{height:15px;-webkit-box-shadow:0 0 1px 0 #888;box-shadow:0 0 1px 0 #888;background-image:url\(\.\.\/img\/flags/,
+      'country-select .flag{height:15px;-webkit-box-shadow:0 0 1px 0 #888;box-shadow:0 0 1px 0 #888;background-image:url(/images/country-select/flags'
+    ).replace(
+      /country-select\s\.flag\{background-image:url\(\.\.\/img\/flags/,
+      'country-select .flag{background-image:url(/images/country-select/flags'
+    ).replace(
+      /iti__flag\{height:15px;box-shadow:0 0 1px 0 #888;background-image:url\(\.\.\/img\/flags/,
+      'iti__flag{height:15px;box-shadow:0 0 1px 0 #888;background-image:url(/images/intl-tel-input/flags'
+    ).replace(
+      /iti__flag\{background-image:url\(\.\.\/img\/flags/,
+      'iti__flag{background-image:url(/images/intl-tel-input/flags'
+    )
+    fs.writeFile(path, data, 'utf8', err => err && console.log(err))
+  })
+})

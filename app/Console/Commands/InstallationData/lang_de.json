@@ -7,18 +7,47 @@
     "throttle": "Zu viele Login Versuche. Versuche es bitte in :seconds Sekunden nochmal."
   },
   "common": {
+    "actions": "Aktionen",
     "cancel": "Abbrechen",
+    "created_at": "Erstellt am",
     "image": {
       "info": "Dein Bild sollte im :formats Format sein und <br> kleiner als :size.<br>Die empfohlene Bildgröße sollte größer sein als :dimensions pixel.",
+      "single": "Bild",
       "text": "Ziehe dein Bild hierher oder <span> wähle eine<br> Bilddatei auf deinem Computer </span> zum Hochladen"
     },
+    "misc": "Sonstiges",
     "no": "Nein",
+    "remove": "Entfernen",
     "submit": "Einreichen",
     "yes": "Ja"
   },
+  "menu": {
+    "dashboard": "Dashboard",
+    "getSupport": "Hilfe",
+    "logout": "Logout",
+    "profile": "Mein Profil",
+    "roles": "Rollen",
+    "settings": {
+      "caption": "Einstellungen",
+      "coaches": "Coaches",
+      "course": "Kursseite",
+      "email": "E-Mail",
+      "features": "Eigenschaften",
+      "help_how": "Hilfe",
+      "integration": "Integration",
+      "language": "Sprache",
+      "login": "Login-Seite",
+      "main": "Wichtigste",
+      "top_menu": "Menüleiste"
+    },
+    "users": {
+      "caption": "Benutzer und Berechtigungen",
+      "list": "Benutzer"
+    }
+  },
   "pagination": {
-    "previous": "&laqo; Zurück",
-    "next": "Weiter &raquo;"
+    "next": "Weiter &raquo;",
+    "previous": "&laqo; Zurück"
   },
   "passwords": {
     "expired": "Der Link ist abgelaufen. Versuchen Sie, Ihre Anfrage zum Zurücksetzen des Passworts erneut zu senden.",
@@ -30,16 +59,43 @@
     "token": "Der Passwort-Wiederherstellungs-Schlüssel ist ungültig oder abgelaufen.",
     "user": "Es konnte leider kein Nutzer mit dieser E-Mail-Adresse gefunden werden."
   },
-  "profile": {
-    "confirmation": "Bestätigen Sie das Passwort",
-    "email": "E-mail",
-    "password": "Passwort"
-  },
   "registration": {
     "check_inbox_msg": "Die Registrierungs-E-Mail wurde erneut versandt. Bitte überprüfen Sie Ihren Posteingang auf die Registrierungs-E-Mail oder kontaktieren Sie den Administrator, damit er sie Ihnen erneut zusendet.",
     "email_click_link": "Wenn der Button nicht funktioniert, klicke den unten stehenden Link"
   },
+  "role": {
+    "mult": "Rollen",
+    "single": "Rolle"
+  },
   "user": {
+    "create": "Benutzer Erstellen",
+    "password": {
+      "confirmation": "Bestätigen Sie das Passwort",
+      "txt": "Passwort"
+    },
+    "profile": {
+      "addr": "Adresse",
+      "addr_ext": "Erweiterte Straßenanschrift",
+      "bio": "Kurzer Lebenslauf",
+      "city": "Stadt",
+      "country": "Land",
+      "data": "Profildaten",
+      "email": "E-mail",
+      "first_name": "Vorname",
+      "image": "Profilbild",
+      "info": "Persönliche Informationen",
+      "last_name": "Nachname",
+      "phone": "Telefon",
+      "shirt_size": "T-Shirt Größfe",
+      "state": "Staat / Region",
+      "timezone": "Zeitzone",
+      "zip": "ZIP"
+    },
+    "remove": {
+      "question": "Wollen Sie wirklich den Benutzer \"<b>:email</b>\" mit all seinen Daten und Fortschritten entfernen?",
+      "success": "Der Benutzer \":email\" wurde erfolgreich entfernt."
+    },
+    "search": "Suchen Sie nach Benutzern…",
     "suspended_msg": "Ihr Konto wurde gesperrt. Bitte kontaktieren Sie den Admin oder den Support."
   },
   "validation": {

@@ -43,7 +43,7 @@
             <p>@lang('passwords.msg')</p>
           </div>
           <div class="form-input">
-            <label for="email">@lang('profile.email')</label>
+            <label for="email">@lang('user.profile.email')</label>
             <input
               autofocus=""
               autocomplete="off"
@@ -56,7 +56,7 @@
           </div>
 
           <div class="form-input">
-            <label for="password">@lang('profile.password')</label>
+            <label for="password">@lang('user.password.txt')</label>
             <input
               autocomplete="off"
               id="password"
@@ -67,7 +67,7 @@
           </div>
 
           <div class="form-input">
-            <label for="confirmation">@lang('profile.confirmation')</label>
+            <label for="confirmation">@lang('user.password.confirmation')</label>
             <input
               autocomplete="off"
               id="confirmation"

@@ -25,36 +25,36 @@
           >
             <div class="card">
               <div class="card-title">
-                User Info
+                {{ __('user.profile.info') }}
               </div>
 
               <template v-if="$attrs.settings.enable_address === '1'">
                 <div class="form-group">
                   <label class="caption">
-                    <span>Timezone</span>
+                    <span>{{ __('user.profile.timezone') }}</span>
                     <TimezoneSelector name="timezone" :value="$attrs?.model?.timezone"/>
                   </label>
                 </div>
 
-                <InputText caption="Country" name="country" :value="$attrs?.model?.country"/>
+                <InputText :caption="__('user.profile.country')" name="country" :value="$attrs?.model?.country"/>
 
-                <InputText caption="State / Region" name="region" :value="$attrs?.model?.region"/>
+                <InputText :caption="__('user.profile.state')" name="region" :value="$attrs?.model?.region"/>
 
-                <InputText caption="City" name="city" :value="$attrs?.model?.city"/>
+                <InputText :caption="__('user.profile.city')" name="city" :value="$attrs?.model?.city"/>
 
-                <InputText caption="Address" name="address" :value="$attrs?.model?.address"/>
+                <InputText :caption="__('user.profile.addr')" name="address" :value="$attrs?.model?.address"/>
 
-                <InputText caption="Extended address" name="ext_addr" :value="$attrs?.model?.extended_address"/>
+                <InputText :caption="__('user.profile.addr_ext')" name="ext_addr" :value="$attrs?.model?.extended_address"/>
 
-                <InputText caption="Zip" name="zip" :value="$attrs?.model?.zip"/>
+                <InputText :caption="__('user.profile.zip')" name="zip" :value="$attrs?.model?.zip"/>
               </template>
 
               <template v-if="$attrs.settings.enable_phone === '1'">
-                <InputText caption="Phone" name="phone" :value="$attrs?.model?.phone"/>
+                <InputText :caption="__('user.profile.phone')" name="phone" :value="$attrs?.model?.phone"/>
               </template>
 
               <template v-if="$attrs.settings.enable_shirt_size === '1'">
-                <Selector name="shirt_size" caption="T-shirt size" :options="$attrs.enums.shirt_sizes"/>
+                <Selector :caption="__('user.profile.shirt_size')" name="shirt_size" :options="$attrs.enums.shirt_sizes"/>
               </template>
             </div>
           </div>
@@ -62,10 +62,10 @@
           <div class="col-1-2">
             <div class="card">
               <div class="card-title">
-                Miscellaneous
+                {{ __('common.misc') }}
               </div>
 
-              <Selector caption="Role" name="role_id" :options="$attrs.roles"/>
+              <Selector :caption="__('role.single')" name="role_id" :options="$attrs.roles"/>
 
               <Selector
                 caption="Status"

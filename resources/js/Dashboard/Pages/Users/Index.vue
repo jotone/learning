@@ -3,7 +3,7 @@
     <template v-slot:optionals>
       <a class="btn" :href="$attrs.routes.users.create">
         <i class="icon user-add-icon"></i>
-        <span>Create User</span>
+        <span>{{ __('user.create') }}</span>
       </a>
     </template>
 
@@ -17,7 +17,7 @@
             <div class="table-info"></div>
 
             <div class="table-filtering">
-              <SearchForm placeholder="Search for users…"/>
+              <SearchForm :placeholder="__('user.search')"/>
             </div>
           </div>
 
@@ -25,47 +25,21 @@
             <table>
               <thead>
               <tr>
-                <ContentTableHead field="first_name" name="First Name"/>
-                <ContentTableHead field="last_name" name="Last Name"/>
-                <ContentTableHead field="email" name="Email"/>
-                <ContentTableHead field="role_name" name="Role"/>
-                <th><span>Image</span></th>
-                <ContentTableHead field="created_at" name="Created At"/>
+                <ContentTableHead field="first_name" :name="__('user.profile.first_name')"/>
+                <ContentTableHead field="last_name" :name="__('user.profile.last_name')"/>
+                <ContentTableHead field="email" :name="__('user.profile.email')"/>
+                <ContentTableHead field="role_name" :name="__('role.single')"/>
+                <th><span>{{ __('common.image.single') }}</span></th>
+                <ContentTableHead field="created_at" :name="__('common.created_at')"/>
                 <th>
-                  <span>Actions</span>
+                  <span>{{ __('common.actions') }}</span>
                 </th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="model in collection">
-                <td>
-                  <Link :href="userEdit(model)">{{ model.first_name }}</Link>
-                </td>
-                <td>
-                  <Link :href="userEdit(model)">{{ model.last_name }}</Link>
-                </td>
-                <td data-role="email">
-                  <Link :href="userEdit(model)">{{ model.email }}</Link>
-                </td>
-                <td>
-                  <Link :href="userEdit(model)">{{ model.role_name }}</Link>
-                </td>
-                <td>
-                  <Link class="img-container" :href="userEdit(model)">
-                    <img
-                      v-if="!!model.img_url"
-                      :src="model.img_url.small || model.img_url.large || model.img_url.original"
-                      alt=""
-                    >
-                  </Link>
-                </td>
-                <td>
-                  <Link :href="userEdit(model)">{{ model.created_at }}</Link>
-                </td>
-                <td>
-                  <a :href="userRemove(model.id)" class="remove" @click.prevent="userRemoveAction"></a>
-                </td>
-              </tr>
+              <template v-for="(model, i) in collection">
+                <UserTableRow :model="collection[i]"/>
+              </template>
               </tbody>
             </table>
           </div>
@@ -73,11 +47,11 @@
       </div>
 
       <Confirmation
-        :text='`Do you really want to remove user "<b>${removalEntity}</b>" with all his data and progress?`'
-        ref="confirmation"
         okBtnClass="danger"
-        okText="Remove"
-        noText="Cancel"
+        ref="confirmation"
+        :okText="__('common.remove')"
+        :noText="__('common.cancel')"
+        :text="__('user.remove.question', removalName)"
       />
     </template>
   </Layout>
@@ -85,51 +59,15 @@
 
 <script>
 import {ContentTableMixin} from "../../Mixins/content-table-mixin";
+import axios from "axios";
+import UserTableRow from "./Partials/UserTableRow.vue";
 
 export default {
+  components: {UserTableRow},
   mixins: [ContentTableMixin],
   name: "Users/Index",
-  methods: {
-    /**
-     * Generate user edit url
-     * @param model
-     * @return {string}
-     */
-    userEdit(model) {
-      let type = 'student' === model.role_slug ? 'students' : 'users';
-      return this.$attrs.routes[type].edit.replace(/:id/, model.id);
-    },
-    /**
-     * Generate user remove url
-     * @param id
-     * @return {string}
-     */
-    userRemove(id) {
-      return this.$attrs.routes.users.destroy.replace(/:id/, id)
-    },
-    /**
-     * Remove user
-     * @param e
-     */
-    userRemoveAction(e) {
-      this.removeEntity($(e.target).closest('a'), 'User ":entity" was successfully removed.')
-    }
-  },
   beforeMount() {
     this.url = this.$attrs.routes.users.list
-  },
-  mounted() {
-    setTimeout(() => {
-      let items = {}
-      document.querySelectorAll('.table[aria-label] tbody tr').forEach(e=> {
-        let nodes = e.childNodes
-        if (typeof items[nodes[7].textContent.trim()] === "undefined") {
-          items[nodes[7].textContent.trim()] = []
-        }
-        items[nodes[7].textContent.trim()].push(nodes[9].textContent.trim())
-      })
-      console.log(JSON.stringify(items))
-    }, 100)
   }
 }
 </script>

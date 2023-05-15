@@ -17,6 +17,10 @@ class EmailTemplatesController extends BasicAdminController
      */
     public function index(Request $request): Response
     {
+        $content = Settings::whereIn('section', ['smtp-settings', 'email-settings'])->get()->keyBy('key');
+        $content['smtp_password']->value = $content['smtp_password']->value
+            ? md5($content['smtp_password']->value)
+            : '';
         return $this->form(
             template: 'EmailTemplates/Index',
             request: $request,
@@ -37,7 +41,7 @@ class EmailTemplatesController extends BasicAdminController
                         'destroy' => route('api.socials.destroy', ':id')
                     ]
                 ],
-                'content' => Settings::whereIn('section', ['smtp-settings', 'email-settings'])->get()->keyBy('key'),
+                'content' => $content,
                 'social' => SocialMediaLink::orderBy('position')->get(),
                 'templates' => EmailTemplate::select('id', 'name')->orderBy('created_at', 'desc')->get()
             ]

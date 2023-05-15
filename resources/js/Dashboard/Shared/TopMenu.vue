@@ -7,7 +7,7 @@
         :data-name="item.name.toLowerCase().replace(/\s/, '-')"
       >
         <Link :href="item.route">
-          <span>{{ item.name }}</span>
+          <span>{{ __('menu.' + item.name) }}</span>
         </Link>
       </li>
     </ul>

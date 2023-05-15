@@ -1,77 +1,77 @@
 {
   "top": [
     {
-      "name": "Dashboard",
+      "name": "dashboard",
       "route": "dashboard.index",
       "img": "dashboard"
     }
   ],
   "bottom": [
     {
-      "name": "Get Support",
+      "name": "getSupport",
       "route": "https://intercom.help/copehelp/en/collections/3332192-copemember-help",
       "img": "help"
     },
     {
-      "name": "Users and permissions",
+      "name": "users.caption",
       "route": "dashboard.users.index",
       "img": "hand-n-heart",
       "is_top": 0,
       "inner": [
         {
-          "name": "Users",
+          "name": "users.list",
           "route": "dashboard.users.index"
         },
         {
-          "name": "Roles",
+          "name": "roles",
           "route": "dashboard.users.roles.index"
         }
       ]
     },
     {
-      "name": "Settings",
+      "name": "settings.caption",
       "route": "dashboard.settings.main",
       "img": "cog",
       "is_top": 0,
       "inner": [
         {
-          "name": "Main",
+          "name": "settings.main",
           "route": "dashboard.settings.main"
         },
         {
-          "name": "Login Page",
+          "name": "settings.login",
           "route": "dashboard.settings.login"
         },
         {
-          "name": "Course Page",
+          "name": "settings.course",
           "route": "#"
         },
         {
-          "name": "Features",
+          "name": "settings.features",
           "route": "#"
         },
         {
-          "name": "Integration",
+          "name": "settings.integration",
           "route": "#"
         },
         {
-          "name": "Email",
+          "name": "settings.email",
           "route": "dashboard.settings.emails.index"
         },
         {
-          "name": "Help",
+          "name": "settings.help_how",
           "route": "#"
         },
         {
-          "name": "Language",
+          "name": "settings.language",
           "route": "dashboard.settings.language"
         },
         {
-          "name": "Top Menu",
+          "name": "settings.top_menu",
           "route": "#"
         },
         {
-          "name": "Coaches",
+          "name": "settings.coaches",
           "route": "dashboard.settings.coaches.index"
         }
       ]

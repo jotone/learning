@@ -32,6 +32,12 @@ class UserController extends BasicAdminController
                         'edit' => route('dashboard.users.edit', ':id'),
                         'destroy' => route('api.users.destroy', ':id')
                     ]
+                ],
+                'translations' => [
+                    'user' => __('user'),
+                    'role' => [
+                        'single' => __('role.single')
+                    ]
                 ]
             ]
         );
@@ -59,7 +65,16 @@ class UserController extends BasicAdminController
                     ->orderBy('level')
                     ->get()
                     ->pluck('name', 'id'),
-                'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray()
+                'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray(),
+                'translations' => [
+                    'user' => [
+                        'password' => __('user.password'),
+                        'profile' => __('user.profile')
+                    ],
+                    'role' => [
+                        'single' => __('role.single')
+                    ]
+                ]
             ]
         );
     }
@@ -88,7 +103,16 @@ class UserController extends BasicAdminController
                     ->orderBy('level')
                     ->get()
                     ->pluck('name', 'id'),
-                'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray()
+                'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray(),
+                'translations' => [
+                    'user' => [
+                        'password' => __('user.password'),
+                        'profile' => __('user.profile')
+                    ],
+                    'role' => [
+                        'single' => __('role.single')
+                    ]
+                ]
             ]
         );
     }
@@ -107,10 +131,16 @@ class UserController extends BasicAdminController
             template: 'Users/AdminForm',
             request: $request,
             share: [
+                'model' => $user,
                 'routes' => [
                     'update' => route('api.users.update', $user->id)
                 ],
-                'model' => $user
+                'translations' => [
+                    'user' => [
+                        'password' => __('user.password'),
+                        'profile' => __('user.profile')
+                    ]
+                ]
             ]
         );
     }

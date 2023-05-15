@@ -16,8 +16,8 @@
           <img :src="value || imgSrc" alt="" v-if="!isSvg">
           <span v-if="isSvg" v-html="imgSrc"></span>
         </span>
-        <span class="image-text" v-html="lang('common.image.text')"></span>
-        <span class="image-info" v-html="lang('common.image.info', getFormats(), size, getDimensions())"></span>
+        <span class="image-text" v-html="__('common.image.text')"></span>
+        <span class="image-info" v-html="__('common.image.info', getFormats(), size, getDimensions())"></span>
       </span>
     </label>
   </div>

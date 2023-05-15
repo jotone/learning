@@ -7,18 +7,47 @@
     "throttle": "Too many login attempts. Please try again in :seconds seconds."
   },
   "common": {
+    "actions": "Actions",
     "cancel": "Cancel",
+    "created_at": "Created At",
     "image": {
       "info": "Your image should be in :formats format and <br> smaller than :size.<br>The recommended image size should be greater than :dimensions pixels.",
+      "single": "Image",
       "text": "Drag your image here, or <span> choose an<br> image file on your computer </span> to upload"
     },
+    "misc": "Miscellaneous",
     "no": "No",
+    "remove": "Remove",
     "submit": "Submit",
     "yes": "Yes"
   },
+  "menu": {
+    "dashboard": "Dashboard",
+    "getSupport": "Get Support",
+    "logout": "Logout",
+    "profile": "My Profile",
+    "roles": "Roles",
+    "settings": {
+      "caption": "Settings",
+      "coaches": "Coaches",
+      "course": "Course Page",
+      "email": "Email",
+      "features": "Features",
+      "help_how": "How to Get Help",
+      "integration": "Integration",
+      "language": "Language",
+      "login": "Login Page",
+      "main": "Main",
+      "top_menu": "Top Menu"
+    },
+    "users": {
+      "caption": "Users and Permissions",
+      "list": "Users"
+    }
+  },
   "pagination": {
-    "previous": "&laquo; Previous",
-    "next": "Next &raquo;"
+    "next": "Next &raquo;",
+    "previous": "&laquo; Previous"
   },
   "passwords": {
     "expired": "The link is expired. Try sending your password reset request again.",
@@ -30,16 +59,43 @@
     "token": "This password reset token is invalid.",
     "user": "We can't find a user with that email address."
   },
-  "profile": {
-    "confirmation": "Confirm password",
-    "email": "E-mail",
-    "password": "Password"
-  },
   "registration": {
     "check_inbox_msg": "Registration email has been resent. Please check your inbox for the registration email or contact the administrator to resend it to you.",
     "email_click_link": "If the button is not working, click the link below"
   },
+  "role": {
+    "mult": "Roles",
+    "single": "Role"
+  },
   "user": {
+    "create": "Create User",
+    "password": {
+      "confirmation": "Confirm password",
+      "txt": "Password"
+    },
+    "profile": {
+      "addr": "Address",
+      "addr_ext": "Extended address",
+      "bio": "Short bio",
+      "city": "City",
+      "country": "Country",
+      "data": "Profile Data",
+      "email": "Email",
+      "first_name": "First Name",
+      "image": "Profile Image",
+      "info": "Personal Information",
+      "last_name": "Last Name",
+      "phone": "Phone",
+      "shirt_size": "T-shirt size",
+      "state": "State / Region",
+      "timezone": "Time-Zone",
+      "zip": "Zip"
+    },
+    "remove": {
+      "question": "Do you really want to remove user \"<b>:email</b>\" with all his data and progress?",
+      "success": "User \":email\" was successfully removed."
+    },
+    "search": "Search for users…",
     "suspended_msg": "Your account has been suspended. Please contact the admin or the support."
   },
   "validation": {

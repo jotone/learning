@@ -88,9 +88,11 @@ npm i && npm run prod
   - Apply translations to pages
     - ~~Email~~
     - ~~Auth~~
-    - Admin Menu
-    - User list
-    - Role list
+    - ~~Admin Menu~~
+    - ~~User~~
+    - Role
+      - list
+      - form
     - Main settings
     - Login page
     - Language settings
