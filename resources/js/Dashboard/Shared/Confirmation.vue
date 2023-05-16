@@ -12,7 +12,7 @@
           {{ okText || __('common.yes') }}
         </button>
         <button name="cancel" type="button" class="btn" :class="noBtnClass">
-          {{ noText || __('common.no') }}
+          {{ noText || __('common.cancel') }}
         </button>
       </div>
     </div>
@@ -21,7 +21,6 @@
 
 <script>
 export default {
-
   methods: {
     checkCanBeClosed(e) {
       !$(e.target).closest('.confirmation-popup') && this.close()

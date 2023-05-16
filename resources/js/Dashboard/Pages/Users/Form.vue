@@ -9,7 +9,7 @@
         class="page-content-wrap"
         data-success-callback="resetForm"
         id="userForm"
-        :action="$attrs.routes.users.form"
+        :action="$attrs.routes.form"
         method="POST"
         @submit.prevent="submit"
       >
@@ -25,36 +25,36 @@
           >
             <div class="card">
               <div class="card-title">
-                {{ __('user.profile.info') }}
+                {{ __('user.fields.info') }}
               </div>
 
               <template v-if="$attrs.settings.enable_address === '1'">
                 <div class="form-group">
                   <label class="caption">
-                    <span>{{ __('user.profile.timezone') }}</span>
+                    <span>{{ __('common.timezone') }}</span>
                     <TimezoneSelector name="timezone" :value="$attrs?.model?.timezone"/>
                   </label>
                 </div>
 
-                <InputText :caption="__('user.profile.country')" name="country" :value="$attrs?.model?.country"/>
+                <InputText :caption="__('user.fields.country')" name="country" :value="$attrs?.model?.country"/>
 
-                <InputText :caption="__('user.profile.state')" name="region" :value="$attrs?.model?.region"/>
+                <InputText :caption="__('user.fields.state')" name="region" :value="$attrs?.model?.region"/>
 
-                <InputText :caption="__('user.profile.city')" name="city" :value="$attrs?.model?.city"/>
+                <InputText :caption="__('user.fields.city')" name="city" :value="$attrs?.model?.city"/>
 
-                <InputText :caption="__('user.profile.addr')" name="address" :value="$attrs?.model?.address"/>
+                <InputText :caption="__('user.fields.addr')" name="address" :value="$attrs?.model?.address"/>
 
-                <InputText :caption="__('user.profile.addr_ext')" name="ext_addr" :value="$attrs?.model?.extended_address"/>
+                <InputText :caption="__('user.fields.addr_ext')" name="ext_addr" :value="$attrs?.model?.extended_address"/>
 
-                <InputText :caption="__('user.profile.zip')" name="zip" :value="$attrs?.model?.zip"/>
+                <InputText :caption="__('user.fields.zip')" name="zip" :value="$attrs?.model?.zip"/>
               </template>
 
               <template v-if="$attrs.settings.enable_phone === '1'">
-                <InputText :caption="__('user.profile.phone')" name="phone" :value="$attrs?.model?.phone"/>
+                <InputText :caption="__('user.fields.phone')" name="phone" :value="$attrs?.model?.phone"/>
               </template>
 
               <template v-if="$attrs.settings.enable_shirt_size === '1'">
-                <Selector :caption="__('user.profile.shirt_size')" name="shirt_size" :options="$attrs.enums.shirt_sizes"/>
+                <Selector :caption="__('user.fields.shirt_size')" name="shirt_size" :options="$attrs.enums.shirt_sizes"/>
               </template>
             </div>
           </div>
@@ -109,9 +109,7 @@ export default {
      * @returns {string}
      */
     saveMessage(response) {
-      return 201 === response.status
-        ? `User "${response.data.email}" was successfully created.`
-        : `User "${response.data.email}" was successfully modified.`
+      return this.__(`user.msg.${201 === response.status ? 'created' : 'modified'}`, response.data.email)
     }
   },
   mixins: [FormMixin],

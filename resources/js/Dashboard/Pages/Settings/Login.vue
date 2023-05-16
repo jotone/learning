@@ -13,7 +13,7 @@
         :action="$attrs.routes.settings.update"
         @submit.prevent="submit"
       >
-        <Method value="PATCH"/>
+        <input name="_method" type="hidden" value="PATCH">
         <div class="row">
           <div class="col-1-3">
             <div class="card">
@@ -128,11 +128,10 @@
 import ButtonSettings from "../../Shared/Form/ButtonSettings.vue";
 import ImageUpload from "../../Shared/Form/ImageUpload.vue";
 import InputColor from "../../Shared/Form/InputColor.vue";
-import Method from "../../Shared/Form/Method.vue";
 import {FormMixin} from "../../Mixins/form-mixin";
 
 export default {
-  components: {ButtonSettings, ImageUpload, InputColor, Method},
+  components: {ButtonSettings, ImageUpload, InputColor},
   data() {
     return {
       preview: {

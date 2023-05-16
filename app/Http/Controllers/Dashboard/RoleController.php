@@ -32,6 +32,9 @@ class RoleController extends BasicAdminController
                         'edit' => route('dashboard.users.roles.edit', ':id'),
                         'destroy' => route('api.roles.destroy', ':id')
                     ]
+                ],
+                'translations' => [
+                    'role' => __('role')
                 ]
             ]
         );
@@ -54,15 +57,21 @@ class RoleController extends BasicAdminController
             abort(500, $e->getMessage());
         }
 
-        return $this->view('Roles/Form', $request, [
-            'routes' => [
-                'roles' => [
+        return $this->form(
+            template: 'Roles/Form',
+            request: $request,
+            share: [
+                'permissions' => $permission_list,
+                'routes' => [
                     'form' => route('api.roles.store')
-                ]
-            ],
-            'permissions' => $permission_list,
-            'userPermissions' => $this->userPermissions(Auth::user()->role->permissions)
-        ]);
+                ],
+                'translations' => [
+                    'role' => [
+                        'fields' => __('role.fields')
+                    ]
+                ],
+                'userPermissions' => $this->userPermissions(Auth::user()->role->permissions)
+            ]);
     }
 
     /**
@@ -85,15 +94,21 @@ class RoleController extends BasicAdminController
 
         $role->permission_list = $this->userPermissions($role->permissions);
 
-        return $this->view('Roles/Form', $request, [
-            'model' => $role,
-            'routes' => [
-                'roles' => [
+        return $this->form(
+            template: 'Roles/Form',
+            request: $request,
+            share: [
+                'model' => $role,
+                'permissions' => $permission_list,
+                'routes' => [
                     'form' => route('api.roles.update', $role->id)
-                ]
-            ],
-            'permissions' => $permission_list,
-            'userPermissions' => $this->userPermissions(Auth::user()->role->permissions)
-        ]);
+                ],
+                'translations' => [
+                    'role' => [
+                        'fields' => __('role.fields')
+                    ]
+                ],
+                'userPermissions' => $this->userPermissions(Auth::user()->role->permissions)
+            ]);
     }
 }

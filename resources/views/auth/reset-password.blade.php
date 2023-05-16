@@ -43,7 +43,7 @@
             <p>@lang('passwords.msg')</p>
           </div>
           <div class="form-input">
-            <label for="email">@lang('user.profile.email')</label>
+            <label for="email">@lang('user.fields.email')</label>
             <input
               autofocus=""
               autocomplete="off"

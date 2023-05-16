@@ -4,12 +4,11 @@
       <SaveButton form="roleForm"/>
     </template>
 
-
     <template v-slot:content>
       <form
         class="page-content-wrap"
         id="roleForm"
-        :action="$attrs.routes.roles.form"
+        :action="$attrs.routes.form"
         method="POST"
         @submit.prevent="submit"
       >
@@ -17,15 +16,15 @@
 
         <div class="card">
           <div class="card-title">
-            Main Data
+            {{ __('common.main_data') }}
           </div>
           <div class="row">
             <div class="col-1-2">
-              <InputText caption="Name" name="name" :value="$attrs?.model?.name"/>
+              <InputText :caption="__('common.name')" name="name" :value="$attrs?.model?.name"/>
             </div>
             <div class="col-1-2">
               <InputText
-                caption="Level"
+                :caption="__('role.fields.level')"
                 name="level"
                 type="number"
                 :min="$attrs.auth.role.level"
@@ -36,18 +35,17 @@
           </div>
         </div>
 
-
         <div class="card">
           <div class="card-title">
-            List of Permissions
+            {{ __('role.fields.permissions') }}
           </div>
 
           <div class="row">
             <table class="permission-list">
               <thead>
               <tr>
-                <th>Controller</th>
-                <th>Methods</th>
+                <th>{{ __('role.fields.controller') }}</th>
+                <th>{{ __('role.fields.methods') }}</th>
               </tr>
               </thead>
               <tbody>
@@ -88,20 +86,12 @@
 <script>
 import {FormMixin} from "../../Mixins/form-mixin";
 import InputText from "../../Shared/Form/InputText.vue";
-import method from "../../Shared/Form/Method.vue";
 
 export default {
-  computed: {
-    method() {
-      return method
-    }
-  },
   components: {InputText},
   methods: {
     saveMessage(response) {
-      return 201 === response.status
-        ? `Role "${response.data.name}" was successfully created.`
-        : `Role "${response.data.name}" was successfully modified.`
+      return this.__(`role.msg${201 === response.status ? 'created' : 'modified'}`, response.data.name)
     }
   },
   mixins: [FormMixin],

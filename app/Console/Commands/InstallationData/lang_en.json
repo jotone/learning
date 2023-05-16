@@ -8,17 +8,23 @@
   },
   "common": {
     "actions": "Actions",
+    "background-color": "Background Color",
+    "border-color": "Border Color",
     "cancel": "Cancel",
+    "color": "Color",
     "created_at": "Created At",
     "image": {
       "info": "Your image should be in :formats format and <br> smaller than :size.<br>The recommended image size should be greater than :dimensions pixels.",
       "single": "Image",
       "text": "Drag your image here, or <span> choose an<br> image file on your computer </span> to upload"
     },
+    "main_data": "Main Data",
     "misc": "Miscellaneous",
+    "name": "Name",
     "no": "No",
     "remove": "Remove",
     "submit": "Submit",
+    "timezone": "Time-Zone",
     "yes": "Yes"
   },
   "menu": {
@@ -64,16 +70,55 @@
     "email_click_link": "If the button is not working, click the link below"
   },
   "role": {
+    "create": "Create Role",
+    "fields": {
+      "controller": "Controller",
+      "level": "Level",
+      "methods": "Methods",
+      "permissions": "List of Permissions"
+    },
     "mult": "Roles",
+    "msg": {
+      "ask_remove": "Do you really want to remove role \"<b>:entity</b>\"  with all it&apos;s data and user permissions?",
+      "created": "Role \":entity\" was successfully created.",
+      "modified": "Role \":entity\" was successfully modified.",
+      "removed": "Role \":entity\" was successfully removed."
+    },
+    "search": "Search for roles…",
     "single": "Role"
+  },
+  "settings": {
+    "buttons": {
+      "caption": "Button Settings",
+      "normal": "Normal",
+      "primary": "Primary buttons"
+    },
+    "custom_domain": {
+      "enable": "Enable Custom Domain",
+      "msg1pt1": "Go to your domain DNS provider and create a CNAME record with name",
+      "msg1pt2": "or * and target",
+      "msg2": "When you complete changing your DNS please click Submit. Our team will finish the process on our side within 24 working hours."
+    },
+    "main": {
+      "button": "Button",
+      "custom_url": "Custom URL",
+      "custom_script": "Custom Scripts",
+      "footer_code": "Footer code",
+      "footer_placeholder": "Enter footer code scripts code here...",
+      "header_code": "Header code",
+      "header_placeholder": "Enter header code scripts code here...",
+      "info": "Site Info",
+      "menu_colors": "Menu Colors",
+      "site_url": "Site URL",
+      "success": "Settings were successfully saved.",
+      "theme_code": "Custom Theme Styles",
+      "theme_placeholder": "Insert code here...",
+      "title": "System Name"
+    }
   },
   "user": {
     "create": "Create User",
-    "password": {
-      "confirmation": "Confirm password",
-      "txt": "Password"
-    },
-    "profile": {
+    "fields": {
       "addr": "Address",
       "addr_ext": "Extended address",
       "bio": "Short bio",
@@ -88,12 +133,17 @@
       "phone": "Phone",
       "shirt_size": "T-shirt size",
       "state": "State / Region",
-      "timezone": "Time-Zone",
       "zip": "Zip"
     },
-    "remove": {
-      "question": "Do you really want to remove user \"<b>:email</b>\" with all his data and progress?",
-      "success": "User \":email\" was successfully removed."
+    "msg": {
+      "ask_remove": "Do you really want to remove user \"<b>:entity</b>\" with all his data and progress?",
+      "created": "User \":entity\" was successfully created.",
+      "modified": "User \":entity\" was successfully modified.",
+      "removed": "User \":entity\" was successfully removed."
+    },
+    "password": {
+      "confirmation": "Confirm password",
+      "txt": "Password"
     },
     "search": "Search for users…",
     "suspended_msg": "Your account has been suspended. Please contact the admin or the support."

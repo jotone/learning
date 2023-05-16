@@ -16,7 +16,7 @@
                 method="POST"
                 @submit.prevent="submit"
               >
-                <Method value="PATCH"/>
+                <input name="_method" type="hidden" value="PATCH">
                 <div class="form-group">
                   <label class="caption">
                     <select name="main_language" class="form-select">
@@ -157,13 +157,12 @@
 
 import debounce from "debounce"
 import Confirmation from "../../Shared/Confirmation.vue";
-import Method from "../../Shared/Form/Method.vue";
 import {FormMixin} from "../../Mixins/form-mixin";
 import {showNotification} from "../../../libs/notifications";
 import InputText from "../../Shared/Form/InputText.vue";
 
 export default {
-  components: {InputText, Confirmation, Method},
+  components: {InputText, Confirmation},
   computed: {
     /**
      * Sorted list of available languages

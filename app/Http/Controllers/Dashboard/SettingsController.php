@@ -25,15 +25,16 @@ class SettingsController extends BasicAdminController
             template: 'Settings/Main',
             request: $request,
             share: [
-                'routes' => [
-                    'settings' => [
-                        'update' => route('api.settings.update')
-                    ]
-                ],
                 'content' => Settings::whereIn('section', ['custom-scripts', 'site-info', 'main-colors'])
                     ->get()
                     ->keyBy('key'),
-                'overrideCss' => file_exists($override_path) ? file_get_contents($override_path) : ''
+                'overrideCss' => file_exists($override_path) ? file_get_contents($override_path) : '',
+                'routes' => [
+                    'form' => route('api.settings.update')
+                ],
+                'translations' => [
+                    'settings' => __('settings')
+                ]
             ]
         );
     }

@@ -1,19 +1,19 @@
 <template>
   <tr>
     <td>
-      <Link :href="userEdit()">{{ model.first_name }}</Link>
+      <Link :href="editUrl">{{ model.first_name }}</Link>
     </td>
     <td>
-      <Link :href="userEdit()">{{ model.last_name }}</Link>
+      <Link :href="editUrl">{{ model.last_name }}</Link>
     </td>
     <td data-role="email">
-      <Link :href="userEdit()">{{ model.email }}</Link>
+      <Link :href="editUrl">{{ model.email }}</Link>
     </td>
     <td>
-      <Link :href="userEdit()">{{ model.role_name }}</Link>
+      <Link :href="editUrl">{{ model.role_name }}</Link>
     </td>
     <td>
-      <Link class="img-container" :href="userEdit()">
+      <Link class="img-container" :href="editUrl">
         <img
           v-if="!!model.img_url"
           :src="model.img_url.small || model.img_url.large || model.img_url.original"
@@ -22,10 +22,10 @@
       </Link>
     </td>
     <td>
-      <Link :href="userEdit()">{{ model.created_at }}</Link>
+      <Link :href="editUrl">{{ model.created_at }}</Link>
     </td>
     <td>
-      <a :href="userRemove()" class="remove" @click.prevent="userRemoveAction"></a>
+      <a :href="removeUrl" class="remove" @click.prevent="remove"></a>
     </td>
   </tr>
 </template>
@@ -37,33 +37,34 @@ import {Link} from "@inertiajs/vue3";
 
 export default defineComponent({
   components: {Link},
-  methods: {
+  computed: {
     /**
      * Generate user edit url
      * @return {string}
      */
-    userEdit() {
+    editUrl() {
       let type = 'student' === this.model.role_slug ? 'students' : 'users';
       return this.$page.props.routes[type].edit.replace(/:id/, this.model.id);
     },
     /**
+     * Generate user remove url
+     * @return {string}
+     */
+    removeUrl() {
+      return this.$page.props.routes.users.destroy.replace(/:id/, this.model.id)
+    }
+  },
+  methods: {
+    /**
      * Remove user
      * @param e
      */
-    userRemoveAction(e) {
+    remove(e) {
       const obj = $(e.target).closest('a')
       // Set removal object name
       this.$parent.$parent.removalName = this.model.email
-      this.$parent.$parent.remove(obj, 'user.remove.success')
+      this.$parent.$parent.remove(obj, 'user.msg.removed')
     },
-    /**
-     * Generate user remove url
-     * @param id
-     * @return {string}
-     */
-    userRemove() {
-      return this.$page.props.routes.users.destroy.replace(/:id/, this.model.id)
-    }
   },
   name: "UserTableRow",
   props: ["model"]

@@ -8,17 +8,23 @@
   },
   "common": {
     "actions": "Aktionen",
+    "background-color": "Hintergrundfarbe",
+    "border-color": "Farbe der Umrandung",
     "cancel": "Abbrechen",
+    "color": "Farbe",
     "created_at": "Erstellt am",
     "image": {
       "info": "Dein Bild sollte im :formats Format sein und <br> kleiner als :size.<br>Die empfohlene Bildgröße sollte größer sein als :dimensions pixel.",
       "single": "Bild",
       "text": "Ziehe dein Bild hierher oder <span> wähle eine<br> Bilddatei auf deinem Computer </span> zum Hochladen"
     },
+    "main_data": "Hauptdaten",
     "misc": "Sonstiges",
+    "name": "Name",
     "no": "Nein",
     "remove": "Entfernen",
     "submit": "Einreichen",
+    "timezone": "Zeitzone",
     "yes": "Ja"
   },
   "menu": {
@@ -64,16 +70,55 @@
     "email_click_link": "Wenn der Button nicht funktioniert, klicke den unten stehenden Link"
   },
   "role": {
+    "create": "Rolle Erstellen",
+    "fields": {
+      "controller": "Controller",
+      "level": "Ebene",
+      "methods": "Methoden",
+      "permissions": "Erlaubnisliste"
+    },
     "mult": "Rollen",
+    "msg": {
+      "ask_remove": "Wollen Sie wirklich die Rolle \"<b>:entity</b>\" mit all ihren Daten und Benutzerrechten entfernen?",
+      "created": "Die Rolle \":entity\" wurde erfolgreich erstellt.",
+      "modified": "Die Rolle \":entity\" wurde erfolgreich geändert.",
+      "removed": "Die Rolle \":entity\" wurde erfolgreich entfernt."
+    },
+    "search": "Suche nach Rollen…",
     "single": "Rolle"
+  },
+  "settings": {
+    "buttons": {
+      "caption": "Einstellungen der Schaltflächen",
+      "normal": "Normal",
+      "primary": "Primäre Tasten"
+    },
+    "custom_domain": {
+      "enable": "Benutzerdefinierte Domain aktivieren",
+      "msg1pt1": "Gehen Sie zu Ihrem Domain-DNS-Anbieter und erstellen Sie einen CNAME-Eintrag mit dem Namen",
+      "msg1pt2": "oder * und Ziel",
+      "msg2": "Wenn Sie die Änderung Ihrer DNS abgeschlossen haben, klicken Sie bitte auf Senden. Unser Team wird den Vorgang innerhalb von 24 Arbeitsstunden abschließen."
+    },
+    "main": {
+      "button": "Schaltfläche",
+      "custom_url": "Benutzerdefinierte URL",
+      "custom_script": "Benutzerdefinierte Skripte",
+      "footer_code": "Code für die Fußzeile",
+      "footer_placeholder": "Gib hier deinen Code der Fußzeile ein...",
+      "header_code": "Code der Kopfzeile",
+      "header_placeholder": "Gib hier deinen Code der Kopfzeile ein...",
+      "info": "Infos zur Website",
+      "menu_colors": "Menü-Farben",
+      "site_url": "URL der Website",
+      "success": "Die Einstellungen wurden erfolgreich gespeichert.",
+      "theme_code": "Benutzerdefinierte Themenstile",
+      "theme_placeholder": "Code hier einfügen...",
+      "title": "Name des Systems"
+    }
   },
   "user": {
     "create": "Benutzer Erstellen",
-    "password": {
-      "confirmation": "Bestätigen Sie das Passwort",
-      "txt": "Passwort"
-    },
-    "profile": {
+    "fields": {
       "addr": "Adresse",
       "addr_ext": "Erweiterte Straßenanschrift",
       "bio": "Kurzer Lebenslauf",
@@ -88,12 +133,17 @@
       "phone": "Telefon",
       "shirt_size": "T-Shirt Größfe",
       "state": "Staat / Region",
-      "timezone": "Zeitzone",
       "zip": "ZIP"
     },
-    "remove": {
-      "question": "Wollen Sie wirklich den Benutzer \"<b>:email</b>\" mit all seinen Daten und Fortschritten entfernen?",
-      "success": "Der Benutzer \":email\" wurde erfolgreich entfernt."
+    "msg": {
+      "ask_remove": "Wollen Sie wirklich den Benutzer \"<b>:entity</b>\" mit all seinen Daten und Fortschritten entfernen?",
+      "created": "Der Benutzer \":entity\" wurde erfolgreich erstellt.",
+      "modified": "Der Benutzer \":entity\" wurde erfolgreich geändert.",
+      "removed": "Der Benutzer \":entity\" wurde erfolgreich entfernt."
+    },
+    "password": {
+      "confirmation": "Bestätigen Sie das Passwort",
+      "txt": "Passwort"
     },
     "search": "Suchen Sie nach Benutzern…",
     "suspended_msg": "Ihr Konto wurde gesperrt. Bitte kontaktieren Sie den Admin oder den Support."

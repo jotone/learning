@@ -25,9 +25,9 @@
             <table>
               <thead>
               <tr>
-                <ContentTableHead field="first_name" :name="__('user.profile.first_name')"/>
-                <ContentTableHead field="last_name" :name="__('user.profile.last_name')"/>
-                <ContentTableHead field="email" :name="__('user.profile.email')"/>
+                <ContentTableHead field="first_name" :name="__('user.fields.first_name')"/>
+                <ContentTableHead field="last_name" :name="__('user.fields.last_name')"/>
+                <ContentTableHead field="email" :name="__('user.fields.email')"/>
                 <ContentTableHead field="role_name" :name="__('role.single')"/>
                 <th><span>{{ __('common.image.single') }}</span></th>
                 <ContentTableHead field="created_at" :name="__('common.created_at')"/>
@@ -50,8 +50,7 @@
         okBtnClass="danger"
         ref="confirmation"
         :okText="__('common.remove')"
-        :noText="__('common.cancel')"
-        :text="__('user.remove.question', removalName)"
+        :text="__('user.msg.ask_remove', removalName)"
       />
     </template>
   </Layout>

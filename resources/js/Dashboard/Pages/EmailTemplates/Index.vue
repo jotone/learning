@@ -21,7 +21,7 @@
               :action="$attrs.routes.settings.update"
               @submit.prevent="submit"
             >
-              <Method value="PATCH"/>
+              <input name="_method" type="hidden" value="PATCH">
 
               <div class="card-title">
                 SMTP Settings
@@ -101,7 +101,7 @@
               :action="$attrs.routes.settings.update"
               @submit.prevent="submit"
             >
-              <Method value="PATCH"/>
+              <input name="_method" type="hidden" value="PATCH">
 
               <div class="card-title">Email Global Settings</div>
 
@@ -206,13 +206,12 @@
 import {Fancybox} from "@fancyapps/ui";
 import {FormMixin} from "../../Mixins/form-mixin";
 import InputText from "../../Shared/Form/InputText.vue";
-import Method from "../../Shared/Form/Method.vue";
 import InputColor from "../../Shared/Form/InputColor.vue";
 import SocialMediaList from "../Settings/Partials/SocialMediaList.vue";
 import EmailTemplateList from "../Settings/Partials/EmailTemplateList.vue";
 
 export default {
-  components: {EmailTemplateList, InputColor, InputText, Method, SocialMediaList},
+  components: {EmailTemplateList, InputColor, InputText, SocialMediaList},
   computed: {
     /**
      * Default Select2 Options

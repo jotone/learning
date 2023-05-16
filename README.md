@@ -90,18 +90,20 @@ npm i && npm run prod
     - ~~Auth~~
     - ~~Admin Menu~~
     - ~~User~~
-    - Role
-      - list
-      - form
-    - Main settings
+    - ~~Role~~
+    - ~~Main settings~~
     - Login page
     - Language settings
+    - Email Templates
+      - list
+      - form
+    - Coaches
     - Notifications
     - ~~Forms~~
 - app:reset command
 - Courses////
 - Pages
-  - How to help
+  - How to **help**
   - Terms of service
   - Privacy policy
 

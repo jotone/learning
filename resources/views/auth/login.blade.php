@@ -40,7 +40,7 @@
         <form class="form-switch" data-trigger="login" action="{{ route('auth.login') }}" method="POST">
           @csrf
           <div class="form-input">
-            <label for="email">@lang('user.profile.email')</label>
+            <label for="email">@lang('user.fields.email')</label>
             <input
               autofocus=""
               autocomplete="off"
@@ -72,7 +72,7 @@
           @csrf
 
           <div class="form-input">
-            <label for="forgot-email">@lang('user.profile.email')</label>
+            <label for="forgot-email">@lang('user.fields.email')</label>
             <input autocomplete="off" id="forgot-email" name="email" class="form-input" type="email" required="">
           </div>
 

@@ -57,9 +57,7 @@ class UserController extends BasicAdminController
             share: [
                 'enums' => config('enums')['user'],
                 'routes' => [
-                    'users' => [
-                        'form' => route('api.users.store')
-                    ]
+                    'form' => route('api.users.store')
                 ],
                 'roles' => Role::where('level', '>=', Auth::user()->role->level)
                     ->orderBy('level')
@@ -68,8 +66,8 @@ class UserController extends BasicAdminController
                 'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray(),
                 'translations' => [
                     'user' => [
-                        'password' => __('user.password'),
-                        'profile' => __('user.profile')
+                        'fields' => __('user.fields'),
+                        'password' => __('user.password')
                     ],
                     'role' => [
                         'single' => __('role.single')
@@ -95,9 +93,7 @@ class UserController extends BasicAdminController
                 'enums' => config('enums')['user'],
                 'model' => $user,
                 'routes' => [
-                    'users' => [
-                        'form' => route('api.users.update', $user->id)
-                    ]
+                    'form' => route('api.users.update', $user->id)
                 ],
                 'roles' => Role::where('level', '>=', Auth::user()->role->level)
                     ->orderBy('level')
@@ -106,8 +102,8 @@ class UserController extends BasicAdminController
                 'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray(),
                 'translations' => [
                     'user' => [
-                        'password' => __('user.password'),
-                        'profile' => __('user.profile')
+                        'fields' => __('user.fields'),
+                        'password' => __('user.password')
                     ],
                     'role' => [
                         'single' => __('role.single')
@@ -133,12 +129,12 @@ class UserController extends BasicAdminController
             share: [
                 'model' => $user,
                 'routes' => [
-                    'update' => route('api.users.update', $user->id)
+                    'form' => route('api.users.update', $user->id)
                 ],
                 'translations' => [
                     'user' => [
+                        'fields' => __('user.fields'),
                         'password' => __('user.password'),
-                        'profile' => __('user.profile')
                     ]
                 ]
             ]

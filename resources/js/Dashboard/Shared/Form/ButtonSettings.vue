@@ -18,8 +18,7 @@
       :data-state="key"
     >
       <template v-for="(prop, field) in item">
-        <!-- TODO: Make fields translations -->
-        <InputColor :caption="field" :name="`${name}[${key}][${field}]`" :value="item[field]"/>
+        <InputColor :caption="__('common.' + field)" :name="`${name}[${key}][${field}]`" :value="item[field]"/>
       </template>
     </div>
   </div>
