@@ -6,11 +6,11 @@
 
     <template v-slot:content>
       <form
-        class="page-content-wrap cut-form"
-        id="mainSettings"
-        :action="$attrs.routes.form"
-        method="POST"
-        @submit.prevent="submit"
+          class="page-content-wrap cut-form"
+          id="mainSettings"
+          :action="$attrs.routes.form"
+          method="POST"
+          @submit.prevent="submit"
       >
         <input name="_method" type="hidden" value="PATCH">
         <div class="row">
@@ -20,23 +20,23 @@
                 {{ __('settings.main.info') }}
               </div>
               <InputText
-                name="site_url"
-                :caption="__('settings.main.site_url')"
-                :disabled="true"
-                :value="$attrs.content.site_url.value"
+                  name="site_url"
+                  :caption="__('settings.main.site_url')"
+                  :disabled="true"
+                  :value="$attrs.content.site_url.value"
               />
 
               <InputText
-                name="site_title"
-                :caption="__('settings.main.title')"
-                :value="$attrs.content.site_title.value"
+                  name="site_title"
+                  :caption="__('settings.main.title')"
+                  :value="$attrs.content.site_title.value"
               />
 
               <ImageUpload
-                caption="Fav Icon (SVG Icon, ICO file, or PNG 192×192 px)"
-                name="fav_icon"
-                :dimensions="[192, 192]"
-                :formats="['png', 'svg', 'ico']"
+                  caption="Fav Icon (SVG Icon, ICO file, or PNG 192×192 px)"
+                  name="fav_icon"
+                  :dimensions="[192, 192]"
+                  :formats="['png', 'svg', 'ico']"
               />
 
               <ImageUpload caption="Logo Image" name="logo_img"/>
@@ -52,9 +52,9 @@
                 </label>
 
                 <ButtonSettings
-                  name="primary_btn"
-                  :caption="__('settings.main.button')"
-                  :value="JSON.parse($attrs.content.primary_btn.value)"
+                    name="primary_btn"
+                    :caption="__('common.button')"
+                    :value="JSON.parse($attrs.content.primary_btn.value)"
                 />
               </div>
             </div>
@@ -65,28 +65,28 @@
               <div class="form-group-wide">
                 <label class="card-title-left">
                   <input
-                    class="form-checkbox"
-                    type="checkbox"
-                    name="custom-domain"
-                    :checked="$attrs.content.site_custom_url.value.length"
-                    @change="enableCustomDomain"
+                      class="form-checkbox"
+                      type="checkbox"
+                      name="custom-domain"
+                      :checked="$attrs.content.site_custom_url.value.length"
+                      @change="enableCustomDomain"
                   >
                   {{ __('settings.custom_domain.enable') }}
                 </label>
               </div>
 
               <InputText
-                name="site_custom_url"
-                :caption="__('settings.main.custom_url')"
-                :style="`display: ${customDomainEnabled ? 'block' : 'none'}`"
-                :value="$attrs.content.site_custom_url.value"
-                @paste="setCustomDomain"
-                @keyup="setCustomDomain"
+                  name="site_custom_url"
+                  :caption="__('settings.main.custom_url')"
+                  :style="`display: ${customDomainEnabled ? 'block' : 'none'}`"
+                  :value="$attrs.content.site_custom_url.value"
+                  @paste="setCustomDomain"
+                  @keyup="setCustomDomain"
               />
 
               <div
-                class="card-text"
-                :style="`display: ${customDomainSet ? 'block' : 'none'}`"
+                  class="card-text"
+                  :style="`display: ${customDomainSet ? 'block' : 'none'}`"
               >
                 <p>
                   {{ __('settings.custom_domain.msg1pt1') }}
@@ -110,9 +110,9 @@
               </div>
 
               <ButtonSettings
-                name="menu_colors"
-                :caption="__('settings.buttons.normal')"
-                :value="JSON.parse($attrs.content.menu_colors.value)"
+                  name="menu_colors"
+                  :caption="__('settings.buttons.normal')"
+                  :value="JSON.parse($attrs.content.menu_colors.value)"
               />
             </div>
 
@@ -129,17 +129,17 @@
               </div>
 
               <TextArea
-                name="header_code"
-                :caption="__('settings.main.header_code')"
-                :placeholder="__('settings.main.header_placeholder')"
-                :value="$attrs.content.header_code.value"
+                  name="header_code"
+                  :caption="__('settings.main.header_code')"
+                  :placeholder="__('settings.main.header_placeholder')"
+                  :value="$attrs.content.header_code.value"
               />
 
               <TextArea
-                name="footer_code"
-                :caption="__('settings.main.footer_code')"
-                :placeholder="__('settings.main.footer_placeholder')"
-                :value="$attrs.content.footer_code.value"
+                  name="footer_code"
+                  :caption="__('settings.main.footer_code')"
+                  :placeholder="__('settings.main.footer_placeholder')"
+                  :value="$attrs.content.footer_code.value"
               />
             </div>
 
@@ -149,9 +149,9 @@
               </div>
 
               <TextArea
-                name="override_css"
-                :placeholder="__('settings.main.theme_placeholder')"
-                :value="$attrs.overrideCss"
+                  name="override_css"
+                  :placeholder="__('settings.main.theme_placeholder')"
+                  :value="$attrs.overrideCss"
               />
             </div>
           </div>
@@ -168,7 +168,7 @@ import ImageUpload from "../../Shared/Form/ImageUpload.vue";
 import InputText from "../../Shared/Form/InputText.vue";
 import TextArea from "../../Shared/Form/TextArea.vue";
 import TimezoneSelector from "../../Shared/Form/TimezoneSelector.vue";
-import { FormMixin } from "../../Mixins/form-mixin";
+import {FormMixin} from "../../Mixins/form-mixin";
 
 export default {
   components: {ButtonSettings, ImageUpload, InputText, TextArea, TimezoneSelector},

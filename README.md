@@ -92,11 +92,9 @@ npm i && npm run prod
     - ~~User~~
     - ~~Role~~
     - ~~Main settings~~
-    - Login page
-    - Language settings
-    - Email Templates
-      - list
-      - form
+    - ~~Login page~~
+    - ~~Language settings~~
+    - ~~Email Templates~~
     - Coaches
     - Notifications
     - ~~Forms~~
@@ -125,3 +123,6 @@ npm i && npm run prod
   - Course Invitation email & Preview
   - Check coaches and admins has avatars when the communities are allowed
     formatOption
+
+[//]: # (dashboard    manifest    vendor)
+[//]: # (   736.9k        1.5k    120.9k <--- 16.05.2022)

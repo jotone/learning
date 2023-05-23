@@ -4,8 +4,12 @@
       <table>
         <thead>
         <tr>
-          <th><span>Name</span></th>
-          <th v-if="$page.props.auth.role.level === 0"><span>Actions</span></th>
+          <th>
+            <span>{{ __('common.name') }}</span>
+          </th>
+          <th v-if="$page.props.auth.role.level === 0">
+            <span>{{ __('common.actions') }}</span>
+          </th>
         </tr>
         </thead>
         <tbody>

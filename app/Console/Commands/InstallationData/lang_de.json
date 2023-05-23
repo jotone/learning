@@ -8,24 +8,76 @@
   },
   "common": {
     "actions": "Aktionen",
+    "add": "Hinzufügen",
     "background-color": "Hintergrundfarbe",
     "border-color": "Farbe der Umrandung",
+    "button": "Schaltfläche",
     "cancel": "Abbrechen",
     "color": "Farbe",
-    "created_at": "Erstellt am",
+    "created_at": "Erstelldatum",
+    "entity": "Entität",
+    "entity_field": "Entitätsfeld",
     "image": {
       "info": "Dein Bild sollte im :formats Format sein und <br> kleiner als :size.<br>Die empfohlene Bildgröße sollte größer sein als :dimensions pixel.",
       "single": "Bild",
       "text": "Ziehe dein Bild hierher oder <span> wähle eine<br> Bilddatei auf deinem Computer </span> zum Hochladen"
     },
+    "link": "Link",
     "main_data": "Hauptdaten",
     "misc": "Sonstiges",
     "name": "Name",
     "no": "Nein",
+    "preview": "Vorschau",
     "remove": "Entfernen",
+    "save": "Speichern",
     "submit": "Einreichen",
     "timezone": "Zeitzone",
+    "value": "Wert",
     "yes": "Ja"
+  },
+  "course": {
+    "mult": "Kursen",
+    "single": "Kurs"
+  },
+  "email_templates": {
+    "create": "Vorlage erstellen",
+    "fields": {
+      "footer_color": "Footer Farbe",
+      "footer_txt_color": "Text unter dem Aktivierungs Button",
+      "global": "Allgemeine Email Einstellungen",
+      "header": "E-Mail-Kopfzeile",
+      "legal_addr": "Juristische Adresse",
+      "privacy_url": "Datenschutz Link",
+      "socials": "Social Media Links im Footer",
+      "terms_url": "Link zu Nutzungsbedingungen",
+      "template_list": "Liste der Vorlagen",
+      "text": "E-Mail-Text",
+      "title": "E-Mail-Titel"
+    },
+    "link_here": "link geht hier",
+    "link_info": "Wenn der Button nicht funktioniert, klicke den unten stehenden Link",
+    "link_text": "Benutzerdefinierter Link-Text",
+    "msg": {
+      "modified": "Die E-Mail-Vorlage wurde erfolgreich gespeichert.",
+      "saved": "Die E-Mail-Einstellungen wurden erfolgreich gespeichert."
+    },
+    "preview": "E-Mail Vorschau",
+    "smtp": {
+      "addr": "Von der Adresse",
+      "enc": "Verschlüsselung",
+      "help": "Du brauchst Hilfe?",
+      "host": "Gastgeber",
+      "help_msg1": "Bitte schaue dir das folgende Video an, um deine Email in der Plattform einzustellen:",
+      "help_msg2": "Sendgrid als dein SMTP kann die beste Option sein, die Zustellbarkeit zu sichern. Kostenlos für bis zu 100 Emails am Tag.",
+      "help_title": "Wie du deine SMTP Einstellungen machst",
+      "msg": "Wenn du GSuite verwendest: Stelle bitte sicher, dass du weniger sichere Anwendungen in deiner GSuite-Verwaltung, und auch auf Kontoebene, aktivierst.",
+      "name": "Von name",
+      "port": "Port",
+      "save": "Test-E-Mail speichern und senden",
+      "sent": "Die E-Mail für den SMTP-Test wurde erfolgreich gesendet.",
+      "settings": "SMTP-Einstellungen",
+      "username": "Benutzername"
+    }
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -99,8 +151,28 @@
       "msg1pt2": "oder * und Ziel",
       "msg2": "Wenn Sie die Änderung Ihrer DNS abgeschlossen haben, klicken Sie bitte auf Senden. Unser Team wird den Vorgang innerhalb von 24 Arbeitsstunden abschließen."
     },
+    "language": {
+      "add_lang": "Sprache hinzufügen",
+      "denotation": "Bezeichnung",
+      "field_saved": "Die Übersetzung für das Feld \":entity\" wurde erfolgreich gespeichert.",
+      "installed": "Die Sprache wurde erfolgreich installiert.",
+      "remove_err": "Die Standardsprache kann nicht entfernt werden.",
+      "remove_msg": "Wollen Sie dieses Sprachpaket wirklich entfernen?",
+      "removed_msg": "Das Sprachpaket \":entity\" wurde erfolgreich entfernt.",
+      "select_main": "Hauptsprache auswählen",
+      "success": "Die Hauptsprache wurde erfolgreich eingestellt."
+    },
+    "login": {
+      "bg_color": "Hintergrundfarbe der Anmeldeseite",
+      "bg_img": "Login-Hintergrundbild",
+      "buttons": "Schaltflächen des Anmeldeformulars",
+      "form_bg_color": "Hintergrundfarbe des Anmeldeformulars",
+      "form_txt_color": "Textfarbe des Anmeldeformulars",
+      "logo_bg_color": "Login-Seite Logo-Hintergrundfarbe",
+      "main_colors": "Login-Seite Hauptfarben",
+      "success": "Die Einstellungen der Anmeldeseite wurden erfolgreich gespeichert."
+    },
     "main": {
-      "button": "Schaltfläche",
       "custom_url": "Benutzerdefinierte URL",
       "custom_script": "Benutzerdefinierte Skripte",
       "footer_code": "Code für die Fußzeile",
@@ -116,9 +188,14 @@
       "title": "Name des Systems"
     }
   },
+  "student": {
+    "mult": "Nutzer",
+    "single": "Nutzer"
+  },
   "user": {
     "create": "Benutzer Erstellen",
     "fields": {
+      "activation_date": "Datum der Aktivierung",
       "addr": "Adresse",
       "addr_ext": "Erweiterte Straßenanschrift",
       "bio": "Kurzer Lebenslauf",
@@ -127,6 +204,7 @@
       "data": "Profildaten",
       "email": "E-mail",
       "first_name": "Vorname",
+      "full_name": "Vollständiger Name",
       "image": "Profilbild",
       "info": "Persönliche Informationen",
       "last_name": "Nachname",
@@ -147,6 +225,18 @@
     },
     "search": "Suchen Sie nach Benutzern…",
     "suspended_msg": "Ihr Konto wurde gesperrt. Bitte kontaktieren Sie den Admin oder den Support."
+  },
+  "variable": {
+    "add": "Variable hinzufügen",
+    "custom_text": "Benutzerdefinierter Text",
+    "date": "Datum",
+    "entity": "Variable Entität",
+    "entity_name": "Variables Entitätsfeld",
+    "name": "Name der Variablen",
+    "mult": "Variablen",
+    "now": "Jetzt",
+    "single": "Variabel",
+    "value": "Wert der Variablen"
   },
   "validation": {
     "accepted": ":attribute muss akzeptiert werden.",

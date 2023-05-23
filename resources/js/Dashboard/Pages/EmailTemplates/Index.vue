@@ -3,7 +3,7 @@
     <template v-slot:optionals>
       <a class="btn" :href="$attrs.routes.emails.create" v-if="$attrs.auth.role.level === 0">
         <i class="icon plus-icon"></i>
-        <span>Create Template</span>
+        <span>{{ __('email_templates.create') }}</span>
       </a>
 
       <SaveButton form="email"/>
@@ -16,78 +16,83 @@
             <form
               class="card"
               id="smtp"
-              data-save-message="Mail for SMTP testing was successfully sent."
               method="POST"
               :action="$attrs.routes.settings.update"
+              :data-save-message="__('email_templates.smtp.sent')"
               @submit.prevent="submit"
             >
               <input name="_method" type="hidden" value="PATCH">
 
               <div class="card-title">
-                SMTP Settings
+                {{ __('email_templates.smtp.settings') }}
 
                 <a class="card-title-link" href="#" data-fancybox data-src="#needHelp">
                   <i class="icon info-icon"></i>
-                  <span>Need Help?</span>
+                  <span>{{ __('email_templates.smtp.help') }}</span>
                 </a>
               </div>
 
               <InputText
-                caption="Username"
                 name="smtp_username"
+                :caption="__('email_templates.smtp.username')"
                 :required="true"
                 :value="$attrs.content.smtp_username.value"
               />
 
               <InputText
-                caption="Password"
                 name="smtp_password"
                 type="password"
+                :caption="__('user.password.txt')"
                 :required="true"
                 :value="$attrs.content.smtp_password.value"
               />
 
               <InputText
-                caption="Host"
                 name="smtp_host"
+                :caption="__('email_templates.smtp.host')"
                 :required="true"
                 :value="$attrs.content.smtp_host.value"
               />
 
               <InputText
-                caption="Port"
                 name="smtp_port"
+                :caption="__('email_templates.smtp.port')"
                 :required="true"
                 :value="$attrs.content.smtp_port.value"
               />
 
               <InputText
-                caption="Encryption"
                 name="smtp_encryption"
+                :caption="__('email_templates.smtp.enc')"
                 :required="true"
                 :value="$attrs.content.smtp_encryption.value"
               />
 
               <InputText
-                caption="From Address"
                 name="smtp_from_address"
                 type="email"
+                :caption="__('email_templates.smtp.addr')"
                 :value="$attrs.content.smtp_from_address.value"
               />
 
-              <InputText caption="From name" name="smtp_from_name" :value="$attrs.content.smtp_from_name.value"/>
+              <InputText
+                name="smtp_from_name"
+                :caption="__('email_templates.smtp.name')"
+                :value="$attrs.content.smtp_from_name.value"
+              />
 
               <div class="form-group">
                 <label class="small-caption">
                   <span>
-                    *If you are using GSuite make sure to enable less secure apps from your GSuite administration and
-                    also on the account level.
+                    *{{ __('email_templates.smtp.msg') }}
                   </span>
                 </label>
               </div>
 
               <div class="form-group">
-                <button class="btn blue">Save and send test email</button>
+                <button class="btn blue">
+                  {{ __('email_templates.smtp.save') }}
+                </button>
               </div>
             </form>
           </div>
@@ -96,43 +101,43 @@
             <form
               class="card"
               id="email"
-              data-save-message="Email Settings were successfully saved."
+              :data-save-message="__('email_templates.msg.saved')"
               method="POST"
               :action="$attrs.routes.settings.update"
               @submit.prevent="submit"
             >
               <input name="_method" type="hidden" value="PATCH">
 
-              <div class="card-title">Email Global Settings</div>
+              <div class="card-title">{{ __('email_templates.fields.global') }}</div>
 
               <InputColor
-                caption="Footer Color"
                 name="footer_color"
+                :caption="__('email_templates.fields.footer_color')"
                 :value="$attrs.content.footer_color.value"
               />
 
               <InputText
-                caption="Terms Of Service Link"
                 name="terms_of_service"
+                :caption="__('email_templates.fields.terms_url')"
                 :value="$attrs.content.terms_of_service.value"
               />
 
               <InputText
-                caption="Privacy Policy Link"
                 name="privacy_policy"
+                :caption="__('email_templates.fields.privacy_url')"
                 :value="$attrs.content.privacy_policy.value"
               />
 
               <InputText
-                caption="Legal Address"
                 name="legal_address"
+                :caption="__('email_templates.fields.legal_addr')"
                 :value="$attrs.content.legal_address.value"
               />
             </form>
 
             <div class="card">
               <div class="card-title">
-                Social Media Links on Footer
+                {{ __('email_templates.fields.socials') }}
               </div>
 
               <div class="form-group">
@@ -140,7 +145,9 @@
               </div>
 
               <div class="form-group">
-                <button class="btn blue" type="button" @click="addSocial">Add</button>
+                <button class="btn blue" type="button" @click="addSocial">
+                  {{ __('common.add') }}
+                </button>
               </div>
             </div>
           </div>
@@ -148,7 +155,7 @@
           <div class="col-1-3">
             <div class="card">
               <div class="card-title">
-                Templates List
+                {{ __('email_templates.fields.template_list') }}
               </div>
 
               <EmailTemplateList :list="$attrs.templates"/>
@@ -161,12 +168,13 @@
     <template v-slot:popup>
       <div class="modal" id="needHelp" style="max-width: 700px; display: none">
         <div class="modal-title">
-          How to setup your SMTP settings
+          {{ __('email_templates.smtp.help_title') }}
         </div>
         <div class="modal-body">
           <div class="section">
             <div class="section-title">
-              <span>Please watch the following video in order to be able to setup your emails in the platform:</span>
+              <span>
+                {{ __('email_templates.smtp.help_msg1') }}</span>
             </div>
             <div class="section-body">
               <iframe
@@ -181,8 +189,7 @@
           <div class="section">
             <div class="section-title">
               <span>
-                Using Sendgrid as your SMTP can be the best option to ensure deliverability.
-                It is free for up to 100 emails per day.
+                {{ __('email_templates.smtp.help_msg2') }}
               </span>
             </div>
             <div class="section-body">
@@ -207,8 +214,8 @@ import {Fancybox} from "@fancyapps/ui";
 import {FormMixin} from "../../Mixins/form-mixin";
 import InputText from "../../Shared/Form/InputText.vue";
 import InputColor from "../../Shared/Form/InputColor.vue";
-import SocialMediaList from "../Settings/Partials/SocialMediaList.vue";
-import EmailTemplateList from "../Settings/Partials/EmailTemplateList.vue";
+import SocialMediaList from "./Partials/SocialMediaList.vue";
+import EmailTemplateList from "./Partials/EmailTemplateList.vue";
 
 export default {
   components: {EmailTemplateList, InputColor, InputText, SocialMediaList},

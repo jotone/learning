@@ -8,24 +8,76 @@
   },
   "common": {
     "actions": "Actions",
+    "add": "Add",
     "background-color": "Background Color",
     "border-color": "Border Color",
+    "button": "Button",
     "cancel": "Cancel",
     "color": "Color",
-    "created_at": "Created At",
+    "created_at": "Creation Date",
+    "entity": "Entity",
+    "entity_field": "Entity field",
     "image": {
       "info": "Your image should be in :formats format and <br> smaller than :size.<br>The recommended image size should be greater than :dimensions pixels.",
       "single": "Image",
       "text": "Drag your image here, or <span> choose an<br> image file on your computer </span> to upload"
     },
+    "link": "Link",
     "main_data": "Main Data",
     "misc": "Miscellaneous",
     "name": "Name",
     "no": "No",
+    "preview": "Preview",
     "remove": "Remove",
+    "save": "Save",
     "submit": "Submit",
     "timezone": "Time-Zone",
+    "value": "Value",
     "yes": "Yes"
+  },
+  "course": {
+    "mult": "Courses",
+    "single": "Course"
+  },
+  "email_templates": {
+    "create": "Create Template",
+    "fields": {
+      "footer_color": "Footer Color",
+      "footer_txt_color": "Text below action button",
+      "global": "Email Global Settings",
+      "header": "Email Header",
+      "legal_addr": "Legal Address",
+      "privacy_url": "Privacy Policy Link",
+      "socials": "Social Media Links on Footer",
+      "terms_url": "Terms Of Service Link",
+      "template_list": "Templates List",
+      "text": "Email text",
+      "title": "Email Title"
+    },
+    "link_here": "link goes here",
+    "link_info": "If the button is not working, click the link below",
+    "link_text": "Custom Link Text",
+    "msg": {
+      "modified": "Email template was successfully saved.",
+      "saved": "Email Settings were successfully saved."
+    },
+    "preview": "Email Preview",
+    "smtp": {
+      "addr": "From Address",
+      "enc": "Encryption",
+      "help": "Need Help?",
+      "help_msg1": "Please watch the following video in order to be able to setup your emails in the platform:",
+      "help_msg2": "Using Sendgrid as your SMTP can be the best option to ensure deliverability. It is free for up to 100 emails per day.",
+      "help_title": "How to setup your SMTP settings",
+      "host": "Host",
+      "msg": "If you are using GSuite make sure to enable less secure apps from your GSuite administration and also on the account level.",
+      "name": "From name",
+      "port": "Port",
+      "save": "Save and send test email",
+      "sent": "Mail for SMTP testing was successfully sent.",
+      "settings": "SMTP Settings",
+      "username": "Username"
+    }
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -99,8 +151,28 @@
       "msg1pt2": "or * and target",
       "msg2": "When you complete changing your DNS please click Submit. Our team will finish the process on our side within 24 working hours."
     },
+    "language": {
+      "add_lang": "Add Language",
+      "denotation": "Denotation",
+      "field_saved": "Translation for the field \":entity\" was successfully saved.",
+      "installed": "Language was successfully installed.",
+      "remove_err": "Cannot remove default language.",
+      "remove_msg": "Do you really want to remove this language package?",
+      "removed_msg": "Language package \":entity\" was successfully removed.",
+      "select_main": "Select Main Language",
+      "success": "Main language was successfully set."
+    },
+    "login": {
+      "bg_color": "Login page background color",
+      "bg_img": "Login Background Image",
+      "buttons": "Login form buttons",
+      "form_bg_color": "Form background color",
+      "form_txt_color": "Form text color",
+      "logo_bg_color": "Logo image background color",
+      "main_colors": "Login Page Main Colors",
+      "success": "Login page settings were successfully saved."
+    },
     "main": {
-      "button": "Button",
       "custom_url": "Custom URL",
       "custom_script": "Custom Scripts",
       "footer_code": "Footer code",
@@ -116,9 +188,14 @@
       "title": "System Name"
     }
   },
+  "student": {
+    "mult": "Students",
+    "single": "Student"
+  },
   "user": {
     "create": "Create User",
     "fields": {
+      "activation_date": "Activation Date",
       "addr": "Address",
       "addr_ext": "Extended address",
       "bio": "Short bio",
@@ -127,6 +204,7 @@
       "data": "Profile Data",
       "email": "Email",
       "first_name": "First Name",
+      "full_name": "Full name",
       "image": "Profile Image",
       "info": "Personal Information",
       "last_name": "Last Name",
@@ -147,6 +225,18 @@
     },
     "search": "Search for users…",
     "suspended_msg": "Your account has been suspended. Please contact the admin or the support."
+  },
+  "variable": {
+    "add": "Add Variable",
+    "custom_text": "Custom Text",
+    "date": "Date",
+    "entity": "Variable Entity",
+    "entity_name": "Variable Entity Field",
+    "name": "Name of the Variable",
+    "now": "Now",
+    "mult": "Variables",
+    "single": "Variable",
+    "value": "Value of the Variable"
   },
   "validation": {
     "accepted": "The :attribute must be accepted.",

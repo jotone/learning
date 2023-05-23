@@ -33,7 +33,11 @@ class SettingsController extends BasicAdminController
                     'form' => route('api.settings.update')
                 ],
                 'translations' => [
-                    'settings' => __('settings')
+                    'settings' => [
+                        'buttons' => __('settings.buttons'),
+                        'custom_domain' => __('settings.custom_domain'),
+                        'main' => __('settings.main')
+                    ]
                 ]
             ]
         );
@@ -51,15 +55,25 @@ class SettingsController extends BasicAdminController
             template: 'Settings/Login',
             request: $request,
             share: [
+                'content' => Settings::whereIn('section', ['login-page', 'login-page'])
+                    ->orWhere('key', 'logo_img')
+                    ->get()
+                    ->keyBy('key'),
                 'routes' => [
                     'settings' => [
                         'update' => route('api.settings.update')
                     ]
                 ],
-                'content' => Settings::whereIn('section', ['login-page', 'login-page'])
-                    ->orWhere('key', 'logo_img')
-                    ->get()
-                    ->keyBy('key'),
+                'translations' => [
+                    'auth' => __('auth'),
+                    'settings' => [
+                        'login' => __('settings.login')
+                    ],
+                    'user' => [
+                        'fields' => __('user.fields'),
+                        'password' => __('user.password')
+                    ]
+                ]
             ]
         );
     }
@@ -76,12 +90,13 @@ class SettingsController extends BasicAdminController
             template: 'Settings/Language',
             request: $request,
             share: [
-                'installed' => LocaleHelper::installed(),
                 'available' => array_map(
                     fn($str) => 'CHINESE_T' === $str ? 'Chinese Taiwan'
                         : Str::headline(Str::lower(preg_replace('/_/', ' ', $str))),
                     collect(Locales::cases())->pluck('name', 'value')->toArray()
                 ),
+                'files' => array_map(fn($file) => pathinfo($file, PATHINFO_FILENAME), glob(lang_path('en') . '/*.php')),
+                'installed' => LocaleHelper::installed(),
                 'routes' => [
                     'language' => [
                         'show' => route('api.language.show', [':lang', ':file']),
@@ -93,7 +108,11 @@ class SettingsController extends BasicAdminController
                         'update' => route('api.settings.update')
                     ]
                 ],
-                'files' => array_map(fn($file) => pathinfo($file, PATHINFO_FILENAME), glob(lang_path('en') . '/*.php'))
+                'translations' => [
+                    'settings' => [
+                        'language' => __('settings.language')
+                    ]
+                ]
             ]
         );
     }
