@@ -34,7 +34,7 @@
               </tr>
               </thead>
               <tbody>
-              <template v-for="(model, i) in collection">
+              <template v-for="(n, i) in collection.length">
                 <RoleTableRow :model="collection[i]"/>
               </template>
               </tbody>
@@ -47,7 +47,7 @@
         okBtnClass="danger"
         ref="confirmation"
         :okText="__('common.remove')"
-        :text="__('role.remove.question', removalName)"
+        :text="__('role.msg.ask_remove', removalName)"
       />
     </template>
   </Layout>
@@ -55,12 +55,11 @@
 
 <script>
 import {ContentTableMixin} from "../../Mixins/content-table-mixin";
-import UserTableRow from "../Users/Partials/UserTableRow.vue";
 import RoleTableRow from "./Partials/RoleTableRow.vue";
 
 export default {
   name: "Roles/Index",
-  components: {RoleTableRow, UserTableRow},
+  components: {RoleTableRow},
   mixins: [ContentTableMixin],
   beforeMount() {
     this.url = this.$attrs.routes.roles.list

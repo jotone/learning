@@ -7,9 +7,10 @@
     <template v-slot:content>
       <form
         class="page-content-wrap"
+        data-success-callback="resetForm"
         id="roleForm"
-        :action="$attrs.routes.form"
         method="POST"
+        :action="$attrs.routes.form"
         @submit.prevent="submit"
       >
         <input name="_method" type="hidden" value="PUT" v-if="$attrs.hasOwnProperty('model')">
@@ -90,8 +91,22 @@ import InputText from "../../Shared/Form/InputText.vue";
 export default {
   components: {InputText},
   methods: {
+    /**
+     * Reset form when entity is created
+     *
+     * @param response
+     */
+    resetForm(response) {
+      201 === response.status && $('form')[0].reset()
+    },
+    /**
+     * Show one of these message after request
+     *
+     * @param response
+     * @returns {string}
+     */
     saveMessage(response) {
-      return this.__(`role.msg${201 === response.status ? 'created' : 'modified'}`, response.data.name)
+      return this.__(`role.msg.${201 === response.status ? 'created' : 'modified'}`, response.data.name)
     }
   },
   mixins: [FormMixin],

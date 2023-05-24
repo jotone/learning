@@ -44,12 +44,12 @@ npm i && npm run prod
 ```
 ## Makefile Commands
 
-- make cmd run=`<your artisan command>` - will run custom artisan command
-- up - start up sail docker containers
-- down - stop docker containers
-- migrate - run artisan migrate
-- reset - reset and seed environment
-- test - run tests
+- `make cmd run=<your artisan command>`** - will run custom artisan command
+- `make up` - start up sail docker containers
+- `make down` - stop docker containers
+- `make migrate` - run artisan migrate
+- `make reset` - reset and seed environment
+- `make test` - run tests
 
 ### TODO
 
@@ -85,7 +85,7 @@ npm i && npm run prod
   - ~~Remove language package~~
   - ~~View translations form~~
   - ~~Save translations~~
-  - Apply translations to pages
+  - ~~Apply translations to pages~~
     - ~~Email~~
     - ~~Auth~~
     - ~~Admin Menu~~
@@ -95,8 +95,7 @@ npm i && npm run prod
     - ~~Login page~~
     - ~~Language settings~~
     - ~~Email Templates~~
-    - Coaches
-    - Notifications
+    - ~~Coaches~~
     - ~~Forms~~
 - app:reset command
 - Courses////
@@ -126,3 +125,4 @@ npm i && npm run prod
 
 [//]: # (dashboard    manifest    vendor)
 [//]: # (   736.9k        1.5k    120.9k <--- 16.05.2022)
+[//]: # (   742.8k        1.5     120.9k <--- 24.05.2022)

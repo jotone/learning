@@ -67,6 +67,7 @@ class UserController extends BasicAdminController
                 'translations' => [
                     'user' => [
                         'fields' => __('user.fields'),
+                        'msg' => __('user.msg'),
                         'password' => __('user.password')
                     ],
                     'role' => [
@@ -103,6 +104,7 @@ class UserController extends BasicAdminController
                 'translations' => [
                     'user' => [
                         'fields' => __('user.fields'),
+                        'msg' => __('user.msg'),
                         'password' => __('user.password')
                     ],
                     'role' => [

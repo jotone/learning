@@ -67,7 +67,8 @@ class RoleController extends BasicAdminController
                 ],
                 'translations' => [
                     'role' => [
-                        'fields' => __('role.fields')
+                        'fields' => __('role.fields'),
+                        'msg' => __('role.msg')
                     ]
                 ],
                 'userPermissions' => $this->userPermissions(Auth::user()->role->permissions)
@@ -105,7 +106,8 @@ class RoleController extends BasicAdminController
                 ],
                 'translations' => [
                     'role' => [
-                        'fields' => __('role.fields')
+                        'fields' => __('role.fields'),
+                        'msg' => __('role.msg')
                     ]
                 ],
                 'userPermissions' => $this->userPermissions(Auth::user()->role->permissions)

@@ -9,8 +9,8 @@
         class="page-content-wrap"
         data-success-callback="resetForm"
         id="userForm"
-        :action="$attrs.routes.form"
         method="POST"
+        :action="$attrs.routes.form"
         @submit.prevent="submit"
       >
         <input name="_method" type="hidden" value="PUT" v-if="$attrs.hasOwnProperty('model')">
@@ -102,6 +102,14 @@ export default {
     }
   },
   methods: {
+    /**
+     * Reset form when entity is created
+     *
+     * @param response
+     */
+    resetForm(response) {
+      201 === response.status && $('form')[0].reset()
+    },
     /**
      * Show one of these message after request
      *

@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td data-role="name">
+    <td>
       <Link :href="editUrl">{{ model.name }}</Link>
     </td>
     <td>
@@ -34,7 +34,7 @@ export default {
      */
     removeUrl() {
       return this.$page.props.routes.roles.destroy.replace(/:id$/, this.model.id)
-    },
+    }
   },
   methods: {
     /**
@@ -45,7 +45,7 @@ export default {
       const obj = $(e.target).closest('a')
       // Set removal object name
       this.$parent.$parent.removalName = this.model.name
-      this.$parent.$parent.remove(obj, 'role.remove.success')
+      this.$parent.$parent.remove(obj, 'role.msg.removed')
     },
   },
   name: "RoleTableRow",

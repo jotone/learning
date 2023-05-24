@@ -26,8 +26,14 @@ class CoachesController extends BasicAdminController
                     'coaches' => [
                         'list' => route('api.users.index') . '?where[role_id]=' . $coach_role->id,
                         'create' => route('dashboard.settings.coaches.create'),
-                        'edit' => route('dashboard.settings.coaches.edit',':id'),
+                        'edit' => route('dashboard.settings.coaches.edit', ':id'),
                         'destroy' => route('api.users.destroy', ':id')
+                    ]
+                ],
+                'translations' => [
+                    'coach' => __('coach'),
+                    'user' => [
+                        'fields' => __('user.fields')
                     ]
                 ]
             ]
@@ -52,6 +58,15 @@ class CoachesController extends BasicAdminController
                     ]
                 ],
                 'role' => Role::firstWhere('slug', 'coach')->id,
+                'translations' => [
+                    'coach' => [
+                        'msg' => __('coach.msg'),
+                    ],
+                    'user' => [
+                        'fields' => __('user.fields'),
+                        'password' => __('user.password')
+                    ]
+                ]
             ]
         );
     }
@@ -81,6 +96,15 @@ class CoachesController extends BasicAdminController
                     ]
                 ],
                 'role' => $role->id,
+                'translations' => [
+                    'coach' => [
+                        'msg' => __('coach.msg'),
+                    ],
+                    'user' => [
+                        'fields' => __('user.fields'),
+                        'password' => __('user.password')
+                    ]
+                ]
             ]
         );
     }

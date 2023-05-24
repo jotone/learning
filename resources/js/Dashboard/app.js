@@ -14,8 +14,10 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
   $('.preloader').hide()
   return response
+}, error => {
+  $('.preloader').hide()
+  return Promise.reject(error);
 })
-
 
 createInertiaApp({
   resolve: name => require(`./Pages/${name}.vue`),

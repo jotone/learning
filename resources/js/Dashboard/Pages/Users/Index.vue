@@ -37,7 +37,7 @@
               </tr>
               </thead>
               <tbody>
-              <template v-for="(model, i) in collection">
+              <template v-for="(n, i) in collection.length">
                 <UserTableRow :model="collection[i]"/>
               </template>
               </tbody>
@@ -58,7 +58,6 @@
 
 <script>
 import {ContentTableMixin} from "../../Mixins/content-table-mixin";
-import axios from "axios";
 import UserTableRow from "./Partials/UserTableRow.vue";
 
 export default {

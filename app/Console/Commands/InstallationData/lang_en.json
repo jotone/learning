@@ -35,6 +35,16 @@
     "value": "Value",
     "yes": "Yes"
   },
+  "coach": {
+    "create": "Create Coach",
+    "msg": {
+      "ask_remove": "Do you really want to remove coach \"<b>:entity</b>\"?",
+      "created": "Coach \":entity\" was successfully created.",
+      "modified": "Coach \":entity\" was successfully modified.",
+      "removed": "Coach \":entity\" was successfully removed."
+    },
+    "search": "Search for coaches…"
+  },
   "course": {
     "mult": "Courses",
     "single": "Course"
@@ -131,7 +141,7 @@
     },
     "mult": "Roles",
     "msg": {
-      "ask_remove": "Do you really want to remove role \"<b>:entity</b>\"  with all it&apos;s data and user permissions?",
+      "ask_remove": "Do you really want to remove role \"<b>:entity</b>\" with all it&apos;s data and user permissions?",
       "created": "Role \":entity\" was successfully created.",
       "modified": "Role \":entity\" was successfully modified.",
       "removed": "Role \":entity\" was successfully removed."

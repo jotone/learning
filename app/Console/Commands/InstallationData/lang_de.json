@@ -35,6 +35,16 @@
     "value": "Wert",
     "yes": "Ja"
   },
+  "coach": {
+    "create": "Trainer erstellen",
+    "msg": {
+      "ask_remove": "Wollen Sie wirklich den Trainer \"<b>:entity</b>\" entfernen?",
+      "created": "Trainer \":entity\" wurde erfolgreich erstellt.",
+      "modified": "Trainer \":entity\" wurde erfolgreich geändert.",
+      "removed": "Trainer \":entity\" wurde erfolgreich entfernt."
+    },
+    "search": "Suche nach Trainern…"
+  },
   "course": {
     "mult": "Kursen",
     "single": "Kurs"
