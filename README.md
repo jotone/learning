@@ -82,7 +82,22 @@ npm i && npm run prod
 - ~~Language settings~~
 - ~~Apply translations to pages~~
 - ~~app:reset command~~
-- Courses////
+- Courses
+  - Model
+  - migration
+  - factory
+  - tests
+  - seeder
+  - Page
+- Categories
+  - Create
+  - Edit
+  - Remove
+- Courses
+  - Create
+  - Edit
+  - Clone
+  - Remove
 - Pages
   - How to **help**
   - Terms of service
@@ -93,8 +108,6 @@ npm i && npm run prod
 - Dashboard
   - Main settings
     - Site custom URL
-  - LoginRequest on AuthController
-    - translations
   - Send Course Invitation email when user finished his account activation
   - Send Course Invitation email after student update
   - /dashboard/users/create - add courses if role is "student"

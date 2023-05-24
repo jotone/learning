@@ -25,7 +25,7 @@ class ResetPasswordController extends Controller
         // Check if reset link not exists or link has benn expired
         if (time() > $reset->created_at->addWeek()->timestamp) {
             return redirect(route('auth.index') . '#forgot')->withErrors([
-                'email' => 'The link is expired. Try sending your password reset request again.'
+                'email' => __('passwords.expired')
             ]);
         }
         // View the reset password form
