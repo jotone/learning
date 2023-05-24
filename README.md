@@ -79,25 +79,9 @@ npm i && npm run prod
 - ~~Remove Coach~~
 - ~~Admin Profile~~
 - ~~Login page settings -> preview~~
-- Language settings
-  - ~~Add language~~
-  - ~~Select main language~~
-  - ~~Remove language package~~
-  - ~~View translations form~~
-  - ~~Save translations~~
-  - ~~Apply translations to pages~~
-    - ~~Email~~
-    - ~~Auth~~
-    - ~~Admin Menu~~
-    - ~~User~~
-    - ~~Role~~
-    - ~~Main settings~~
-    - ~~Login page~~
-    - ~~Language settings~~
-    - ~~Email Templates~~
-    - ~~Coaches~~
-    - ~~Forms~~
-- app:reset command
+- ~~Language settings~~
+- ~~Apply translations to pages~~
+- ~~app:reset command~~
 - Courses////
 - Pages
   - How to **help**

@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Classes\FileHelper;
-use App\Models\{EmailTemplate, Permission, Role, Settings, User};
+use App\Models\{EmailTemplate, Settings, User};
 use App\Traits\{CommandsTrait, LanguageHelper, PermissionListTrait, SettingsTrait};
 use Illuminate\Console\Command;
 
@@ -27,69 +27,21 @@ class AppInstall extends Command
 
     /**
      * Execute the console command.
+     * @throws \Exception
      */
     public function handle(): void
     {
         $this->components->info('Running server installation.');
 
-        $install_path = base_path('app/Console/Commands/InstallationData/');
+        $files = $this->installationFiles();
 
-        $files = [
-            'admin_menu' => null,
-            'email_templates' => null,
-            'lang_en' => null,
-            'lang_de' => null,
-            'roles' => null,
-            'settings' => null,
-        ];
-
-        foreach ($files as $file => $data) {
-            try {
-                $files[$file] = json_decode(file_get_contents($install_path . $file . '.json'), 1);
-            } catch (\Exception $exception) {
-                $this->error('Error occurred while ' . $file . ' file reading. (app/Console/Commands/AppInstallData/' . $file . '.json)');
-                $this->error($exception->getMessage());
-            }
-        }
-
+        // Install roles
         $this->runWithTimer('Creating user roles', function () use ($files) {
-            foreach ($files['roles'] as $slug => $data) {
-                $role = Role::firstOrCreate([
-                    'name' => $data['name'],
-                    'slug' => $slug,
-                    'level' => $data['level']
-                ]);
-
-                if (!empty($data['permissions'])) {
-                    foreach ($data['permissions'] as $controller => $methods) {
-                        Permission::create([
-                            'role_id' => $role->id,
-                            'controller' => $controller,
-                            'allowed_methods' => $methods
-                        ]);
-                    }
-                }
-            }
+            $this->installRoles($files['roles']);
         });
 
-        $super_user_roles = Role::where('level', '0')->get();
-
-        $this->runWithTimer('Binding permissions to roles', function () use ($super_user_roles) {
-            $permission_list = $this->permissionList([
-                app_path('Http/Controllers/Api/'),
-                app_path('Http/Controllers/Dashboard/')
-            ]);
-
-            foreach ($super_user_roles as $role) {
-                foreach ($permission_list as $permission) {
-                    Permission::create([
-                        'role_id' => $role->id,
-                        'controller' => $permission['class'],
-                        'allowed_methods' => $permission['methods']
-                    ]);
-                }
-            }
-        });
+        // Install super user permissions
+        $super_user_roles = $this->installSuperUser();
 
         $this->runWithTimer('Creating superuser account', function () use ($files, $super_user_roles) {
             return User::whereHas('role', fn($q) => $q->where('level', '<', 1))->count()
@@ -127,6 +79,7 @@ class AppInstall extends Command
             }
         });
 
+        // Install languages
         $this->runWithTimer('Installing language packages', function () use ($files) {
             // Remove language files
             foreach (glob(lang_path('/*'), GLOB_ONLYDIR) as $path) {
@@ -139,6 +92,7 @@ class AppInstall extends Command
         // Generate login css
         $this->runWithTimer('Generating css files', fn() => $this->generateLoginCSS());
 
+        // Installing side menu
         $this->runWithTimer('Creating dashboard side menu', fn() => $this->installAdminMenu($files['admin_menu']));
     }
 }
