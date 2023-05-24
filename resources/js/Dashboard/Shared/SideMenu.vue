@@ -26,10 +26,10 @@
             </div>
           </li>
           <li>
-            <a :href="$page.props.routes.auth.me">Edit my profile</a>
+            <a :href="$page.props.routes.auth.me">{{ __('menu.profile') }}</a>
           </li>
           <li>
-            <a :href="$page.props.routes.auth.logout">Logout</a>
+            <a :href="$page.props.routes.auth.logout">{{ __('menu.logout') }}</a>
           </li>
         </ul>
       </li>

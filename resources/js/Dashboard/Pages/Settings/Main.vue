@@ -6,32 +6,37 @@
 
     <template v-slot:content>
       <form
-        class="page-content-wrap cut-form"
-        id="mainSettings"
-        :action="$attrs.routes.settings.update"
-        method="POST"
-        @submit.prevent="submit"
+          class="page-content-wrap cut-form"
+          id="mainSettings"
+          :action="$attrs.routes.form"
+          method="POST"
+          @submit.prevent="submit"
       >
-        <Method value="PATCH"/>
+        <input name="_method" type="hidden" value="PATCH">
         <div class="row">
           <div class="col-1-2">
             <div class="card">
               <div class="card-title">
-                Site Info
+                {{ __('settings.main.info') }}
               </div>
-              <InputText caption="Site URL" name="site_url" :disabled="true" :value="$attrs.content.site_url.value"/>
+              <InputText
+                  name="site_url"
+                  :caption="__('settings.main.site_url')"
+                  :disabled="true"
+                  :value="$attrs.content.site_url.value"
+              />
 
               <InputText
-                caption="System Name"
-                name="site_title"
-                :value="$attrs.content.site_title.value"
+                  name="site_title"
+                  :caption="__('settings.main.title')"
+                  :value="$attrs.content.site_title.value"
               />
 
               <ImageUpload
-                caption="Fav Icon (SVG Icon, ICO file, or PNG 192×192 px)"
-                name="fav_icon"
-                :dimensions="[192, 192]"
-                :formats="['png', 'svg', 'ico']"
+                  caption="Fav Icon (SVG Icon, ICO file, or PNG 192×192 px)"
+                  name="fav_icon"
+                  :dimensions="[192, 192]"
+                  :formats="['png', 'svg', 'ico']"
               />
 
               <ImageUpload caption="Logo Image" name="logo_img"/>
@@ -39,17 +44,17 @@
 
             <div class="card">
               <div class="card-title">
-                Button Settings
+                {{ __('settings.buttons.caption') }}
               </div>
               <div class="form-group">
                 <label class="caption">
-                  <span>Primary buttons</span>
+                  <span>{{ __('settings.buttons.primary') }}</span>
                 </label>
 
                 <ButtonSettings
-                  caption="Button"
-                  name="primary_btn"
-                  :value="JSON.parse($attrs.content.primary_btn.value)"
+                    name="primary_btn"
+                    :caption="__('common.button')"
+                    :value="JSON.parse($attrs.content.primary_btn.value)"
                 />
               </div>
             </div>
@@ -60,89 +65,94 @@
               <div class="form-group-wide">
                 <label class="card-title-left">
                   <input
-                    class="form-checkbox"
-                    type="checkbox"
-                    name="custom-domain"
-                    :checked="$attrs.content.site_custom_url.value.length"
-                    @change="enableCustomDomain"
+                      class="form-checkbox"
+                      type="checkbox"
+                      name="custom-domain"
+                      :checked="$attrs.content.site_custom_url.value.length"
+                      @change="enableCustomDomain"
                   >
-                  Enable Custom Domain
+                  {{ __('settings.custom_domain.enable') }}
                 </label>
               </div>
 
               <InputText
-                caption="Custom URL"
-                name="site_custom_url"
-                :style="`display: ${customDomainEnabled ? 'block' : 'none'}`"
-                :value="$attrs.content.site_custom_url.value"
-                @paste="setCustomDomain"
-                @keyup="setCustomDomain"
+                  name="site_custom_url"
+                  :caption="__('settings.main.custom_url')"
+                  :style="`display: ${customDomainEnabled ? 'block' : 'none'}`"
+                  :value="$attrs.content.site_custom_url.value"
+                  @paste="setCustomDomain"
+                  @keyup="setCustomDomain"
               />
 
               <div
-                class="card-text"
-                :style="`display: ${customDomainSet ? 'block' : 'none'}`"
+                  class="card-text"
+                  :style="`display: ${customDomainSet ? 'block' : 'none'}`"
               >
                 <p>
-                  Go to your domain DNS provider and create a CNAME record with name <span><a href="#"></a></span>
-                  or * and target <a href="https://copemember.mycopemember.com">https://copemember.mycopemember.com</a>.
+                  {{ __('settings.custom_domain.msg1pt1') }}
+                  <span><a href="javascript:void(0)"></a></span>
+                  {{ __('settings.custom_domain.msg1pt2') }}
+                  <a href="https://copemember.mycopemember.com">https://copemember.mycopemember.com</a>.
                 </p>
                 <p>
-                  When you complete changing your DNS please click Submit. Our team will finish the process on our side
-                  within 24 working hours.
+                  {{ __('settings.custom_domain.msg2') }}
                 </p>
               </div>
 
               <div class="form-group" :style="`display: ${customDomainSet ? 'block' : 'none'}`">
-                <button type="submit" class="btn regular">Submit</button>
+                <button type="submit" class="btn regular">{{ __('common.submit') }}</button>
               </div>
             </div>
 
             <div class="card">
               <div class="card-title">
-                Menu Colors
+                {{ __('settings.main.menu_colors') }}
               </div>
 
               <ButtonSettings
-                caption="Normal"
-                name="menu_colors"
-                :value="JSON.parse($attrs.content.menu_colors.value)"
+                  name="menu_colors"
+                  :caption="__('settings.buttons.normal')"
+                  :value="JSON.parse($attrs.content.menu_colors.value)"
               />
             </div>
 
             <div class="card">
               <div class="card-title">
-                Timezone
+                {{ __('common.timezone') }}
               </div>
               <TimezoneSelector name="site_timezone" :value="$attrs.content.site_timezone.value"/>
             </div>
 
             <div class="card">
               <div class="card-title">
-                Custom Scripts
+                {{ __('settings.main.custom_script') }}
               </div>
 
               <TextArea
-                caption="Header code"
-                name="header_code"
-                placeholder="Enter header code scripts code here..."
-                :value="$attrs.content.header_code.value"
+                  name="header_code"
+                  :caption="__('settings.main.header_code')"
+                  :placeholder="__('settings.main.header_placeholder')"
+                  :value="$attrs.content.header_code.value"
               />
 
               <TextArea
-                caption="Footer code"
-                name="footer_code"
-                placeholder="Enter footer code scripts code here..."
-                :value="$attrs.content.footer_code.value"
+                  name="footer_code"
+                  :caption="__('settings.main.footer_code')"
+                  :placeholder="__('settings.main.footer_placeholder')"
+                  :value="$attrs.content.footer_code.value"
               />
             </div>
 
             <div class="card">
               <div class="card-title">
-                Custom Theme Styles
+                {{ __('settings.main.theme_code') }}
               </div>
 
-              <TextArea name="override_css" placeholder="Insert code here..." :value="$attrs.overrideCss"/>
+              <TextArea
+                  name="override_css"
+                  :placeholder="__('settings.main.theme_placeholder')"
+                  :value="$attrs.overrideCss"
+              />
             </div>
           </div>
         </div>
@@ -156,13 +166,12 @@
 import ButtonSettings from "../../Shared/Form/ButtonSettings.vue";
 import ImageUpload from "../../Shared/Form/ImageUpload.vue";
 import InputText from "../../Shared/Form/InputText.vue";
-import Method from "../../Shared/Form/Method.vue";
 import TextArea from "../../Shared/Form/TextArea.vue";
 import TimezoneSelector from "../../Shared/Form/TimezoneSelector.vue";
-import { FormMixin } from "../../Mixins/form-mixin";
+import {FormMixin} from "../../Mixins/form-mixin";
 
 export default {
-  components: {ButtonSettings, ImageUpload, InputText, Method, TextArea, TimezoneSelector},
+  components: {ButtonSettings, ImageUpload, InputText, TextArea, TimezoneSelector},
   data() {
     return {
       customDomainEnabled: this.$attrs.content.site_custom_url.value.length > 0,
@@ -174,7 +183,7 @@ export default {
       this.customDomainEnabled = $(e.target).closest('input[type="checkbox"]').prop('checked')
     },
     saveMessage() {
-      return 'Settings were successfully saved.'
+      return this.__('settings.main.success')
     },
     setCustomDomain(e) {
       const value = $(e.target).closest('input').val().trim()

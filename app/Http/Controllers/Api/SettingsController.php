@@ -170,10 +170,17 @@ class SettingsController extends BasicApiController
      */
     protected function testSMTP(array $args): void
     {
+        // Check the smtp password was changed
+        $password = Settings::where('key', 'smtp_password')->value('value');
+        if ($args['smtp_password'] === md5($password)) {
+            $args['smtp_password'] = $password;
+        }
+
         $this->setEmailConfig($args);
 
         Mail::to(config('mail.from.address'))->send(new TestSMTP());
     }
+
 
     /**
      * Create validation rules and convert request data
@@ -310,7 +317,6 @@ class SettingsController extends BasicApiController
                 case 'site_title':
                 case 'smtp_encryption':
                 case 'smtp_host':
-                case 'smtp_password':
                 case 'smtp_port':
                 case 'smtp_username':
                     $result['rules'][$key] = ['required', 'string', 'max:255'];
@@ -319,6 +325,14 @@ class SettingsController extends BasicApiController
                 case 'smtp_from_address':
                     $result['rules'][$key] = ['required', 'email'];
                     $result['data'][$key] = $val;
+                    break;
+                case 'smtp_password':
+                    $result['rules'][$key] = ['required', 'string', 'max:255'];
+                    // Check the smtp password was changed
+                    $password = Settings::where('key', 'smtp_password')->value('value');
+                    if (md5($password) !== $val) {
+                        $result['data'][$key] = $val;
+                    }
                     break;
             }
         }

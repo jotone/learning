@@ -17,10 +17,15 @@ class EmailTemplatesController extends BasicAdminController
      */
     public function index(Request $request): Response
     {
+        $content = Settings::whereIn('section', ['smtp-settings', 'email-settings'])->get()->keyBy('key');
+        $content['smtp_password']->value = $content['smtp_password']->value
+            ? md5($content['smtp_password']->value)
+            : '';
         return $this->form(
             template: 'EmailTemplates/Index',
             request: $request,
             share: [
+                'content' => $content,
                 'routes' => [
                     'emails' => [
                         'create' => route('dashboard.settings.emails.create'),
@@ -37,9 +42,14 @@ class EmailTemplatesController extends BasicAdminController
                         'destroy' => route('api.socials.destroy', ':id')
                     ]
                 ],
-                'content' => Settings::whereIn('section', ['smtp-settings', 'email-settings'])->get()->keyBy('key'),
                 'social' => SocialMediaLink::orderBy('position')->get(),
-                'templates' => EmailTemplate::select('id', 'name')->orderBy('created_at', 'desc')->get()
+                'templates' => EmailTemplate::select('id', 'name')->orderBy('created_at', 'desc')->get(),
+                'translations' => [
+                    'email_templates' => __('email_templates'),
+                    'user' => [
+                        'password' => __('user.password')
+                    ]
+                ]
             ]
         );
     }
@@ -63,6 +73,22 @@ class EmailTemplatesController extends BasicAdminController
                 ],
                 'scripts' => [
                     '/js/ckeditor/ckeditor.js',
+                ],
+                'translations'  => [
+                    'course' => [
+                        'single' => __('course.single')
+                    ],
+                    'email_templates' => __('email_templates'),
+                    'settings' => [
+                        'main' => __('settings.main')
+                    ],
+                    'student' => [
+                        'single' => __('student.single')
+                    ],
+                    'user' => [
+                        'fields' =>  __('user.fields')
+                    ],
+                    'variable' => __('variable')
                 ]
             ]
         );
@@ -89,6 +115,22 @@ class EmailTemplatesController extends BasicAdminController
                 ],
                 'scripts' => [
                     '/js/ckeditor/ckeditor.js',
+                ],
+                'translations'  => [
+                    'course' => [
+                        'single' => __('course.single')
+                    ],
+                    'email_templates' => __('email_templates'),
+                    'settings' => [
+                        'main' => __('settings.main')
+                    ],
+                    'student' => [
+                        'single' => __('student.single')
+                    ],
+                    'user' => [
+                        'fields' =>  __('user.fields')
+                    ],
+                    'variable' => __('variable')
                 ]
             ]
         );

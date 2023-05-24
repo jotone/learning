@@ -8,55 +8,55 @@
       <form
         class="page-content-wrap"
         id="loginPage"
-        data-save-message="Login page settings were successfully saved."
         method="POST"
         :action="$attrs.routes.settings.update"
+        :data-save-message="__('settings.login.success')"
         @submit.prevent="submit"
       >
-        <Method value="PATCH"/>
+        <input name="_method" type="hidden" value="PATCH">
         <div class="row">
           <div class="col-1-3">
             <div class="card">
               <div class="card-title">
-                Login Page Main Colors
+                {{ __('settings.login.main_colors') }}
               </div>
 
               <InputColor
-                caption="Login page background color"
                 name="login_bg_color"
+                :caption="__('settings.login.bg_color')"
                 :value="$attrs.content.login_bg_color.value"
                 @change="preview.bg.color = $event.target.value"
               />
 
               <InputColor
-                caption="Logo image background color"
                 name="login_logo_bg_color"
+                :caption="__('settings.login.logo_bg_color')"
                 :value="$attrs.content.login_logo_bg_color.value"
                 @change="preview.logo.color = $event.target.value"
               />
 
               <InputColor
-                caption="Form background color"
                 name="login_form_bg_color"
+                :caption="__('settings.login.form_bg_color')"
                 :value="$attrs.content.login_form_bg_color.value"
                 @change="preview.form.color = $event.target.value"
               />
 
               <InputColor
-                caption="Form text color"
                 name="login_form_text_color"
+                :caption="__('settings.login.form_txt_color')"
                 :value="$attrs.content.login_form_text_color.value"
                 @change="preview.form.text = $event.target.value"
               />
 
               <div class="form-group">
                 <label class="caption">
-                  <span>Login form buttons</span>
+                  <span>{{ __('settings.login.buttons') }}</span>
                 </label>
 
                 <ButtonSettings
-                  caption="Button"
                   name="login_btn"
+                  :caption="__('common.button')"
                   :value="JSON.parse($attrs.content.login_btn.value)"
                 />
               </div>
@@ -64,7 +64,7 @@
 
             <div class="card">
               <div class="card-title">
-                Login Background Image
+                {{ __('settings.login.bg_img') }}
               </div>
 
               <ImageUpload
@@ -78,7 +78,7 @@
           <div class="col-2-3">
             <div class="card">
               <div class="card-title">
-                Preview
+                {{ __('common.preview') }}
               </div>
 
               <div
@@ -91,11 +91,20 @@
                   <div class="form-wrap" :style="{'background-color': preview.form.color}">
                     <div class="form-switch">
                       <div class="form-input">
-                        <label :style="{color: preview.form.text}">E-Mail</label>
-                        <input disabled="disabled" placeholder="example@email.com" type="email" :style="{color: preview.form.text}">
+                        <label :style="{color: preview.form.text}">
+                          {{ __('user.fields.email') }}
+                        </label>
+                        <input
+                          disabled="disabled"
+                          placeholder="example@email.com"
+                          type="email"
+                          :style="{color: preview.form.text}"
+                        >
                       </div>
                       <div class="form-input">
-                        <label :style="{color: preview.form.text}">Password</label>
+                        <label :style="{color: preview.form.text}">
+                          {{ __('user.password.txt') }}
+                        </label>
                         <input disabled="disabled" type="password" :style="{color: preview.form.text}">
                       </div>
                       <div class="form-submit">
@@ -104,13 +113,13 @@
                           'border-color': preview.btn.normal['border-color'],
                           'color': preview.btn.normal.color
                         }" @mouseenter="hoverBtnEnter" @mouseleave="hoverBtnLeave">
-                          Login
+                          {{ __('auth.login') }}
                         </button>
                       </div>
                     </div>
 
                     <div class="form-optional-link">
-                      <a href="javascript:void(0)">Forgot password?</a>
+                      <a href="javascript:void(0)">{{ __('auth.forgot_pwd') }}</a>
                     </div>
                   </div>
                 </div>
@@ -128,11 +137,10 @@
 import ButtonSettings from "../../Shared/Form/ButtonSettings.vue";
 import ImageUpload from "../../Shared/Form/ImageUpload.vue";
 import InputColor from "../../Shared/Form/InputColor.vue";
-import Method from "../../Shared/Form/Method.vue";
 import {FormMixin} from "../../Mixins/form-mixin";
 
 export default {
-  components: {ButtonSettings, ImageUpload, InputColor, Method},
+  components: {ButtonSettings, ImageUpload, InputColor},
   data() {
     return {
       preview: {

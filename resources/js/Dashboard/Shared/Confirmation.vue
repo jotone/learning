@@ -8,8 +8,12 @@
         <div class="question-text" v-html="text"></div>
       </div>
       <div class="buttons-wrap">
-        <button name="apply" type="button" class="btn" :class="okBtnClass">{{ okText }}</button>
-        <button name="cancel" type="button" class="btn" :class="noBtnClass">{{ noText }}</button>
+        <button name="apply" type="button" class="btn" :class="okBtnClass">
+          {{ okText || __('common.yes') }}
+        </button>
+        <button name="cancel" type="button" class="btn" :class="noBtnClass">
+          {{ noText || __('common.cancel') }}
+        </button>
       </div>
     </div>
   </div>
@@ -17,29 +21,6 @@
 
 <script>
 export default {
-  name: "Confirmation",
-  props: {
-    text: {
-      type: String,
-      required: true
-    },
-    okBtnClass: {
-      type: String,
-      default: '.blue'
-    },
-    okText: {
-      type: String,
-      default: 'Yes'
-    },
-    noBtnClass: {
-      type: String,
-      default: ''
-    },
-    noText: {
-      type: String,
-      default: 'No'
-    }
-  },
   methods: {
     checkCanBeClosed(e) {
       !$(e.target).closest('.confirmation-popup') && this.close()
@@ -71,6 +52,29 @@ export default {
           .on('click', 'button[name="apply"]', () => this.handler(resolve, true))
           .on('click', 'button[name="cancel"]', () => this.handler(resolve, false))
       })
+    }
+  },
+  name: "Confirmation",
+  props: {
+    text: {
+      type: String,
+      required: true
+    },
+    okBtnClass: {
+      type: String,
+      default: '.blue'
+    },
+    okText: {
+      type: String,
+      default: ''
+    },
+    noBtnClass: {
+      type: String,
+      default: ''
+    },
+    noText: {
+      type: String,
+      default: ''
     }
   }
 }

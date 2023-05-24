@@ -10,7 +10,7 @@ export const ContentTableMixin = {
   components: {ContentTableHead, Confirmation, Layout, Link, Pagination, SearchForm},
   data() {
     return {
-      removalEntity: '',
+      removalName: '',
       collection: [],
       pagination: {},
       url: ''
@@ -48,46 +48,37 @@ export const ContentTableMixin = {
         url = this.url + this.filtersToUri()
       }
 
-      axios.interceptors.request.use(config => {
-        $('.preloader').show()
-        return config;
-      });
-
       return axios.get(url).then(response => {
-          $('.preloader').hide()
-          if (200 === response.status) {
-            this.setPaginationOptions(response.data.meta)
-            this.collection = response.data.data
-          }
-        })
+        if (200 === response.status) {
+          this.setPaginationOptions(response.data.meta)
+          this.collection = response.data.data
+        }
+      })
         .catch(error => XHRErrorHandle(error))
     },
-    removeEntity(obj, message) {
-      if (typeof obj.attr('href') !== 'undefined') {
-        this.removalEntity = obj.closest('tr').find('[data-role]').text().trim()
-
-        this.$refs.confirmation
-          .open()
-          .then(res => res && axios.delete(obj.attr('href'))
-            .then(response => {
-              if (204 === response.status) {
-                this.getCollection().then(() => {
-                  showNotification([{
-                    type: "warning",
-                    text: [message.replace(/:entity/, this.removalEntity)]
-                  }])
-                })
-              }
-            })
-          )
-      }
+    /**
+     * Remove resource entity and refreshthe content list
+     * @param obj
+     * @param translation
+     */
+    remove(obj, translation) {
+      // Check if link has href attribute && // Open the Confirmation popup
+      typeof obj.attr('href') !== 'undefined' && this.$refs.confirmation.open().then(
+        // If user pressed OK && // Send DELETE resource request
+        res => res && axios.delete(obj.attr('href')).then(
+          // Check the "204 No Content" response && // Refresh page content
+          response => 204 === response.status && this.getCollection().then(() => showNotification([{
+            type: "warning",
+            text: [this.__(translation, this.removalName)]
+          }]))
+        )
+      )
     },
     /**
      * Figure out pagination parameters
      * @param meta
      */
-    setPaginationOptions(meta)
-    {
+    setPaginationOptions(meta) {
       this.pagination = meta;
       // Pagination first item
       this.pagination.start = this.pagination.current_page - 6;

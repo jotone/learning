@@ -6,17 +6,17 @@
           <div class="col-1-2">
             <div class="card">
               <div class="card-title">
-                Select Main Language
+                {{ __('settings.language.select_main') }}
               </div>
 
               <form
                 id="selectLang"
-                :action="$attrs.routes.settings.update"
-                data-save-message="Main language was successfully set."
                 method="POST"
+                :action="$attrs.routes.settings.update"
+                :data-save-message="__('settings.language.success')"
                 @submit.prevent="submit"
               >
-                <Method value="PATCH"/>
+                <input name="_method" type="hidden" value="PATCH">
                 <div class="form-group">
                   <label class="caption">
                     <select name="main_language" class="form-select">
@@ -33,7 +33,7 @@
 
                 <div class="form-group shift-right">
                   <button name="apply" class="btn blue">
-                    Save
+                    {{ __('common.save') }}
                   </button>
                   <button
                     name="remove"
@@ -42,7 +42,7 @@
                     :data-url="$attrs.routes.language.destroy"
                     @click="destroyLangPackage"
                   >
-                    Remove
+                    {{ __('common.remove') }}
                   </button>
                 </div>
               </form>
@@ -52,15 +52,15 @@
           <div class="col-1-2">
             <div class="card">
               <div class="card-title">
-                Add Language
+                {{ __('settings.language.add_lang') }}
               </div>
 
               <form
-                :action="$attrs.routes.language.store"
                 id="addLang"
-                data-save-message="Language was successfully installed."
                 data-success-callback="removeAvailableLang"
                 method="POST"
+                :action="$attrs.routes.language.store"
+                :data-save-message="__('settings.language.installed')"
                 @submit.prevent="submit"
               >
                 <div class="form-group">
@@ -76,7 +76,9 @@
                 </div>
 
                 <div class="form-group shift-right">
-                  <button name="apply" class="btn blue">Add</button>
+                  <button name="apply" class="btn blue">
+                    {{ __('common.add') }}
+                  </button>
                 </div>
               </form>
 
@@ -117,10 +119,10 @@
                     <thead>
                     <tr>
                       <th>
-                        <span>Denotation</span>
+                        <span>{{ __('settings.language.denotation') }}</span>
                       </th>
                       <th>
-                        <span>Value</span>
+                        <span>{{ __('common.value') }}</span>
                       </th>
                     </tr>
                     </thead>
@@ -130,7 +132,7 @@
                         <span v-html="field.ucfirst()"></span>
                       </td>
                       <td>
-                        <InputText :name="field" :value="value" :title="origin[field]"/>
+                        <InputText @keyup="changeTranslationValue" :name="field" :value="value" :title="origin[field]"/>
                       </td>
                     </tr>
                     </tbody>
@@ -143,11 +145,10 @@
       </div>
 
       <Confirmation
-        text="Do you really want to remove this language package?"
-        ref="confirmation"
         okBtnClass="danger"
-        okText="Remove"
-        noText="Cancel"
+        ref="confirmation"
+        :okText="__('common.remove')"
+        :text="__('settings.language.remove_msg')"
       />
     </template>
   </Layout>
@@ -157,13 +158,12 @@
 
 import debounce from "debounce"
 import Confirmation from "../../Shared/Confirmation.vue";
-import Method from "../../Shared/Form/Method.vue";
 import {FormMixin} from "../../Mixins/form-mixin";
 import {showNotification} from "../../../libs/notifications";
 import InputText from "../../Shared/Form/InputText.vue";
 
 export default {
-  components: {InputText, Confirmation, Method},
+  components: {InputText, Confirmation},
   computed: {
     /**
      * Sorted list of available languages
@@ -203,6 +203,24 @@ export default {
   },
   methods: {
     /**
+     * Change translation value
+     */
+    changeTranslationValue: debounce(e => {
+      const _this = $(e.target).closest('input')
+      const data = {
+        lang: this.active.lang,
+        file: this.active.file,
+        key: _this.attr('name'),
+        value: _this.val().trim()
+      };
+      this.request({
+        method: 'patch',
+        url: this.$attrs.routes.language.update,
+        data: data,
+        msg: this.__('settings.language.field_saved', data.key)
+      })
+    }, 500),
+    /**
      * Remove language package click
      * @param e
      */
@@ -216,7 +234,7 @@ export default {
       if ('en' === lang.short) {
         showNotification({
           type: 'error',
-          text: ['Cannot remove default language.']
+          text: [this.__('settings.language.remove_err')]
         })
       } else {
         const confirm = this.$refs.confirmation.open()
@@ -224,7 +242,7 @@ export default {
         confirm.then(res => res && this.request({
             method: 'delete',
             url: btn.data('url').replace(/:lang/, lang.short),
-            msg: `Language package "${lang.short}" was successfully removed.`,
+            msg: this.__('settings.language.removed_msg', lang.short),
             onSuccess: () => {
               this.availableLanguages[lang.short] = lang.full
               this.$page.props.installed = this.$page.props.installed.filter(e => e !== lang.short)
@@ -290,22 +308,6 @@ export default {
     this.active.lang = $('.buttons-settings-wrap li.active').attr('data-lang')
     this.active.file = $('.language-files-list-wrap li.active').attr('data-file')
     this.fileTranslations()
-
-    $('.translations-table').on('keyup', 'input[type="text"]', debounce(e => {
-      const _this = $(e.target).closest('input')
-      const data = {
-        lang: this.active.lang,
-        file: this.active.file,
-        key: _this.attr('name'),
-        value: _this.val().trim()
-      };
-      this.request({
-        method: 'patch',
-        url: this.$attrs.routes.language.update,
-        data: data,
-        msg: `Translation for the field "${data.key}" was successfully saved.`
-      })
-    }, 500))
   },
   name: "Settings/Language"
 }

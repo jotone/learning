@@ -21,8 +21,6 @@ export function showNotification(messages) {
 }
 
 export const XHRErrorHandle = (error, props = {}) => {
-  $('.preloader').hide()
-
   if (props.hasOwnProperty('onError') && typeof props.onSuccess === 'onError') {
     props.onError()
   }

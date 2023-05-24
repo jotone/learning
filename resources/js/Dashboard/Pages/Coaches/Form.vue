@@ -9,8 +9,8 @@
         class="page-content-wrap"
         data-success-callback="resetForm"
         id="coachForm"
-        :action="$attrs.routes.coaches.form"
         method="POST"
+        :action="$attrs.routes.coaches.form"
         @submit.prevent="submit"
       >
         <input name="_method" type="hidden" value="PUT" v-if="$attrs.hasOwnProperty('model')">
@@ -32,10 +32,22 @@ import SimpleUserForm from "../Users/Partials/SimpleUserForm.vue";
 export default {
   components: {SimpleUserForm},
   methods: {
+    /**
+     * Reset form when entity is created
+     *
+     * @param response
+     */
+    resetForm(response) {
+      201 === response.status && $('form')[0].reset()
+    },
+    /**
+     * Show one of these message after request
+     *
+     * @param response
+     * @returns {string}
+     */
     saveMessage(response) {
-      return 201 === response.status
-        ? `Coach "${response.data.email}" was successfully created.`
-        : `Coach "${response.data.email}" was successfully modified.`
+      return this.__(`coach.msg.${201 === response.status ? 'created' : 'modified'}`, response.data.email)
     }
   },
   mixins: [FormMixin],

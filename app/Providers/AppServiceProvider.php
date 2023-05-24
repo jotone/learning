@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Settings;
-use Illuminate\Support\Facades\{DB, Schema, View};
+use Illuminate\Support\Facades\{App, DB, Schema, View};
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,6 +26,10 @@ class AppServiceProvider extends ServiceProvider
                 ->get()
                 ->pluck('value', 'key')
                 ->toArray();
+
+            if (isset($settings['main_language'])) {
+                App::setLocale($settings['main_language']);
+            }
 
             if (!empty($settings)) {
                 View::share('settings', $settings);

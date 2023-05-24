@@ -3,7 +3,7 @@
     <template v-slot:optionals>
       <a class="btn" :href="$attrs.routes.coaches.create">
         <i class="icon plus-icon"></i>
-        <span>Create Coach</span>
+        <span>{{ __('coach.create') }}</span>
       </a>
     </template>
 
@@ -17,7 +17,7 @@
             <div class="table-info"></div>
 
             <div class="table-filtering">
-              <SearchForm/>
+              <SearchForm :placeholder="__('coach.search')"/>
             </div>
           </div>
 
@@ -25,33 +25,19 @@
             <table>
               <thead>
               <tr>
-                <ContentTableHead field="first_name" name="First Name"/>
-                <ContentTableHead field="last_name" name="Last Name"/>
-                <ContentTableHead field="email" name="Email"/>
-                <ContentTableHead field="created_at" name="Created At"/>
+                <ContentTableHead field="first_name" :name="__('user.fields.first_name')"/>
+                <ContentTableHead field="last_name" :name="__('user.fields.last_name')"/>
+                <ContentTableHead field="email" :name="__('user.fields.email')"/>
+                <ContentTableHead field="created_at" :name="__('common.created_at')"/>
                 <th>
-                  <span>Actions</span>
+                  <span>{{ __('common.actions') }}</span>
                 </th>
               </tr>
               </thead>
-              <tbody>
-              <tr v-for="model in collection">
-                <td>
-                  <Link :href="userEdit(model)">{{ model.first_name }}</Link>
-                </td>
-                <td>
-                  <Link :href="userEdit(model)">{{ model.last_name }}</Link>
-                </td>
-                <td data-role="email">
-                  <Link :href="userEdit(model)">{{ model.email }}</Link>
-                </td>
-                <td>
-                  <Link :href="userEdit(model)">{{ model.created_at }}</Link>
-                </td>
-                <td>
-                  <a :href="userRemove(model.id)" class="remove" @click.prevent="userRemoveAction"></a>
-                </td>
-              </tr>
+              <tbody :data-i="collection.length" :data-c="JSON">
+              <template v-for="(n, i) in collection.length">
+                <CoachTableRow :model="collection[i]"/>
+              </template>
               </tbody>
             </table>
           </div>
@@ -59,11 +45,10 @@
       </div>
 
       <Confirmation
-        :text='`Do you really want to remove coach "<b>${removalEntity}</b>"?`'
-        ref="confirmation"
         okBtnClass="danger"
-        okText="Remove"
-        noText="Cancel"
+        ref="confirmation"
+        :okText="__('common.remove')"
+        :text="__('coach.msg.ask_remove', removalName)"
       />
     </template>
   </Layout>
@@ -71,35 +56,12 @@
 
 <script>
 import {ContentTableMixin} from "../../Mixins/content-table-mixin";
+import CoachTableRow from "./Partials/CoachTableRow.vue";
 
 export default {
   name: "Coaches/Index",
+  components: {CoachTableRow},
   mixins: [ContentTableMixin],
-  methods: {
-    /**
-     * Generate user edit url
-     * @param model
-     * @return {string}
-     */
-    userEdit(model) {
-      return this.$attrs.routes.coaches.edit.replace(/:id/, model.id);
-    },
-    /**
-     * Generate user remove url
-     * @param id
-     * @return {string}
-     */
-    userRemove(id) {
-      return this.$attrs.routes.coaches.destroy.replace(/:id/, id)
-    },
-    /**
-     * Remove user
-     * @param e
-     */
-    userRemoveAction(e) {
-      this.removeEntity($(e.target).closest('a'), 'User ":entity" was successfully removed.')
-    }
-  },
   beforeMount() {
     this.url = this.$attrs.routes.coaches.list
   }

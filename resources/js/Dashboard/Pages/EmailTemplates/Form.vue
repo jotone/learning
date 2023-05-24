@@ -9,55 +9,55 @@
         <form
           class="row"
           id="template"
-          :action="$attrs.routes.email.form"
-          data-save-message="Email template was successfully saved."
           data-success-callback="formSaved"
           method="POST"
+          :action="$attrs.routes.email.form"
+          :data-save-message="__('email_templates.msg.modified')"
           @submit.prevent="submit"
         >
           <input name="_method" type="hidden" value="PUT" v-if="$attrs.hasOwnProperty('model')">
           <div class="col-1-2">
             <div class="card">
               <div class="card-title">
-                Main Data
+                {{ __('common.main_data') }}
               </div>
 
               <input type="hidden" name="variables" :value="JSON.stringify(variables)">
 
               <InputText
-                caption="Email Title"
                 name="name"
+                :caption="__('email_templates.fields.title')"
                 :required="true"
                 :value="$attrs?.model?.name"
                 @input="preview.name = $event.target.value"
               />
 
               <InputText
-                caption="Email Header"
                 name="subject"
+                :caption="__('email_templates.fields.header')"
                 :value="$attrs?.model?.subject"
               />
 
               <div class="form-group">
                 <label class="caption">
-                  <span>Email text</span>
+                  <span>{{ __('email_templates.fields.text') }}</span>
                   <textarea name="body" class="init-cke">{{ $attrs?.model?.body }}</textarea>
                 </label>
               </div>
 
               <TextArea
-                caption="Text below action button"
                 name="footer_text"
+                :caption="__('email_templates.fields.footer_txt_color')"
                 :value="$attrs?.model?.footer_text"
                 @input="preview.footer_text = $event.target.value"
-              />`~
+              />
             </div>
           </div>
 
           <div class="col-1-2">
             <div class="card">
               <div class="card-title">
-                Variables
+                {{ __('variable.mult') }}
               </div>
 
               <div class="table-group">
@@ -65,10 +65,10 @@
                   <table>
                     <thead>
                     <tr>
-                      <th><span>Name</span></th>
-                      <th><span>Entity</span></th>
-                      <th><span>Entity Field</span></th>
-                      <th><span>Actions</span></th>
+                      <th><span>{{ __('common.name') }}</span></th>
+                      <th><span>{{ __('common.entity') }}</span></th>
+                      <th><span>{{ __('common.entity_field') }}</span></th>
+                      <th><span>{{ __('common.actions') }}</span></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -104,7 +104,7 @@
 
                 <div class="form-group">
                   <a class="btn blue" href="#" data-fancybox data-src="#variable" @click="resetVariableForm">
-                    Add Variable
+                    {{ __('variable.add') }}
                   </a>
                 </div>
               </div>
@@ -112,7 +112,7 @@
 
             <div class="card">
               <div class="card-title">
-                Email Preview
+                {{ __('email_templates.preview') }}
               </div>
 
               <div class="email-wrap">
@@ -126,14 +126,14 @@
 
                 <div class="content-wrap">
                   <div class="button-wrap">
-                    <a class="button custom" href="#">
-                      Custom Link Text
+                    <a class="button custom" href="javascript:void(0)">
+                      {{ __('email_templates.link_text') }}
                     </a>
                   </div>
 
                   <div class="follow-wrap">
-                    <p>If the button is not working, click the link below:</p>
-                    <a href="#">link goes here</a>
+                    <p>{{ __('email_templates.link_info') }}:</p>
+                    <a href="javascript:void(0)">{{ __('email_templates.link_here') }}</a>
                   </div>
 
                   <div class="content-misc" v-html="preview.footer_text"></div>
@@ -148,38 +148,40 @@
     <template v-slot:popup>
       <div class="modal" id="variable" style="max-width: 700px; display: none">
         <div class="modal-title">
-          Email variable
+          {{ __('user.fields.email') }} {{ __('variable.single') }}
         </div>
         <form class="modal-body" @submit.prevent="variableSave">
           <InputText
-            caption="Variable name"
             name="var_name"
+            :caption="__('variable.name')"
             :required="true"
             :style="'min-width: 420px'"
           />
 
           <div class="form-group">
             <label class="caption">
-              <span>Variable Entity</span>
+              <span>{{ __('variable.entity') }}</span>
               <select name="var_entity" class="form-select" @change="changeEntity">
-                <option v-for="(entity, type) in entities" :value="type">
-                  {{ entity.name }}
-                </option>
+                <template v-for="(entity, type) in entities">
+                  <option :value="type" :selected="chosenEntity === type">
+                    {{ entity.name }}
+                  </option>
+                </template>
               </select>
             </label>
           </div>
 
           <template v-if="null === entities[chosenEntity].fields">
-            <InputText caption="Variable Value" name="var_field"/>
+            <InputText :caption="__('variable.value')" name="var_field"/>
           </template>
 
           <template v-else>
-            <Selector caption="Variable Entity Field" name="var_field" :options="entities[chosenEntity].fields"/>
+            <Selector :caption="__('variable.entity_name')" name="var_field" :options="entities[chosenEntity].fields"/>
           </template>
 
           <div class="form-group">
             <button class="btn blue" type="submit">
-              Save
+              {{ __('common.save') }}
             </button>
           </div>
         </form>
@@ -200,43 +202,43 @@ export default {
   components: {ContentTableHead, InputText, Selector, TextArea},
   data() {
     return {
-      chosenEntity: 'date',
+      chosenEntity: 'course',
       entities: {
         course: {
-          name: "Course",
+          name: this.__('course.single'),
           fields: {
-            name: "Name",
-            url: "Link",
-            img_url: "Image",
+            name: this.__('common.name'),
+            url: this.__('common.link'),
+            img_url: this.__('common.image.single'),
             fb_link: "Facebook URL",
-            created_at: "Creation date"
+            created_at: this.__('common.created_at')
           }
         },
         custom: {
-          name: "Custom Text",
+          name: this.__('variable.custom_text'),
           fields: null
         },
         date: {
-          name: "Date",
+          name: this.__('variable.date'),
           fields: {
-            now: "Now"
+            now: this.__('variable.now')
           }
         },
         settings: {
-          name: "Settings",
+          name: this.__('menu.settings.caption'),
           fields: {
-            site_url: "Site URL",
-            site_title: "Site title",
+            site_url: this.__('settings.main.site_url'),
+            site_title: this.__('settings.main.title'),
           }
         },
         user: {
-          name: "User",
+          name: this.__('student.single'),
           fields: {
-            first_name: "First Name",
-            last_name: "Last Name",
-            full_name: "Full Name",
-            email: "Email",
-            activated_at: "Activation Date"
+            first_name: this.__('user.fields.first_name'),
+            last_name: this.__('user.fields.last_name'),
+            full_name: this.__('user.fields.full_name'),
+            email: this.__('user.fields.email'),
+            activated_at: this.__('user.fields.activation_date')
           }
         }
       },
@@ -286,7 +288,7 @@ export default {
       // Reset modal form
       $('#variable form')[0].reset();
       // Set default entity value
-      this.chosenEntity = 'date';
+      this.chosenEntity = 'course';
       // Set the variable is being creating
       this.variablePosition = null;
     },

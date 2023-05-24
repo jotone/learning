@@ -32,6 +32,12 @@ class UserController extends BasicAdminController
                         'edit' => route('dashboard.users.edit', ':id'),
                         'destroy' => route('api.users.destroy', ':id')
                     ]
+                ],
+                'translations' => [
+                    'user' => __('user'),
+                    'role' => [
+                        'single' => __('role.single')
+                    ]
                 ]
             ]
         );
@@ -51,15 +57,23 @@ class UserController extends BasicAdminController
             share: [
                 'enums' => config('enums')['user'],
                 'routes' => [
-                    'users' => [
-                        'form' => route('api.users.store')
-                    ]
+                    'form' => route('api.users.store')
                 ],
                 'roles' => Role::where('level', '>=', Auth::user()->role->level)
                     ->orderBy('level')
                     ->get()
                     ->pluck('name', 'id'),
-                'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray()
+                'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray(),
+                'translations' => [
+                    'user' => [
+                        'fields' => __('user.fields'),
+                        'msg' => __('user.msg'),
+                        'password' => __('user.password')
+                    ],
+                    'role' => [
+                        'single' => __('role.single')
+                    ]
+                ]
             ]
         );
     }
@@ -80,15 +94,23 @@ class UserController extends BasicAdminController
                 'enums' => config('enums')['user'],
                 'model' => $user,
                 'routes' => [
-                    'users' => [
-                        'form' => route('api.users.update', $user->id)
-                    ]
+                    'form' => route('api.users.update', $user->id)
                 ],
                 'roles' => Role::where('level', '>=', Auth::user()->role->level)
                     ->orderBy('level')
                     ->get()
                     ->pluck('name', 'id'),
-                'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray()
+                'settings' => Settings::where('section', 'registration-process')->pluck('value', 'key')->toArray(),
+                'translations' => [
+                    'user' => [
+                        'fields' => __('user.fields'),
+                        'msg' => __('user.msg'),
+                        'password' => __('user.password')
+                    ],
+                    'role' => [
+                        'single' => __('role.single')
+                    ]
+                ]
             ]
         );
     }
@@ -107,10 +129,16 @@ class UserController extends BasicAdminController
             template: 'Users/AdminForm',
             request: $request,
             share: [
+                'model' => $user,
                 'routes' => [
-                    'update' => route('api.users.update', $user->id)
+                    'form' => route('api.users.update', $user->id)
                 ],
-                'model' => $user
+                'translations' => [
+                    'user' => [
+                        'fields' => __('user.fields'),
+                        'password' => __('user.password'),
+                    ]
+                ]
             ]
         );
     }

@@ -41,17 +41,12 @@ export const FormMixin = {
       axios.interceptors.request.use(config => {
         if (props.hasOwnProperty('beforeRequest') && (typeof props.beforeRequest === 'function' || null === props.beforeRequest)) {
           null !== props.beforeRequest && props.beforeRequest()
-        } else {
-          $('.preloader').show()
         }
-
         return config;
       });
 
       axios[props.method](props.url, props.data ?? [], {headers: headers})
         .then(response => {
-          $('.preloader').hide()
-
           if (props.hasOwnProperty('onSuccess') && typeof props.onSuccess === 'function') {
             props.onSuccess(response)
           }

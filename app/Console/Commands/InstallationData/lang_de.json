@@ -7,16 +7,115 @@
     "throttle": "Zu viele Login Versuche. Versuche es bitte in :seconds Sekunden nochmal."
   },
   "common": {
+    "actions": "Aktionen",
+    "add": "Hinzufügen",
+    "background-color": "Hintergrundfarbe",
+    "border-color": "Farbe der Umrandung",
+    "button": "Schaltfläche",
     "cancel": "Abbrechen",
+    "color": "Farbe",
+    "created_at": "Erstelldatum",
+    "entity": "Entität",
+    "entity_field": "Entitätsfeld",
     "image": {
       "info": "Dein Bild sollte im :formats Format sein und <br> kleiner als :size.<br>Die empfohlene Bildgröße sollte größer sein als :dimensions pixel.",
+      "single": "Bild",
       "text": "Ziehe dein Bild hierher oder <span> wähle eine<br> Bilddatei auf deinem Computer </span> zum Hochladen"
     },
-    "submit": "Einreichen"
+    "link": "Link",
+    "main_data": "Hauptdaten",
+    "misc": "Sonstiges",
+    "name": "Name",
+    "no": "Nein",
+    "preview": "Vorschau",
+    "remove": "Entfernen",
+    "save": "Speichern",
+    "submit": "Einreichen",
+    "timezone": "Zeitzone",
+    "value": "Wert",
+    "yes": "Ja"
+  },
+  "coach": {
+    "create": "Trainer erstellen",
+    "msg": {
+      "ask_remove": "Wollen Sie wirklich den Trainer \"<b>:entity</b>\" entfernen?",
+      "created": "Trainer \":entity\" wurde erfolgreich erstellt.",
+      "modified": "Trainer \":entity\" wurde erfolgreich geändert.",
+      "removed": "Trainer \":entity\" wurde erfolgreich entfernt."
+    },
+    "search": "Suche nach Trainern…"
+  },
+  "course": {
+    "mult": "Kursen",
+    "single": "Kurs"
+  },
+  "email_templates": {
+    "create": "Vorlage erstellen",
+    "fields": {
+      "footer_color": "Footer Farbe",
+      "footer_txt_color": "Text unter dem Aktivierungs Button",
+      "global": "Allgemeine Email Einstellungen",
+      "header": "E-Mail-Kopfzeile",
+      "legal_addr": "Juristische Adresse",
+      "privacy_url": "Datenschutz Link",
+      "socials": "Social Media Links im Footer",
+      "terms_url": "Link zu Nutzungsbedingungen",
+      "template_list": "Liste der Vorlagen",
+      "text": "E-Mail-Text",
+      "title": "E-Mail-Titel"
+    },
+    "link_here": "link geht hier",
+    "link_info": "Wenn der Button nicht funktioniert, klicke den unten stehenden Link",
+    "link_text": "Benutzerdefinierter Link-Text",
+    "msg": {
+      "modified": "Die E-Mail-Vorlage wurde erfolgreich gespeichert.",
+      "saved": "Die E-Mail-Einstellungen wurden erfolgreich gespeichert."
+    },
+    "preview": "E-Mail Vorschau",
+    "smtp": {
+      "addr": "Von der Adresse",
+      "enc": "Verschlüsselung",
+      "help": "Du brauchst Hilfe?",
+      "host": "Gastgeber",
+      "help_msg1": "Bitte schaue dir das folgende Video an, um deine Email in der Plattform einzustellen:",
+      "help_msg2": "Sendgrid als dein SMTP kann die beste Option sein, die Zustellbarkeit zu sichern. Kostenlos für bis zu 100 Emails am Tag.",
+      "help_title": "Wie du deine SMTP Einstellungen machst",
+      "msg": "Wenn du GSuite verwendest: Stelle bitte sicher, dass du weniger sichere Anwendungen in deiner GSuite-Verwaltung, und auch auf Kontoebene, aktivierst.",
+      "name": "Von name",
+      "port": "Port",
+      "save": "Test-E-Mail speichern und senden",
+      "sent": "Die E-Mail für den SMTP-Test wurde erfolgreich gesendet.",
+      "settings": "SMTP-Einstellungen",
+      "username": "Benutzername"
+    }
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "getSupport": "Hilfe",
+    "logout": "Logout",
+    "profile": "Mein Profil",
+    "roles": "Rollen",
+    "settings": {
+      "caption": "Einstellungen",
+      "coaches": "Coaches",
+      "course": "Kursseite",
+      "email": "E-Mail",
+      "features": "Eigenschaften",
+      "help_how": "Hilfe",
+      "integration": "Integration",
+      "language": "Sprache",
+      "login": "Login-Seite",
+      "main": "Wichtigste",
+      "top_menu": "Menüleiste"
+    },
+    "users": {
+      "caption": "Benutzer und Berechtigungen",
+      "list": "Benutzer"
+    }
   },
   "pagination": {
-    "previous": "&laqo; Zurück",
-    "next": "Weiter &raquo;"
+    "next": "Weiter &raquo;",
+    "previous": "&laqo; Zurück"
   },
   "passwords": {
     "expired": "Der Link ist abgelaufen. Versuchen Sie, Ihre Anfrage zum Zurücksetzen des Passworts erneut zu senden.",
@@ -28,17 +127,126 @@
     "token": "Der Passwort-Wiederherstellungs-Schlüssel ist ungültig oder abgelaufen.",
     "user": "Es konnte leider kein Nutzer mit dieser E-Mail-Adresse gefunden werden."
   },
-  "profile": {
-    "confirmation": "Bestätigen Sie das Passwort",
-    "email": "E-mail",
-    "password": "Passwort"
-  },
   "registration": {
     "check_inbox_msg": "Die Registrierungs-E-Mail wurde erneut versandt. Bitte überprüfen Sie Ihren Posteingang auf die Registrierungs-E-Mail oder kontaktieren Sie den Administrator, damit er sie Ihnen erneut zusendet.",
     "email_click_link": "Wenn der Button nicht funktioniert, klicke den unten stehenden Link"
   },
+  "role": {
+    "create": "Rolle Erstellen",
+    "fields": {
+      "controller": "Controller",
+      "level": "Ebene",
+      "methods": "Methoden",
+      "permissions": "Erlaubnisliste"
+    },
+    "mult": "Rollen",
+    "msg": {
+      "ask_remove": "Wollen Sie wirklich die Rolle \"<b>:entity</b>\" mit all ihren Daten und Benutzerrechten entfernen?",
+      "created": "Die Rolle \":entity\" wurde erfolgreich erstellt.",
+      "modified": "Die Rolle \":entity\" wurde erfolgreich geändert.",
+      "removed": "Die Rolle \":entity\" wurde erfolgreich entfernt."
+    },
+    "search": "Suche nach Rollen…",
+    "single": "Rolle"
+  },
+  "settings": {
+    "buttons": {
+      "caption": "Einstellungen der Schaltflächen",
+      "normal": "Normal",
+      "primary": "Primäre Tasten"
+    },
+    "custom_domain": {
+      "enable": "Benutzerdefinierte Domain aktivieren",
+      "msg1pt1": "Gehen Sie zu Ihrem Domain-DNS-Anbieter und erstellen Sie einen CNAME-Eintrag mit dem Namen",
+      "msg1pt2": "oder * und Ziel",
+      "msg2": "Wenn Sie die Änderung Ihrer DNS abgeschlossen haben, klicken Sie bitte auf Senden. Unser Team wird den Vorgang innerhalb von 24 Arbeitsstunden abschließen."
+    },
+    "language": {
+      "add_lang": "Sprache hinzufügen",
+      "denotation": "Bezeichnung",
+      "field_saved": "Die Übersetzung für das Feld \":entity\" wurde erfolgreich gespeichert.",
+      "installed": "Die Sprache wurde erfolgreich installiert.",
+      "remove_err": "Die Standardsprache kann nicht entfernt werden.",
+      "remove_msg": "Wollen Sie dieses Sprachpaket wirklich entfernen?",
+      "removed_msg": "Das Sprachpaket \":entity\" wurde erfolgreich entfernt.",
+      "select_main": "Hauptsprache auswählen",
+      "success": "Die Hauptsprache wurde erfolgreich eingestellt."
+    },
+    "login": {
+      "bg_color": "Hintergrundfarbe der Anmeldeseite",
+      "bg_img": "Login-Hintergrundbild",
+      "buttons": "Schaltflächen des Anmeldeformulars",
+      "form_bg_color": "Hintergrundfarbe des Anmeldeformulars",
+      "form_txt_color": "Textfarbe des Anmeldeformulars",
+      "logo_bg_color": "Login-Seite Logo-Hintergrundfarbe",
+      "main_colors": "Login-Seite Hauptfarben",
+      "success": "Die Einstellungen der Anmeldeseite wurden erfolgreich gespeichert."
+    },
+    "main": {
+      "custom_url": "Benutzerdefinierte URL",
+      "custom_script": "Benutzerdefinierte Skripte",
+      "footer_code": "Code für die Fußzeile",
+      "footer_placeholder": "Gib hier deinen Code der Fußzeile ein...",
+      "header_code": "Code der Kopfzeile",
+      "header_placeholder": "Gib hier deinen Code der Kopfzeile ein...",
+      "info": "Infos zur Website",
+      "menu_colors": "Menü-Farben",
+      "site_url": "URL der Website",
+      "success": "Die Einstellungen wurden erfolgreich gespeichert.",
+      "theme_code": "Benutzerdefinierte Themenstile",
+      "theme_placeholder": "Code hier einfügen...",
+      "title": "Name des Systems"
+    }
+  },
+  "student": {
+    "mult": "Nutzer",
+    "single": "Nutzer"
+  },
   "user": {
+    "create": "Benutzer Erstellen",
+    "fields": {
+      "activation_date": "Datum der Aktivierung",
+      "addr": "Adresse",
+      "addr_ext": "Erweiterte Straßenanschrift",
+      "bio": "Kurzer Lebenslauf",
+      "city": "Stadt",
+      "country": "Land",
+      "data": "Profildaten",
+      "email": "E-mail",
+      "first_name": "Vorname",
+      "full_name": "Vollständiger Name",
+      "image": "Profilbild",
+      "info": "Persönliche Informationen",
+      "last_name": "Nachname",
+      "phone": "Telefon",
+      "shirt_size": "T-Shirt Größfe",
+      "state": "Staat / Region",
+      "zip": "ZIP"
+    },
+    "msg": {
+      "ask_remove": "Wollen Sie wirklich den Benutzer \"<b>:entity</b>\" mit all seinen Daten und Fortschritten entfernen?",
+      "created": "Der Benutzer \":entity\" wurde erfolgreich erstellt.",
+      "modified": "Der Benutzer \":entity\" wurde erfolgreich geändert.",
+      "removed": "Der Benutzer \":entity\" wurde erfolgreich entfernt."
+    },
+    "password": {
+      "confirmation": "Bestätigen Sie das Passwort",
+      "txt": "Passwort"
+    },
+    "search": "Suchen Sie nach Benutzern…",
     "suspended_msg": "Ihr Konto wurde gesperrt. Bitte kontaktieren Sie den Admin oder den Support."
+  },
+  "variable": {
+    "add": "Variable hinzufügen",
+    "custom_text": "Benutzerdefinierter Text",
+    "date": "Datum",
+    "entity": "Variable Entität",
+    "entity_name": "Variables Entitätsfeld",
+    "name": "Name der Variablen",
+    "mult": "Variablen",
+    "now": "Jetzt",
+    "single": "Variabel",
+    "value": "Wert der Variablen"
   },
   "validation": {
     "accepted": ":attribute muss akzeptiert werden.",

@@ -3,10 +3,10 @@
     <label>
       <input
         class="search-field"
-        name="search"
-        placeholder="Search for users…"
         pattern=".{0}|.{3,}"
         type="search"
+        :name="name"
+        :placeholder="placeholder"
         :value="$page.props.filters.search || ''"
       >
       <button class="search-button" type="submit">
@@ -18,6 +18,16 @@
 
 <script>
 export default {
-  name: "SearchForm"
+  name: "SearchForm",
+  props: {
+    name: {
+      type: String,
+      default: 'search'
+    },
+    placeholder: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>

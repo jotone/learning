@@ -9,7 +9,7 @@
         class="page-content-wrap"
         data-save-message="Your profile was successfully updated."
         id="form"
-        :action="$attrs.routes.update"
+        :action="$attrs.routes.form"
         method="POST"
         @submit.prevent="submit"
       >

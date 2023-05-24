@@ -16,7 +16,6 @@
 </template>
 
 <script>
-
 import "@eastdesire/jscolor/jscolor"
 
 export default {

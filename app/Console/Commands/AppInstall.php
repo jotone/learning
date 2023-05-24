@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Classes\FileHelper;
 use App\Models\{EmailTemplate, Permission, Role, Settings, User};
 use App\Traits\{CommandsTrait, LanguageHelper, PermissionListTrait, SettingsTrait};
 use Illuminate\Console\Command;
@@ -127,6 +128,10 @@ class AppInstall extends Command
         });
 
         $this->runWithTimer('Installing language packages', function () use ($files) {
+            // Remove language files
+            foreach (glob(lang_path('/*'), GLOB_ONLYDIR) as $path) {
+                FileHelper::recursiveRemove($path);
+            }
             $this->writeTranslationsToFiles($files['lang_en'], [], 'en', true);
             $this->writeTranslationsToFiles($files['lang_de'], [], 'de', true);
         });

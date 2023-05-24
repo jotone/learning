@@ -93,8 +93,7 @@ class BasicAdminController extends Controller
                     ],
                     'dashboard' => [
                         'index' => route('dashboard.index', [], false)
-                    ],
-                    'translations' => route('api.language.index')
+                    ]
                 ],
                 // Default site settings
                 'settings' => Settings::where('section', 'hidden')->pluck('value', 'key')->toArray(),
@@ -102,7 +101,11 @@ class BasicAdminController extends Controller
                 'topMenu' => AdminMenu::select(['name', 'route'])
                     ->where('parent_id', $parent_item->id)
                     ->orderBy('position')
-                    ->get()
+                    ->get(),
+                'translations' => [
+                    'common' => __('common'),
+                    'menu' => __('menu')
+                ]
             ],
             $share
         ));

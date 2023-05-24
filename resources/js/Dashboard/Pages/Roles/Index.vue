@@ -3,7 +3,7 @@
     <template v-slot:optionals>
       <a class="btn" :href="$attrs.routes.roles.create">
         <i class="icon plus-icon"></i>
-        <span>Create Role</span>
+        <span>{{ __('role.create') }}</span>
       </a>
     </template>
 
@@ -17,7 +17,7 @@
             <div class="table-info"></div>
 
             <div class="table-filtering">
-              <SearchForm/>
+              <SearchForm :placeholder="__('role.search')"/>
             </div>
           </div>
 
@@ -25,29 +25,18 @@
             <table>
               <thead>
               <tr>
-                <ContentTableHead field="name" name="Name"/>
-                <ContentTableHead field="level" name="Level"/>
-                <ContentTableHead field="created_at" name="Created At"/>
+                <ContentTableHead field="name" :name="__('common.name')"/>
+                <ContentTableHead field="level" :name="__('role.fields.level')"/>
+                <ContentTableHead field="created_at" :name="__('common.created_at')"/>
                 <th>
-                  <span>Actions</span>
+                  <span>{{ __('common.actions') }}</span>
                 </th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="model in collection">
-                <td data-role="name">
-                  <Link :href="roleEdit(model.id)">{{ model.name }}</Link>
-                </td>
-                <td>
-                  <Link :href="roleEdit(model.id)">{{ model.level }}</Link>
-                </td>
-                <td>
-                  <Link :href="roleEdit(model.id)">{{ model.created_at }}</Link>
-                </td>
-                <td>
-                  <a :href="roleRemove(model.id)" class="remove" @click.prevent="roleRemoveAction"></a>
-                </td>
-              </tr>
+              <template v-for="(n, i) in collection.length">
+                <RoleTableRow :model="collection[i]"/>
+              </template>
               </tbody>
             </table>
           </div>
@@ -55,11 +44,10 @@
       </div>
 
       <Confirmation
-        :text='`Do you really want to remove role "<b>${removalEntity}</b>" with all it&apos;s data and user permissions?`'
-        ref="confirmation"
         okBtnClass="danger"
-        okText="Remove"
-        noText="Cancel"
+        ref="confirmation"
+        :okText="__('common.remove')"
+        :text="__('role.msg.ask_remove', removalName)"
       />
     </template>
   </Layout>
@@ -67,35 +55,12 @@
 
 <script>
 import {ContentTableMixin} from "../../Mixins/content-table-mixin";
+import RoleTableRow from "./Partials/RoleTableRow.vue";
 
 export default {
   name: "Roles/Index",
+  components: {RoleTableRow},
   mixins: [ContentTableMixin],
-  methods: {
-    /**
-     * Generate role edit url
-     * @param id
-     * @return {string}
-     */
-    roleEdit(id) {
-      return this.$attrs.routes.roles.edit.replace(/:id$/, id)
-    },
-    /**
-     * Generate role remove url
-     * @param id
-     * @return {string}
-     */
-    roleRemove(id) {
-      return this.$attrs.routes.roles.destroy.replace(/:id$/, id)
-    },
-    /**
-     * Remove role
-     * @param e
-     */
-    roleRemoveAction(e) {
-      this.removeEntity($(e.target).closest('a'), 'Role ":entity" was successfully removed.')
-    },
-  },
   beforeMount() {
     this.url = this.$attrs.routes.roles.list
   }

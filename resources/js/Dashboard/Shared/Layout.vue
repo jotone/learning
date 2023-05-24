@@ -30,7 +30,6 @@
 </template>
 
 <script>
-
 import SideMenu from "./SideMenu.vue";
 import TopMenu from "./TopMenu.vue";
 

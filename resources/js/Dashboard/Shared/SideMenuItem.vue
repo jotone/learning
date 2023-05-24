@@ -2,12 +2,12 @@
   <li v-if="view" :class="{'active': isActive}">
     <Link :href="item.route" v-if="!isExternal">
       <i v-if="!!item.img" v-html="item.img"></i>
-      <span>{{ item.name }}</span>
+      <span>{{ __('menu.' + item.name) }}</span>
     </Link>
 
     <a :href="item.route" target="_blank" v-else>
       <i v-if="!!item.img" v-html="item.img"></i>
-      <span>{{ item.name }}</span>
+      <span>{{ __('menu.' + item.name) }}</span>
     </a>
   </li>
 </template>

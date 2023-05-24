@@ -16,13 +16,8 @@
           <img :src="value || imgSrc" alt="" v-if="!isSvg">
           <span v-if="isSvg" v-html="imgSrc"></span>
         </span>
-        <span class="image-text">
-          Drag your image here, or <span> choose an<br> image file on your computer </span> to upload
-        </span>
-        <span class="image-info">
-          Your image should be in {{ getFormats() }} format and <br> smaller than {{ size }}.<br>
-          The recommended image size should be greater than {{ getDimensions }} pixels.
-        </span>
+        <span class="image-text" v-html="__('common.image.text')"></span>
+        <span class="image-info" v-html="__('common.image.info', getFormats(), size, getDimensions())"></span>
       </span>
     </label>
   </div>
@@ -79,7 +74,7 @@ export default {
       }
     }
   },
-  computed: {
+  methods: {
     /**
      * Set dimensions
      * @returns {string}
@@ -87,9 +82,7 @@ export default {
     getDimensions() {
       const dimensions = this.dimensions || [380, 144]
       return dimensions.join(' x ')
-    }
-  },
-  methods: {
+    },
     /**
      * Set file formats
      * @returns {*|string}
