@@ -7,7 +7,7 @@ use App\Models\{Role, User};
 use Illuminate\Http\Request;
 use Inertia\Response;
 
-class CoachesController extends BasicAdminController
+class CoachController extends BasicAdminController
 {
     /**
      * Coach list page

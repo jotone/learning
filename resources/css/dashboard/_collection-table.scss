@@ -1,6 +1,7 @@
 .table-group {
   background-color: white;
   border-radius: 8px;
+  margin-top: 20px;
   position: relative;
 
   &>:first-child {
@@ -29,43 +30,6 @@
     display: flex;
     justify-content: flex-end;
     flex-wrap: wrap;
-  }
-
-  .search-form {
-    label {
-      display: flex;
-    }
-
-    input {
-      border: 1px solid $borderColor;
-      border-bottom-left-radius: 6px;
-      border-top-left-radius: 6px;
-      font-size: 14px;
-      height: 44px;
-      line-height: 42px;
-      padding: 0 15px;
-    }
-
-    button {
-      background-color: $borderColor;
-      border: 1px solid $borderColor;
-      border-bottom-right-radius: 6px;
-      border-top-right-radius: 6px;
-      cursor: pointer;
-      display: inline-flex;
-      height: 44px;
-      width: 44px;
-
-      span {
-        background-color: $secondary;
-        display: block;
-        height: 100%;
-        mask-image: url("/images/icons/search.svg");
-        mask-position: 50%;
-        mask-repeat: no-repeat;
-        width: 100%;
-      }
-    }
   }
 }
 

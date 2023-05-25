@@ -4,6 +4,11 @@
       "name": "dashboard",
       "route": "dashboard.index",
       "img": "dashboard"
+    },
+    {
+      "name": "courses",
+      "route": "dashboard.courses.index",
+      "img": "course"
     }
   ],
   "bottom": [

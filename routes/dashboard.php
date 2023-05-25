@@ -1,11 +1,16 @@
 <?php
 
 use App\Http\Controllers\Dashboard\{
-    CoachesController, DashboardController, EmailTemplatesController, RoleController, SettingsController, UserController
+    CoachController, CourseController, DashboardController, EmailTemplatesController, RoleController, SettingsController, UserController
 };
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('index');
+
+Route::as('courses.')->group(function () {
+    Route::get('/courses', [CourseController::class, 'index'])->name('index');
+    Route::get('/courses/create', [CourseController::class, 'create'])->name('create');
+});
 
 Route::as('users.')->group(function () {
     Route::get('/users/roles', [RoleController::class, 'index'])->name('roles.index');
@@ -31,9 +36,9 @@ Route::as('settings.')->group(function () {
     });
 
     Route::as('coaches.')->group(function () {
-       Route::get('/settings/coaches', [CoachesController::class, 'index'])->name('index');
-       Route::get('/settings/coaches/create', [CoachesController::class, 'create'])->name('create');
-       Route::get('/settings/coaches/edit/{coach}', [CoachesController::class, 'edit'])->name('edit');
+       Route::get('/settings/coaches', [CoachController::class, 'index'])->name('index');
+       Route::get('/settings/coaches/create', [CoachController::class, 'create'])->name('create');
+       Route::get('/settings/coaches/edit/{coach}', [CoachController::class, 'edit'])->name('edit');
     });
 });
 

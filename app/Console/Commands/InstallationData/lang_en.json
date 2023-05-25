@@ -90,6 +90,7 @@
     }
   },
   "menu": {
+    "courses": "Courses",
     "dashboard": "Dashboard",
     "getSupport": "Get Support",
     "logout": "Logout",
