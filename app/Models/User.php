@@ -161,7 +161,7 @@ class User extends Authenticatable
             // Remove info
             $model->info()->delete();
             // Remove login history
-            $model->loginHistory()->each(fn($entity) => $entity->delete());
+            $model->loginHistory()->each(fn($ent) => $ent->delete());
             // Remove user files
             FileHelper::recursiveRemove(public_path('images/users/' . $model->id));
         });

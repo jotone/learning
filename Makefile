@@ -7,7 +7,7 @@ down:
 migrate:
 	@vendor/bin/sail artisan migrate
 
-reset:
+install:
 	@vendor/bin/sail artisan migrate:fresh
 	@vendor/bin/sail artisan app:install
 

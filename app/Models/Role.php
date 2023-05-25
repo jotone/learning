@@ -50,9 +50,9 @@ class Role extends Model
 
         static::deleting(function ($model) {
             // Remove related permissions
-            $model->permissions()->each(fn($entity) => $entity->delete());
+            $model->permissions()->each(fn($ent) => $ent->delete());
             // Remove related users
-            $model->users()->each(fn($entity) => $entity->delete());
+            $model->users()->each(fn($ent) => $ent->delete());
         });
     }
 }
