@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'course' => [
+        'tracking' => [
+            'enable_auto_approve',
+            'enable_for_every_submission',
+            'enable_for_first_submission'
+        ]
+    ],
     'user' => [
         'shirt_sizes' => [
             'XS Small',

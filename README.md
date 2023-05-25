@@ -8,12 +8,12 @@ sudo apt-get install make node docker docker-compose
 ```shell
 sudo apt-get install php8.2 php8.2-{bcmath,bz2,cgi,cli,common,curl,http,gd,imagick,intl,mbstring,mcrypt,mysql,opcache,raphf,readline,snmp,soap,xml,xmlrpc,xsl,yaml,zip}
 ```
-2.1 **Optional: Download and install latest composer**
+2.1. **Optional: Download and install latest composer**
 ```shell
 curl -sS https://getcomposer.org/installer -o composer-setup.php
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 ```
-2.2 **Optional: Download and install latest Node version manager**
+2.2. **Optional: Download and install latest Node version manager**
 ```shell
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 ```
@@ -29,16 +29,30 @@ sudo groupadd docker
 ```shell
 sudo usermod -aG docker $USER && sudo systemctl enable docker.service && sudo systemctl enable containerd.service
 ```
-5. **Install sail**
+5. **Copy .env file**
+```shell
+cp .env.example .env
+```
+6. **Set database variables. For example:**
+```
+DB_DATABASE=learning
+DB_USERNAME=sail
+DB_PASSWORD=password
+```
+7. **Install sail**
 ```shell
 php artisan sail:install
 ```
-6. **Choose sail package for mysql (option 0)**
-7. **Enable containers and run migrations with installation data**
+8. **Choose sail package for mysql (option 0)**
+9. **Set environment key**
 ```shell
-make up && make reset
+php artisan key:generate
 ```
-8. **Install npm dependencies and run prod script**
+10. **Enable containers and run migrations with installation data**
+```shell
+make up && make install
+```
+11. **Install npm dependencies and run prod script**
 ```shell
 npm i && npm run prod
 ```
@@ -82,13 +96,8 @@ npm i && npm run prod
 - ~~Language settings~~
 - ~~Apply translations to pages~~
 - ~~app:reset command~~
-- Courses
-  - Model
-  - migration
-  - factory
-  - tests
-  - seeder
-  - Page
+- ~~Course Models~~
+
 - Categories
   - Create
   - Edit

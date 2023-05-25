@@ -17,6 +17,20 @@ return new class extends Migration
             $table->string('url')->index();
             $table->text('description')->nullable();
             $table->string('img_url')->nullable();
+            $table->string('link')->nullable();
+            $table->string('expire_link')->nullable();
+            $table->string('support_link')->nullable();
+            $table->string('fb_link')->nullable();
+            $table->unsignedSmallInteger('status')->default(0);
+
+            $table->unsignedTinyInteger('tracking_type')->default(0);
+            $table->unsignedTinyInteger('tracking_status')->default(0);
+
+            $table->unsignedTinyInteger('optional_duration')->nullable();
+            $table->string('optional_expire_page')->nullable();
+
+            $table->boolean('invitation_email')->unsigned()->default(1);
+            $table->unsignedSmallInteger('position');
             $table->timestamps();
         });
     }

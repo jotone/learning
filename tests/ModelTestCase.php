@@ -12,6 +12,7 @@ class ModelTestCase extends TestCase
 
     /**
      * Default test for creating model
+     *
      * @return void
      */
     protected function modelCreatingTest(): void
@@ -21,6 +22,7 @@ class ModelTestCase extends TestCase
 
     /**
      * Default test for model updating
+     *
      * @param array $values
      * @param array $optional
      * @param callable|null $callback
@@ -61,6 +63,7 @@ class ModelTestCase extends TestCase
 
     /**
      * Default test for model removing
+     *
      * @param callable|null $callback
      * @return void
      */
