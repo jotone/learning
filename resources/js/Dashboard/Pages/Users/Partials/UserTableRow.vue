@@ -13,15 +13,6 @@
       <Link :href="editUrl">{{ model.role_name }}</Link>
     </td>
     <td>
-      <Link class="img-container" :href="editUrl">
-        <img
-          v-if="!!model.img_url"
-          :src="model.img_url.small || model.img_url.large || model.img_url.original"
-          alt=""
-        >
-      </Link>
-    </td>
-    <td>
       <Link :href="editUrl">{{ model.created_at }}</Link>
     </td>
     <td>
