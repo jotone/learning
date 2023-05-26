@@ -97,14 +97,16 @@ npm i && npm run prod
 - ~~Apply translations to pages~~
 - ~~app:reset command~~
 - ~~Course Models~~
-- Courses List
-  - ~~Api~~
-  - Page
+- ~~Course List~~
 - Categories
   - Create
   - Edit
   - Remove
 - Courses
+  - List or grid view
+  - Search
+  - Category select
+  - Sort
   - Create
     - digistore24 list
     - copecart list

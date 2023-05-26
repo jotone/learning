@@ -5,6 +5,7 @@ import Pagination from "../Shared/CotentTable/Pagination.vue";
 import SearchForm from "../Shared/CotentTable/SearchForm.vue";
 import {Link} from "@inertiajs/vue3";
 import {showNotification, XHRErrorHandle} from "../../libs/notifications";
+import axios from "axios";
 
 export const ContentTableMixin = {
   components: {ContentTableHead, Confirmation, Layout, Link, Pagination, SearchForm},
@@ -48,6 +49,10 @@ export const ContentTableMixin = {
         url = this.url + this.filtersToUri()
       }
 
+      axios.interceptors.request.use(config => {
+        $('.preloader').show()
+        return config;
+      });
       return axios.get(url).then(response => {
         if (200 === response.status) {
           this.setPaginationOptions(response.data.meta)
@@ -62,6 +67,10 @@ export const ContentTableMixin = {
      * @param translation
      */
     remove(obj, translation) {
+      axios.interceptors.request.use(config => {
+        $('.preloader').show()
+        return config;
+      });
       // Check if link has href attribute && // Open the Confirmation popup
       typeof obj.attr('href') !== 'undefined' && this.$refs.confirmation.open().then(
         // If user pressed OK && // Send DELETE resource request

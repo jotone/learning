@@ -83,6 +83,7 @@ export default {
         method: 'post',
         url: this.$page.props.routes.social.update.replace(/:id/, obj.data('id')),
         data: formData,
+        hidePreloader: !0,
         msg: "Social Media Link was successfully saved."
       })
     },
@@ -103,6 +104,7 @@ export default {
       this.$parent.$parent.request({
         method: 'delete',
         url: url,
+        hidePreloader: !0,
         preventNotification: !0,
         onSuccess: response => {
           // If 204 No Content -> remove social list item

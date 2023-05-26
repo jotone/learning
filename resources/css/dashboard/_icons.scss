@@ -4,6 +4,12 @@
   mask-repeat: no-repeat;
 }
 
+.clock-icon {
+  height: 11px;
+  mask-image: url("/images/icons/clock.svg");
+  width: 9px;
+}
+
 .course-add-icon {
   height: 22px;
   mask-image: url("/images/icons/course-add.svg");
@@ -22,6 +28,12 @@
   height: 24px;
   mask-image: url("/images/icons/list.svg");
   width: 24px;
+}
+
+.ok-icon {
+  height: 8px;
+  mask-image: url("/images/icons/ok.svg");
+  width: 10px;
 }
 
 .plus-icon {

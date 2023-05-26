@@ -22,6 +22,12 @@
 
           <Pagination :options="pagination" :url="url"/>
         </div>
+
+        <div class="course-listing">
+          <template v-for="(n, i) in collection.length">
+            <CourseTableRow :model="collection[i]"/>
+          </template>
+        </div>
       </div>
     </template>
   </Layout>
@@ -30,8 +36,10 @@
 <script>
 
 import {ContentTableMixin} from "../../Mixins/content-table-mixin";
+import CourseTableRow from "./Partials/CourseTableRow.vue";
 
 export default {
+  components: {CourseTableRow},
   data() {
     return {
       listStyle: {

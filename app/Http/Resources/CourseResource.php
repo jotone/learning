@@ -15,6 +15,7 @@ class CourseResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'url' => $this->url,
             'description' => $this->description,
@@ -25,6 +26,7 @@ class CourseResource extends JsonResource
             'fb_link' => $this->fb_link,
             'optional_duration' => $this->optional_duration,
             'optional_expire_page' => $this->optional_expire_page,
+            'status' => $this->status,
             'position' => $this->position,
             'created_at' => $this->created_at->format('j/M/Y H:i')
         ];

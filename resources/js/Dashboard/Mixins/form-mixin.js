@@ -28,6 +28,8 @@ export const FormMixin = {
       }
       // Lowercase method name
       props.method = props.method.toLowerCase();
+      // Hide preloader directive
+      props.hidePreloader = props.hidePreloader || !1;
       // Set default headers
       let headers = {
         "content-type": props.method === "patch" ? "application/x-www-form-urlencoded" : "multipart/form-data",
@@ -39,6 +41,7 @@ export const FormMixin = {
       }
 
       axios.interceptors.request.use(config => {
+        !props.hidePreloader && $('.preloader').show()
         if (props.hasOwnProperty('beforeRequest') && (typeof props.beforeRequest === 'function' || null === props.beforeRequest)) {
           null !== props.beforeRequest && props.beforeRequest()
         }

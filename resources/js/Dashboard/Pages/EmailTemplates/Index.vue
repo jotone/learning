@@ -261,6 +261,7 @@ export default {
           method: 'post',
           url: this.$attrs.routes.social.store,
           data: formData,
+          hidePreloader: !0,
           preventNotification: !0,
           onSuccess: response => {
             this.allowRequest = !0;

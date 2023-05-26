@@ -18,8 +18,6 @@ class CourseController extends BasicAdminController
         'dir' => 'asc'
     ];
 
-    protected int $take = 10;
-
     /**
      * Course list page
      *
