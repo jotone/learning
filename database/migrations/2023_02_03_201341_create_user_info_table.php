@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('user_info', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id')->index();
+            $table->unsignedInteger('user_id')->unique();
             $table->string('timezone')->nullable();
-            $table->string('country', 127)->nullable();
+            $table->string('country')->nullable();
             $table->string('region')->nullable();
             $table->string('city')->nullable();
             $table->string('address')->nullable();

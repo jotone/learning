@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('img_url')->nullable();
             $table->text('about')->nullable();
 
-            $table->unsignedInteger('status');
+            $table->unsignedTinyInteger('status');
             $table->timestamp('activated_at')->nullable();
             $table->timestamp('last_activity')->nullable();
 

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Settings;
-use Illuminate\Support\Facades\{App, DB, Schema, View};
+use Illuminate\Support\Facades\{App, DB, Schema, URL, View};
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,6 +35,11 @@ class AppServiceProvider extends ServiceProvider
                 View::share('settings', $settings);
             }
         }
+
+        if($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
+
     }
 
     /**

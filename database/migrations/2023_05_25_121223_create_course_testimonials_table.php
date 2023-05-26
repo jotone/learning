@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('course_testimonials', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('course_id')->index();
+            $table->unsignedInteger('course_id')->unique();
 
             $table->boolean('enable')->default(0);
             $table->unsignedTinyInteger('min_progress')->default(0);

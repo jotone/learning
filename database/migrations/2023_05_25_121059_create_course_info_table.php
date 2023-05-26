@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('course_info', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('course_id')->index();
+            $table->unsignedInteger('course_id')->unique();
 
             $table->boolean('enable_terms_conditions')->unsigned()->default(0);
             $table->boolean('enable_signature')->unsigned()->default(0);
