@@ -10,6 +10,11 @@ use Inertia\{Inertia, Response};
 
 class BasicAdminController extends Controller
 {
+    /**
+     * Default order properties
+     *
+     * @var array
+     */
     protected array $order = [
         'by' => 'created_at',
         'dir' => 'desc'

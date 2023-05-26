@@ -7,10 +7,6 @@ import "select2/dist/js/select2.min"
 window.$ = jquery
 window.axios = axios
 
-axios.interceptors.request.use(config => {
-  $('.preloader').show()
-  return config;
-});
 axios.interceptors.response.use(response => {
   $('.preloader').hide()
   return response

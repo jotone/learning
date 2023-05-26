@@ -97,20 +97,22 @@ npm i && npm run prod
 - ~~Apply translations to pages~~
 - ~~app:reset command~~
 - ~~Course Models~~
-
+- ~~Course List~~
 - Categories
   - Create
   - Edit
   - Remove
 - Courses
+  - List or grid view
+  - Search
+  - Category select
+  - Sort
   - Create
+    - digistore24 list
+    - copecart list
   - Edit
   - Clone
   - Remove
-- Pages
-  - How to **help**
-  - Terms of service
-  - Privacy policy
 
 ### Technical debt
 

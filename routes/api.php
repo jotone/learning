@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\{
+    CourseController,
     EmailTemplateController,
     LanguageController,
     RoleController,
@@ -22,8 +23,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['as' => 'api.', 'middleware' => 'auth:sanctum'], function () {
+    // Courses API
+    Route::apiResource('/courses', CourseController::class)->only(['index']);
+
     // Email Templates API
     Route::apiResource('/email-templates', EmailTemplateController::class)->only(['store', 'update', 'destroy']);
+
     // Language API
     Route::group(['as' => 'language.', 'prefix' => '/language'], function () {
         // Get language file content
@@ -35,17 +40,17 @@ Route::group(['as' => 'api.', 'middleware' => 'auth:sanctum'], function () {
         // Remove language package
         Route::delete('/{name}', [LanguageController::class, 'destroy'])->name('destroy');
     });
+
     // Roles API routes
     Route::apiResource('/roles', RoleController::class);
+
     // Settings API
     Route::match(['patch', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
+
     // Social Media API
     Route::patch('/socials', [SocialMediaLinkController::class, 'sort'])->name('socials.sort');
     Route::apiResource('/socials', SocialMediaLinkController::class)->only(['store', 'update', 'destroy']);
+
     // User API routes
     Route::apiResource('/users', UserController::class);
 });
-/*
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/

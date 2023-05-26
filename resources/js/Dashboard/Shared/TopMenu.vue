@@ -1,5 +1,5 @@
 <template>
-  <nav class="content-submenu">
+  <nav class="content-submenu" v-if="$page.props.topMenu.length">
     <ul>
       <li
         v-for="item in $page.props.topMenu"

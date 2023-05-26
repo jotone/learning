@@ -4,12 +4,16 @@ cmd:
 down:
 	@vendor/bin/sail down
 
-migrate:
-	@vendor/bin/sail artisan migrate
-
 install:
 	@vendor/bin/sail artisan migrate:fresh
 	@vendor/bin/sail artisan app:install
+
+migrate:
+	@vendor/bin/sail artisan migrate
+
+reset:
+	@vendor/bin/sail artisan app:reset
+	@npm run prod
 
 route:
 	@vendor/bin/sail artisan route:list
