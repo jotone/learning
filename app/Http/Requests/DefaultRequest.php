@@ -34,4 +34,25 @@ class DefaultRequest extends FormRequest
             response()->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY)
         );
     }
+
+    /**
+     * Create a unique url using the request data
+     * @param string $class - entity model class
+     * @param string $url_key - custom request url key
+     * @param string $name_key - custom request name key
+     * @return string
+     */
+    protected function uniqUrl(string $class, string $url_key = 'url', string $name_key = 'name'): string
+    {
+        if (!$this->request->has($url_key)) {
+            $url = generateUrl($this->request->get($name_key));
+            if ($class::where($url_key, $url)->count()) {
+                $url .= '-' . uniqid();
+            }
+        } else {
+            $url = $this->request->get($url_key);
+        }
+
+        return $url;
+    }
 }

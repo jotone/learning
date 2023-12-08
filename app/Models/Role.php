@@ -44,15 +44,17 @@ class Role extends Model
     /**
      * Extend model behavior
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
         static::deleting(function ($model) {
             // Remove related permissions
-            $model->permissions()->each(fn($ent) => $ent->delete());
-            // Remove related users
-            $model->users()->each(fn($ent) => $ent->delete());
+            $model->permissions()->each(fn($entity) => $entity->delete());
+            // Reset roles for related users
+            $model->users()->update([
+                'role_id' => self::where('id', '!=', $model->id)->orderBy('level', 'desc')->first()->id
+            ]);
         });
     }
 }

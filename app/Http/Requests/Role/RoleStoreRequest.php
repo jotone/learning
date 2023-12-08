@@ -23,14 +23,13 @@ class RoleStoreRequest extends DefaultRequest
 
     /**
      * Prepare the data for validation.
+     *
      * @return void
      */
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'slug' => $this->request->has('slug')
-                ? $this->request->get('slug')
-                : generateUrl($this->request->get('name'))
+            'slug' => $this->request->has('slug') ? $this->request->get('slug') : generateUrl($this->request->get('name'))
         ]);
     }
 }

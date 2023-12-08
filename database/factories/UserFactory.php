@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\{Role, User};
+use App\Traits\FakerFactoryTrait;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\{Arr, Str};
 
@@ -11,11 +12,8 @@ use Illuminate\Support\{Arr, Str};
  */
 class UserFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+    use FakerFactoryTrait;
+
     protected $model = User::class;
 
     /**
@@ -27,8 +25,6 @@ class UserFactory extends Factory
     {
         $created_days = mt_rand(1, 5);
 
-        $dims = [200, 240, 280, 320, 480, 640];
-
         $role = Role::where('level', '>', 127)->inRandomOrder()->first();
 
         if (!$role) {
@@ -36,26 +32,33 @@ class UserFactory extends Factory
         }
 
         return [
-            'first_name'        => fake()->firstName,
-            'last_name'         => fake()->lastName,
-            'email'             => fake()->unique()->safeEmail(),
+            'first_name' => fake()->firstName,
+            'last_name' => fake()->lastName,
+            'email' => uniqid() . fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password'          => 'password',
-            'remember_token'    => Str::random(10),
-            'img_url'           => 'https://picsum.photos/' . Arr::random($dims) . '/' . Arr::random($dims),
-            'about'             => fake()->realText(150),
-            'status'            => 0,
-            'activated_at'      => now(),
-            'last_activity'     => now(),
-            'role_id'           => $role->id,
-            'created_at'        => now()->subDays($created_days)
+            'password' => 'password',
+            'remember_token' => Str::random(10),
+            'img_url' => $this->image(),
+            'about' => fake()->realText(150),
+            'status' => 'active',
+            'activated_at' => now(),
+            'last_activity' => now(),
+            'role_id' => $role->id,
+            'created_at' => now()->subDays($created_days),
+            'timezone' => fake()->timezone,
+            'country' => fake()->country,
+            'city' => fake()->city,
+            'region' => fake()->word,
+            'address' => fake()->address,
+            'ext_addr' => fake()->buildingNumber,
+            'zip' => fake()->postcode,
+            'phone' => fake()->e164PhoneNumber,
+            'shirt_size' => Arr::random(config('enums.user.shirt_sizes'))
         ];
     }
 
     /**
      * Indicate that the model's email address should be unverified.
-     *
-     * @return $this
      */
     public function unverified(): static
     {

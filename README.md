@@ -2,7 +2,7 @@
 
 1. **Install necessary programs**
 ```shell
-sudo apt-get install make node docker docker-compose
+sudo apt-get install make docker docker-compose
 ```
 2. **Install php and it's extensions**
 ```shell
@@ -35,102 +35,154 @@ cp .env.example .env
 ```
 6. **Set database variables. For example:**
 ```
+APP_ENV=local
 DB_DATABASE=learning
 DB_USERNAME=sail
 DB_PASSWORD=password
 ```
-7. **Install sail**
+7. **Install composer dependecies**
+```shell
+composer install
+```
+8. **Install sail**
 ```shell
 php artisan sail:install
+php artisan sail:publish
 ```
-8. **Choose sail package for mysql (option 0)**
-9. **Set environment key**
+9. **Choose sail package for mysql (option 0)**
+10. **Set environment key**
 ```shell
 php artisan key:generate
 ```
-10. **Enable containers and run migrations with installation data**
+11. **Enable containers and run migrations with installation data**
 ```shell
 make up && make install
 ```
-11. **Install npm dependencies and run prod script**
+12. **Install npm dependencies and run prod script**
 ```shell
 npm i && npm run prod
 ```
 ## Makefile Commands
 
-- `make cmd run=<your artisan command>`** - will run custom artisan command
+- `make run cmd=<your artisan command>`** - will run custom artisan command
 - `make up` - start up sail docker containers
 - `make down` - stop docker containers
 - `make migrate` - run artisan migrate
 - `make reset` - reset and seed environment
 - `make test` - run tests
 
-### TODO
-
-- ~~Role list page~~
-- ~~User list page~~
-- ~~Main Settings page~~
-- ~~Login Settings page~~
-- ~~Login page~~
-- ~~Sanctum middleware~~
-- ~~Email~~
-  - ~~SMTP~~
-  - ~~Email Settings~~
-  - ~~Templates~~
-- ~~Create User~~
-- ~~Edit User~~
-- ~~Remove User~~
-- ~~Forgot password~~
-  - ~~Reset password~~
-  - ~~Confirm password~~
-- ~~Create role~~
-- ~~Edit role~~
-- ~~Remove role~~
-- ~~Separate dashboard middleware~~
-- ~~Coaches list page~~
-- ~~Create Coach~~
-- ~~Edit Coach~~
-- ~~Remove Coach~~
-- ~~Admin Profile~~
-- ~~Login page settings -> preview~~
-- ~~Language settings~~
-- ~~Apply translations to pages~~
-- ~~app:reset command~~
-- ~~Course Models~~
-- ~~Course List~~
-- Categories
-  - Create
-  - Edit
-  - Remove
+- Roles
+  - ~~Api~~
+  - Page
+    - List
+      - DataTable
+      - Pagination
+      - PerPage
+      - Directions
+      - Search
+      - Remove confirmation
+    - Add
+      - Notifications
+      - Breadcrumbs
+    - Edit
+    - Remove
+- Templates
+  - Api
+    - List
+    - Create
+    - Update
+    - Remove
+- Settings
+  - Api
+    - List
+    - Update
+  - Page
+    - Main
+    - Functionality
+    - Email
+      - Templates
+        - Create
+        - Edit
+        - Remove
+      - SMTP
+    - Language
+      - Api
+      - Page
 - Courses
-  - List or grid view
-  - Search
-  - Category select
-  - Sort
-  - Create
-    - digistore24 list
-    - copecart list
-  - Edit
-  - Clone
-  - Remove
-
-### Technical debt
-
-- Dashboard
-  - Main settings
-    - Site custom URL
-  - Send Course Invitation email when user finished his account activation
-  - Send Course Invitation email after student update
-  - /dashboard/users/create - add courses if role is "student"
-  - Registration email
-    - Apply variables (Course, Date)
-    - Welcome email (registration)
-    - Preview on email page
-    - Activation URL
-  - Course Invitation email & Preview
-  - Check coaches and admins has avatars when the communities are allowed
-    formatOption
-
-[//]: # (dashboard    manifest    vendor)
-[//]: # (   736.9k        1.5k    120.9k <--- 16.05.2022)
-[//]: # (   742.8k        1.5     120.9k <--- 24.05.2022)
+  - Api
+    - List
+    - Create
+    - Update
+    - Delete
+- Categories
+  - Api
+    - List
+    - Create
+    - Update
+    - Delete
+- Courses
+  - Page
+    - Category create
+    - Category edit
+    - Course list
+    - Course columns
+    - Course Create
+    - Course edit
+    - Course bulk actions
+    - Course filters
+- Users
+  - Api
+    - List
+    - Create
+    - Update
+    - Delete
+  - Page
+    - List
+    - Bulk actions
+    - Filters
+    - Create
+    - Import
+    - Courses
+    - Personal information
+    - Access and usages
+- Registration progress
+  - Set password
+  - User profile
+- Week
+  - Api
+    - Create
+    - Update
+    - Delete
+- Lesson
+  - Api
+    - Create
+    - Update
+    - Delete
+- Quiz
+  - Api
+    - Create
+    - Update
+    - Delete
+- Feedback Form
+  - Api
+    - Create
+    - Update
+    - Delete
+- Course
+  - Curriculum
+    - Api
+      - Sort
+    - Page
+- Quiz Questions
+  - Api
+    - Create
+    - Update
+    - Delete
+- Quiz Answers
+  - Api
+    - Create
+    - Update
+    - Delete
+- Quiz Page
+- Feedback Page
+- Lesson Page

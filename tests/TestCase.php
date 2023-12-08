@@ -2,17 +2,36 @@
 
 namespace Tests;
 
-use Faker\Factory as Faker;
+use Faker\{Factory, Generator};
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public function __construct(?string $name = null, array $data = [], $dataName = '', protected $faker = null)
-    {
-        parent::__construct($name, $data, $dataName);
+    /**
+     * Faker instance
+     *
+     * @var Generator
+     */
+    protected Generator $faker;
 
-        $this->faker = Faker::create();
+    public function __construct(?string $name = null)
+    {
+        parent::__construct($name);
+
+        $this->faker = Factory::create();
+    }
+
+    /**
+     * Get validation rule translation
+     *
+     * @param string $trans
+     * @param string ...$arguments
+     * @return string
+     */
+    protected function lang(string $trans, string ...$arguments): string
+    {
+        return preg_replace_array('/:[a-z]+/', $arguments, __($trans));
     }
 }

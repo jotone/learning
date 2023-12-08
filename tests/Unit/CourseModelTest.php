@@ -2,11 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Course;
-use App\Models\CourseInfo;
-use App\Models\CourseProduct;
-use App\Models\CourseTestimonial;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\{Course, User};
 use Tests\ModelTestCase;
 
 class CourseModelTest extends ModelTestCase
@@ -17,101 +13,31 @@ class CourseModelTest extends ModelTestCase
         self::$class = Course::class;
     }
 
-    /**
-     * Course creating test
-     *
-     * @return void
-     */
-    public function testCourseCreate(): void
+    public function testCreate(): void
     {
-        $this->modelCreatingTest();
+        $this->assertModelExists(self::$class::factory()->create());
     }
 
-    /**
-     * Course updating test
-     *
-     * @return void
-     */
-    public function testCourseModify(): void
+    public function testModify(): void
     {
-        $model = self::$class::factory()->make();
-
-        $this->modelModifyingTest(
-            values: [
-                'name' => $model->name,
-                'url' => $model->url
-            ]
-        );
+        $this->modelModificationTest(['name', 'url', 'description']);
     }
 
-    /**
-     * Test relation between Course and CourseInfo model
-     *
-     * @return void
-     */
-    public function testCourseToInfoRelation(): void
+    public function testRelationToCourse()
     {
-        $model = Course::factory()->create();
-        $info = CourseInfo::factory()->create([
-            'course_id' => $model->id
+        $course = self::$class::factory()->create();
+        $user = User::factory()->create();
+
+        $user->courses()->attach($course);
+
+        $this->assertDatabaseHas('user_courses', [
+            'user_id' => $user->id,
+            'course_id' => $course->id
         ]);
-
-        $this->assertTrue($model->info->id === $info->id);
-        $this->assertTrue($model->id === $info->course->id);
     }
 
-    /**
-     * Test relation between Course and CourseTestimonial model
-     *
-     * @return void
-     */
-    public function testCourseToTestimonialRelation(): void
+    public function testRemove(): void
     {
-        $model = Course::factory()->create();
-        $testimonial = CourseTestimonial::factory()->create([
-            'course_id' => $model->id
-        ]);
-
-        $this->assertTrue($model->testimonial->id === $testimonial->id);
-        $this->assertTrue($model->id === $testimonial->course->id);
-    }
-
-    /**
-     * Test Course to CourseProduct relation
-     *
-     * @return void
-     */
-    public function testCourseToProductsRelation(): void
-    {
-        $model = Course::factory()->create();
-        $products = CourseProduct::factory(mt_rand(1, 10))->create([
-            'course_id' => $model->id
-        ]);
-
-        $this->assertEmpty(array_diff($model->products()->pluck('id')->toArray(), $products->pluck('id')->toArray()));
-
-        $this->assertEmpty(array_diff($products->pluck('id')->toArray(), $model->products()->pluck('id')->toArray()));
-
-        foreach ($products as $product) {
-            $this->assertTrue($product->course_id === $model->id);
-        }
-    }
-
-    /**
-     * Course removing test
-     *
-     * @return void
-     */
-    public function testCourseRemove(): void
-    {
-        $this->modelRemovingTest();
-    }
-
-    /**
-     * @return Model
-     */
-    protected static function getModel(): Model
-    {
-        return Course::count() ? Course::first() : Course::factory()->create();
+        $this->modelRemovingTest(fn($model) => $this->assertDatabaseMissing('user_courses', ['course_id' => $model->id]));
     }
 }

@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\BasicApiController;
-use App\Http\Requests\Role\{RoleStoreRequest, RoleUpdateRequest};
+use App\Http\Controllers\BaseApiController;
+use App\Http\Requests\Role\{RoleBulkDeleteRequest, RoleStoreRequest, RoleUpdateRequest};
 use App\Http\Resources\RoleResource;
 use App\Models\{Permission, Role};
 use Illuminate\Http\{JsonResponse, Request};
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\{DB, Log};
+use Illuminate\Support\Facades\DB;
 
-class RoleController extends BasicApiController
+class RoleController extends BaseApiController
 {
     /**
-     * Role list
+     * Index method for retrieving a paginated list of roles. (api.roles.index)
      *
-     * @param Request $request
-     * @return AnonymousResourceCollection
+     * @param Request $request The HTTP request object.
+     *
+     * @return AnonymousResourceCollection The paginated list of roles as a resource collection.
      */
     public function index(Request $request): AnonymousResourceCollection
     {
@@ -27,24 +28,12 @@ class RoleController extends BasicApiController
             resource: RoleResource::class,
             search_callback: function ($q, string $search) {
                 $search = mb_strtolower($search);
-                return $q->whereRaw("LOWER(name) LIKE '%$search%' OR LOWER(slug) LIKE '%$search%' OR level LIKE '%$search%'");
+                return $q->whereRaw("LOWER(name) LIKE '%$search%' OR level LIKE '%$search%'");
             });
     }
 
     /**
-     * Specified role data
-     *
-     * @param int $id
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function show(int $id, Request $request): JsonResponse
-    {
-        return $this->apiShow(request: $request, query: Role::query(), id: $id);
-    }
-
-    /**
-     * Create Role
+     * Store a new role in the database. (api.roles.store)
      *
      * @param RoleStoreRequest $request
      * @return JsonResponse
@@ -67,17 +56,14 @@ class RoleController extends BasicApiController
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error($e->getMessage(), $e->getTrace());
-            return response()->json([
-                'errors' => [$e->getMessage()]
-            ], 500);
+            return $this->serverError($e);
         }
 
         return response()->json($role, 201);
     }
 
     /**
-     * Update Role
+     * Update an existing role in the database. (api.roles.update)
      *
      * @param Role $role
      * @param RoleUpdateRequest $request
@@ -88,36 +74,63 @@ class RoleController extends BasicApiController
         // Get request data
         $args = $request->validated();
         // Update fields
-        $role->name = $args['name'];
-        $role->level = $args['level'];
-        // Remove current role permissions
-        $role->permissions()->each(fn($entity) => $entity->delete());
-        // Set new permissions
-        $this->savePermissions($role, $args['permissions'] ?? []);
-        // Save role data
-        $role->save();
+        DB::beginTransaction();
+        try {
+            $role->name = $args['name'];
+            $role->level = $args['level'];
+            // Remove current role permissions
+            $role->permissions()->each(fn($entity) => $entity->delete());
+            // Set new permissions
+            $this->savePermissions($role, $args['permissions'] ?? []);
+            // Save role data
+            $role->save();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->serverError($e);
+        }
 
         return response()->json($role);
     }
 
     /**
-     * Remove Role
+     * Delete multiple roles from the database. (api.roles.delete)
      *
-     * @param Role $role
+     * @param RoleBulkDeleteRequest $request
      * @return JsonResponse
      */
-    public function destroy(Role $role): JsonResponse
+    public function delete(RoleBulkDeleteRequest $request): JsonResponse
     {
-        $role->delete();
+        // Request data
+        $ids = $request->validated('ids');
+        // User role level
+        $user_role_level = auth()->user()->role->level;
+        // Get roles with levels
+        $roles = Role::whereIn('id', $ids)->pluck('level', 'id')->toArray();
+        // Checking the user role allows him to remove roles
+        foreach ($roles as $level) {
+            if ($level < $user_role_level) {
+                return response()->json([
+                    'error' => 'You don\'t have permissions to remove this role'
+                ], 403);
+            }
+        }
+        // Remove roles
+        Role::destroy($ids);
 
-        return response()->json([], 204);
+        return response()->json(null, 204);
     }
 
     /**
-     * Save role pemissions
+     * Saves the permissions for a given role.
      *
-     * @param Role $role
-     * @param array $permissions
+     * @param Role $role The role for which the permissions will be saved.
+     * @param array $permissions An array of permissions to be saved. The array should be structured as follows:
+     *  - The keys of the array represent the controllers.
+     *  - The values of the array represent the methods within each controller, along with their allowance.
+     *    The allowance can be any value other than '0'.
+     *    If the allowance is not '0', the method will be considered permitted.
      * @return void
      */
     protected function savePermissions(Role $role, array $permissions): void

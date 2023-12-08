@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\{ForgotPasswordRequest, ResetPasswordRequest};
-use App\Jobs\{SendRegistrationEmail, SendForgotPasswordEmail};
+//use App\Http\Requests\Auth\ResetPasswordRequest;
+//use App\Mail\ForgotPasswordEmail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use App\Models\{PasswordResetToken, Settings, User};
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
 
@@ -41,22 +43,22 @@ class ResetPasswordController extends Controller
     /**
      * Send forgot password email
      *
-     * @param ForgotPasswordRequest $request
+     * @param Request $request
      * @return RedirectResponse
      */
-    public function send(ForgotPasswordRequest $request): RedirectResponse
+    public function send(Request $request): RedirectResponse
     {
-        $user = User::firstWhere('email', $request->get('email'));
+        /*$user = User::firstWhere('email', $request->get('email'));
         // Check user exists
         if (!$user) {
-            return redirect()->route('auth.index')->withErrors([
+            return redirect(route('auth.index') . '#forgot')->withErrors([
                 'email' => __('passwords.user')
             ]);
         }
         // Check if user has missing-details status
         if ('missing-details' === config('enums.user.statuses')[$user->status]) {
             // Send registration email
-            SendRegistrationEmail::dispatch($user);
+            //SendRegistrationEmail::dispatch($user);
 
             return redirect()->route('auth.index')->withErrors([
                 'email' => __('registration.check_inbox_msg')
@@ -70,18 +72,16 @@ class ResetPasswordController extends Controller
         }
         // Generate random token
         $token = Str::random() . uniqid();
-        PasswordResetToken::updateOrCreate([
-            'email' => $user->email
-        ], [
+        PasswordResetToken::updateOrCreate(['email' => $user->email], [
             'token' => $token,
             'created_at' => now()
         ]);
         // Send email
-        SendForgotPasswordEmail::dispatch($user, md5($token));
+        Mail::to($user->email)->send(new ForgotPasswordEmail(md5($token)));
 
         return redirect(route('auth.index') . '#forgot')->withErrors([
             'email' => __('passwords.sent')
-        ]);
+        ]);*/
     }
 
     /**
@@ -91,10 +91,10 @@ class ResetPasswordController extends Controller
      * @param ResetPasswordRequest $request
      * @return View|RedirectResponse
      */
-    public function update(string $token, ResetPasswordRequest $request): View|RedirectResponse
+    public function update(string $token, /*ResetPasswordRequest $request*/): View|RedirectResponse
     {
         // Find the reset token record
-        $reset = PasswordResetToken::whereRaw("md5(token) = '{$token}'")->firstOrFail();
+        /*$reset = PasswordResetToken::whereRaw("md5(token) = '{$token}'")->firstOrFail();
 
         // Check if reset link not exists or link has benn expired
         if (time() > $reset->created_at->addWeek()->timestamp) {
@@ -106,8 +106,8 @@ class ResetPasswordController extends Controller
         $reset->user->password = $request->validated('password');
         $reset->user->save();
         // Remove the password reset record
-        $reset->delete();
+        DB::table('password_reset_tokens')->whereRaw("md5(token) = '{$token}'")->delete();
 
-        return redirect()->route('auth.index')->withErrors(['email' => __('passwords.reset')]);
+        return redirect()->route('auth.index')->withErrors(['email' => __('passwords.reset')]);*/
     }
 }

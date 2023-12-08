@@ -1,85 +1,75 @@
-{
-  "top": [
+[
+  [
     {
-      "name": "dashboard",
-      "route": "dashboard.index",
-      "img": "dashboard"
-    },
-    {
-      "name": "courses",
-      "route": "dashboard.courses.index",
-      "img": "course"
+      "name": "Get Started",
+      "route": "dashboard.get-started.index",
+      "img": "rocket-icon"
     }
   ],
-  "bottom": [
+  [
     {
-      "name": "getSupport",
-      "route": "https://intercom.help/copehelp/en/collections/3332192-copemember-help",
-      "img": "help"
+      "name": "Dashboard",
+      "route": "dashboard.index",
+      "img": "dashboard-icon"
     },
     {
-      "name": "users.caption",
+      "name": "Users",
       "route": "dashboard.users.index",
-      "img": "hand-n-heart",
-      "is_top": 0,
-      "inner": [
-        {
-          "name": "users.list",
-          "route": "dashboard.users.index"
-        },
-        {
-          "name": "roles",
-          "route": "dashboard.users.roles.index"
-        }
-      ]
+      "img": "user-icon"
     },
     {
-      "name": "settings.caption",
-      "route": "dashboard.settings.main",
-      "img": "cog",
-      "is_top": 0,
-      "inner": [
-        {
-          "name": "settings.main",
-          "route": "dashboard.settings.main"
-        },
-        {
-          "name": "settings.login",
-          "route": "dashboard.settings.login"
-        },
-        {
-          "name": "settings.course",
-          "route": "#"
-        },
-        {
-          "name": "settings.features",
-          "route": "#"
-        },
-        {
-          "name": "settings.integration",
-          "route": "#"
-        },
-        {
-          "name": "settings.email",
-          "route": "dashboard.settings.emails.index"
-        },
-        {
-          "name": "settings.help_how",
-          "route": "#"
-        },
-        {
-          "name": "settings.language",
-          "route": "dashboard.settings.language"
-        },
-        {
-          "name": "settings.top_menu",
-          "route": "#"
-        },
-        {
-          "name": "settings.coaches",
-          "route": "dashboard.settings.coaches.index"
-        }
-      ]
+      "name": "Courses",
+      "route": "dashboard.courses.index",
+      "img": "book-icon"
+    },
+    {
+      "name": "Communities",
+      "route": "dashboard.communities.index",
+      "img": "users-icon"
+    }
+  ],
+  [
+    {
+      "name": "Events",
+      "route": "dashboard.events.index",
+      "img": "events-icon"
+    },
+    {
+      "name": "Comments",
+      "route": "dashboard.comments.index",
+      "img": "comment-icon"
+    },
+    {
+      "name": "Help Center",
+      "route": "dashboard.help-center.index",
+      "img": "info-icon"
+    },
+    {
+      "name": "Testimonials",
+      "route": "dashboard.testimonials.index",
+      "img": "star-icon"
+    },
+    {
+      "name": "Referrals",
+      "route": "dashboard.referrals.index",
+      "img": "hand-icon"
+    }
+  ],
+  [
+    {
+      "name": "Roles",
+      "route": "dashboard.roles.index",
+      "img": "profile-icon"
+    },
+    {
+      "name": "Appearance",
+      "route": "dashboard.appearance.index",
+      "img": "brush-icon"
+    },
+    {
+      "name": "Settings",
+      "route": "dashboard.settings.index",
+      "img": "cog-icon"
     }
   ]
-}
+]

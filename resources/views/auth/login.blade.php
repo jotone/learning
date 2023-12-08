@@ -2,131 +2,106 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
-  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{ $settings['site_title']->val }}</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap">
-  <link rel="stylesheet" href="/css/login.css">
+  @vite('resources/assets/css/reset.scss')
+  @vite('resources/assets/css/auth/login.scss')
 
-  @if(!empty($settings['header_code']->value ))
-    {!! $settings['header_code']->val !!}
-  @endif
+  {!! $settings['header_code']->value ?? '' !!}
 </head>
 <body>
-<div class="login-page">
-  <div class="content-clear">
-    <div class="login-form">
 
-      <div class="logo-wrap">
-        @if (!empty($settings['logo_img']->value))
-          <picture>
-            <img src="{{ asset($settings['logo_img']->val) }}" alt="">
-          </picture>
-        @endif
-      </div>
+<form action="{{ route('auth.login') }}" method="POST" data-form="0">
+  @csrf
+  <img class="logo-image" src="/images/logo-dashboard.png" alt="">
+  <h2>Welcome back</h2>
+  <div class="form-body">
+    <div class="form-row">
+      <input autofocus autocomplete="off" name="email" placeholder="Email" tabindex="1" type="email" required>
+      @if($errors->has('email'))
+        @foreach($errors->get('email') as $error)
+          <p class="error">{!! $error !!}</p>
+        @endforeach
+      @endif
+    </div>
 
-      <div class="form">
-        @if(!empty($errors->all()))
-          <ul class="form-errors">
-            @foreach($errors->all() as $error)
-              <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        @endif
+    <div class="form-row">
+      <input autocomplete="off" name="password" placeholder="Password" tabindex="2" type="password" required>
+      @if($errors->has('password'))
+        @foreach($errors->get('password') as $error)
+          <p class="error">{!! $error !!}</p>
+        @endforeach
+      @endif
+    </div>
 
-        <form class="form-switch" data-trigger="login" action="{{ route('auth.login') }}" method="POST">
-          @csrf
-          <div class="form-input">
-            <label for="email">@lang('user.fields.email')</label>
-            <input
-              autofocus=""
-              autocomplete="off"
-              id="email"
-              name="email"
-              placeholder="example@email.com"
-              required=""
-              type="email"
-            >
-          </div>
+    <div class="form-row link">
+      <a href="#" tabindex="4" data-switch="1">Forgot password?</a>
+    </div>
 
-          <div class="form-input">
-            <label for="password">@lang('user.password.txt')</label>
-            <input
-              autocomplete="off"
-              id="password"
-              name="password"
-              required=""
-              type="password"
-            >
-          </div>
-
-          <div class="form-submit">
-            <button type="submit">@lang('auth.login')</button>
-          </div>
-        </form>
-
-        <form class="form-switch" data-trigger="forgot" action="{{ route('reset.send') }}" method="POST">
-          @csrf
-
-          <div class="form-input">
-            <label for="forgot-email">@lang('user.fields.email')</label>
-            <input autocomplete="off" id="forgot-email" name="email" class="form-input" type="email" required="">
-          </div>
-
-          <div class="form-submit">
-            <button>@lang('common.submit')</button>
-          </div>
-        </form>
-
-        <div class="form-optional-link">
-          <a href="#" data-target="forgot">@lang('auth.forgot_pwd')</a>
-          <a href="#" data-target="login" class="">@lang('common.cancel')</a>
-        </div>
-      </div>
+    <div class="form-row">
+      <button type="submit" tabindex="3"><span>Log in</span></button>
     </div>
   </div>
+</form>
+
+<form action="{{ route('reset.send') }}" method="POST" data-form="1">
+  @csrf
+  <h2>Forgot password?</h2>
+
+  <div class="form-body">
+    <div class="form-row">
+      <p>Enter the email address you used when you joined and we’ll send you code to reset your password.</p>
+    </div>
+
+    <div class="form-row">
+      <input autofocus autocomplete="off" name="email" placeholder="Email" tabindex="1" type="email" required>
+
+      @if($errors->has('email'))
+        @foreach($errors->get('email') as $error)
+          <p class="error">{!! $error !!}</p>
+        @endforeach
+      @endif
+    </div>
+
+    <div class="form-row">
+      <button type="submit" tabindex="2"><span>Continue</span></button>
+    </div>
+  </div>
+
+  <a href="#" class="back-button" data-switch="0" tabindex="3">
+    <i class="arrow-icon"></i>
+    <span>Back</span>
+  </a>
+</form>
 </div>
 
-@if(!empty($settings['footer_code']->value ))
-  {!! $settings['footer_code']->val !!}
-@endif
+{!! $settings['footer_code']->value ?? '' !!}
 
 <script>
-  {{--
-  document.querySelector('form[data-trigger="' + ('#forgot' === window.location.hash ? 'forgot' : 'login') + '"]').classList.add('active')
-  document.querySelector('.form-optional-link a[data-target="' + ('#forgot' === window.location.hash ? 'login' : 'forgot' + '"]')).classList.add('active')
-  var switchForm = function (obj) {
-    const target = obj.getAttribute('data-target')
-    document.querySelector('form.form-switch.active').classList.remove('active')
-    document.querySelector(`form[data-trigger="${target}"]`).classList.add('active')
-    document.querySelector('.form-optional-link a.active[data-target]').classList.remove('active')
-    document.querySelector(`.form-optional-link a:not([data-target="${target}"])`).classList.add('active')
-  }
-  var controls = document.querySelectorAll('a[data-target]');
-  for (var i = 0, n = controls.length; i < n; i++) {
-    controls[i].addEventListener('click',function(e){
-      e.preventDefault();switchForm(e.target)
-    },!1);
-  }--}}
+  var loc = window.location, nodes = document.querySelectorAll(`a[data-switch]`);
+  document.querySelector(`form[data-form="${loc.hash === '#forgot' ? 1 : 0}"]`).classList.add('active')
 
-  let a = "active", b = "data-target", c = "classList", d = document, e = "data-trigger", f = ".form-optional-link",
-    g = "forgot", j = "remove", k = "add", l = "login", q = "querySelector", z = `#${g}` === window.location.hash,
-    h = d[`${q}All`](`a[${b}]`), s = o => {
-      let t = o.getAttribute(b);
-      d[q](`form.form-switch.${a}`)[c][j](a);
-      d[q](`form[${e}="${t}"]`)[c][k](a);
-      d[q](`${f}>a.${a}[${b}]`)[c][j](a);
-      d[q](`${f}>a:not([${b}="${t}"])`)[c][k](a)
-    };
-  d[q](`form[${e}="${z ? g : l}"]`)[c][k](a);
-  d[q](`${f}>a[${b}="${z ? l : g}"]`)[c][k](a);
-  for (let i = 0, n = h.length; i < n; i++) h[i].addEventListener("click", E => {
-    E.preventDefault();
-    s(E.target)
-  }, !1)
+  for (var i = 0, n = nodes.length; i < n; i++) nodes[i].addEventListener("click", e => {
+    e.preventDefault();
+    var inner = document.querySelectorAll('form[data-form]')
+    var path = loc.origin + loc.pathname
+    var dataSwitch = e.target.closest("a").getAttribute('data-switch')
+    if (dataSwitch > 0) {
+      document.querySelector('body').classList.add('forgot')
+      path += '#forgot'
+    } else {
+      document.querySelector('body').classList.remove('forgot')
+    }
+    window.history.pushState({}, '', path)
+    for (var j = 0, m = inner.length; j < m; j++) {
+      inner[j].classList.remove('active');
+    }
+    document
+      .querySelector(`form[data-form="${dataSwitch}"]`)
+      .classList.add('active');
+  }, false);
 </script>
 </body>
 </html>

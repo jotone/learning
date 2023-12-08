@@ -34,7 +34,7 @@ trait PermissionListTrait
                         'class' => $class_name,
                         'methods' => (function ($methods = []) use ($class_name) {
                             foreach ((new \ReflectionClass($class_name))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-                                if ($method->class == $class_name) {
+                                if ($method->class == $class_name && $method->name !== '__construct') {
                                     $methods[] = $method->name;
                                 }
                             }

@@ -6,59 +6,37 @@ class ModelTestCase extends TestCase
 {
     /**
      * Testing model class
-     * @var string|null
-     */
-    protected static $class = null;
-
-    /**
-     * Default test for creating model
      *
-     * @return void
+     * @var string
      */
-    protected function modelCreatingTest(): void
-    {
-        $this->assertModelExists(self::$class::factory()->create());
-    }
+    protected static $class;
 
     /**
      * Default test for model updating
      *
-     * @param array $values
-     * @param array $optional
-     * @param callable|null $callback
+     * @param array $fields
      * @return void
      */
-    protected function modelModifyingTest(array $values, array $optional = [], ?callable $callback = null): void
+    protected function modelModificationTest(array $fields): void
     {
-        $model = static::getModel();
+        $model = self::$class::factory()->create();
 
-        $old = $model->toArray();
+        $old = clone $model;
 
-        foreach ($values as $key => $value) {
-            $model->$key = $value;
+        $new = self::$class::factory()->make();
+
+        $check_missing = ['id' => $model->id];
+        $check_exists = ['id' => $model->id];
+        foreach ($fields as $key) {
+            $model->{$key} = $new->{$key};
+            $check_missing[$key] = $old->{$key};
+            $check_exists[$key] = $new->{$key};
         }
 
         $model->save();
 
-        if(!empty($optional)) {
-            foreach ($values as $key => $value) {
-                if (in_array($key, $optional)) unset($values[$key]);
-            }
-        }
-
-        $missing = $has = ['id' => $model->id,];
-        foreach ($values as $key => $value) {
-            $missing[$key] = $old[$key];
-            $has[$key] = $value;
-        }
-
-        $table = $model::factory()->make()->getTable();
-
-        if (is_callable($callback)) {
-            $callback($model);
-        }
-
-        $this->assertDatabaseMissing($table, $missing)->assertDatabaseHas($table, $has);
+        $this->assertDatabaseMissing($model->getTable(), $check_missing);
+        $this->assertDatabaseHas($model->getTable(), $check_exists);
     }
 
     /**
@@ -69,12 +47,10 @@ class ModelTestCase extends TestCase
      */
     protected function modelRemovingTest(?callable $callback = null): void
     {
-        $model = static::getModel();
+        $model = self::$class::factory()->create();
         $model->delete();
         $this->assertModelMissing($model);
 
-        if (is_callable($callback)) {
-            $callback($model);
-        }
+        is_callable($callback) && $callback($model);
     }
 }

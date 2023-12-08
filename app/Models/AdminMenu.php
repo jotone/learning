@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
 
 class AdminMenu extends Model
 {
+    use HasFactory;
+
     /**
      * The table associated with the model.
      *
@@ -32,16 +35,7 @@ class AdminMenu extends Model
         'img',
         'parent_id',
         'position',
-        'is_top'
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'is_top' => 'boolean',
+        'section'
     ];
 
     /**

@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\BasicAdminController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\BaseDashboardController;
+use App\Models\User;
 use Inertia\Response;
 
-class DashboardController extends BasicAdminController
+class DashboardController extends BaseDashboardController
 {
     /**
-     * @param Request $request
+     * Index page method.
+     * This method returns a Response object representing the index page view.
+     *
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        return $this->view(template: 'Dashboard', request: $request);
+        return $this->view('Dashboard/Index');
     }
 }

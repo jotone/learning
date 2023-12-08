@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Models\{Role, User};
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Role;
+use App\Models\User;
 use Tests\ModelTestCase;
 
 class RoleModelTest extends ModelTestCase
@@ -14,40 +14,17 @@ class RoleModelTest extends ModelTestCase
         self::$class = Role::class;
     }
 
-    /**
-     * Role creating test
-     *
-     * @return void
-     */
-    public function testRoleCreate(): void
+    public function testCreate(): void
     {
-        $this->modelCreatingTest();
+        $this->assertModelExists(self::$class::factory()->create());
     }
 
-    /**
-     * Role updating test
-     *
-     * @return void
-     */
-    public function testRoleModify(): void
+    public function testModify(): void
     {
-        $model = self::$class::factory()->make();
-
-        $this->modelModifyingTest(
-            values: [
-                'name' => $model->name,
-                'slug' => $model->slug,
-                'level' => $model->level
-            ]
-        );
+        $this->modelModificationTest(['name', 'slug', 'level']);
     }
 
-    /**
-     * Role to users relation test
-     *
-     * @return void
-     */
-    public function testRoleToUsersRelation(): void
+    public function testRelationToUsers(): void
     {
         $model = self::$class::factory()->create();
         $user = User::factory()->create(['role_id' => $model->id]);
@@ -55,25 +32,8 @@ class RoleModelTest extends ModelTestCase
         $this->assertTrue(in_array($user->id, $model->users()->pluck('users.id')->toArray()));
     }
 
-    /**
-     * Role removing test
-     *
-     * @return void
-     */
-    public function testRoleRemove(): void
+    public function testRemove(): void
     {
-        $this->modelRemovingTest(function ($model) {
-            $this->assertDatabaseMissing('users', ['role_id' => $model->id]);
-        });
-    }
-
-    /**
-     * @return Model
-     */
-    protected static function getModel(): Model
-    {
-        return Role::where('level', '>', 127)->where('level', '<', 255)->count()
-            ? Role::where('level', '>', 127)->where('level', '<', 255)->first()
-            : Role::factory()->create();
+        $this->modelRemovingTest(fn($model) => $this->assertDatabaseMissing('users', ['role_id' => $model->id]));
     }
 }

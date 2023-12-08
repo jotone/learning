@@ -37,11 +37,15 @@ class Settings extends Model
     {
         return Attribute::make(
             get: fn(mixed $value, array $attributes) => match ($attributes['data_type']) {
-                'boolean'   => (bool)(int)$attributes['value'],
-                'array'     => json_decode($attributes['value']),
+                // Variable is type of boolean
+                'boolean' => (bool)(int)$attributes['value'],
+                // Variable is a JSON object
+                'array' => json_decode($attributes['value']),
+                // Variable is a datetime
                 'timestamp' => !empty($attributes['value'])
                     ? Carbon::createFromFormat('Y-m-d H:i:s', $attributes['value'])
                     : null,
+                // String variable
                 default => $attributes['value'],
             }
         );
@@ -51,15 +55,31 @@ class Settings extends Model
      * Set setting value
      *
      * @param $value
+     * @return void
      */
     public function setValueAttribute($value): void
     {
-        $value = is_null($value) ? '' : $value;
         $this->attributes['data_type'] = gettype($value);
-        if ($this->attributes['data_type'] === 'object' && $value instanceof Carbon) {
+
+        if (is_null($value)) {
+            $this->attributes['data_type'] = 'string';
+            $value = '';
+        } else if (is_array($value)) { // Check value is array
+            $this->attributes['data_type'] = 'array';
+            $value = json_encode($value);
+        } else if ($value === 'true' || $value === 'false' || is_bool($value)) { // Check value is boolean
+            $this->attributes['data_type'] = 'boolean';
+            $value = is_string($value) ? $value === 'true' : $value;
+        } else if ($value instanceof Carbon) { // Check if value is instance of Carbon class
             $this->attributes['data_type'] = 'timestamp';
             $value = $value->format('Y-m-d H:i:s');
+        } else if (is_string($value)) {
+            // Check if value is a datetime string
+            $this->attributes['data_type'] = \DateTime::createFromFormat('Y-m-d H:i:s', $value) !== false
+                ? 'timestamp'
+                : 'string';
         }
-        $this->attributes['value'] = is_array($value) ? json_encode($value) : $value;
+        // Set setting value
+        $this->attributes['value'] = $value;
     }
 }

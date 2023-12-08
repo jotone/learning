@@ -2,6 +2,11 @@
 
 return [
     'course' => [
+        'statuses' => [
+            'active',
+            'coming_soon',
+            'draft'
+        ],
         'tracking' => [
             'enable_auto_approve',
             'enable_for_every_submission',
@@ -10,7 +15,7 @@ return [
     ],
     'user' => [
         'shirt_sizes' => [
-            'XS Small',
+            'XS-Small',
             'Small',
             'Medium',
             'Large',
@@ -21,7 +26,7 @@ return [
         'statuses' => [
             'active',
             'missing-details',
-            'kyc',
+            'inactive',
             'suspended'
         ]
     ]

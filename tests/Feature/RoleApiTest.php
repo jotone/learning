@@ -2,15 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Models\{Permission, Role};
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Support\Arr;
 use Tests\ApiTestCase;
-use Tests\Traits\ModelGeneratorsTrait;
 
 class RoleApiTest extends ApiTestCase
 {
-    use ModelGeneratorsTrait;
-
     const CONTROLLER = 'App\Http\Controllers\Dashboard\DashboardController';
 
     protected function setUp(): void
@@ -22,58 +20,44 @@ class RoleApiTest extends ApiTestCase
     }
 
     /**
-     * Test role list
+     * Test the role list functionality.
+     * This method is used to test the role list functionality by checking various conditions and assertions.
      *
      * @return void
      */
-    public function testRoleList(): void
+    public function testList(): void
     {
         $this->runListTest(function ($content, $models) {
             $fillable = ['id', ...$models[0]->getFillable()];
 
+            $db_table = $models[0]->getTable();
             $this
                 // Check total items equals database records
-                ->assertDatabaseCount($models[0]->getTable(), $content->meta->total)
+                ->assertDatabaseCount($db_table, $content->meta->total)
                 // Check response random item exists on the database
-                ->assertDatabaseHas(
-                    $models[0]->getTable(),
-                    array_intersect_key((array)Arr::random($content->data), array_flip($fillable))
-                )
+                ->assertDatabaseHas($db_table, array_intersect_key((array)Arr::random($content->data), array_flip($fillable)))
                 // Check per_page value equals response collection
                 ->assertCount($content->meta->per_page, $content->data);
         });
     }
 
     /**
-     * Test role show
+     * Test the role store validation.
+     * This method is used to test the validation of the role store functionality
+     * by sending different cases and checking the expected validation errors.
      *
      * @return void
      */
-    public function testRoleShow(): void
-    {
-        $this->runShowTest($this->getRole(), [
-            'id',
-            'name',
-            'slug',
-            'level'
-        ]);
-    }
-
-    /**
-     * Role store request validation test
-     *
-     * @return void
-     */
-    public function testRoleStoreValidation(): void
+    public function testStoreValidation(): void
     {
         $cases = [
             // Send empty request body
             [
                 'send' => [],
                 'assert' => [
-                    'name' => [lang('validation.required', 'name')],
-                    'slug' => [lang('validation.required', 'slug')],
-                    'level' => [lang('validation.required', 'level')]
+                    'name' => [$this->lang('validation.required', 'name')],
+                    'slug' => [$this->lang('validation.required', 'slug')],
+                    'level' => [$this->lang('validation.required', 'level')]
                 ]
             ],
             // Send request body with empty values
@@ -84,9 +68,9 @@ class RoleApiTest extends ApiTestCase
                     'level' => null,
                 ],
                 'assert' => [
-                    'name' => [lang('validation.required', 'name')],
-                    'slug' => [lang('validation.required', 'slug')],
-                    'level' => [lang('validation.required', 'level')]
+                    'name' => [$this->lang('validation.required', 'name')],
+                    'slug' => [$this->lang('validation.required', 'slug')],
+                    'level' => [$this->lang('validation.required', 'level')]
                 ]
             ],
             // Send fail level value
@@ -97,7 +81,7 @@ class RoleApiTest extends ApiTestCase
                     'level' => $this->faker->name,
                 ],
                 'assert' => [
-                    'level' => [lang('validation.numeric', 'level')],
+                    'level' => [$this->lang('validation.numeric', 'level')],
                 ]
             ],
             // Send fail outbound level value
@@ -108,7 +92,7 @@ class RoleApiTest extends ApiTestCase
                     'level' => 256,
                 ],
                 'assert' => [
-                    'level' => [lang('validation.max.numeric', 'level', 255)],
+                    'level' => [$this->lang('validation.max.numeric', 'level', 255)],
                 ]
             ]
         ];
@@ -122,16 +106,15 @@ class RoleApiTest extends ApiTestCase
     }
 
     /**
-     * Test role store
+     * Test the role store method.
      *
      * @return void
      */
-    public function testRoleStore(): void
+    public function testStore(): void
     {
         $model = self::$class::factory()->make();
 
-        $response = $this
-            ->actingAs(self::$actor)
+        $response = $this->actingAs(self::$actor)
             ->postJson(route(self::$route_prefix . 'store'), [
                 'name' => $model->name,
                 'slug' => $model->slug,
@@ -160,14 +143,9 @@ class RoleApiTest extends ApiTestCase
         ]);
     }
 
-    /**
-     * Test Role update
-     *
-     * @return void
-     */
-    public function testRoleUpdate(): void
+    public function testUpdate(): void
     {
-        $model = $this->getRole();
+        $model = $this->getModel();
 
         $new = self::$class::factory()->make();
 
@@ -203,15 +181,21 @@ class RoleApiTest extends ApiTestCase
         ])->allowed_methods);
     }
 
-    /**
-     * Test Role remove
-     *
-     * @return void
-     */
-    public function testRoleDestroy(): void
+    public function testDestroy(): void
     {
-        $this->runDeleteTest($this->getRole(), fn($model) => $this->assertDatabaseMissing('permissions', [
-            'role_id' => $model->id
-        ]));
+        $this->runBulkDeleteTest('roles', Role::where('level', '>', 63)
+            ->where('level', '<', 255)
+            ->inRandomOrder()
+            ->take(5)
+            ->pluck('id')
+            ->toArray()
+        );
+    }
+
+    protected function getModel(): Role
+    {
+        return Role::where('level', '>', 127)->where('level', '<', 255)->count()
+            ? Role::where('level', '>', 127)->where('level', '<', 255)->first()
+            : Role::factory()->create();
     }
 }

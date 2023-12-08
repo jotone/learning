@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\LoginRequest;
 use App\Models\Settings;
 use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Support\Facades\{Auth, Session};
@@ -13,19 +13,19 @@ use Illuminate\View\View;
 class AuthController extends Controller
 {
     /**
-     * Display the login view.
+     * Render the login view with the necessary data.
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function index(): View
     {
         return view('auth.login', [
-            'settings' => Settings::whereIn('key', ['site_title', 'header_code', 'footer_code', 'logo_img'])
-                ->get()
-                ->keyBy('key')
+            'settings' => Settings::whereIn('key', ['footer_code', 'header_code', 'site_title'])->get()->keyBy('key')
         ]);
     }
 
     /**
-     * Authorize user
+     * Logs in a user with the given login request.
      *
      * @param LoginRequest $request
      * @return RedirectResponse
@@ -33,17 +33,21 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request): RedirectResponse
     {
-        // Run authentication
-        $request->authenticate();
+        try {
+            // Run authentication
+            $request->authenticate();
 
-        // Regenerate session
-        $request->session()->regenerate();
+            // Regenerate session
+            $request->session()->regenerate();
 
-        // Get authenticated user data
-        $user = Auth::user();
+            // Get authenticated user data
+            $user = Auth::user();
 
-        // Set api token to the current session
-        Session::put('api-token', $user->createToken('token-name')->plainTextToken);
+            // Set api token to the current session
+            Session::put('api-token', $user->createToken('token-name')->plainTextToken);
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
 
         // Check if user has access to the dashboard
         return redirect()->route($user->role->level >= 255 ? 'home.index' : 'dashboard.index');
@@ -58,7 +62,7 @@ class AuthController extends Controller
     public function logout(Request $request): RedirectResponse
     {
         // Remove user tokens
-        Auth::user()->tokens()->delete();
+        Auth::check() && Auth::user()->tokens()->delete();
 
         // Logout user session
         Auth::guard('web')->logout();

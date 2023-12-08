@@ -21,6 +21,24 @@
       "value": ""
     }
   ],
+  "course": [
+    {
+      "key": "course_img_processing",
+      "value": {
+        "thumb_small": [100, 80],
+        "thumb_large": [400, 320],
+        "resize": [800, 600]
+      }
+    },
+    {
+      "key": "week_img_processing",
+      "value": {
+        "thumb_small": [100, 80],
+        "thumb_large": [200, 160],
+        "resize": [600, 480]
+      }
+    }
+  ],
   "custom-scripts": [
     {
       "key": "footer_code",
@@ -64,15 +82,19 @@
     },
     {
       "key": "courses_max_count",
-      "value": 1
+      "value": -1
     },
     {
       "key": "students_max_count",
-      "value": 50
+      "value": -1
     },
     {
-      "key": "main_language",
-      "value": "en"
+      "key": "cats_inst_courses",
+      "value": 0
+    },
+    {
+      "key": "vimeo_project_id",
+      "value": null
     }
   ],
   "login-page": [
@@ -102,7 +124,7 @@
         },
         "hover": {
           "background-color": "#FFFFFF",
-          "border-color": "#FFFFFF",
+          "border-color": "#0061F6",
           "color": "#0061F6"
         }
       }
@@ -168,19 +190,7 @@
   ],
   "site-info": [
     {
-      "key": "site_custom_url",
-      "value": ""
-    },
-    {
-      "key": "site_url",
-      "value": "https://dev.learningsoftwarecy.com"
-    },
-    {
-      "key": "site_title",
-      "value": "Dev"
-    },
-    {
-      "key": "site_timezone",
+      "key": "default_timezone",
       "value": "+00:00"
     },
     {
@@ -190,6 +200,30 @@
     {
       "key": "logo_img",
       "value": "/images/logo-dashboard.png"
+    },
+    {
+      "key": "logo_img_admin",
+      "value": "/images/logo-dashboard-white.png"
+    },
+    {
+      "key": "logo_img_mobile",
+      "value": "/images/logo-dashboard-mobile.png"
+    },
+    {
+      "key": "main_language",
+      "value": "en"
+    },
+    {
+      "key": "site_custom_url",
+      "value": ""
+    },
+    {
+      "key": "site_title",
+      "value": "Dev"
+    },
+    {
+      "key": "site_url",
+      "value": "https://olaravedmz.mycopemember.com/"
     }
   ],
   "smtp-settings": [

@@ -1,6 +1,3 @@
-cmd:
-	@vendor/bin/sail artisan "${run}"
-
 down:
 	@vendor/bin/sail down
 
@@ -12,11 +9,14 @@ migrate:
 	@vendor/bin/sail artisan migrate
 
 reset:
-	@vendor/bin/sail artisan app:reset
+	@vendor/bin/sail artisan app:reinstall
 	@npm run prod
 
 route:
 	@vendor/bin/sail artisan route:list
+
+run:
+	@vendor/bin/sail artisan "${cmd}"
 
 test:
 	@vendor/bin/sail artisan test

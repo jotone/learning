@@ -10,7 +10,9 @@ class RoleResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @return array<string, mixed>
+     * @param Request $request
+     * @return array
+     * @throws \Exception
      */
     public function toArray(Request $request): array
     {
@@ -18,7 +20,7 @@ class RoleResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'level' => $this->level,
-            'created_at' => $this->created_at->format('j/M/Y H:i')
+            'created_at' => toCarbon($this->created_at)->format('j/M/Y H:i')
         ];
     }
 }

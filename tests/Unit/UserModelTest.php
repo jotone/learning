@@ -2,112 +2,87 @@
 
 namespace Tests\Unit;
 
-use App\Models\{LoginHistory, User, UserInfo};
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
+use App\Models\{Course, Role, User};
 use Tests\ModelTestCase;
-use Tests\Traits\ModelGeneratorsTrait;
 
 class UserModelTest extends ModelTestCase
 {
-    use ModelGeneratorsTrait;
-
     protected function setUp(): void
     {
         parent::setUp();
         self::$class = User::class;
     }
 
-    /**
-     * User creating test
-     *
-     * @return void
-     */
-    public function testUserCreate(): void
+    public function testCreate(): void
     {
-        $this->modelCreatingTest();
+        $this->assertModelExists(self::$class::factory()->create());
     }
 
-    /**
-     * User updating test
-     *
-     * @return void
-     */
-    public function testUserModify(): void
+    public function testFields(): void
     {
-        $model = self::$class::factory()->make();
+        $email = mb_strtoupper(uniqid() . $this->faker->safeEmail);
+        $first_name = mb_strtolower($this->faker->firstName);
+        $last_name = mb_strtolower($this->faker->lastName);
+        $user_config = config('enums.user');
 
-        $this->modelModifyingTest(
-            values: [
-                'first_name' => $model->first_name,
-                'last_name' => $model->last_name,
-                'email' => $model->email,
-                'password' => '123456'
-            ],
-            optional: ['password'],
-            callback: function ($model) {
-                $this->assertTrue(Hash::check('123456', $model->password));
-            }
-        );
+        $rand_status = mt_rand(0, count($user_config['statuses']) - 1);
+        $rand_size = mt_rand(0, count($user_config['shirt_sizes']) - 1);
+        $model = self::$class::factory()->create([
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'status' => mb_strtoupper($user_config['statuses'][$rand_status]),
+            'shirt_size' => mb_strtoupper($user_config['shirt_sizes'][$rand_size])
+        ]);
+
+        $this->assertTrue($email !== $model->email);
+        $this->assertTrue(mb_strtolower($email) === $model->email);
+        $this->assertTrue(ucfirst($first_name) === $model->first_name);
+        $this->assertTrue(ucfirst($last_name) === $model->last_name);
+        $this->assertTrue($model->status === $user_config['statuses'][$rand_status]);
+        $this->assertTrue($model->shirt_size === $user_config['shirt_sizes'][$rand_size]);
     }
 
-    public function testUserToLoginHistoryRelation()
+    public function testModify(): void
     {
-        $model = $this->generateUser();
-
-        $history = LoginHistory::factory()->create(['user_id' => $model->id]);
-
-        $this->assertTrue(in_array($model->id, $model->loginHistory()->pluck('user_id')->toArray()));
-        $this->assertTrue(in_array($history->id, $model->loginHistory()->pluck('login_history.id')->toArray()));
+        $this->modelModificationTest([
+            'first_name',
+            'last_name',
+            'email',
+            'timezone',
+            'country',
+            'city',
+            'region',
+            'address',
+            'ext_addr',
+            'zip',
+            'phone',
+        ]);
     }
 
-    /**
-     * Test binding role to user
-     *
-     * @return void
-     */
-    public function testUserToRoleRelation(): void
+    public function testRelationToRole(): void
     {
-        $role = $this->getRole();
-        $model = User::factory()->create(['role_id' => $role->id]);
+        $role = Role::factory()->create();
+        $user = self::$class::factory()->create(['role_id' => $role->id]);
 
-        $this->assertTrue($model->role->slug == $role->slug);
+        $this->assertTrue($user->role->slug == $role->slug);
     }
 
-    /**
-     * Test binding info to user
-     *
-     * @return void
-     */
-    public function testUserToUserInfoRelation(): void
+    public function testRelationToCourse()
     {
-        $model = $this->generateUser();
-        $info = UserInfo::factory()->create(['user_id' => $model->id]);
+        $course = Course::factory()->create();
+        $user = self::$class::factory()->create();
 
-        $this->assertTrue($model->info->user_id == $model->id);
-        $this->assertTrue($info->user_id == $model->id);
+        $user->courses()->attach($course);
+
+        $this->assertDatabaseHas('user_courses', [
+            'user_id' => $user->id,
+            'course_id' => $course->id
+        ]);
     }
 
-    /**
-     * User removing test
-     *
-     * @return void
-     */
-    public function testUserRemove(): void
+    public function testRemove(): void
     {
-        $this->modelRemovingTest(function ($model) {
-            $this->assertDatabaseMissing('login_history', ['user_id' => $model->id]);
-            $this->assertDatabaseMissing('user_info', ['user_id' => $model->id]);
-        });
-    }
-
-    /**
-     * @return Model
-     */
-    protected static function getModel(): Model
-    {
-        return User::whereHas('role', fn($q) => $q->where('level', '>', 127))->count()
-            ? User::whereHas('role', fn($q) => $q->where('level', '>', 127))->first()
-            : User::factory()->create();
+        $this->modelRemovingTest(fn($model) => $this->assertDatabaseMissing('user_courses', ['user_id' => $model->id]));
     }
 }

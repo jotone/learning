@@ -22,6 +22,7 @@ class DashboardPermissions
      */
     public function handle(Request $request, Closure $next): Response
     {
+
         // Check testing middleware
         if (config('app.env') === 'testing') {
             return $next($request);
@@ -33,9 +34,11 @@ class DashboardPermissions
         abort_if(!$token_entity, 403);
         // Get user from token entity
         $user = $token_entity->tokenable_type::with('role')->find($token_entity->tokenable_id);
+
         abort_if(!$user, 403);
         // Prepare user permissions
         $permissions = $this->userPermissions($user->role->permissions);
+
         // Check if user permission exists for current request action
         if (
             isset($permissions[$request->route()->getControllerClass()])
@@ -43,6 +46,9 @@ class DashboardPermissions
         ) {
             return $next($request);
         }
-        abort(403);
+
+        return response()->json([
+            'message' => 'Forbidden'
+        ], 403);
     }
 }

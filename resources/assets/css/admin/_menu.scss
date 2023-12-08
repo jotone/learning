@@ -1,0 +1,305 @@
+.admin-menu {
+  margin: 30px 0;
+
+  > li {
+    background-color: #09174a;
+    border-radius: 15px;
+    margin: 20px 0;
+    padding: 25px;
+
+    &.actor-menu-wrap {
+      padding: 0;
+
+      ul {
+        padding-bottom: 1px;
+
+        li {
+          margin: 15px 0;
+
+          &::after {content: none}
+
+          a {
+            margin-left: 15px;
+            padding: 5px 5px 5px 55px;
+          }
+
+          .icon {left: 10px}
+        }
+      }
+    }
+  }
+
+  ul li {
+    display: flex;
+    height: 40px;
+    position: relative;
+
+    &.user-info-wrap {
+      border-bottom: 1px solid #153267;
+      height: auto;
+
+      .avatar-wrap {padding: 20px}
+
+      .user-credentials {
+        align-items: flex-start;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        left: 85px;
+        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 70%;
+
+        .user-name {font-size: 16px; font-weight: 600; line-height: 24px}
+
+        .user-email {font-size: 14px; line-height: 20px}
+      }
+    }
+
+    &::after {
+      background-color: white;
+      content: "";
+      cursor: pointer;
+      display: none;
+      height: 24px;
+      mask-image: url("../../images/icons/arrow.svg");
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      width: 24px;
+    }
+
+    a {
+      color: #ccdeff;
+      display: block;
+      font-size: 20px;
+      line-height: 30px;
+      padding: 5px 5px 5px 55px;
+      position: relative;
+      text-decoration: none;
+    }
+
+    &:hover, &.active {
+      a {color: white}
+
+      .icon {
+        background-color: white;
+
+        &.book-icon {
+          mask-image: url("../../images/icons/book-solid.svg");
+        }
+
+        &.brush-icon {
+          mask-image: url("../../images/icons/brush-solid.svg");
+        }
+
+        &.cog-icon {
+          mask-image: url("../../images/icons/cog-solid.svg");
+        }
+
+        &.comment-icon {
+          mask-image: url("../../images/icons/comment-solid.svg");
+        }
+
+        &.dashboard-icon {
+          mask-image: url("../../images/icons/dashboard-solid.svg");
+        }
+
+        &.events-icon {
+          mask-image: url("../../images/icons/events-solid.svg");
+        }
+
+        &.info-icon {
+          mask-image: url("../../images/icons/info-solid.svg");
+        }
+
+        &.hand-icon {
+          mask-image: url("../../images/icons/hand-solid.svg");
+        }
+
+        &.logout-icon {
+          mask-image: url("../../images/icons/logout-solid.svg");
+        }
+
+        &.profile-icon {
+          mask-image: url("../../images/icons/profile-solid.svg");
+        }
+
+        &.rocket-icon {
+          mask-image: url("../../images/icons/rocket-solid.svg");
+        }
+
+        &.star-icon {
+          mask-image: url("../../images/icons/star-solid.svg");
+        }
+
+        &.user-icon {
+          mask-image: url("../../images/icons/user-solid.svg");
+        }
+
+        &.users-icon {
+          mask-image: url("../../images/icons/users-solid.svg");
+        }
+      }
+
+      &::after {display: block}
+    }
+  }
+
+  .icon {
+    background-color: #ccdeff;
+    height: 24px;
+    left: 0;
+    position: absolute;
+    top: 7px;
+    width: 24px;
+
+    &.book-icon {
+      mask-image: url("../../images/icons/book.svg");
+    }
+
+    &.brush-icon {
+      mask-image: url("../../images/icons/brush.svg");
+    }
+
+    &.cog-icon {
+      mask-image: url("../../images/icons/cog.svg");
+    }
+
+    &.comment-icon {
+      mask-image: url("../../images/icons/comment.svg");
+    }
+
+    &.dashboard-icon {
+      mask-image: url("../../images/icons/dashboard.svg");
+    }
+
+    &.events-icon {
+      mask-image: url("../../images/icons/events.svg");
+    }
+
+    &.info-icon {
+      mask-image: url("../../images/icons/info.svg");
+    }
+
+    &.hand-icon {
+      mask-image: url("../../images/icons/hand.svg");
+    }
+
+    &.logout-icon {
+      mask-image: url("../../images/icons/logout.svg");
+    }
+
+    &.profile-icon {
+      mask-image: url("../../images/icons/profile.svg");
+    }
+
+    &.rocket-icon {
+      mask-image: url("../../images/icons/rocket.svg");
+    }
+
+    &.star-icon {
+      mask-image: url("../../images/icons/star.svg");
+    }
+
+    &.user-icon {
+      mask-image: url("../../images/icons/user.svg");
+    }
+
+    &.users-icon {
+      mask-image: url("../../images/icons/users.svg");
+    }
+  }
+}
+
+body::after {
+  content:
+    url("../../images/icons/book.svg")
+    url("../../images/icons/book-solid.svg")
+    url("../../images/icons/brush.svg")
+    url("../../images/icons/brush-solid.svg")
+    url("../../images/icons/cog.svg")
+    url("../../images/icons/cog-solid.svg")
+    url("../../images/icons/comment.svg")
+    url("../../images/icons/comment-solid.svg")
+    url("../../images/icons/dashboard.svg")
+    url("../../images/icons/dashboard-solid.svg")
+    url("../../images/icons/events.svg")
+    url("../../images/icons/events-solid.svg")
+    url("../../images/icons/info.svg")
+    url("../../images/icons/info-solid.svg")
+    url("../../images/icons/hand.svg")
+    url("../../images/icons/hand-solid.svg")
+    url("../../images/icons/logout.svg")
+    url("../../images/icons/logout-solid.svg")
+    url("../../images/icons/profile.svg")
+    url("../../images/icons/profile-solid.svg")
+    url("../../images/icons/rocket.svg")
+    url("../../images/icons/rocket-solid.svg")
+    url("../../images/icons/star.svg")
+    url("../../images/icons/star-solid.svg")
+    url("../../images/icons/user.svg")
+    url("../../images/icons/user-solid.svg")
+    url("../../images/icons/users.svg")
+    url("../../images/icons/users-solid.svg");
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 0;
+  z-index: -1;
+}
+
+@media screen and (max-width: 1200px) {
+  .admin-menu {
+    background-color: #000e42;
+    margin: 0;
+    padding: 0 20px;
+    position: absolute;
+    top: 65px;
+    width: 100%;
+
+    > li {padding: 20px}
+
+    ul li {
+      height: 35px;
+
+      a {
+        font-size: 18px;
+        line-height: 24px;
+      }
+    }
+
+    .icon {
+      height: 22px;
+      width: 22px;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .admin-menu {
+    margin: 10px 0;
+    padding: 0 10px;
+    top: 55px;
+
+    > li {
+      padding: 10px;
+
+      .actor-menu-wrap ul {
+        padding-bottom: 5px;
+
+        li {margin: 0}
+
+        li.user-info-wrap {
+          margin-bottom: 10px;
+
+          .avatar-wrap {padding: 15px}
+        }
+      }
+    }
+  }
+}

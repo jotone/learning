@@ -44,7 +44,7 @@ class CourseProduct extends Model
      * @param $query
      * @return mixed
      */
-    public function scopeCopeCart($query)
+    public function scopeCopeCart($query): mixed
     {
         return $query->where('driver', 'copecart');
     }
@@ -54,7 +54,7 @@ class CourseProduct extends Model
      * @param $query
      * @return mixed
      */
-    public function scopeDigistore24($query)
+    public function scopeDigistore24($query): mixed
     {
         return $query->where('driver', 'digistore24');
     }

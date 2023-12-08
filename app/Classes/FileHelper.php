@@ -10,6 +10,7 @@ class FileHelper
 {
     /**
      * Create folder if not exists
+     *
      * @param string $folder
      * @return string
      */
@@ -22,7 +23,8 @@ class FileHelper
     }
 
     /**
-     * OSave $file to $path directory
+     * Save $file to $path directory
+     *
      * @param UploadedFile $file
      * @param string $path
      * @return string
@@ -39,27 +41,20 @@ class FileHelper
             default => $file_info['extension'],
         };
 
-        $filename = sprintf('%s.%s', generateUrl($file_info['filename']), $ext);
+        $full_path = Str::finish($path, '/') . $filename;
+        if (file_exists($full_path)) {
+            $filename = sprintf('%s-%s.%s', $file_info['filename'], uniqid(), $ext);
+            $full_path = Str::finish($path, '/') . $filename;
+        }
+
         $file->move($path, $filename);
 
-        return Str::finish(substr($path, strlen(public_path())), '/') . $filename;
-    }
-
-    /**
-     * Remove file
-     * @param string $file_path
-     * @return void
-     */
-    public static function removeFile(string $file_path): void
-    {
-        $path = public_path($file_path);
-        if (file_exists($path) && is_file($path)) {
-            unlink($path);
-        }
+        return substr($full_path, strlen(public_path()));
     }
 
     /**
      * Recursive remove folder
+     *
      * @param string $path
      */
     public static function recursiveRemove(string $path): void
