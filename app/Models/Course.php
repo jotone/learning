@@ -100,9 +100,9 @@ class Course extends Model
     {
         return Attribute::make(
             get: fn(mixed $value) => $this->getThumbs($value),
-            set: fn(mixed $value) => $value instanceof UploadedFile && $value->isWritable()
+            set: fn(mixed $value, array $attributes) => $value instanceof UploadedFile && $value->isWritable()
                 ? $this->saveImage($value, 'courses', 'course_img_processing')
-                : $this->attributes['img_url']
+                : (is_string($value) ? $value : $attributes['img_url'] ?? null)
         );
     }
 
