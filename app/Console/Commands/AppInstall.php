@@ -219,11 +219,16 @@ class AppInstall extends Command
     {
         $super_user_roles = Role::where('level', '0')->get();
 
-        $this->runWithTimer('Binding permissions to roles', function () use ($super_user_roles) {
-            $permission_list = $this->permissionList([
-                app_path('Http/Controllers/Api/'),
-                app_path('Http/Controllers/Dashboard/')
-            ]);
+        $folders = [];
+        if (is_dir(app_path('Http/Controllers/Api/'))) {
+            $folders[] = app_path('Http/Controllers/Api/');
+        }
+        if (is_dir(app_path('Http/Controllers/Dashboard/'))) {
+            $folders[] = app_path('Http/Controllers/Dashboard/');
+        }
+
+        $this->runWithTimer('Binding permissions to roles', function () use ($super_user_roles, $folders) {
+            $permission_list = $this->permissionList($folders);
 
             foreach ($super_user_roles as $role) {
                 foreach ($permission_list as $permission) {
