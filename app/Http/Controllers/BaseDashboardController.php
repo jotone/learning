@@ -13,11 +13,12 @@ class BaseDashboardController extends Controller
      * Render the specified view
      *
      * @param string $view
+     * @param array $shared
      * @return Response
      */
-    protected function view(string $view): Response
+    protected function view(string $view, array $shared = []): Response
     {
-        return Inertia::render($view, [
+        return Inertia::render($view, array_merge([
             'menu' => $this->buildSideMenu(),
             'routes' => [
                 'dashboard' => [
@@ -35,7 +36,7 @@ class BaseDashboardController extends Controller
                 'package_type',
                 'site_title'
             ])->pluck('value', 'key')->toArray()
-        ]);
+        ], $shared));
     }
 
     /**

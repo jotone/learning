@@ -22,7 +22,6 @@ class DashboardPermissions
      */
     public function handle(Request $request, Closure $next): Response
     {
-
         // Check testing middleware
         if (config('app.env') === 'testing') {
             return $next($request);

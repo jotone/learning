@@ -72,7 +72,11 @@ npm i && npm run prod
 - `make test` - run tests
 
 - Roles
-  - ~~Api~~
+  - Api
+    - ~~Query~~
+    - Create
+    - Update
+    - Delete
   - Page
     - List
       - DataTable
