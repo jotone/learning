@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::group(['middleware' => ['auth:sanctum', 'admin']], function () {
-    // Roles API
-    Route::delete('/roles', [RoleController::class, 'delete'])->name('roles.delete');
-    Route::apiResource('/roles', RoleController::class)->except(['show', 'destroy']);
-});
+//
+//Route::group(['middleware' => ['auth:sanctum', 'admin']], function () {
+//});

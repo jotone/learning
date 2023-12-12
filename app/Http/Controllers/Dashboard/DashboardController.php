@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BaseDashboardController;
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
 use Inertia\Response;
 
 class DashboardController extends BaseDashboardController
@@ -16,6 +17,8 @@ class DashboardController extends BaseDashboardController
      */
     public function index(): Response
     {
-        return $this->view('Dashboard/Index');
+        return $this->view('Dashboard/Index', [
+            'session' => Session::get('api-token')
+        ]);
     }
 }

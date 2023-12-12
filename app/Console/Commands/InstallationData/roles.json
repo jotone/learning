@@ -2,52 +2,22 @@
   "student": {
     "name": "Student",
     "level": 255,
-    "permissions": {
-      "App\\Http\\Controllers\\Api\\UserController": ["update"]
-    }
+    "permissions": {}
   },
   "coach": {
     "name": "Coach",
     "level": 127,
     "permissions": {
-      "App\\Http\\Controllers\\Dashboard\\CoursesController": ["index", "lesson", "access", "curriculum", "settings", "comments", "worksheets", "reports", "certificates"],
       "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"],
-      "App\\Http\\Controllers\\Dashboard\\UsersController": ["index", "show", "create", "courses", "communities", "performance", "info", "access", "transactions"],
-      "App\\Http\\Controllers\\Api\\CategoriesController": ["index", "store", "sort", "update", "destroy"],
-      "App\\Http\\Controllers\\Api\\CourseController": ["index", "students", "export", "store", "sort", "update"],
-      "App\\Http\\Controllers\\Api\\ContentBuilderController": ["storeAudio", "storeComments", "storeDivider", "storeFile", "storeImage", "storeQuestion", "storeResource", "storeText", "storeVideo", "destroy"],
-      "App\\Http\\Controllers\\Api\\CurriculumController": ["sort"],
-      "App\\Http\\Controllers\\Api\\FeedbackController": ["store", "update", "destroy"],
-      "App\\Http\\Controllers\\Api\\LessonController": ["store", "update", "destroy"],
-      "App\\Http\\Controllers\\Api\\PageColumnController": ["update"],
-      "App\\Http\\Controllers\\Api\\QuizController": ["store", "update", "destroy"],
-      "App\\Http\\Controllers\\Api\\SettingsController": ["store", "update"],
-      "App\\Http\\Controllers\\Api\\TranscriptionController": ["show", "store", "update"],
-      "App\\Http\\Controllers\\Api\\UsersController": ["index", "export", "store", "update", "delete"],
-      "App\\Http\\Controllers\\Api\\UserImportController": ["index", "show", "start", "store", "update", "destroy"],
-      "App\\Http\\Controllers\\Api\\WeeksController": ["index", "store", "sort", "update", "destroy"]
+      "App\\Http\\Controllers\\Dashboard\\RoleController": ["index"]
     }
   },
   "admin": {
     "name": "Administrator",
     "level": 63,
     "permissions": {
-      "App\\Http\\Controllers\\Dashboard\\CoursesController": ["index", "lesson", "access", "curriculum", "settings", "comments", "worksheets", "reports", "certificates","quiz"],
       "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"],
-      "App\\Http\\Controllers\\Dashboard\\UsersController": ["index", "show", "create", "courses", "communities", "performance", "info", "access", "transactions"],
-      "App\\Http\\Controllers\\Api\\CategoriesController": ["index", "store", "sort", "update", "destroy"],
-      "App\\Http\\Controllers\\Api\\ContentBuilderController": ["storeAudio", "storeComments", "storeDivider", "storeFile", "storeImage", "storeQuestion", "storeResource", "storeText", "storeVideo", "destroy"],
-      "App\\Http\\Controllers\\Api\\CourseController": ["index", "students", "export", "store", "sort", "update", "delete", "destroy"],
-      "App\\Http\\Controllers\\Api\\CurriculumController": ["sort"],
-      "App\\Http\\Controllers\\Api\\FeedbackController": ["store", "update", "destroy"],
-      "App\\Http\\Controllers\\Api\\LessonController": ["store", "update", "destroy"],
-      "App\\Http\\Controllers\\Api\\PageColumnController": ["update"],
-      "App\\Http\\Controllers\\Api\\QuizController": ["store", "update", "destroy"],
-      "App\\Http\\Controllers\\Api\\SettingsController": ["store", "update"],
-      "App\\Http\\Controllers\\Api\\TranscriptionController": ["show", "store", "update"],
-      "App\\Http\\Controllers\\Api\\UsersController": ["index", "show", "export", "store", "update", "delete"],
-      "App\\Http\\Controllers\\Api\\UserImportController": ["index", "show", "start", "store", "update", "destroy"],
-      "App\\Http\\Controllers\\Api\\WeeksController": ["index", "store", "sort", "update", "destroy"]
+      "App\\Http\\Controllers\\Dashboard\\RoleController": ["index"]
     }
   },
   "superuser": {

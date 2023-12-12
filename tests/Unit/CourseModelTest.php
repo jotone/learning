@@ -38,6 +38,8 @@ class CourseModelTest extends ModelTestCase
 
     public function testRemove(): void
     {
-        $this->modelRemovingTest(fn($model) => $this->assertDatabaseMissing('user_courses', ['course_id' => $model->id]));
+        $this->modelRemovingTest(fn($model) => $this->assertDatabaseMissing('user_courses', [
+            'course_id' => $model->id
+        ]));
     }
 }

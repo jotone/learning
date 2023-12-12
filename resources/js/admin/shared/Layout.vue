@@ -62,4 +62,6 @@ import Avatar from "../components/User/Avatar.vue";
 import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
 
 const page = usePage()
+
+console.log(page.props)
 </script>
