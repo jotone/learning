@@ -74,9 +74,9 @@ npm i && npm run prod
 - Roles
   - Api
     - ~~Query~~
-    - Create
+    - ~~Store~~
     - Update
-    - Delete
+    - Destroy
   - Page
     - List
       - DataTable

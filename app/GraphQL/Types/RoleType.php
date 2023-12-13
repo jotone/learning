@@ -29,7 +29,6 @@ class RoleType extends GraphQLType
             ],
             'slug' => [
                 'type' => Type::string(),
-                'description' => 'True, if the queried user is the current user',
                 'resolve' => fn($root, array $args) => generateUrl(empty($root->slug) ? $args['name'] : $root->slug)
             ],
             'level' => [
