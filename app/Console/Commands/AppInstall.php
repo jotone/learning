@@ -213,7 +213,7 @@ class AppInstall extends Command
      * Install super user permissions
      *
      * @return Collection
-     * @return Collection
+     * @throws \Exception
      */
     protected function installSuperUser(): Collection
     {
