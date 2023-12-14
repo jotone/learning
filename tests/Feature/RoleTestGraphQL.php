@@ -121,7 +121,7 @@ class RoleTestGraphQL extends TestCase
 
     public function testUpdate()
     {
-        $model = Role::factory()->create();
+        $role = Role::factory()->create();
 
         $new_data = Role::factory()->make();
 
@@ -130,7 +130,7 @@ class RoleTestGraphQL extends TestCase
             ->post(route('graphql.role'), [
                 'query' => sprintf(
                     'mutation {update (id: %s, name: "%s", slug: "%s", level: %s) {id, name, slug, level}}',
-                    $model->id,
+                    $role->id,
                     $new_data->name,
                     $new_data->slug,
                     $new_data->level
@@ -150,16 +150,31 @@ class RoleTestGraphQL extends TestCase
 
         $this
             ->assertDatabaseHas('roles', [
-                'id' => $model->id,
+                'id' => $role->id,
                 'name' => $new_data->name,
                 'slug' => $new_data->slug,
                 'level' => $new_data->level,
             ])
             ->assertDatabaseMissing('roles', [
-                'id' => $model->id,
-                'name' => $model->name,
-                'slug' => $model->slug,
-                'level' => $model->level,
+                'id' => $role->id,
+                'name' => $role->name,
+                'slug' => $role->slug,
+                'level' => $role->level,
             ]);
+    }
+
+    public function testDestroy(): void
+    {
+        $role = Role::factory()->create();
+
+        $this
+            ->actingAs($this->actor)
+            ->post(route('graphql.role'), [
+                'query' => 'mutation {destroy (id: ' . $role->id . ') {id}}'
+            ])
+            ->assertOk()
+            ->assertExactJson(['data' => ['destroy'=> null]]);
+
+        $this->assertDatabaseMissing('roles', ['id' => $role->id]);
     }
 }

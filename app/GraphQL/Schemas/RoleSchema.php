@@ -3,7 +3,7 @@
 namespace App\GraphQL\Schemas;
 
 use App\GraphQL\Types\RoleType;
-use App\Http\Controllers\GraphQL\Role\{MutationStore, MutationUpdate, RolesQuery};
+use App\Http\Controllers\GraphQL\Role\{MutationDestroy, MutationStore, MutationUpdate, Query};
 use Rebing\GraphQL\Support\Contracts\ConfigConvertible;
 
 class RoleSchema implements ConfigConvertible
@@ -12,11 +12,12 @@ class RoleSchema implements ConfigConvertible
     {
         return [
             'query' => [
-                RolesQuery::class
+                Query::class
             ],
             'mutation' => [
                 'create' => MutationStore::class,
                 'update' => MutationUpdate::class,
+                'destroy' => MutationDestroy::class
             ],
             'types' => [
                 RoleType::class
