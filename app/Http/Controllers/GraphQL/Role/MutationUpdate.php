@@ -74,7 +74,7 @@ class MutationUpdate extends RoleMutation
                     // Remove current role permissions
                     $model->permissions()->each(fn($entity) => $entity->delete());
                     // Set new permissions
-                    $this->savePermissions($model, $args['permissions'] ?? []);
+                    $this->savePermissions($model, json_decode(base64_decode($args['permissions']), true));
                 } else {
                     $model->{$key} = $val;
                 }

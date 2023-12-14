@@ -9,7 +9,7 @@ use GraphQL\Type\Definition\{ResolveInfo, Type};
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
-class RolesQuery extends GraphQlPaginatedQuery
+class Query extends GraphQlPaginatedQuery
 {
     protected $attributes = [
         'name' => 'roles',

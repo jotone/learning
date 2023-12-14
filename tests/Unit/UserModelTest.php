@@ -60,14 +60,6 @@ class UserModelTest extends ModelTestCase
         ]);
     }
 
-    public function testRelationToRole(): void
-    {
-        $role = Role::factory()->create();
-        $user = self::$class::factory()->create(['role_id' => $role->id]);
-
-        $this->assertTrue($user->role->slug == $role->slug);
-    }
-
     public function testRelationToCourse()
     {
         $course = Course::factory()->create();
@@ -79,6 +71,14 @@ class UserModelTest extends ModelTestCase
             'user_id' => $user->id,
             'course_id' => $course->id
         ]);
+    }
+
+    public function testRelationToRole(): void
+    {
+        $role = Role::factory()->create();
+        $user = self::$class::factory()->create(['role_id' => $role->id]);
+
+        $this->assertTrue($user->role->slug == $role->slug);
     }
 
     public function testRemove(): void
