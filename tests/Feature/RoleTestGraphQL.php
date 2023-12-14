@@ -2,8 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Role;
-use App\Models\User;
+use App\Models\{Role, User};
 use Illuminate\Contracts\Auth\Authenticatable;
 use Tests\TestCase;
 
@@ -68,7 +67,8 @@ class RoleTestGraphQL extends TestCase
 
     public function testPagination(): void
     {
-        $response = $this->actingAs($this->actor)
+        $response = $this
+            ->actingAs($this->actor)
             ->post(route('graphql.role'), [
                 'query' => sprintf(
                     '{roles(per_page:1,order_by:"id",order_dir:"asc",page:%s) {%s {id name slug level}}}',
@@ -83,11 +83,12 @@ class RoleTestGraphQL extends TestCase
         $this->assertTrue($collection->data[0]->id === Role::orderBy('id', 'desc')->value('id'));
     }
 
-    public function testStore()
+    public function testStore(): void
     {
         $role = Role::factory()->make();
 
-        $response = $this->actingAs($this->actor)
+        $this
+            ->actingAs($this->actor)
             ->post(route('graphql.role'), [
                 'query' => sprintf(
                     'mutation {create (name: "%s", slug: "%s", level: %s, permissions: "%s") {id, name, slug, level}}',
@@ -116,5 +117,49 @@ class RoleTestGraphQL extends TestCase
             'slug' => $role->slug,
             'level' => $role->level,
         ]);
+    }
+
+    public function testUpdate()
+    {
+        $model = Role::factory()->create();
+
+        $new_data = Role::factory()->make();
+
+        $this
+            ->actingAs($this->actor)
+            ->post(route('graphql.role'), [
+                'query' => sprintf(
+                    'mutation {update (id: %s, name: "%s", slug: "%s", level: %s) {id, name, slug, level}}',
+                    $model->id,
+                    $new_data->name,
+                    $new_data->slug,
+                    $new_data->level
+                )
+            ])
+            ->assertOk()
+            ->assertJsonStructure([
+                'data' => [
+                    'update' => [
+                        'id',
+                        'name',
+                        'slug',
+                        'level',
+                    ]
+                ]
+            ]);
+
+        $this
+            ->assertDatabaseHas('roles', [
+                'id' => $model->id,
+                'name' => $new_data->name,
+                'slug' => $new_data->slug,
+                'level' => $new_data->level,
+            ])
+            ->assertDatabaseMissing('roles', [
+                'id' => $model->id,
+                'name' => $model->name,
+                'slug' => $model->slug,
+                'level' => $model->level,
+            ]);
     }
 }
