@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\GraphQL\Role;
 
-use App\Models\Permission;
 use App\Models\Role;
 use Closure;
 use GraphQL\Type\Definition\{Type, ResolveInfo};
-use Rebing\GraphQL\Support\Facades\GraphQL;
-use Rebing\GraphQL\Support\Mutation;
 
-class MutationStore extends Mutation
+class MutationStore extends RoleMutation
 {
     /**
      * @var array
@@ -17,14 +14,6 @@ class MutationStore extends Mutation
     protected $attributes = [
         'name' => 'create'
     ];
-
-    /**
-     * @return Type
-     */
-    public function type(): Type
-    {
-        return GraphQL::type('Role');
-    }
 
     /**
      * @return array
@@ -50,7 +39,7 @@ class MutationStore extends Mutation
             'permissions' => [
                 'name' => 'permissions',
                 'type' => Type::nonNull(Type::string()),
-                'rules' => ['nullable', 'string']
+                'rules' => ['required', 'string']
             ]
         ];
     }
@@ -72,36 +61,5 @@ class MutationStore extends Mutation
         $this->savePermissions($role, json_decode(base64_decode($args['permissions']), true));
 
         return $role;
-    }
-
-    /**
-     * Save role permissions
-     *
-     * @param Role $role
-     * @param array $permissions
-     * @return void
-     */
-    protected function savePermissions(Role $role, array $permissions): void
-    {
-        if (!empty($permissions)) {
-            // Loop through the provided permissions
-            foreach ($permissions as $controller => $controller_methods) {
-                $methods = [];
-                // Loop through the controller methods
-                foreach ($controller_methods as $method => $allowance) {
-                    if ($allowance !== '0') {
-                        $methods[] = $method;
-                    }
-                }
-                // If there are permitted methods for this controller, create a permission
-                if (!empty($methods)) {
-                    Permission::create([
-                        'role_id' => $role->id,
-                        'controller' => $controller,
-                        'allowed_methods' => $methods
-                    ]);
-                }
-            }
-        }
     }
 }
