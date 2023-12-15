@@ -18,7 +18,7 @@ class BaseDashboardController extends Controller
      */
     protected function view(string $view, array $shared = []): Response
     {
-        return Inertia::render($view, array_merge([
+        return Inertia::render($view, array_merge_recursive([
             'menu' => $this->buildSideMenu(),
             'routes' => [
                 'dashboard' => [

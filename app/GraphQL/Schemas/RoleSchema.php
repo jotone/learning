@@ -22,7 +22,7 @@ class RoleSchema implements ConfigConvertible
             'types' => [
                 RoleType::class
             ],
-            'middleware' => ['auth']
+            'middleware' => ['auth:sanctum'],
         ];
     }
 }
