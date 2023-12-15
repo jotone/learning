@@ -4,6 +4,7 @@ namespace App\Http\Controllers\GraphQL\Role;
 
 use App\Models\Role;
 use Closure;
+use GraphQL\Error\Error;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use GraphQL\Type\Definition\{Type, ResolveInfo};
@@ -58,12 +59,16 @@ class MutationUpdate extends RoleMutation
      * @param $context
      * @param ResolveInfo $resolveInfo
      * @param Closure $getSelectFields
-     * @return Role
+     * @return Role|Error
      */
-    public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): Role
+    public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): Role|Error
     {
         // Find model
-        $model = Role::findOrFail($args['id']);
+        $role = Role::findOrFail($args['id']);
+
+        if ($this->checkUserRoleLevel($role->level) || $this->checkUserRoleLevel($args['level'])) {
+            return new Error(self::ACCESS_FORBIDDEN_MESSAGE);
+        }
 
         DB::beginTransaction();
 
@@ -72,15 +77,15 @@ class MutationUpdate extends RoleMutation
             foreach ($args as $key => $val) {
                 if ($key === 'permissions') {
                     // Remove current role permissions
-                    $model->permissions()->each(fn($entity) => $entity->delete());
+                    $role->permissions()->each(fn($entity) => $entity->delete());
                     // Set new permissions
-                    $this->savePermissions($model, json_decode(base64_decode($args['permissions']), true));
+                    $this->savePermissions($role, json_decode(base64_decode($args['permissions']), true));
                 } else {
-                    $model->{$key} = $val;
+                    $role->{$key} = $val;
                 }
             }
 
-            $model->save();
+            $role->save();
 
             DB::commit();
         } catch (\Exception $e) {
@@ -90,6 +95,6 @@ class MutationUpdate extends RoleMutation
                 response()->json(['errors' => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY)
             );
         }
-        return $model;
+        return $role;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\GraphQL\Role;
 
 use App\Models\Role;
 use Closure;
+use GraphQL\Error\Error;
 use GraphQL\Type\Definition\{Type, ResolveInfo};
 
 class MutationStore extends RoleMutation
@@ -52,10 +53,14 @@ class MutationStore extends RoleMutation
      * @param $context
      * @param ResolveInfo $resolveInfo
      * @param Closure $getSelectFields
-     * @return Role
+     * @return Role|Error
      */
-    public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): Role
+    public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): Role|Error
     {
+        if ($this->checkUserRoleLevel($args['level'])) {
+            return new Error(self::ACCESS_FORBIDDEN_MESSAGE);
+        }
+
         $role = Role::create($args);
 
         $this->savePermissions($role, json_decode(base64_decode($args['permissions']), true));

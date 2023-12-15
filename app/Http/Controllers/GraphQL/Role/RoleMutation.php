@@ -9,6 +9,7 @@ use Rebing\GraphQL\Support\Mutation;
 
 abstract class RoleMutation extends Mutation
 {
+    const ACCESS_FORBIDDEN_MESSAGE = 'Operation is forbidden.';
     /**
      * @return Type
      */
@@ -46,5 +47,16 @@ abstract class RoleMutation extends Mutation
                 }
             }
         }
+    }
+
+    /**
+     * Check given role level with auth user role level
+     *
+     * @param int $level
+     * @return bool
+     */
+    protected function checkUserRoleLevel(int $level): bool
+    {
+        return $level <= auth()->user()->role->level;
     }
 }

@@ -4,28 +4,17 @@ namespace App\Http\Controllers\GraphQL\Role;
 
 use App\Models\Role;
 use Closure;
-use Illuminate\Support\Facades\Log;
+use GraphQL\Error\Error;
 use GraphQL\Type\Definition\{Type, ResolveInfo};
-use Rebing\GraphQL\Support\Facades\GraphQL;
-use Rebing\GraphQL\Support\Mutation;
 
-class MutationDestroy extends Mutation
+class MutationDestroy extends RoleMutation
 {
     /**
      * @var array
      */
     protected $attributes = [
-        'name'  => 'destroy'
+        'name' => 'destroy'
     ];
-
-    /**
-     * @return Type
-     */
-    public function type(): Type
-    {
-        return GraphQL::type('Role');
-    }
-
     /**
      * @return array
      */
@@ -33,8 +22,8 @@ class MutationDestroy extends Mutation
     {
         return [
             'id' => [
-                'name'  => 'id',
-                'type'  => Type::nonNull(Type::int()),
+                'name' => 'id',
+                'type' => Type::nonNull(Type::int()),
                 'rules' => ['required', 'numeric', 'exists:roles,id']
             ],
         ];
@@ -52,9 +41,14 @@ class MutationDestroy extends Mutation
      */
     public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
-        Role::destroy($args['id']);
+        $role = Role::findOrFail($args['id']);
+
+        if ($this->checkUserRoleLevel($role->level)) {
+            return new Error(self::ACCESS_FORBIDDEN_MESSAGE);
+        }
+
+        $role->delete();
 
         return null;
     }
-
 }
