@@ -9,6 +9,7 @@ use Tests\TestCase;
 class RoleTestGraphQL extends TestCase
 {
     const CONTROLLER = 'App\Http\Controllers\Dashboard\DashboardController';
+    const ERROR_MESSAGE = 'Operation is forbidden.';
 
     protected array $default_fields = [
         'total',
@@ -119,7 +120,35 @@ class RoleTestGraphQL extends TestCase
         ]);
     }
 
-    public function testUpdate()
+    public function testStoreSecurity(): void
+    {
+        $role = Role::factory()->make();
+
+        $low_level_actor = User::factory()->create([
+            'role_id' => Role::orderBy('level', 'desc')->value('id')
+        ]);
+
+        $response = $this
+            ->actingAs($low_level_actor)
+            ->post(route('graphql.role'), [
+                'query' => sprintf(
+                    'mutation {create (name: "%s", slug: "%s", level: 0, permissions: "%s") {id, name, slug, level}}',
+                    $role->name,
+                    $role->slug,
+                    base64_encode(json_encode([
+                        self::CONTROLLER => ['index' => 1]
+                    ]))
+                )
+            ])
+            ->assertOk()
+            ->assertJsonStructure(['errors']);
+
+        $content = json_decode($response->content(), 1);
+
+        $this->assertTrue($content['errors'][0]['message'] === self::ERROR_MESSAGE);
+    }
+
+    public function testUpdate(): void
     {
         $role = Role::factory()->create();
 
@@ -163,6 +192,27 @@ class RoleTestGraphQL extends TestCase
             ]);
     }
 
+    public function testUpdateSecurity(): void
+    {
+        $role = Role::factory()->create();
+
+        $low_level_actor = User::factory()->create([
+            'role_id' => Role::orderBy('level', 'desc')->value('id')
+        ]);
+
+        $response = $this
+            ->actingAs($low_level_actor)
+            ->post(route('graphql.role'), [
+                'query' => 'mutation {update (id: ' . $role->id . ', level: 0) {id, level}}'
+            ])
+            ->assertOk()
+            ->assertJsonStructure(['errors']);
+
+        $content = json_decode($response->content(), 1);
+
+        $this->assertTrue($content['errors'][0]['message'] === self::ERROR_MESSAGE);
+    }
+
     public function testDestroy(): void
     {
         $role = Role::factory()->create();
@@ -173,8 +223,29 @@ class RoleTestGraphQL extends TestCase
                 'query' => 'mutation {destroy (id: ' . $role->id . ') {id}}'
             ])
             ->assertOk()
-            ->assertExactJson(['data' => ['destroy'=> null]]);
+            ->assertExactJson(['data' => ['destroy' => null]]);
 
         $this->assertDatabaseMissing('roles', ['id' => $role->id]);
+    }
+
+    public function testDestroySecurity(): void
+    {
+        $role = Role::factory()->create();
+
+        $low_level_actor = User::factory()->create([
+            'role_id' => Role::orderBy('level', 'desc')->value('id')
+        ]);
+
+        $response = $this
+            ->actingAs($low_level_actor)
+            ->post(route('graphql.role'), [
+                'query' => 'mutation {destroy (id: ' . $role->id . ') {id}}'
+            ])
+            ->assertOk()
+            ->assertJsonStructure(['errors']);
+
+        $content = json_decode($response->content(), 1);
+
+        $this->assertTrue($content['errors'][0]['message'] === self::ERROR_MESSAGE);
     }
 }
