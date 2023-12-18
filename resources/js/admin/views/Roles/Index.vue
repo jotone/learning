@@ -5,27 +5,42 @@
     </li>
   </ul>
 
-  <div class="page-name-wrap">
-    <h1>Roles</h1>
+  <header>
+    <div class="page-name-wrap">
+      <h1>Roles</h1>
 
-    <a class="btn">
-      <i class="icon plus-icon"></i>
-      <span>Role Create</span>
-    </a>
+      <a class="btn">
+        <i class="icon plus-icon"></i>
+        <span>Role Create</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="card">
+    <div class="content-table-wrap">
+      <div class="content-table-controls">
+        <SearchForm
+          placeholder="Search for a Role by the name or slug…"
+          :search="$page.props.filters?.search"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import axios from "axios";
+import { usePage } from "@inertiajs/vue3";
+import { reactive } from "vue";
 
 import DataTableLayout from "../../shared/DataTableLayout.vue";
-import {usePage} from "@inertiajs/vue3";
-import {reactive} from "vue";
+import SearchForm from "../../components/DataTables/SearchForm.vue";
 
 defineOptions({layout: DataTableLayout})
 
 let list = reactive([]);
 const page = usePage()
+
 
 axios.post(
   page.props.routes.roles,

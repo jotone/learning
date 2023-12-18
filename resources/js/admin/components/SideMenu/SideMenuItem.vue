@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import {PropType, computed} from 'vue'
+import { PropType, computed } from 'vue'
 import {SideMenuItemInterface} from "../../../contracts/SideMenuItemInterface";
 
 // Component properties

@@ -14,11 +14,12 @@ class BaseDashboardController extends Controller
      *
      * @param string $view
      * @param array $shared
+     * @param array $scripts
      * @return Response
      */
-    protected function view(string $view, array $shared = []): Response
+    protected function view(string $view, array $shared = [], array $scripts = []): Response
     {
-        return Inertia::render($view, array_merge_recursive([
+        $response =  Inertia::render($view, array_merge_recursive([
             'menu' => $this->buildSideMenu(),
             'routes' => [
                 'dashboard' => [
@@ -37,6 +38,12 @@ class BaseDashboardController extends Controller
                 'site_title'
             ])->pluck('value', 'key')->toArray()
         ], $shared));
+
+        if (!empty($scripts)) {
+            $response->withViewData($scripts);
+        }
+
+        return $response;
     }
 
     /**

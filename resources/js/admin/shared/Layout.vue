@@ -5,7 +5,7 @@
         <img :src="$page.props.settings.logo_img_admin" alt=""/>
       </a>
 
-      <ul class="admin-menu">
+      <ul class="admin-menu" :class="{active: sideMenuActive}">
         <li v-for="block in $page.props.menu">
           <ul>
             <template v-for="item in block">
@@ -46,7 +46,7 @@
         </li>
       </ul>
 
-      <div class="view-menu-button">
+      <div class="view-menu-button" @click="viewSideMenu">
         <i class="icon burger-menu-icon"></i>
       </div>
     </nav>
@@ -58,10 +58,17 @@
 
 <script setup>
 import { usePage } from '@inertiajs/vue3'
+import { ref } from "vue";
 import Avatar from "../components/User/Avatar.vue";
 import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
 
 const page = usePage()
 
 console.log(page.props)
+
+let sideMenuActive = ref(false);
+
+const viewSideMenu = () => {
+  sideMenuActive.value = !sideMenuActive.value
+}
 </script>
