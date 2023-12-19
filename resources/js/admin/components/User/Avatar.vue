@@ -11,9 +11,7 @@
 
 <script setup>
 
-const props = defineProps({
-  user: Object
-})
+const props = defineProps({user: Object})
 /**
  * Generates a CRC lookup table for computing CRC checksums.
  *

@@ -27,7 +27,7 @@ class CompactSvg extends Command
     {
         $file = $this->argument('file');
 
-        $path = resource_path('css/icons');
+        $path = resource_path('assets/images/icons');
 
         $filepath = $path . '/' . $file . '.svg';
         if (!file_exists($filepath)) {

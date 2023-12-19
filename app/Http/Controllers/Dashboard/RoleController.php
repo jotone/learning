@@ -14,10 +14,29 @@ class RoleController extends BaseDashboardController
      */
     public function index(): Response
     {
-        return $this->view('Roles/Index', [
-            'routes' => [
-                'roles' => route('graphql.role')
-            ]
-        ]);
+        return $this->view(
+            view: 'Roles/List/Index',
+            shared: [
+                'routes' => [
+                    'roles' => [
+                        'api' => route('graphql.role'),
+                        'create' => route('dashboard.roles.create'),
+                        'edit' => route('dashboard.roles.edit', ':id')
+                    ]
+                ]
+            ],
+            scripts: [
+                'css' => ['resources/assets/css/admin/content-table.scss']
+            ]);
+    }
+
+    public function create()
+    {
+
+    }
+
+    public function edit()
+    {
+
     }
 }

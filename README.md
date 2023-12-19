@@ -75,7 +75,7 @@ npm i && npm run prod
   - ~~Api~~
   - Page
     - List
-      - DataTable
+      - ~~DataTable~~
       - Pagination
       - PerPage
       - Directions

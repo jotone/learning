@@ -5,7 +5,7 @@
         <img :src="$page.props.settings.logo_img_admin" alt=""/>
       </a>
 
-      <ul class="admin-menu">
+      <ul class="admin-menu" :class="{active: sideMenuActive}">
         <li v-for="block in $page.props.menu">
           <ul>
             <template v-for="item in block">
@@ -46,7 +46,7 @@
         </li>
       </ul>
 
-      <div class="view-menu-button">
+      <div class="view-menu-button" @click="viewSideMenu">
         <i class="icon burger-menu-icon"></i>
       </div>
     </nav>
@@ -57,6 +57,8 @@
 </template>
 
 <script setup>
+import moment from "moment";
+import { ref, provide } from "vue";
 import { usePage } from '@inertiajs/vue3'
 import Avatar from "../components/User/Avatar.vue";
 import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
@@ -64,4 +66,24 @@ import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
 const page = usePage()
 
 console.log(page.props)
+
+let sideMenuActive = ref(false);
+
+/**
+ * Convert unix date (Y-m-d H:i:s) to the proper date format
+ *
+ * @param {string} date
+ * @param {string} format
+ * @returns {string}
+ */
+const convertDate = (date, format = 'DD MMM YYYY') => moment(date).format(format)
+/**
+ * Toggle the active status for the side menu
+ */
+const viewSideMenu = () => {
+  sideMenuActive.value = !sideMenuActive.value
+}
+
+// Provides the "convertDate" function on over the all project
+provide('convertDate', convertDate)
 </script>

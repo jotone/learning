@@ -7,4 +7,3 @@ import ContentPageLayout from "../../shared/ContentPageLayout.vue";
 
 defineOptions({layout: ContentPageLayout})
 </script>
-
