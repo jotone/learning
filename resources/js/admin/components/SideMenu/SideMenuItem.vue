@@ -8,13 +8,12 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, computed } from 'vue'
-import {SideMenuItemInterface} from "../../../contracts/SideMenuItemInterface";
+import { computed, PropType } from 'vue'
+import { SideMenuItemInterface } from "../../../contracts/SideMenuItemInterface";
 
 // Component properties
-const props = defineProps({
-  item: Object as PropType<SideMenuItemInterface>
-})
+const props = defineProps({item: Object as PropType<SideMenuItemInterface>})
+
 // Check the menu item is active
 const isActive = computed(() => {
   const pathName = window.location.pathname;

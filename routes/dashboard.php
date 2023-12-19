@@ -37,6 +37,8 @@ Route::get('/help-center', [HelpCenterController::class, 'index'])->name('help-c
 Route::get('/referrals', [ReferralController::class, 'index'])->name('referrals.index');
 
 Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
 
 Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
 

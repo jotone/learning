@@ -44,6 +44,14 @@ class Query extends GraphQlPaginatedQuery
             'level' => [
                 'name' => 'level',
                 'type' => Type::int(),
+            ],
+            'created_at' => [
+                'name' => 'created_at',
+                'type' => Type::string(),
+            ],
+            'updated_at' => [
+                'name' => 'updated_at',
+                'type' => Type::string()
             ]
         ]);
     }
@@ -85,5 +93,4 @@ class Query extends GraphQlPaginatedQuery
 
         return $this->getCollection($where, $relations, $fields);
     }
-
 }

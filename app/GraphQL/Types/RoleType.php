@@ -33,6 +33,12 @@ class RoleType extends GraphQLType
             ],
             'level' => [
                 'type' => Type::int()
+            ],
+            'created_at' => [
+                'type' => Type::string()
+            ],
+            'updated_at' => [
+                'type' => Type::string()
             ]
         ];
     }
