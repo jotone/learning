@@ -1,7 +1,7 @@
 <template>
   <div class="site-content-wrap">
     <nav>
-      <a class="logo-image" :href="page.props.routes.dashboard.index">
+      <a class="logo-image" :href="$page.props.routes.dashboard.index">
         <img :src="$page.props.settings.logo_img_admin" alt=""/>
       </a>
 
@@ -23,11 +23,11 @@
         <li class="actor-menu-wrap">
           <ul>
             <li class="user-info-wrap">
-              <Avatar :user="page.props.auth"/>
+              <Avatar :user="$page.props.auth"/>
 
               <div class="user-credentials">
-                <div class="user-name">{{ page.props.auth.first_name }} {{ page.props.auth.last_name }}</div>
-                <div class="user-email">{{ page.props.auth.email }}</div>
+                <div class="user-name">{{ $page.props.auth.first_name }} {{ $page.props.auth.last_name }}</div>
+                <div class="user-email">{{ $page.props.auth.email }}</div>
               </div>
             </li>
             <li>
@@ -37,7 +37,7 @@
               </a>
             </li>
             <li>
-              <a :href="page.props.routes.auth.logout">
+              <a :href="$page.props.routes.auth.logout">
                 <i class="icon logout-icon"></i>
                 <span>Log Out</span>
               </a>
@@ -51,6 +51,14 @@
       </div>
     </nav>
     <main>
+      <ul class="breadcrumbs">
+        <li v-for="item in $page.props.breadcrumbs">
+          <a :href="item.url" v-if="'url' in item">
+            {{ item.name }}
+          </a>
+          <span v-else>{{ item.name }}</span>
+        </li>
+      </ul>
       <slot></slot>
     </main>
   </div>
@@ -59,15 +67,16 @@
 <script setup>
 import moment from "moment";
 import { ref, provide } from "vue";
-import { usePage } from '@inertiajs/vue3'
 import Avatar from "../components/User/Avatar.vue";
 import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
 
-const page = usePage()
-
-console.log(page.props)
-
+/**
+ * Toggle the active status for the side menu
+ */
 let sideMenuActive = ref(false);
+const viewSideMenu = () => {
+  sideMenuActive.value = !sideMenuActive.value
+}
 
 /**
  * Convert unix date (Y-m-d H:i:s) to the proper date format
@@ -77,12 +86,6 @@ let sideMenuActive = ref(false);
  * @returns {string}
  */
 const convertDate = (date, format = 'DD MMM YYYY') => moment(date).format(format)
-/**
- * Toggle the active status for the side menu
- */
-const viewSideMenu = () => {
-  sideMenuActive.value = !sideMenuActive.value
-}
 
 // Provides the "convertDate" function on over the all project
 provide('convertDate', convertDate)

@@ -35,5 +35,4 @@ const props = defineProps({
     default: true
   }
 })
-const emit = defineEmits(['removeFilters'])
 </script>

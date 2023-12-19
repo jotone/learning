@@ -6,14 +6,14 @@
   justify-content: flex-start;
   min-height: 100vh;
 
-  nav {
+  > nav {
     background-color: #000e42;
     border-bottom-right-radius: 30px;
     border-top-right-radius: 30px;
     height: 100vh;
     overflow: auto;
     padding: 30px;
-    position: relative;
+    position: fixed;
     min-width: 350px;
     width: 18%;
     -ms-overflow-style: none;
@@ -79,7 +79,9 @@
 
   main {
     padding: 40px 75px 40px 45px;
-    width: 100%;
+    position: absolute;
+    right: 0;
+    width: calc(100% - 350px);
   }
 
   .card {
@@ -118,13 +120,14 @@
 
 @media screen and (max-width: 1200px) {
   .site-content-wrap {
-    nav {
+    > nav {
       border-radius: 0;
       height: 65px;
       overflow: inherit;
       padding: 0;
       position: absolute;
       width: 100%;
+      z-index: 1;
 
       .logo-image {
         display: inline-block;
@@ -148,12 +151,14 @@
 
     main {
       padding: 105px 40px 40px;
+      position: relative;
+      width: 100%;
     }
   }
 }
 
 @media screen and (max-width: 480px) {
-  .site-content-wrap nav {
+  .site-content-wrap > nav {
     min-width: auto;
 
     .logo-image {max-width: 240px; padding: 10px}
