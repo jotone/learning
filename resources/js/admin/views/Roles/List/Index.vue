@@ -51,7 +51,7 @@
           </tr>
           </thead>
           <tbody>
-          <template v-for="(role, i) in list.data">
+          <template v-for="role in list.data">
             <TableRow :role="role"/>
           </template>
           </tbody>
@@ -60,43 +60,69 @@
 
       <div class="page-controls-wrap">
         <PerPage/>
-        <Pagination/>
+        <Pagination
+          v-if="list.has_more_pages ?? false"
+          :current="list.current_page"
+          :filters="filters"
+          :last="list.last_page"
+          :perPage="list.per_page"
+          :total="list.total"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import axios from "axios";
-import { usePage } from "@inertiajs/vue3";
-import { ref } from "vue";
+import {usePage} from "@inertiajs/vue3";
+import {inject, ref} from "vue";
+import {decodeUriQuery} from "../../../libs/RequestHelper"
 
 import DataTableLayout from "../../../shared/DataTableLayout.vue";
 import TableRow from "./TableRow.vue";
-import { Pagination, PerPage, SearchForm} from '../../../components/DataTables';
+import {Pagination, PerPage, SearchForm} from '../../../components/DataTables';
 
 defineOptions({layout: DataTableLayout})
+// Get content roles function
+const getList = inject('getList')
 
 const page = usePage()
 
 let list = ref([]);
-axios.post(
-  page.props.routes.roles.api,
-  {
-    'query': `{
-      roles(per_page:25,order_by:"name",order_dir:"asc")
-      {
-        total per_page last_page has_more_pages current_page data {
-          id name level created_at
-        }
-      }
-    }`
+
+const {origin: siteUrl, pathname: path, search} = window.location
+const query = decodeUriQuery(search)
+
+let filters = {
+  page: query.page || 1,
+  per_page: query.per_page ?? 2,
+  order: {
+    by: query.order?.by ?? 'created_at',
+    dir: query.order?.dir ?? 'desc'
   },
-  {
-    headers: {
-      accept: "application/json",
-      Authorization: "Bearer " + page.props.auth.apiToken
+  search: query.search ?? ''
+}
+
+/**
+ * GraphQL query string to get roles list
+ *
+ * @param filters
+ * @returns {string}
+ */
+const buildQuery = filters => `{
+  roles(
+    per_page:${filters.per_page},
+    order_by:"${filters.order.by}",
+    order_dir:"${filters.order.dir}",
+    page:${filters.page},
+    search:"${filters.search}"
+  ) {
+    total per_page last_page has_more_pages current_page data {
+      id name level created_at
     }
   }
-).then(response => 200 === response.status && (list.value = response.data.data.roles))
+}`;
+
+getList(page.props.routes.roles.api, buildQuery(filters)).then(response => 200 === response.status && (list.value = response.data.data.roles))
+
 </script>

@@ -3,7 +3,7 @@
     <ul>
       <li>
         <a
-          href="options.current_page !== 1 ? `${options.path}${buildUrlParams(1)}` : '#'"
+          :href="props.current !== 1 ? `${path}` : '#'"
           @click.prevent="changePage"
         >
           <i class="icon double-chevron-icon"></i>
@@ -41,6 +41,39 @@
   </nav>
 </template>
 
-<script setup>
+<script setup lang="ts">
+
+import {PropType, ref} from "vue";
+import {encodeUriQuery} from "../../libs/RequestHelper";
+import {FiltersInterface} from "../../../contracts/FiltersInterface";
+
+const props = defineProps({
+  current: {
+    type: Number,
+    default: 1
+  },
+  filters: {
+    type: Object as PropType<FiltersInterface>,
+    required: true
+  },
+  last: {
+    type: Number,
+    default: 1
+  },
+  perPage: {
+    type: Number,
+    default: 25,
+  },
+  total: {
+    type: Number,
+    default: 0
+  },
+})
+
+const path = ref(window.location.origin + window.location.pathname)
+
+const query = encodeUriQuery(props.filters);
+console.log(path.value)
+console.log(query)
 const changePage = () => {}
 </script>

@@ -66,7 +66,7 @@
 
 <script setup>
 import moment from "moment";
-import { ref, provide } from "vue";
+import {ref, provide} from "vue";
 import Avatar from "../components/User/Avatar.vue";
 import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
 
@@ -86,7 +86,6 @@ const viewSideMenu = () => {
  * @returns {string}
  */
 const convertDate = (date, format = 'DD MMM YYYY') => moment(date).format(format)
-
 // Provides the "convertDate" function on over the all project
 provide('convertDate', convertDate)
 </script>

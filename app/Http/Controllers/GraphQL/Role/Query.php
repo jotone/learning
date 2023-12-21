@@ -86,6 +86,11 @@ class Query extends GraphQlPaginatedQuery
             if (isset($args['level'])) {
                 $query->where('level', 'LIKE', "%{$args['level']}%");
             }
+
+            if (!empty($args['search'])) {
+                $search = mb_strtolower($args['search']);
+                $query->whereRaw("LOWER(name) LIKE '%$search%' OR slug LIKE '%$search%' OR level LIKE '%$search%'");
+            }
         };
 
         $fields = $getSelectFields()->getSelect();
