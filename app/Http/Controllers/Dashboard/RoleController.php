@@ -17,6 +17,12 @@ class RoleController extends BaseDashboardController
         return $this->view(
             view: 'Roles/List/Index',
             shared: [
+                'breadcrumbs' => [
+                    [
+                        'name' => 'Roles'
+                    ]
+                ],
+                'pageName' => 'Roles',
                 'routes' => [
                     'roles' => [
                         'api' => route('graphql.role'),

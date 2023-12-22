@@ -17,7 +17,8 @@ abstract class GraphQlPaginatedQuery extends Query
         'order_by' => 'id',
         'order_dir' => 'asc',
         'per_page' => 25,
-        'page' => 1
+        'page' => 1,
+        'search' => ''
     ];
 
     /**
@@ -46,6 +47,10 @@ abstract class GraphQlPaginatedQuery extends Query
             'page' => [
                 'name' => 'page',
                 'type' => Type::int()
+            ],
+            'search' => [
+                'name' => 'search',
+                'type' => Type::string()
             ]
         ];
     }
@@ -69,6 +74,9 @@ abstract class GraphQlPaginatedQuery extends Query
         if (isset($args['page'])) {
             $this->filters['page'] = $args['page'];
         }
+        if (!empty($args['search'])) {
+            $this->filters['search'] = $args['search'];
+        }
     }
 
     /**
@@ -84,6 +92,7 @@ abstract class GraphQlPaginatedQuery extends Query
         return $this->attributes['model']::with($relations)
             ->where($where)
             ->orderBy($this->filters['order_by'], $this->filters['order_dir'])
+            ->orderBy('id', 'desc')
             ->paginate($this->filters['per_page'], $fields, 'page', $this->filters['page']);
     }
 }

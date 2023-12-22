@@ -32,3 +32,16 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
     width: 20px;
   }
 }
+
+.form-select {
+  appearance: none;
+  background: #ffffff url("../../images/icons/angle-down.svg") no-repeat 99% center / 24px;
+  border: 1px solid #005aff;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  font-style: normal;
+  line-height: 18px;
+  outline: none;
+  padding: 14px;
+}

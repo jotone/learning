@@ -6,8 +6,18 @@
   mask-size: contain;
   width: 16px;
 
+  &.mirror {transform: scaleX(-1)}
+
   &.burger-menu-icon {
     mask-image: url("../../images/icons/burger-menu.svg");
+  }
+
+  &.chevron-icon {
+    mask-image: url("../../images/icons/chevron.svg");
+  }
+
+  &.double-chevron-icon {
+    mask-image: url("../../images/icons/double-chevron.svg");
   }
 
   &.hellip-icon {

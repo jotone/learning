@@ -24,11 +24,10 @@ import { computed, inject, PropType } from 'vue';
 import { RoleInterface } from "../../../../contracts/RoleInterface.js";
 import { usePage } from "@inertiajs/vue3";
 
+const convertDate = inject('convertDate');
 const page = usePage();
-
-const convertDate = inject('convertDate')
-
 const props = defineProps({role: Object as PropType<RoleInterface>});
+
 // Link for the role edit page
 const editUrl = computed(() => page.props.routes.roles.edit.replace(/:id/, props.role.id))
 </script>
