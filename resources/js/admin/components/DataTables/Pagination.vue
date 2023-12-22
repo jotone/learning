@@ -3,39 +3,57 @@
     <ul>
       <li>
         <a
-          :href="props.current !== 1 ? `${path}` : '#'"
-          @click.prevent="changePage"
-        >
-          <i class="icon double-chevron-icon"></i>
-        </a>
-      </li>
-      <li>
-        <a
-          href="options.current_page !== 1 ? `${options.path}${buildUrlParams(options.current_page - 1)}` : '#'"
-          @click.prevent="changePage"
-        >
-          <i class="icon chevron-icon"></i>
-        </a>
-      </li>
-      <li>
-        <a class="active" href="#">{{ 'options.current_page' }}</a>
-      </li>
-      <li><span>of {{ 'options.last_page' }}</span></li>
-      <li>
-        <a
-          href="options.current_page !== options.last_page ? `${options.path}${buildUrlParams(options.current_page + 1)}` : '#'"
-          @click.prevent="changePage"
-        >
-          <i class="icon mirror chevron-icon"></i>
-        </a>
-      </li>
-      <li>
-        <a
-          href="options.current_page !== options.last_page ? `${options.path}${buildUrlParams(options.last_page)}` : '#'"
-          @click.prevent="changePage"
+          v-if="props.current !== 1"
+          :href="`${path}?${modifyQuery({page: 1})}`"
+          @click.prevent="changePage(1)"
         >
           <i class="icon mirror double-chevron-icon"></i>
         </a>
+        <span v-else>
+          <i class="icon mirror double-chevron-icon"></i>
+        </span>
+      </li>
+      <li>
+        <a
+          v-if="props.current !== 1"
+          :href="`${path}?${modifyQuery({page: props.current - 1})}`"
+          @click.prevent="changePage(props.current - 1)"
+        >
+          <i class="icon mirror chevron-icon"></i>
+        </a>
+        <span v-else>
+          <i class="icon mirror chevron-icon"></i>
+        </span>
+      </li>
+      <li>
+        <a class="active" href="#">{{ props.current }}</a>
+      </li>
+      <li>
+        <strong>of {{ props.last }}</strong>
+      </li>
+      <li>
+        <a
+          v-if="props.current !== props.last"
+          :href="`${path}?${modifyQuery({page: props.current + 1})}`"
+          @click.prevent="changePage(props.current + 1)"
+        >
+          <i class="icon chevron-icon"></i>
+        </a>
+        <span v-else>
+          <i class="icon chevron-icon"></i>
+        </span>
+      </li>
+      <li>
+        <a
+          v-if="props.current !== props.last"
+          :href="`${path}?${modifyQuery({page: props.last})}`"
+          @click.prevent="changePage(props.last)"
+        >
+          <i class="icon double-chevron-icon"></i>
+        </a>
+        <span v-else>
+          <i class="icon double-chevron-icon"></i>
+        </span>
       </li>
     </ul>
   </nav>
@@ -44,7 +62,7 @@
 <script setup lang="ts">
 
 import {PropType, ref} from "vue";
-import {encodeUriQuery} from "../../libs/RequestHelper";
+import {decodeUriQuery, encodeUriQuery} from "../../libs/RequestHelper";
 import {FiltersInterface} from "../../../contracts/FiltersInterface";
 
 const props = defineProps({
@@ -52,12 +70,12 @@ const props = defineProps({
     type: Number,
     default: 1
   },
-  filters: {
-    type: Object as PropType<FiltersInterface>,
-    required: true
-  },
   last: {
     type: Number,
+    default: 1
+  },
+  filters: {
+    type: Object as PropType<FiltersInterface>,
     default: 1
   },
   perPage: {
@@ -70,10 +88,22 @@ const props = defineProps({
   },
 })
 
+const emit = defineEmits(['changePage'])
+
+// Page absolute path
 const path = ref(window.location.origin + window.location.pathname)
 
-const query = encodeUriQuery(props.filters);
-console.log(path.value)
-console.log(query)
-const changePage = () => {}
+let query = decodeUriQuery(window.location.search)
+if (!query.hasOwnProperty('page')) {
+  query.page = props.filters.page
+}
+
+/**
+ * Modify parameter of the URI query
+ *
+ * @param {Object} obj
+ */
+const modifyQuery = obj => encodeUriQuery(Object.assign({}, query, obj))
+
+const changePage = page => emit('changePage', Object.assign({}, props.filters, {page: page}));
 </script>

@@ -8,6 +8,9 @@ function decodeUriQuery(uri) {
   const params = {};
   // Remove '?' from the start of the query string if present
   const queryString = uri[0] === '?' ? uri.substring(1) : uri;
+  if (!queryString) {
+    return params
+  }
   // Split the query string into key-value pairs
   const pairs = queryString.split('&');
   // Iterate over each key-value pair
@@ -25,12 +28,19 @@ function decodeUriQuery(uri) {
       params[mainKey][subKey] = isNaN(value) ? value : Number(value);
     } else {
       // For non-nested properties, assign value directly, converting to number if possible
-      params[key] = isNaN(value) ? value : Number(value);
+      params[key] = isNaN(value) || '' === value ? value : Number(value);
     }
   }
   return params;
 }
 
+/**
+ * Convert an object into a URI query string
+ *
+ * @param {Object} obj
+ * @param {string} prefix
+ * @returns {string}
+ */
 function encodeUriQuery(obj, prefix = '') {
   let queryString = [];
   // Iterate over each property in the object

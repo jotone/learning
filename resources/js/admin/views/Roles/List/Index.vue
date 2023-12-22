@@ -61,12 +61,14 @@
       <div class="page-controls-wrap">
         <PerPage/>
         <Pagination
-          v-if="list.has_more_pages ?? false"
+          v-if="list.last_page > 1"
+          :buildQuery="buildQuery"
           :current="list.current_page"
           :filters="filters"
           :last="list.last_page"
           :perPage="list.per_page"
           :total="list.total"
+          @changePage="changePage"
         />
       </div>
     </div>
@@ -74,15 +76,16 @@
 </template>
 
 <script setup>
-import {usePage} from "@inertiajs/vue3";
 import {inject, ref} from "vue";
-import {decodeUriQuery} from "../../../libs/RequestHelper"
+import {decodeUriQuery, encodeUriQuery} from "../../../libs/RequestHelper"
+import {usePage} from "@inertiajs/vue3";
 
 import DataTableLayout from "../../../shared/DataTableLayout.vue";
 import TableRow from "./TableRow.vue";
 import {Pagination, PerPage, SearchForm} from '../../../components/DataTables';
 
 defineOptions({layout: DataTableLayout})
+
 // Get content roles function
 const getList = inject('getList')
 
@@ -90,9 +93,9 @@ const page = usePage()
 
 let list = ref([]);
 
-const {origin: siteUrl, pathname: path, search} = window.location
-const query = decodeUriQuery(search)
-
+// Decoded URI query
+const query = decodeUriQuery(window.location.search)
+// Page filters list
 let filters = {
   page: query.page || 1,
   per_page: query.per_page ?? 2,
@@ -121,8 +124,23 @@ const buildQuery = filters => `{
       id name level created_at
     }
   }
-}`;
+}`
 
-getList(page.props.routes.roles.api, buildQuery(filters)).then(response => 200 === response.status && (list.value = response.data.data.roles))
+getList(page.props.routes.roles.api, buildQuery(filters)).then(response => {
+  list.value = response.data.data.roles
+})
+
+const changePage = filters => {
+  getList(page.props.routes.roles.api, buildQuery(filters)).then(response => {
+    list.value = response.data.data.roles;
+
+    let state = {page: filters.page}
+    if (filters.search.length) {
+      state.search = filters.search
+    }
+    // Change
+    window.history.pushState(window.location.origin + window.location.pathname, "", '?' + encodeUriQuery(state))
+  })
+}
 
 </script>

@@ -163,6 +163,7 @@
     align-items: center;
     display: flex;
     justify-content: flex-end;
+    gap: 10px;
     margin-top: 20px;
 
     .per-page-wrap {
@@ -185,7 +186,11 @@
 
       li {margin-left: 5px}
 
-      a {
+      strong {
+        font-weight: 400;
+      }
+
+      a, span {
         align-items: center;
         border: 1px solid #005aff;
         border-radius: 50%;
@@ -199,16 +204,16 @@
         text-decoration: none;
         width: 30px;
 
-        &[href="#"] {border-color: #909bbf}
-
-        &[href="#"] .icon {background-color: #909bbf}
-
         &.active {
           border-color: #000e42;
           color: #000e42;
           font-weight: 600;
         }
       }
+
+      span {border-color: #909bbf}
+
+      span .icon {background-color: #909bbf}
 
       .icon {
         background-color: #005aff;

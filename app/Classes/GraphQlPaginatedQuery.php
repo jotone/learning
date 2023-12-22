@@ -92,6 +92,7 @@ abstract class GraphQlPaginatedQuery extends Query
         return $this->attributes['model']::with($relations)
             ->where($where)
             ->orderBy($this->filters['order_by'], $this->filters['order_dir'])
+            ->orderBy('id', 'desc')
             ->paginate($this->filters['per_page'], $fields, 'page', $this->filters['page']);
     }
 }

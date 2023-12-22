@@ -19,12 +19,23 @@ const page = usePage()
  *
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-const getList = (url, query) => axios.post(url, {'query': query}, {
-  headers: {
-    accept: "application/json",
-    Authorization: "Bearer " + page.props.auth.apiToken
-  }
-});
+const getList = (url, query) => new Promise((resolve, reject) => {
+  axios.post(url, {'query': query}, {
+    headers: {
+      accept: "application/json",
+      Authorization: "Bearer " + page.props.auth.apiToken
+    }
+  }).then(response => {
+    if (200 === response.status) {
+      if ('errors' in response.data) {
+        console.error(response.data.errors)
+        reject(response.data.errors)
+      } else {
+        resolve(response)
+      }
+    }
+  })
+})
 
 provide('getList', getList)
 </script>
