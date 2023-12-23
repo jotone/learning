@@ -100,7 +100,6 @@ if (!query.hasOwnProperty('page')) {
 
 /**
  * Modify parameter of the URI query
- *
  * @param {Object} obj
  */
 const modifyQuery = obj => encodeUriQuery(Object.assign({}, query, obj))
