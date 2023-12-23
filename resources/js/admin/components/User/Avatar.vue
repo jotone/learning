@@ -85,7 +85,6 @@ const avatarOptions = () => {
   };
 }
 
-
 const data = avatarOptions()
 
 if (typeof props.user.img_url === 'string') {

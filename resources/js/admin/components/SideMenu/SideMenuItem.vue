@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, PropType } from 'vue'
-import { SideMenuItemInterface } from "../../../contracts/SideMenuItemInterface";
+import {computed, PropType} from 'vue'
+import {SideMenuItemInterface} from "../../../contracts/SideMenuItemInterface";
 
 // Component properties
 const props = defineProps({item: Object as PropType<SideMenuItemInterface>})

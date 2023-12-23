@@ -20,7 +20,7 @@
 const props = defineProps({
   name: {
     type: String,
-    default: "search",
+    default: "search"
   },
   placeholder: {
     type: String,

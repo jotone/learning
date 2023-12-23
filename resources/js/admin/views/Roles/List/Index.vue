@@ -59,7 +59,7 @@
       </div>
 
       <div class="page-controls-wrap">
-        <PerPage/>
+        <PerPage :value="filters.per_page" @changeLimit="changeLimit"/>
         <Pagination
           v-if="list.last_page > 1"
           :buildQuery="buildQuery"
@@ -75,13 +75,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {inject, ref} from "vue";
 import {decodeUriQuery, encodeUriQuery} from "../../../libs/RequestHelper"
 import {usePage} from "@inertiajs/vue3";
 
 import DataTableLayout from "../../../shared/DataTableLayout.vue";
 import TableRow from "./TableRow.vue";
+import {FiltersInterface} from "../../../../contracts/FiltersInterface";
 import {Pagination, PerPage, SearchForm} from '../../../components/DataTables';
 
 defineOptions({layout: DataTableLayout})
@@ -98,7 +99,7 @@ const query = decodeUriQuery(window.location.search)
 // Page filters list
 let filters = {
   page: query.page || 1,
-  per_page: query.per_page ?? 2,
+  per_page: query.per_page ?? 25,
   order: {
     by: query.order?.by ?? 'created_at',
     dir: query.order?.dir ?? 'desc'
@@ -126,21 +127,42 @@ const buildQuery = filters => `{
   }
 }`
 
-getList(page.props.routes.roles.api, buildQuery(filters)).then(response => {
-  list.value = response.data.data.roles
+
+/**
+ * Change per page items number
+ * @param {number} limit
+ */
+const changeLimit = (limit: number) => {
+  filters.per_page = limit
+  request(filters)
+}
+
+/**
+ * Click pagination element
+ * @param {FiltersInterface} filters
+ */
+const changePage = (filters: FiltersInterface) => request(filters, (filters: FiltersInterface) => {
+  let state = {page: filters.page}
+  if (filters.search.length) {
+    state.search = filters.search
+  }
+  // Change uri state
+  window.history.pushState(window.location.origin + window.location.pathname, "", '?' + encodeUriQuery(state))
 })
 
-const changePage = filters => {
-  getList(page.props.routes.roles.api, buildQuery(filters)).then(response => {
-    list.value = response.data.data.roles;
+/**
+ * Send request to get roles list
+ * @param {FiltersInterface} filters
+ * @param {null|function} callback
+ */
+const request = (filters: FiltersInterface, callback = null) =>
+  getList(page.props.routes.roles.api, buildQuery(filters))
+    .then(response => {
+      list.value = response.data.data.roles;
+      typeof callback === 'function' && callback(filters)
+    })
 
-    let state = {page: filters.page}
-    if (filters.search.length) {
-      state.search = filters.search
-    }
-    // Change
-    window.history.pushState(window.location.origin + window.location.pathname, "", '?' + encodeUriQuery(state))
-  })
-}
+// Load roles
+request(filters)
 
 </script>
