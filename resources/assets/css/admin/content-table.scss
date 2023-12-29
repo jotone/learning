@@ -92,8 +92,6 @@
       }
 
       th {
-        &:hover .order {background-color: #909bbf}
-
         .col-name {
           align-items: center;
           cursor: pointer;
@@ -124,6 +122,8 @@
 
           &.active {background-color: #909bbf}
         }
+
+        &:hover .order {background-color: #909bbf}
       }
 
       td a {

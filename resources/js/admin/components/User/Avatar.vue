@@ -9,15 +9,18 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({user: Object})
+<script setup lang="ts">
+import {PropType} from "vue";
+import {UserDataInterface} from "../../../contracts/UserDataInterface";
+
+const props = defineProps({user: Object as PropType<UserDataInterface>})
+
 /**
  * Generates a CRC lookup table for computing CRC checksums.
- *
  * @param {number[]} [crcTable=[]] - The initial CRC lookup table.
  * @returns {number[]} The updated CRC lookup table.
  */
-const makeCRCTable = (crcTable = []) => {
+const makeCRCTable = (crcTable: object = []): object => {
   for (let i = 0; i < 256; i++) {
     let temp = i;
     for (let j = 0; j < 8; j++) {
@@ -31,11 +34,10 @@ const makeCRCTable = (crcTable = []) => {
 
 /**
  * Calculates the CRC32 checksum for a given string.
- *
  * @param {string} str - The input string for which CRC32 checksum needs to be calculated.
  * @returns {number} The CRC32 checksum of the input string.
  */
-const crc32 = str => {
+const crc32 = (str: string): number => {
   // Cache CRC table
   const crcTable = window.crcTable || (window.crcTable = makeCRCTable());
   let crc = 0 ^ -1;
@@ -49,13 +51,17 @@ const crc32 = str => {
 
 /**
  * Calculates the lightness of an RGB color.
- *
  * @param {number[]} rgb - The RGB color represented as an array of three numbers [r, g, b], where each value is in the range of 0-255.
  * @returns {number} The lightness of the color, calculated as the average of the maximum and minimum RGB values, normalized to the range of 0-1.
  */
-const lightness = rgb => (Math.max(...rgb) + Math.min(...rgb)) / 510
+const lightness = (rgb: object): number => (Math.max(...rgb) + Math.min(...rgb)) / 510
 
-const stringToColor = str => {
+/**
+ * Convert string to color array ([R, G, B])
+ * @param {string} str
+ * @return {array}
+ */
+const stringToColor = (str: string): object => {
   if (str.length < 6) {
     str = str.padEnd(6, "0");
   }
@@ -68,29 +74,32 @@ const stringToColor = str => {
 
 /**
  * Returns an object containing options for generating an avatar image.
- *
  * @returns {object} - The avatar options.
  */
-const avatarOptions = () => {
+const avatarOptions = (): object => {
   let text = props.user.first_name.charAt(0);
-  if (props.user.last_name.length) {
+  if (null !== props.user.last_name && props.user.last_name.length) {
     text += props.user.last_name.charAt(0);
   }
   const bg = stringToColor(props.user.email);
   return {
     bg: bg,
     color: lightness(bg) > 0.7 ? "#000000" : "#ffffff",
-    text: text,
-    image: null
+    text: text
   };
 }
 
-const data = avatarOptions()
+// Get avatar options
+let data: object = {
+  image: null
+}
 
 if (typeof props.user.img_url === 'string') {
   data.image = props.user.img_url;
 } else if (typeof props.user.img_url === 'object' && Object.keys(props.user.img_url).length) {
   data.image = props.user.img_url.small || props.user.img_url.large || props.user.img_url.original;
+} else {
+  data = Object.assign(data, avatarOptions())
 }
 
 </script>

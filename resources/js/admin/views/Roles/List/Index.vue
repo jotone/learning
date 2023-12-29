@@ -25,28 +25,17 @@
           <tr>
             <th class="static">
               <div class="static-fields">
-                <div class="col-name">
-                  <span>Name</span>
-                  <div class="order"></div>
-                </div>
+                <TableHeadCol field="name" :filters="filters" name="Name" @changeDirection="changeDirection"/>
               </div>
             </th>
             <th>
-              <div class="col-name">
-                <span>Level</span>
-                <div class="order"></div>
-              </div>
+              <TableHeadCol field="level" :filters="filters" name="Level" @changeDirection="changeDirection"/>
             </th>
             <th>
-              <div class="col-name">
-                <span>Creation Date</span>
-                <div class="order"></div>
-              </div>
+              <TableHeadCol field="created_at" :filters="filters" name="Creation Date" @changeDirection="changeDirection"/>
             </th>
             <th>
-              <div class="col-name">
-                <span>Actions</span>
-              </div>
+              <TableHeadCol name="Actions"/>
             </th>
           </tr>
           </thead>
@@ -76,14 +65,14 @@
 </template>
 
 <script setup lang="ts">
-import {inject, ref} from "vue";
+import {inject, reactive, ref} from "vue";
 import {decodeUriQuery, encodeUriQuery} from "../../../libs/RequestHelper"
 import {usePage} from "@inertiajs/vue3";
 
 import DataTableLayout from "../../../shared/DataTableLayout.vue";
 import TableRow from "./TableRow.vue";
 import {FiltersInterface} from "../../../../contracts/FiltersInterface";
-import {Pagination, PerPage, SearchForm} from '../../../components/DataTables';
+import {Pagination, PerPage, SearchForm, TableHeadCol} from '../../../components/DataTables';
 
 defineOptions({layout: DataTableLayout})
 
@@ -97,7 +86,7 @@ let list = ref([]);
 // Decoded URI query
 const query = decodeUriQuery(window.location.search)
 // Page filters list
-let filters = {
+let filters = reactive({
   page: query.page || 1,
   per_page: query.per_page ?? 25,
   order: {
@@ -105,11 +94,10 @@ let filters = {
     dir: query.order?.dir ?? 'desc'
   },
   search: query.search ?? ''
-}
+})
 
 /**
  * GraphQL query string to get roles list
- *
  * @param filters
  * @returns {string}
  */
@@ -127,6 +115,14 @@ const buildQuery = filters => `{
   }
 }`
 
+/**
+ * Change order
+ * @param order
+ */
+const changeDirection = (order: object) => {
+  filters.order = order;
+  request(filters)
+}
 
 /**
  * Change per page items number
