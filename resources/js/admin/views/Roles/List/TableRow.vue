@@ -20,14 +20,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, PropType } from 'vue';
-import { RoleInterface } from "../../../../contracts/RoleInterface.js";
-import { usePage } from "@inertiajs/vue3";
+import {computed, inject, PropType} from 'vue';
+import {RoleInterface} from "../../../../contracts/RoleInterface.js";
+import {usePage} from "@inertiajs/vue3";
 
 const convertDate = inject('convertDate');
+
 const page = usePage();
+
 const props = defineProps({role: Object as PropType<RoleInterface>});
 
-// Link for the role edit page
-const editUrl = computed(() => page.props.routes.roles.edit.replace(/:id/, props.role.id))
+/**
+ * Link for the role edit page
+ * @return {string}
+ */
+const editUrl = computed((): string => page.props.routes.roles.edit.replace(/:id/, props.role.id))
 </script>

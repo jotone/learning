@@ -16,7 +16,6 @@ const page = usePage()
 
 /**
  * GraphQL Query request
- *
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
 const getList = (url, query) => new Promise((resolve, reject) => {
