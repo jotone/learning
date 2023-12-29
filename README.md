@@ -77,8 +77,8 @@ npm i && npm run prod
     - List
       - ~~DataTable~~
       - ~~Pagination~~
-      - PerPage
-      - Directions
+      - ~~PerPage~~
+      - ~~Directions~~
       - Search
       - Remove confirmation
     - Add

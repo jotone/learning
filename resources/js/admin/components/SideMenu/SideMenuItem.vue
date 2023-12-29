@@ -14,8 +14,10 @@ import {SideMenuItemInterface} from "../../../contracts/SideMenuItemInterface";
 // Component properties
 const props = defineProps({item: Object as PropType<SideMenuItemInterface>})
 
-// Check the menu item is active
-const isActive = computed(() => {
+/**
+ * Check the menu item is active
+ */
+const isActive = computed((): boolean => {
   const pathName = window.location.pathname;
   const location = pathName.at(-1) === '/' ? pathName.slice(0, -1) : pathName
   return props.item.route === location;
