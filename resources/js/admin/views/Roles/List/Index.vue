@@ -98,10 +98,10 @@ let filters = reactive({
 
 /**
  * GraphQL query string to get roles list
- * @param filters
+ * @param {FiltersInterface} filters
  * @returns {string}
  */
-const buildQuery = filters => `{
+const buildQuery = (filters: FiltersInterface): string => `{
   roles(
     per_page:${filters.per_page},
     order_by:"${filters.order.by}",
@@ -117,7 +117,7 @@ const buildQuery = filters => `{
 
 /**
  * Change order
- * @param order
+ * @param {object} order
  */
 const changeDirection = (order: object) => {
   filters.order = order;
@@ -151,7 +151,7 @@ const changePage = (filters: FiltersInterface) => request(filters, (filters: Fil
  * @param {FiltersInterface} filters
  * @param {null|function} callback
  */
-const request = (filters: FiltersInterface, callback = null) =>
+const request = (filters: FiltersInterface, callback?: Function) =>
   getList(page.props.routes.roles.api, buildQuery(filters))
     .then(response => {
       list.value = response.data.data.roles;
