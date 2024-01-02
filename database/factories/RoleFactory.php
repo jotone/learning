@@ -15,9 +15,15 @@ class RoleFactory extends Factory
     public function definition(): array
     {
         $name = fake()->jobTitle;
+        // Generate unique slug
+        $slug = generateUrl($name);
+        if ($this->model::where('slug', $slug)->count()) {
+            $slug .= '-' . uniqid();
+        }
+
         return [
-            'name'  => $name,
-            'slug'  => generateUrl($name),
+            'name' => $name,
+            'slug' => $slug,
             'level' => mt_rand(128, 200)
         ];
     }
