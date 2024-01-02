@@ -16,6 +16,7 @@
         <SearchForm
           placeholder="Search for a Role by the name or slug…"
           :search="$page.props.filters?.search"
+          @runSearch="runSearch"
         />
       </div>
 
@@ -130,6 +131,15 @@ const changeDirection = (order: object) => {
  */
 const changeLimit = (limit: number) => {
   filters.per_page = limit
+  request(filters)
+}
+
+/**
+ * Search item results
+ * @param {string} search
+ */
+const runSearch = (search: string) => {
+  filters.search = search;
   request(filters)
 }
 
