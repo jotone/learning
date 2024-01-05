@@ -4,8 +4,13 @@ import laravel from 'laravel-vite-plugin';
 import postcssNesting from 'postcss-nesting';
 
 export default defineConfig({
+  build: {
+    manifest: 'manifest.json',
+  },
   server: {
-    host: '0.0.0.0',
+    hmr: {
+      host: '0.0.0.0',
+    },
   },
   plugins: [
     vue(),

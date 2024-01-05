@@ -7,12 +7,12 @@
 }
 
 body {
-  align-items: center;
-  background-color: #08174a;
   display: flex;
-  font-family: Poppins, sans-serif;
+  align-items: center;
   flex-direction: column;
   justify-content: center;
+  background-color: #08174a;
+  font-family: Poppins, sans-serif;
   min-height: 100vh;
 
   &::before {
@@ -22,18 +22,16 @@ body {
     background-size: cover;
     content: "";
     filter: grayscale(50%);
-    height: 100%;
-    left: 0;
     mix-blend-mode: hard-light;
     position: absolute;
+    left: 0;
     top: 0;
+    height: 100%;
     width: 100%;
     z-index: 0;
   }
 
-  &.forgot::before {
-    background-image: url("../../images/auth/forgot.jpg");
-  }
+  &.forgot::before {background-image: url("../../images/auth/forgot.jpg")}
 }
 
 a {
@@ -52,18 +50,15 @@ h2 {
 }
 
 form {
+  display: none;
   background-color: white;
   border-radius: 30px;
-  display: none;
-  height: 100%;
   padding: 50px 125px;
   position: relative;
+  height: 100%;
   width: 41%;
 
-  .logo-image {
-    padding: 50px 75px;
-    width: 100%;
-  }
+  .logo-image {padding: 50px 75px; width: 100%}
 }
 
 form.active {display: block}
@@ -74,8 +69,8 @@ form.active {display: block}
 }
 
 .form-row {
-  align-items: center;
   display: flex;
+  align-items: center;
   justify-content: center;
   margin-bottom: 20px;
   position: relative;
@@ -86,9 +81,9 @@ form.active {display: block}
 
   p.error {
     color: red;
-    left: 0;
     line-height: 30px;
     position: absolute;
+    left: 0;
     top: -25px;
   }
 
@@ -112,22 +107,22 @@ form.active {display: block}
 }
 
 .back-button {
-  align-items: center;
-  bottom: 40px;
-  cursor: pointer;
   display: flex;
+  align-items: center;
+  cursor: pointer;
   font-size: 18px;
   line-height: 24px;
+  text-decoration: none;
+  bottom: 40px;
   left: calc((100% - 400px) / 2);
   position: absolute;
-  text-decoration: none;
   user-select: none;
 
   .arrow-icon {
-    background-image: url("../../images/icons/arrow.svg");
     display: block;
-    height: 24px;
+    background-image: url("../../images/icons/arrow.svg");
     margin-right: 10px;
+    height: 24px;
     width: 24px;
     transform: rotate(-90deg);
   }

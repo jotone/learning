@@ -42,10 +42,17 @@
           </thead>
           <tbody>
           <template v-for="role in list.data">
-            <TableRow :role="role"/>
+            <TableRow :role="role" @action="showRowActions"/>
           </template>
           </tbody>
         </table>
+
+        <RowActions
+          :actions="rowActions"
+          :model="selectedRow.model"
+          :show="selectedRow.show"
+          :right="selectedRow.right"
+          :top="selectedRow.top"/>
       </div>
 
       <div class="page-controls-wrap">
@@ -63,6 +70,14 @@
       </div>
     </div>
   </div>
+
+  <RemovePopup
+    title="Are you sure you want to delete this Role?"
+    ref="removeRoleModal"
+    :listMessages="{
+      bottom: ['This will delete all content irrevocably.', 'Type <b>Delete</b> to confirm.']
+    }"
+  />
 </template>
 
 <script setup lang="ts">
@@ -73,7 +88,9 @@ import {usePage} from "@inertiajs/vue3";
 import DataTableLayout from "../../../shared/DataTableLayout.vue";
 import TableRow from "./TableRow.vue";
 import {FiltersInterface} from "../../../../contracts/FiltersInterface";
-import {Pagination, PerPage, SearchForm, TableHeadCol} from '../../../components/DataTables';
+import {getFilters, Pagination, PerPage, RowActions, SearchForm, TableHeadCol} from '../../../components/DataTables';
+import {RoleInterface} from "../../../../contracts/RoleInterface";
+import RemovePopup from "../../../components/Popup/RemovePopup.vue";
 
 defineOptions({layout: DataTableLayout})
 
@@ -82,45 +99,69 @@ const getList = inject('getList')
 
 const page = usePage()
 
+// Data-table items list
 let list = ref([]);
+// Remove role modal
+const removeRoleModal = ref(null)
+
+// Selected row model ID
+let selectedRow = reactive({
+  model: {},
+  right: 0,
+  top: 0,
+  show: false
+});
+
+// List of actions for the row popup
+const rowActions = [
+  {
+    name: 'Edit',
+    icon: 'edit-icon',
+    link: page.props.routes.roles.edit
+  }, {
+    name: 'Remove',
+    icon: 'trash-icon',
+    callback: () => {
+      removeRoleModal.value.open([{
+        text: selectedRow.model.name,
+        id: selectedRow.model.id
+      }]).then(result => {
+        if (false !== result && typeof result === 'object') {
+          console.log(result)
+        }
+      })
+    }
+  }
+]
 
 // Decoded URI query
 const query = decodeUriQuery(window.location.search)
+
 // Page filters list
-let filters = reactive({
-  page: query.page || 1,
-  per_page: query.per_page ?? 25,
-  order: {
-    by: query.order?.by ?? 'created_at',
-    dir: query.order?.dir ?? 'desc'
-  },
-  search: query.search ?? ''
-})
+let filters = reactive(getFilters(query))
 
 /**
  * GraphQL query string to get roles list
  * @param {FiltersInterface} filters
  * @returns {string}
  */
-const buildQuery = (filters: FiltersInterface): string => `{
-  roles(
-    per_page:${filters.per_page},
-    order_by:"${filters.order.by}",
-    order_dir:"${filters.order.dir}",
-    page:${filters.page},
-    search:"${filters.search}"
-  ) {
-    total per_page last_page has_more_pages current_page data {
-      id name level created_at
-    }
+const buildQuery = (filters: FiltersInterface): string => `{roles(
+  per_page:${filters.per_page},
+  order_by:"${filters.order.by}",
+  order_dir:"${filters.order.dir}",
+  page:${filters.page},
+  search:"${filters.search}"
+) {
+  total per_page last_page has_more_pages current_page data {
+    id name level created_at
   }
-}`
+}}`
 
 /**
  * Change order
- * @param {object} order
+ * @param {any} order
  */
-const changeDirection = (order: object) => {
+const changeDirection = (order: any) => {
   filters.order = order;
   request(filters)
 }
@@ -155,6 +196,15 @@ const changePage = (filters: FiltersInterface) => request(filters, (filters: Fil
   // Change uri state
   window.history.pushState(window.location.origin + window.location.pathname, "", '?' + encodeUriQuery(state))
 })
+
+const showRowActions = (e, role: RoleInterface) => {
+  const row = e.target.closest('tr');
+  const blockOffset = row.getBoundingClientRect();
+  selectedRow.model = role;
+  selectedRow.right = 10;
+  selectedRow.top = blockOffset.height * row.rowIndex;
+  selectedRow.show = true;
+}
 
 /**
  * Send request to get roles list

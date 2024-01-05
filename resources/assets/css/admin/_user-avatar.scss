@@ -3,10 +3,10 @@
   user-select: none;
 
   .avatar-image {
-    align-items: center;
-    border-radius: 50%;
     display: flex;
+    align-items: center;
     justify-content: center;
+    border-radius: 50%;
     height: 50px;
     width: 50px;
 
@@ -17,8 +17,8 @@
 
     img {
       border-radius: 50%;
-      height: 100%;
       object-fit: cover;
+      height: 100%;
       width: 100%;
     }
   }

@@ -1,9 +1,9 @@
 .icon {
   display: inline-block;
-  height: 16px;
   mask-position: 50%;
   mask-repeat: no-repeat;
   mask-size: contain;
+  height: 16px;
   width: 16px;
 
   &.mirror {transform: scaleX(-1)}
@@ -16,8 +16,16 @@
     mask-image: url("../../images/icons/chevron.svg");
   }
 
+  &.close-icon {
+    mask-image: url("../../images/icons/close.svg");
+  }
+
   &.double-chevron-icon {
     mask-image: url("../../images/icons/double-chevron.svg");
+  }
+
+  &.edit-icon {
+    mask-image: url("../../images/icons/edit.svg");
   }
 
   &.hellip-icon {
@@ -30,6 +38,10 @@
 
   &.search-icon {
     mask-image: url("../../images/icons/search.svg");
+  }
+
+  &.trash-icon {
+    mask-image: url("../../images/icons/trash.svg");
   }
 
   &.user-plus-icon {

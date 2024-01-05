@@ -2,8 +2,8 @@
   padding: 30px;
 
   .content-table-controls {
-    align-items: center;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     flex-wrap: nowrap;
     gap: 15px;
@@ -16,8 +16,8 @@
 
       button, span {
         cursor: pointer;
-        position: absolute;
         font-size: 14px;
+        position: absolute;
         transform: translateY(-50%);
       }
 
@@ -85,20 +85,20 @@
         }
 
         .static-fields {
-          align-items: center;
           display: flex;
+          align-items: center;
           justify-content: flex-start;
         }
       }
 
       th {
         .col-name {
-          align-items: center;
-          cursor: pointer;
           display: flex;
+          align-items: center;
           justify-content: flex-start;
-          font-size: 16px;
           gap: 15px;
+          cursor: pointer;
+          font-size: 16px;
           padding: 8px;
           position: relative;
         }
@@ -111,11 +111,11 @@
         }
 
         .order {
+          display: block;
           background-color: transparent;
           cursor: pointer;
-          display: block;
-          height: 16px;
           mask-image: url("../../images/icons/arrow.svg");
+          height: 16px;
           width: 16px;
 
           &.desc {transform: rotate(180deg); top: 25%}
@@ -127,9 +127,9 @@
       }
 
       td a {
+        display: flex;
         align-items: center;
         color: #909bbf;
-        display: flex;
         font-size: 14px;
         line-height: 18px;
         min-height: 70px;
@@ -160,16 +160,16 @@
   }
 
   .page-controls-wrap {
-    align-items: center;
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     gap: 10px;
     margin-top: 20px;
 
     .per-page-wrap {
+      display: flex;
       align-items: center;
       color: #000e42;
-      display: flex;
       font-size: 14px;
       font-weight: 500;
       gap: 10px;
@@ -179,29 +179,27 @@
     }
 
     .pagination-wrap ul {
-      align-items: center;
       display: flex;
+      align-items: center;
       justify-content: flex-end;
       flex-wrap: nowrap;
 
       li {margin-left: 5px}
 
-      strong {
-        font-weight: 400;
-      }
+      strong {font-weight: 400}
 
       a, span {
+        display: flex;
         align-items: center;
+        justify-content: center;
         border: 1px solid #005aff;
         border-radius: 50%;
-        color: #005aff;
-        cursor: pointer;
-        display: flex;
-        font-size: 14px;
-        height: 30px;
-        justify-content: center;
         padding: 5px;
+        cursor: pointer;
+        color: #005aff;
+        font-size: 14px;
         text-decoration: none;
+        height: 30px;
         width: 30px;
 
         &.active {
