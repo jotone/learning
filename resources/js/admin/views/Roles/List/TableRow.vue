@@ -12,7 +12,7 @@
       <a :href="editUrl">{{ convertDate(role.created_at) }}</a>
     </td>
     <td>
-      <a class="row-actions">
+      <a class="row-actions" @click.prevent="showActionsPanel">
         <i class="icon hellip-icon"></i>
       </a>
     </td>
@@ -26,6 +26,8 @@ import {usePage} from "@inertiajs/vue3";
 
 const convertDate = inject('convertDate');
 
+const emit = defineEmits(['action'])
+
 const page = usePage();
 
 const props = defineProps({role: Object as PropType<RoleInterface>});
@@ -35,4 +37,10 @@ const props = defineProps({role: Object as PropType<RoleInterface>});
  * @return {string}
  */
 const editUrl = computed((): string => page.props.routes.roles.edit.replace(/:id/, props.role.id))
+
+/**
+ * Emit action click event
+ * @param {event} e
+ */
+const showActionsPanel = e => emit('action', e, props.role)
 </script>

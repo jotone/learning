@@ -74,13 +74,7 @@ npm i && npm run prod
 - Roles
   - ~~Api~~
   - Page
-    - List
-      - ~~DataTable~~
-      - ~~Pagination~~
-      - ~~PerPage~~
-      - ~~Directions~~
-      - Search
-      - Remove confirmation
+    - ~~List~~
     - Add
       - Notifications
       - Breadcrumbs

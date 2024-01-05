@@ -41,17 +41,17 @@
       .avatar-wrap {padding: 20px}
 
       .user-credentials {
-        align-items: flex-start;
-        color: #ffffff;
         display: flex;
-        flex-direction: column;
+        align-items: flex-start;
         justify-content: center;
+        flex-direction: column;
+        color: #ffffff;
         left: 85px;
+        top: 50%;
+        width: 70%;
+        transform: translateY(-50%);
         overflow: hidden;
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 70%;
 
         .user-name {font-size: 16px; font-weight: 600; line-height: 24px}
 
@@ -60,27 +60,27 @@
     }
 
     &::after {
-      background-color: white;
+      display: none;
       content: "";
       cursor: pointer;
-      display: none;
-      height: 24px;
+      background-color: white;
       mask-image: url("../../images/icons/arrow.svg");
       position: absolute;
+      transform: translateY(-50%) rotate(90deg);
       right: 0;
       top: 50%;
-      transform: translateY(-50%) rotate(90deg);
+      height: 24px;
       width: 24px;
     }
 
     a {
-      color: #ccdeff;
       display: block;
+      color: #ccdeff;
       font-size: 20px;
       line-height: 30px;
+      text-decoration: none;
       padding: 5px 5px 5px 55px;
       position: relative;
-      text-decoration: none;
     }
 
     &:hover, &.active {
@@ -152,10 +152,10 @@
 
   .icon {
     background-color: #ccdeff;
-    height: 24px;
-    left: 0;
     position: absolute;
+    left: 0;
     top: 7px;
+    height: 24px;
     width: 24px;
 
     &.book-icon {
@@ -246,17 +246,17 @@ body::after {
     url("../../images/icons/user-solid.svg")
     url("../../images/icons/users.svg")
     url("../../images/icons/users-solid.svg");
-  height: 0;
   overflow: hidden;
   position: absolute;
+  height: 0;
   width: 0;
   z-index: -1;
 }
 
 @media screen and (max-width: 1200px) {
   .admin-menu {
-    background-color: #000e42;
     display: none;
+    background-color: #000e42;
     margin: 0;
     padding: 0 20px;
     position: absolute;

@@ -1,8 +1,8 @@
-@import "../font-popins.scss", "icons", "breadcrumbs", "forms", "menu", "user-avatar";
+@import "../font-popins.scss", "icons", "breadcrumbs", "forms", "menu", "popup", "user-avatar";
 
 .site-content-wrap {
-  align-items: stretch;
   display: flex;
+  align-items: stretch;
   justify-content: flex-start;
   min-height: 100vh;
 
@@ -10,20 +10,20 @@
     background-color: #000e42;
     border-bottom-right-radius: 30px;
     border-top-right-radius: 30px;
-    height: 100vh;
-    overflow: auto;
-    padding: 30px;
     position: fixed;
-    min-width: 350px;
+    padding: 30px;
+    height: 100vh;
     width: 18%;
+    min-width: 350px;
+    overflow: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
 
     &::-webkit-scrollbar {display: none}
 
     .view-menu-button {
-      cursor: pointer;
       display: none;
+      cursor: pointer;
       position: absolute;
       right: 25px;
       top: 50%;
@@ -40,10 +40,7 @@
       display: block;
       padding: 0 10px;
 
-      img {
-        object-fit: contain;
-        max-width: 100%;
-      }
+      img {object-fit: contain; max-width: 100%}
     }
 
     .account-type-wrap {
@@ -61,17 +58,17 @@
       }
 
       a {
+        display: block;
         background-color: #ffffff;
         border-radius: 30px;
         color: #005aff;
-        display: block;
         font-size: 16px;
         line-height: 24px;
-        height: 43px;
-        margin: 0 auto;
-        padding: 10px 3px 10px 10px;
         text-align: center;
         text-decoration: none;
+        margin: 0 auto;
+        padding: 10px 3px 10px 10px;
+        height: 43px;
         width: 175px;
       }
     }
@@ -84,10 +81,7 @@
     width: calc(100% - 350px);
   }
 
-  .card {
-    border: 1px solid #d6e0ff;
-    border-radius: 20px;
-  }
+  .card {border: 1px solid #d6e0ff; border-radius: 20px}
 }
 
 .scrollbar {
@@ -101,31 +95,26 @@
 }
 
 .page-name-wrap {
-  align-items: center;
   display: flex;
+  align-items: center;
   gap: 20px;
   margin: 20px 0;
 
-  h1 {
-    font-size: 50px;
-    font-weight: 600;
-  }
+  h1 {font-size: 50px; font-weight: 600}
 }
 
 @media screen and (max-width: 1440px) {
-  .site-content-wrap main {
-    padding: 40px 45px;
-  }
+  .site-content-wrap main {padding: 40px 45px}
 }
 
 @media screen and (max-width: 1200px) {
   .site-content-wrap {
     > nav {
       border-radius: 0;
-      height: 65px;
       overflow: inherit;
       padding: 0;
       position: absolute;
+      height: 65px;
       width: 100%;
       z-index: 1;
 
