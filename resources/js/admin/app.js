@@ -4,9 +4,7 @@ import { createInertiaApp } from '@inertiajs/vue3'
 const clickOutside = {
   beforeMount: (el, binding) => {
     el.clickOutsideEvent = event => {
-      // here I check that click was outside the el and his children
       if (!(el === event.target || el.contains(event.target))) {
-        // and if it did, call method provided in attribute value
         binding.value(event);
       }
     };
@@ -15,6 +13,18 @@ const clickOutside = {
   unmounted: el => {
     document.removeEventListener("click", el.clickOutsideEvent);
   }
+};
+
+// Save the original setItem function
+const originalSetItem = localStorage.setItem;
+// Override the setItem function
+localStorage.setItem = function(key, value) {
+  // Optionally, you can dispatch a custom event
+  const event = new CustomEvent('localStorageSetItem', { detail: { key, value } });
+  window.dispatchEvent(event);
+
+  // Call the original setItem function
+  originalSetItem.apply(this, arguments);
 };
 
 createInertiaApp({

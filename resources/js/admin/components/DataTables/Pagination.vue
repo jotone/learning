@@ -71,13 +71,13 @@ const props = defineProps({
     type: Number,
     default: 1
   },
-  last: {
-    type: Number,
-    default: 1
-  },
   filters: {
     type: Object as PropType<FiltersInterface>,
     required: true
+  },
+  last: {
+    type: Number,
+    default: 1
   },
   perPage: {
     type: Number,

@@ -76,7 +76,7 @@ npm i && npm run prod
   - Page
     - ~~List~~
     - Add
-      - Notifications
+      - ~~Notifications~~
       - Breadcrumbs
     - Edit
     - Remove

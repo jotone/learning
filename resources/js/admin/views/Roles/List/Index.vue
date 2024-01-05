@@ -59,7 +59,6 @@
         <PerPage :value="filters.per_page" @changeLimit="changeLimit"/>
         <Pagination
           v-if="list.last_page > 1"
-          :buildQuery="buildQuery"
           :current="list.current_page"
           :filters="filters"
           :last="list.last_page"
@@ -95,7 +94,7 @@ import RemovePopup from "../../../components/Popup/RemovePopup.vue";
 defineOptions({layout: DataTableLayout})
 
 // Get content roles function
-const getList = inject('getList')
+const request = inject('request')
 
 const page = usePage()
 
@@ -122,12 +121,24 @@ const rowActions = [
     name: 'Remove',
     icon: 'trash-icon',
     callback: () => {
-      removeRoleModal.value.open([{
-        text: selectedRow.model.name,
-        id: selectedRow.model.id
-      }]).then(result => {
+      removeRoleModal.value.open([
+        {
+          text: selectedRow.model.name,
+          id: selectedRow.model.id
+        }
+      ]).then(result => {
         if (false !== result && typeof result === 'object') {
-          console.log(result)
+          for (let i = 0, n = result.length; i < n; i++) {
+            request(
+              page.props.routes.roles.api,
+              `mutation {destroy(id:${result[i].id}){id}}`
+            )
+              .then(response => {
+                if (200 === response.status && null === response.data.data.destroy) {
+                  getList(filters)
+                }
+              })
+          }
         }
       })
     }
@@ -145,7 +156,7 @@ let filters = reactive(getFilters(query))
  * @param {FiltersInterface} filters
  * @returns {string}
  */
-const buildQuery = (filters: FiltersInterface): string => `{roles(
+const listQuery = (filters: FiltersInterface): string => `{roles(
   per_page:${filters.per_page},
   order_by:"${filters.order.by}",
   order_dir:"${filters.order.dir}",
@@ -163,7 +174,7 @@ const buildQuery = (filters: FiltersInterface): string => `{roles(
  */
 const changeDirection = (order: any) => {
   filters.order = order;
-  request(filters)
+  getList(filters)
 }
 
 /**
@@ -172,7 +183,7 @@ const changeDirection = (order: any) => {
  */
 const changeLimit = (limit: number) => {
   filters.per_page = limit
-  request(filters)
+  getList(filters)
 }
 
 /**
@@ -181,14 +192,14 @@ const changeLimit = (limit: number) => {
  */
 const runSearch = (search: string) => {
   filters.search = search;
-  request(filters)
+  getList(filters)
 }
 
 /**
  * Click pagination element
  * @param {FiltersInterface} filters
  */
-const changePage = (filters: FiltersInterface) => request(filters, (filters: FiltersInterface) => {
+const changePage = (filters: FiltersInterface) => getList(filters, (filters: FiltersInterface) => {
   let state = {page: filters.page}
   if (filters.search.length) {
     state.search = filters.search
@@ -211,14 +222,14 @@ const showRowActions = (e, role: RoleInterface) => {
  * @param {FiltersInterface} filters
  * @param {null|function} callback
  */
-const request = (filters: FiltersInterface, callback?: Function) =>
-  getList(page.props.routes.roles.api, buildQuery(filters))
+const getList = (filters: FiltersInterface, callback?: Function) =>
+  request(page.props.routes.roles.api, listQuery(filters))
     .then(response => {
       list.value = response.data.data.roles;
       typeof callback === 'function' && callback(filters)
     })
 
 // Load roles
-request(filters)
+getList(filters)
 
 </script>

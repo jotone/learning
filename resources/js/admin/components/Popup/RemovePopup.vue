@@ -47,7 +47,7 @@
               class="btn"
               :class="button.class"
               :disabled="confirmationText !== button.confirmation"
-              @click="this.resolver(this.items)"
+              @click="handle"
             >
               {{ button.text }}
             </button>
@@ -100,6 +100,13 @@ export default {
         this.active = false
         this.resolver(false)
       }
+    },
+    /**
+     * Click button handler
+     */
+    handle() {
+      this.resolver(this.items)
+      this.active = false;
     },
     /**
      * Open modal window
