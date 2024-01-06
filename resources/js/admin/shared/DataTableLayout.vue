@@ -18,7 +18,7 @@ const page = usePage()
  * GraphQL Query request
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-const getList = (url, query) => new Promise((resolve, reject) => {
+const request = (url, query) => new Promise((resolve, reject) => {
   axios.post(url, {'query': query}, {
     headers: {
       accept: "application/json",
@@ -36,5 +36,5 @@ const getList = (url, query) => new Promise((resolve, reject) => {
   })
 })
 
-provide('getList', getList)
+provide('request', request)
 </script>
