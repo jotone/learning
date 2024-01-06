@@ -82,6 +82,7 @@
 <script setup lang="ts">
 import {inject, reactive, ref} from "vue";
 import {decodeUriQuery, encodeUriQuery} from "../../../libs/RequestHelper"
+import {Notification} from "../../../libs/Notification";
 import {usePage} from "@inertiajs/vue3";
 
 import DataTableLayout from "../../../shared/DataTableLayout.vue";
@@ -136,6 +137,7 @@ const rowActions = [
               .then(response => {
                 if (200 === response.status && null === response.data.data.destroy) {
                   getList(filters)
+                  Notification.set(`Role ${selectedRow.model.name} was successfully removed.`);
                 }
               })
           }
