@@ -35,24 +35,18 @@
           </template>
         </template>
 
-        <div class="popup-confirmation-wrap">
+        <form class="popup-confirmation-wrap" @submit.prevent="handle">
           <div class="popup-confirmation-field">
             <input class="form-input" :placeholder="button.confirmation" v-model.trim="confirmationText">
             <span class="circle-warning">!</span>
             <span class="hint-message" v-if="!confirmationText.length">Can't be blank</span>
           </div>
           <div class="popup-confirmation-button">
-            <button
-              type="button"
-              class="btn"
-              :class="button.class"
-              :disabled="confirmationText !== button.confirmation"
-              @click="handle"
-            >
+            <button class="btn" type="submit" :class="button.class" :disabled="confirmationText !== button.confirmation">
               {{ button.text }}
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>

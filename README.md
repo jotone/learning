@@ -79,7 +79,7 @@ npm i && npm run prod
       - ~~Notifications~~
       - Breadcrumbs
     - Edit
-    - Remove
+    - ~~Remove~~
 - Templates
   - Api
     - List
