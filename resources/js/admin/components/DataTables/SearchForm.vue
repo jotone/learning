@@ -36,7 +36,7 @@ const props = defineProps({
   },
   showResetLink: {
     type: Boolean,
-    default: true
+    default: false
   }
 })
 

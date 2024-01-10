@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BaseDashboardController;
+use App\Models\Role;
 use Inertia\Response;
 
 class RoleController extends BaseDashboardController
@@ -18,9 +19,7 @@ class RoleController extends BaseDashboardController
             view: 'Roles/List/Index',
             shared: [
                 'breadcrumbs' => [
-                    [
-                        'name' => 'Roles'
-                    ]
+                    ['name' => 'Roles']
                 ],
                 'buttons' => [
                     [
@@ -43,6 +42,8 @@ class RoleController extends BaseDashboardController
     }
 
     /**
+     * Returns the page for creating role
+     *
      * @return Response
      */
     public function create(): Response
@@ -57,16 +58,11 @@ class RoleController extends BaseDashboardController
         }
 
         return $this->view(
-            view: 'Roles/Form/Create',
+            view: 'Roles/Form/Index',
             shared: [
                 'breadcrumbs' => [
-                    [
-                        'name' => 'Roles',
-                        'url' => route('dashboard.roles.index')
-                    ],
-                    [
-                        'name' => 'Create Role'
-                    ]
+                    ['name' => 'Roles', 'url' => route('dashboard.roles.index')],
+                    ['name' => 'Create Role']
                 ],
                 'pageName' => 'Create Role',
                 'permissions' => $permissions,
@@ -81,9 +77,42 @@ class RoleController extends BaseDashboardController
             ]);
     }
 
-    public function edit()
+    /**
+     * Returns the page for editing role
+     *
+     * @param Role $role
+     * @return Response
+     */
+    public function edit(Role $role): Response
     {
+        try {
+            $permissions = [
+                'graphql' => $this->graphQlList(),
+                'dashboard' => $this->dashboardList()
+            ];
+        } catch (\ReflectionException $e) {
+            abort(500, $e->getMessage());
+        }
 
+        return $this->view(
+            view: 'Roles/Form/Index',
+            shared: [
+                'breadcrumbs' => [
+                    ['name' => 'Roles', 'url' => route('dashboard.roles.index')],
+                    ['name' => 'Edit Role']
+                ],
+                'model' => $role->load('permissions'),
+                'pageName' => sprintf('Edit Role "%s"', $role->name),
+                'permissions' => $permissions,
+                'routes' => [
+                    'roles' => [
+                        'api' => route('graphql.role')
+                    ]
+                ]
+            ],
+            scripts: [
+                'css' => ['resources/assets/css/admin/characteristics-table.scss']
+            ]);
     }
 
     /**

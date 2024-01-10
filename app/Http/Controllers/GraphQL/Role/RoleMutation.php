@@ -33,7 +33,7 @@ abstract class RoleMutation extends Mutation
                 $methods = [];
                 // Loop through the controller methods
                 foreach ($controller_methods as $method => $allowance) {
-                    if ($allowance !== '0') {
+                    if (toBool($allowance)) {
                         $methods[] = $method;
                     }
                 }
