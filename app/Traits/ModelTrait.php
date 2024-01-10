@@ -4,12 +4,10 @@ namespace App\Traits;
 
 use App\Classes\FileHelper;
 use App\Models\Settings;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic;
-use function PHPUnit\Framework\returnArgument;
 
 trait ModelTrait
 {
@@ -116,30 +114,5 @@ trait ModelTrait
                     ->save($dest . pathinfo($img_url, PATHINFO_BASENAME));
             }
         }
-    }
-
-    /**
-     * Model "status" field getter/setter
-     *
-     * @param array $statuses
-     * @return Attribute
-     */
-    protected function treatStatusField(array $statuses = []): Attribute
-    {
-        return Attribute::make(
-            get: fn(?int $val) => $statuses[$val],
-            set: function (int|string $val) use ($statuses) {
-                $flipped_statuses = array_flip($statuses);
-                $val = mb_strtolower($val);
-                if (
-                    (is_numeric($val) && !isset($statuses[$val]))
-                    || (!is_numeric($val) && is_string($val) && !isset($flipped_statuses[$val]))
-                ) {
-                    throw new \Exception('Unknown status ' . $val);
-                }
-
-                return is_numeric($val) ? $val : $flipped_statuses[$val];
-            }
-        );
     }
 }

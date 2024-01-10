@@ -3,14 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\{AdminMenu, Permission, Role, Settings, User};
-use App\Traits\PermissionListTrait;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Collection;
 
 class AppInstall extends Command
 {
-    use PermissionListTrait;
-
     /**
      * The name and signature of the console command.
      *
@@ -34,15 +30,10 @@ class AppInstall extends Command
 
         $files = $this->installationFiles();
 
-
-
         // Install roles
         $this->runWithTimer('Creating user roles', function () use ($files) {
             $this->installRoles($files['roles']);
         });
-
-        // Install super user permissions
-        $super_user_roles = $this->installSuperUser();
 
         // Install superuser and admin accounts
         $this->runWithTimer(
@@ -55,8 +46,8 @@ class AppInstall extends Command
                     'email_verified_at' => now(),
                     'password' => base64_decode('OFNUUFQwbUJCMDZnXkV1Mg=='),
                     'activated_at' => now(),
-                    'role_id' => $super_user_roles[0]->id,
-                    'status' => 0
+                    'role_id' => Role::firstWhere('level', '<', 1)->id,
+                    'status' => 'active'
                 ])
         );
 
@@ -207,40 +198,5 @@ class AppInstall extends Command
             $result[$role->slug] = $role->id;
         }
         return $result;
-    }
-
-    /**
-     * Install super user permissions
-     *
-     * @return Collection
-     * @throws \Exception
-     */
-    protected function installSuperUser(): Collection
-    {
-        $super_user_roles = Role::where('level', '0')->get();
-
-        $folders = [];
-        if (is_dir(app_path('Http/Controllers/Api/'))) {
-            $folders[] = app_path('Http/Controllers/Api/');
-        }
-        if (is_dir(app_path('Http/Controllers/Dashboard/'))) {
-            $folders[] = app_path('Http/Controllers/Dashboard/');
-        }
-
-        $this->runWithTimer('Binding permissions to roles', function () use ($super_user_roles, $folders) {
-            $permission_list = $this->permissionList($folders);
-
-            foreach ($super_user_roles as $role) {
-                foreach ($permission_list as $permission) {
-                    Permission::create([
-                        'role_id' => $role->id,
-                        'controller' => $permission['class'],
-                        'allowed_methods' => $permission['methods']
-                    ]);
-                }
-            }
-        });
-
-        return $super_user_roles;
     }
 }

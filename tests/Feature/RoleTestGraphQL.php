@@ -92,9 +92,8 @@ class RoleTestGraphQL extends TestCase
             ->actingAs($this->actor)
             ->post(route('graphql.role'), [
                 'query' => sprintf(
-                    'mutation {create (name: "%s", slug: "%s", level: %s, permissions: "%s") {id, name, slug, level}}',
+                    'mutation {create (name: "%s", level: %s, permissions: "%s") {id, name, slug, level}}',
                     $role->name,
-                    $role->slug,
                     $role->level,
                     base64_encode(json_encode([
                         self::CONTROLLER => ['index' => 1]
@@ -115,7 +114,7 @@ class RoleTestGraphQL extends TestCase
 
         $this->assertDatabaseHas('roles', [
             'name' => $role->name,
-            'slug' => $role->slug,
+            'slug' => generateUrl($role->name),
             'level' => $role->level,
         ]);
     }

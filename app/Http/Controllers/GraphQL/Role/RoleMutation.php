@@ -57,6 +57,6 @@ abstract class RoleMutation extends Mutation
      */
     protected function checkUserRoleLevel(int $level): bool
     {
-        return $level <= auth()->user()->role->level;
+        return $level < auth()->user()->role->level;
     }
 }

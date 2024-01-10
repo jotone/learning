@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import ContentPageLayout from "../../shared/ContentPageLayout.vue";
+import Layout from "../../shared/Layout.vue";
 
-defineOptions({layout: ContentPageLayout})
+defineOptions({layout: Layout})
 </script>

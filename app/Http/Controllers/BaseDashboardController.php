@@ -53,7 +53,6 @@ class BaseDashboardController extends Controller
      */
     protected function buildSideMenu(): array
     {
-        $user_permissions = $this->getAuthUserPermissions();
         $routes = $this->getDashboardRoutes();
         $side_menu = AdminMenu::select(['name', 'route', 'img', 'section'])
             ->whereNull('parent_id')
@@ -61,10 +60,7 @@ class BaseDashboardController extends Controller
             ->orderBy('position')
             ->get()
             ->map(
-                fn($model) => str_starts_with($model->route, 'http') || (
-                    isset($routes[$model->route])
-                    && isset($user_permissions[$routes[$model->route]])
-                )
+                fn($model) => str_starts_with($model->route, 'http') || (isset($routes[$model->route]))
                     ? $model
                     : null
             );
@@ -78,23 +74,6 @@ class BaseDashboardController extends Controller
         }
 
         return $menu;
-    }
-
-    /**
-     * Get user permissions list as Controller @ action array
-     *
-     * @return array
-     */
-    protected function getAuthUserPermissions(): array
-    {
-        $result = [];
-        foreach (auth()->user()->role->permissions as $permission) {
-            foreach ($permission->allowed_methods as $method) {
-                $result[] = $permission->controller . '@' . $method;
-            }
-        }
-
-        return array_flip($result);
     }
 
     /**

@@ -13,21 +13,29 @@ export class Notification {
     })
   }
 
-  /*static flush() {
-    localStorage.removeItem('notifications')
-  }*/
-
   /**
    * Set notification message
    * @param {string} message
    * @param {string} type
    */
-  static set(message, type = 'warning') {
+  static set(message, type) {
     const storageData = localStorage.getItem('notifications');
     let messages = null !== storageData ? JSON.parse(storageData) : [];
 
     messages.push({text: message, type: type})
 
     localStorage.setItem('notifications', JSON.stringify(messages))
+  }
+
+  static danger(message) {
+    this.set(message, 'danger')
+  }
+
+  static success(message) {
+    this.set(message, 'success')
+  }
+
+  static warning(message) {
+    this.set(message, 'warning')
   }
 }
