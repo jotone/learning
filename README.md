@@ -73,12 +73,7 @@ npm i && npm run prod
 
 - Roles
   - ~~Api~~
-  - Page
-    - ~~List~~
-    - ~~Add~~
-    - Edit
-      - Breadcrumbs
-    - ~~Remove~~
+  - ~~Page~~
   - Mobile view
 - Settings
   - Api

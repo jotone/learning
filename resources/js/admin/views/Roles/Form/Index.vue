@@ -39,6 +39,7 @@
                   placeholder="Role level..."
                   type="number"
                   max="255"
+                  required
                   :min="$attrs.auth.role.level"
                   v-model="form.level"
                 >
@@ -65,6 +66,7 @@
             <TableRow
               :controller="controller"
               :methods="methods"
+              :list="form.graphql"
               namespace="GraphQL"
               @updateForm="updateForm"
             />
@@ -73,6 +75,7 @@
             <TableRow
               :controller="controller"
               :methods="methods"
+              :list="form.dashboard"
               namespace="Dashboard"
               @updateForm="updateForm"
             />
@@ -111,23 +114,32 @@ const request = inject('request')
 // Page variables
 const page = usePage();
 
+// Build the already set role permissions
+let rolePermissions = {};
+if ('model' in page.props) {
+  for (let i = 0, n = page.props.model.permissions.length; i < n; i++) {
+    const permission = page.props.model.permissions[i]
+
+    const controller = permission.controller.split('\\').pop();
+    rolePermissions[controller] = permission.allowed_methods
+  }
+}
+
 /**
  * Build the role permissions list
  * @param form
  */
 const buildPermissions = (form: any) => {
   for (let type in page.props.permissions) {
-    if (!form.hasOwnProperty(type)) {
-      form[type] = {}
-    }
+    // Set form type body if it does not exist
+    !form.hasOwnProperty(type) && (form[type] = {})
     for (let controller in page.props.permissions[type]) {
-      if (!form[type].hasOwnProperty(controller)) {
-        form[type][controller] = {}
-      }
+      // Set form controller type if it does not exist
+      !form[type].hasOwnProperty(controller) && (form[type][controller] = {})
       for (let i = 0, n = page.props.permissions[type][controller].length; i < n; i++) {
         const action = page.props.permissions[type][controller][i]
         if (!form[type][controller].hasOwnProperty(action)) {
-          form[type][controller][action] = 0;
+          form[type][controller][action] = +(rolePermissions.hasOwnProperty(controller) && rolePermissions[controller].indexOf(action) >= 0);
         }
       }
     }
@@ -150,40 +162,52 @@ const updateForm = (type: string, controller: string, action: string, value: num
 /**
  * Send form request
  */
-const submit = () => {
+const submit = (e: SubmitEvent) => {
+  // Set mutation type depends on exists model or not
+  const mutationType = page.props.hasOwnProperty('model') ? 'update' : 'create'
+  let query = `name:"${form.name}",level:${form.level}`
+  // If it is update mutation
+  if (page.props.hasOwnProperty('model')) {
+    query = `id:${page.props.model.id},${query}`;
+  }
+
   let data = {
     permissions: {}
   }
-  let query = `name:"${form.name}",level:${form.level}`
   for (let field in form) {
     if (field === 'slug' && form.slug.length) {
       query = `slug:"${form.slug}",${query}`
-    } else if (field === 'dashboard') {
+    } else if (field === 'dashboard' || field === 'graphql') {
       for (let controller in form[field]) {
-        data.permissions['App\\Http\\Controllers\\Dashboard\\' + controller] = form[field][controller];
-      }
-    } else if (field === 'graphql') {
-      for (let controller in form[field]) {
-        data.permissions['App\\GraphQL\\Schemas\\' + controller] = form[field][controller];
+        data.permissions[field === 'dashboard' ? 'App\\Http\\Controllers\\Dashboard\\' : 'App\\GraphQL\\Schemas\\' + controller] = form[field][controller];
       }
     }
   }
-
+  // Set permissions to the query
   query += `,permissions:"${btoa(JSON.stringify(data.permissions))}"`
-  request(page.props.routes.roles.api, `mutation {create (${query}) {id, name, slug, level}}`)
+
+  // Send request
+  request(page.props.routes.roles.api, `mutation {${mutationType} (${query}) {id, name, slug, level}}`)
     .then(response => {
       if (response.data.hasOwnProperty('data')) {
-        Notification.success(`Role "${response.data.data.create.name}" was successfully created.`)
-        // Reset form
+        // Show notification
+        Notification.success(
+          page.props.hasOwnProperty('model')
+            ? `Role "${response.data.data.update.name}" was successfully modified.`
+            : `Role "${response.data.data.create.name}" was successfully created.`
+        )
 
-        form.name = '';
-        form.slug = '';
-        form.level = '';
-        form = buildPermissions(form)
+        // Reset form if created
+        if (!page.props.hasOwnProperty('model')) {
+          form.name = '';
+          form.slug = '';
+          form.level = '';
+          e.target.reset();
+          form = buildPermissions(form)
+        }
       }
     })
 }
-
 
 // Page form variables
 let form = reactive({
