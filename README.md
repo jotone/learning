@@ -75,20 +75,13 @@ npm i && npm run prod
   - ~~Api~~
   - Page
     - ~~List~~
-    - Add
-      - ~~Notifications~~
-      - Breadcrumbs
+    - ~~Add~~
     - Edit
+      - Breadcrumbs
     - ~~Remove~~
-- Templates
-  - Api
-    - List
-    - Create
-    - Update
-    - Remove
+  - Mobile view
 - Settings
   - Api
-    - List
     - Update
   - Page
     - Main
@@ -102,13 +95,13 @@ npm i && npm run prod
     - Language
       - Api
       - Page
-- Courses
+- Categories
   - Api
     - List
     - Create
     - Update
     - Delete
-- Categories
+- Courses
   - Api
     - List
     - Create

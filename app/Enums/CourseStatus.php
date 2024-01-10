@@ -2,9 +2,13 @@
 
 namespace App\Enums;
 
+use App\Traits\EnumTrait;
+
 enum CourseStatus: string
 {
-    case 'active' = '0';
-    case 'coming_soon' = '1';
-    case 'draft' = '2';
+    use EnumTrait;
+
+    case active = '0';
+    case coming_soon = '1';
+    case draft = '2';
 }

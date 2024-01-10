@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //
-//Route::group(['middleware' => ['auth:sanctum', 'admin']], function () {
+//Route::group(['middleware' => ['auth:sanctum']], function () {
 //});

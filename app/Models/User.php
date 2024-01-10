@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Classes\FileHelper;
+use App\Enums\{ShirtSize, UserStatus};
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany};
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -115,6 +115,20 @@ class User extends Authenticatable
     }
 
     /**
+     * Get user's full name
+     *
+     * @return Attribute
+     */
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn(?string $value, array $attributes) => mb_convert_case(
+                $attributes['first_name'] . ' ' . $attributes['last_name'], MB_CASE_TITLE
+            )
+        );
+    }
+
+    /**
      * Set the avatar image
      *
      * @return Attribute
@@ -126,6 +140,20 @@ class User extends Authenticatable
             set: fn(mixed $value, array $attributes) => $value instanceof UploadedFile && $value->isWritable()
                 ? $this->saveImage($value, 'users', 'user_img_processing')
                 : (is_string($value) ? $value : $attributes['img_url'] ?? null)
+        );
+    }
+
+    /**
+     * Get or set User's shirt size
+     *
+     * @return Attribute
+     */
+    protected function shirtSize(): Attribute
+    {
+        $sizes = config('enums.user.shirt_sizes') ?? [];
+        return Attribute::make(
+            get: fn(?int $val) => ShirtSize::fromValue($val),
+            set: fn(string $size) => ShirtSize::fromName($size)
         );
     }
 
@@ -148,46 +176,9 @@ class User extends Authenticatable
      */
     protected function status(): Attribute
     {
-        return $this->treatStatusField(config('enums.user.statuses'));
-    }
-
-    /**
-     * Get or set User's shirt size
-     *
-     * @return Attribute
-     */
-    protected function shirtSize(): Attribute
-    {
-        $sizes = config('enums.user.shirt_sizes') ?? [];
         return Attribute::make(
-            get: fn(?int $val) => $sizes[$val] ?? null,
-            set: function (int|string $val) use ($sizes) {
-                $val = str_replace('-', ' ', mb_strtolower($val));
-                $flipped_sizes = array_flip(array_map(fn($item) => str_replace('-', ' ', mb_strtolower($item)), $sizes));
-
-                if (
-                    (is_numeric($val) && !isset($sizes[$val]))
-                    || (!is_numeric($val) && is_string($val) && !isset($flipped_sizes[$val]))
-                ) {
-                    throw new \Exception('Unknown shirt size ' . $val);
-                }
-
-                return is_numeric($val) ? $val : $flipped_sizes[$val];
-            }
-        );
-    }
-
-    /**
-     * Get user's full name
-     *
-     * @return Attribute
-     */
-    protected function fullName(): Attribute
-    {
-        return Attribute::make(
-            get: fn(?string $value, array $attributes) => mb_convert_case(
-                $attributes['first_name'] . ' ' . $attributes['last_name'], MB_CASE_TITLE
-            )
+            get: fn(?int $val) => UserStatus::fromValue($val),
+            set: fn(string $val) => UserStatus::fromName($val)
         );
     }
 

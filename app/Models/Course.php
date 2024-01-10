@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Classes\FileHelper;
+use App\Enums\{CourseStatus, CourseTracking};
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -82,16 +83,6 @@ class Course extends Model
     ];
 
     /**
-     * Get or set User's status
-     *
-     * @return Attribute
-     */
-    protected function status(): Attribute
-    {
-        return $this->treatStatusField(config('enums.course.statuses'));
-    }
-
-    /**
      * Set course avatar image
      *
      * @return Attribute
@@ -103,6 +94,31 @@ class Course extends Model
             set: fn(mixed $value, array $attributes) => $value instanceof UploadedFile && $value->isWritable()
                 ? $this->saveImage($value, 'courses', 'course_img_processing')
                 : (is_string($value) ? $value : $attributes['img_url'] ?? null)
+        );
+    }
+
+    /**
+     * Get or set User's status
+     *
+     * @return Attribute
+     */
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: function ($val) {
+                dd('Course Status', $val);
+            },
+            set: fn(string $val) => CourseStatus::fromName($val)
+        );
+    }
+
+    protected function trackingType(): Attribute
+    {
+        return Attribute::make(
+            get: function ($val) {
+                dd('Course Status', $val);
+            },
+            set: fn(string $val) => CourseTracking::fromName($val)
         );
     }
 

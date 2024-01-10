@@ -1,5 +1,28 @@
 @import "../font-popins.scss", "icons", "breadcrumbs", "forms", "menu", "notification", "popup", "user-avatar";
 
+.col-1-2 {
+  width: 50%;
+}
+
+.col-1-5 {
+  width: 20%;
+}
+
+.col-4-5 {
+  width: 80%;
+}
+
+.f-st-fs {
+  display: flex;
+  align-items: stretch;
+}
+
+.f-c-c {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .site-content-wrap {
   display: flex;
   align-items: stretch;
@@ -80,8 +103,24 @@
     right: 0;
     width: calc(100% - 350px);
   }
+}
 
-  .card {border: 1px solid #d6e0ff; border-radius: 20px}
+.card {
+  border: 1px solid #d6e0ff;
+  border-radius: 20px;
+
+  .row {
+    display: flex;
+    padding: 25px;
+  }
+}
+
+section {
+  h3 {
+    color: #00145e;
+    font-size: 24px;
+    margin: 25px 0;
+  }
 }
 
 .scrollbar {

@@ -1,0 +1,48 @@
+.characteristics-table {
+  margin: 20px 0;
+  width: 100%;
+
+  th, td {padding: 15px}
+
+  thead {
+    background-color: #00145e;
+    color: #e6efff;
+
+    tr {border: 1px solid #e6efff}
+
+    th {
+      text-align: center;
+
+      &:first-child {
+        min-width: 320px;
+        width: 30%;
+      }
+    }
+  }
+
+  td.solid-col {
+    color: #e6efff;
+    line-height: 20px;
+    text-align: right;
+    background-color: #00145e;
+    border: 1px solid #e6efff;
+  }
+
+  td.list-col {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    label {
+      border: 1px solid #00145e;
+      border-radius: 6px;
+      min-width: 110px;
+      padding: 6px 12px;
+
+      > span {
+        text-transform: capitalize;
+        user-select: none;
+      }
+    }
+  }
+}

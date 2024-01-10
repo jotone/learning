@@ -27,11 +27,6 @@ class MutationStore extends RoleMutation
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'string']
             ],
-            'slug' => [
-                'name' => 'slug',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'string', 'unique:roles,slug'],
-            ],
             'level' => [
                 'name' => 'level',
                 'type' => Type::nonNull(Type::int()),
@@ -60,6 +55,8 @@ class MutationStore extends RoleMutation
         if ($this->checkUserRoleLevel($args['level'])) {
             return new Error(self::ACCESS_FORBIDDEN_MESSAGE);
         }
+
+        $args['slug'] = generateUrl($args['name']);
 
         $role = Role::create($args);
 

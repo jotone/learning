@@ -2,13 +2,16 @@
 
 namespace App\Enums;
 
+use App\Traits\EnumTrait;
+
 enum ShirtSize: string
 {
-    case 'XS-Small' = '0';
-    case 'Small' = '1';
-    case 'Medium' = '2';
-    case 'Large' = '3';
-    case 'XL-Large' = '4';
-    case 'XXL-Large' = '5';
-    case 'XXXL-Large' = '6';
+    use EnumTrait;
+
+    case xs = '0';
+    case s = '1';
+    case m = '2';
+    case l = '3';
+    case xl = '4';
+    case xxl = '5';
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ShirtSize;
 use App\Models\{Role, User};
 use App\Traits\FakerFactoryTrait;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -53,7 +54,7 @@ class UserFactory extends Factory
             'ext_addr' => fake()->buildingNumber,
             'zip' => fake()->postcode,
             'phone' => fake()->e164PhoneNumber,
-            'shirt_size' => Arr::random(config('enums.user.shirt_sizes'))
+            'shirt_size' => Arr::random(ShirtSize::cases())->name
         ];
     }
 

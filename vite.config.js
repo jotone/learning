@@ -19,6 +19,7 @@ export default defineConfig({
         'resources/assets/css/reset.scss',
         'resources/assets/css/admin/app.scss',
         'resources/assets/css/admin/content-table.scss',
+        'resources/assets/css/admin/characteristics-table.scss',
         'resources/assets/css/auth/login.scss',
         'resources/js/admin/app.js'
       ],

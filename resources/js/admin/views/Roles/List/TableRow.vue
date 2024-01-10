@@ -21,8 +21,8 @@
 
 <script setup lang="ts">
 import {computed, inject, PropType} from 'vue';
-import {RoleInterface} from "../../../../contracts/RoleInterface.js";
 import {usePage} from "@inertiajs/vue3";
+import {RoleInterface} from "../../../../contracts/RoleInterface.js";
 
 const convertDate = inject('convertDate');
 

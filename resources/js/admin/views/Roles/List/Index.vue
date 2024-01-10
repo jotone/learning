@@ -1,21 +1,10 @@
 <template>
-  <header>
-    <div class="page-name-wrap">
-      <h1>{{ page.props.pageName }}</h1>
-
-      <a class="btn">
-        <i class="icon plus-icon"></i>
-        <span>Role Create</span>
-      </a>
-    </div>
-  </header>
-
   <div class="card">
     <div class="content-table-wrap">
       <div class="content-table-controls">
         <SearchForm
           placeholder="Search for a Role by the name or slug…"
-          :search="$page.props.filters?.search"
+          :search="$attrs.filters?.search"
           @runSearch="runSearch"
         />
       </div>
@@ -46,14 +35,15 @@
           </template>
           </tbody>
         </table>
-
-        <RowActions
-          :actions="rowActions"
-          :model="selectedRow.model"
-          :show="selectedRow.show"
-          :right="selectedRow.right"
-          :top="selectedRow.top"/>
       </div>
+
+      <RowActions
+        :actions="rowActions"
+        :model="selectedRow.model"
+        :show="selectedRow.show"
+        :right="selectedRow.right"
+        :top="selectedRow.top"
+      />
 
       <div class="page-controls-wrap">
         <PerPage :value="filters.per_page" @changeLimit="changeLimit"/>
@@ -75,33 +65,35 @@
     ref="removeRoleModal"
     :listMessages="{
       bottom: ['This will delete all content irrevocably.', 'Type <b>Delete</b> to confirm.']
-    }"
-  />
+    }"/>
 </template>
 
 <script setup lang="ts">
+// Vue libs
 import {inject, reactive, ref} from "vue";
-import {decodeUriQuery, encodeUriQuery} from "../../../libs/RequestHelper"
-import {Notification} from "../../../libs/Notification";
 import {usePage} from "@inertiajs/vue3";
-
-import DataTableLayout from "../../../shared/DataTableLayout.vue";
-import TableRow from "./TableRow.vue";
+// Other Libs
+import {decodeUriQuery, encodeUriQuery} from "../../../libs/RequestHelper";
+import {Notification} from "../../../libs/Notification";
+// Interfaces
 import {FiltersInterface} from "../../../../contracts/FiltersInterface";
-import {getFilters, Pagination, PerPage, RowActions, SearchForm, TableHeadCol} from '../../../components/DataTables';
 import {RoleInterface} from "../../../../contracts/RoleInterface";
+// Components
+import {getFilters, Pagination, PerPage, RowActions, SearchForm, TableHeadCol} from '../../../components/DataTables';
 import RemovePopup from "../../../components/Popup/RemovePopup.vue";
+import TableRow from "./TableRow.vue";
+// Layout
+import Layout from "../../../shared/Layout.vue";
 
-defineOptions({layout: DataTableLayout})
+defineOptions({layout: Layout})
 
 // Get content roles function
 const request = inject('request')
-
+// Page variables
 const page = usePage()
-
 // Data-table items list
 let list = ref([]);
-// Remove role modal
+// Modal for the role remove
 const removeRoleModal = ref(null)
 
 // Selected row model ID
@@ -122,27 +114,29 @@ const rowActions = [
     name: 'Remove',
     icon: 'trash-icon',
     callback: () => {
-      removeRoleModal.value.open([
-        {
-          text: selectedRow.model.name,
-          id: selectedRow.model.id
-        }
-      ]).then(result => {
-        if (false !== result && typeof result === 'object') {
-          for (let i = 0, n = result.length; i < n; i++) {
-            request(
-              page.props.routes.roles.api,
-              `mutation {destroy(id:${result[i].id}){id}}`
-            )
-              .then(response => {
-                if (200 === response.status && null === response.data.data.destroy) {
-                  getList(filters)
-                  Notification.set(`Role ${selectedRow.model.name} was successfully removed.`);
-                }
-              })
+      const items = [{text: selectedRow.model.name, id: selectedRow.model.id}];
+      removeRoleModal.value
+        .open(items)
+        .then(result => {
+          if (false !== result && typeof result === 'object') {
+            const requests = [];
+            for (let i = 0, n = result.length; i < n; i++) {
+              requests.push(request(
+                page.props.routes.roles.api,
+                `mutation {destroy(id:${result[i].id}){id}}`
+              ));
+            }
+            Promise.all(requests).then(() => {
+              getList(filters)
+              if (items.length > 1) {
+                let roles = items.reduce((sum, item, i) => i === 0 ? `"${item.text}"` : `"${sum}", "${item.text}"`, '')
+                Notification.warning(`Roles ${roles} were successfully removed.`);
+              } else {
+                Notification.warning(`Role "${items[0].text}" was successfully removed.`);
+              }
+            })
           }
-        }
-      })
+        })
     }
   }
 ]
@@ -215,7 +209,7 @@ const showRowActions = (e, role: RoleInterface) => {
   const blockOffset = row.getBoundingClientRect();
   selectedRow.model = role;
   selectedRow.right = 10;
-  selectedRow.top = blockOffset.height * row.rowIndex;
+  selectedRow.top = blockOffset.height * (row.rowIndex + 1);
   selectedRow.show = true;
 }
 

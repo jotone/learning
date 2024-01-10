@@ -1,12 +1,12 @@
 <template>
   <div class="site-content-wrap">
     <nav>
-      <a class="logo-image" :href="$page.props.routes.dashboard.index">
-        <img :src="$page.props.settings.logo_img_admin" alt=""/>
+      <a class="logo-image" :href="$attrs.routes.dashboard.index">
+        <img :src="$attrs.settings.logo_img_admin" alt=""/>
       </a>
 
       <ul class="admin-menu" :class="{active: sideMenuActive}">
-        <li v-for="block in $page.props.menu">
+        <li v-for="block in $attrs.menu">
           <ul>
             <template v-for="item in block">
               <SideMenuItem :item="item"/>
@@ -23,11 +23,11 @@
         <li class="actor-menu-wrap">
           <ul>
             <li class="user-info-wrap">
-              <Avatar :user="$page.props.auth"/>
+              <Avatar :user="$attrs.auth"/>
 
               <div class="user-credentials">
-                <div class="user-name">{{ $page.props.auth.first_name }} {{ $page.props.auth.last_name }}</div>
-                <div class="user-email">{{ $page.props.auth.email }}</div>
+                <div class="user-name">{{ $attrs.auth.first_name }} {{ $attrs.auth.last_name }}</div>
+                <div class="user-email">{{ $attrs.auth.email }}</div>
               </div>
             </li>
             <li>
@@ -37,7 +37,7 @@
               </a>
             </li>
             <li>
-              <a :href="$page.props.routes.auth.logout">
+              <a :href="$attrs.routes.auth.logout">
                 <i class="icon logout-icon"></i>
                 <span>Log Out</span>
               </a>
@@ -52,35 +52,52 @@
     </nav>
     <main>
       <ul class="breadcrumbs">
-        <li v-for="item in $page.props.breadcrumbs">
+        <li v-for="item in $attrs.breadcrumbs">
           <a :href="item.url" v-if="'url' in item">
             {{ item.name }}
           </a>
           <span v-else>{{ item.name }}</span>
         </li>
       </ul>
-      <slot></slot>
-    </main>
-  </div>
 
-  <div class="notification-list">
-    <TransitionGroup name="notification-list" tag="ul" v-if="notificationList.length">
-      <li
-        v-for="(message, i) in notificationList"
-        v-html="message.text"
-        :class="message.type"
-        :key="i"
-      ></li>
-    </TransitionGroup>
+      <header>
+        <div class="page-name-wrap">
+          <h1>{{ $attrs.pageName }}</h1>
+
+          <template v-if="'buttons' in $attrs">
+            <a v-for="button in $attrs.buttons" class="btn" :href="button.url">
+              <i v-if="button.hasOwnProperty('icon')" class="icon" :class="button.icon"></i>
+              <span>{{ button.name }}</span>
+            </a>
+          </template>
+        </div>
+      </header>
+
+      <TransitionGroup class="notification-list" name="notification-list" tag="ul" v-if="notificationList.length">
+        <li
+          v-for="(message, i) in notificationList"
+          v-html="message.text"
+          :class="message.type"
+          :key="i"
+        ></li>
+      </TransitionGroup>
+
+      <slot/>
+    </main>
   </div>
 </template>
 
 <script setup>
-import {ref, provide, reactive, watch} from "vue";
+import {ref, provide} from "vue";
+import {usePage} from "@inertiajs/vue3";
 import {Notification} from "../libs/Notification.js";
+import axios from "axios";
 import moment from "moment";
+
 import Avatar from "../components/User/Avatar.vue";
 import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
+
+const page = usePage();
 
 /**
  * Toggle the active status for the side menu
@@ -101,7 +118,9 @@ window.addEventListener('localStorageSetItem', e => {
       // View notifications
       notificationList.value = notifications
       // Remove notifications
-      setTimeout(() => {notificationList.value = []}, notificationDelay)
+      setTimeout(() => {
+        notificationList.value = []
+      }, notificationDelay)
     })
   }
 });
@@ -113,6 +132,34 @@ window.addEventListener('localStorageSetItem', e => {
  * @returns {string}
  */
 const convertDate = (date, format = 'DD MMM YYYY') => moment(date).format(format)
+
+/**
+ * GraphQL Query request
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
+const request = (url, query) => new Promise((resolve, reject) => {
+  axios.post(url, {'query': query}, {
+    headers: {
+      accept: "application/json",
+      Authorization: "Bearer " + page.props.auth.apiToken
+    }
+  }).then(response => {
+    if (200 === response.status) {
+      if ('errors' in response.data) {
+        console.error(response.data.errors)
+        for (let i = 0, n = response.data.errors.length; i < n; i++) {
+          const error = response.data.errors[i];
+          Notification.danger(error.message);
+        }
+        reject(response.data.errors)
+      } else {
+        resolve(response)
+      }
+    }
+  })
+})
+
+provide('request', request)
 // Provides the "convertDate" function on over the all project
 provide('convertDate', convertDate)
 </script>
