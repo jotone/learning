@@ -44,7 +44,12 @@ class GraphQlTestCase extends TestCase
             ->assertOk()
             ->assertJsonStructure([
                 'data' => [
-                    $field => $this->default_fields
+                    $field => array_merge(
+                        $this->default_fields,
+                        [
+                            'data' => [explode(' ', $response_fields)]
+                        ]
+                    ),
                 ]
             ])
             ->assertJson([
