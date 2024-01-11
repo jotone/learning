@@ -71,10 +71,7 @@ npm i && npm run prod
 - `make reset` - reset and seed environment
 - `make test` - run tests
 
-- Roles
-  - ~~Api~~
-  - ~~Page~~
-  - Mobile view
+- ~~Roles~~
 - Settings
   - Api
     - Update
