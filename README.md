@@ -72,6 +72,12 @@ npm i && npm run prod
 - `make test` - run tests
 
 - ~~Roles~~
+- Users
+  - Api
+    - ~~List~~
+    - Create
+    - Update
+    - Delete
 - Settings
   - Api
     - Update
@@ -87,6 +93,12 @@ npm i && npm run prod
     - Language
       - Api
       - Page
+    - Coaches
+      - List
+      - Create
+      - Edit
+      - Delete
+- Page permissions middleware
 - Categories
   - Api
     - List
@@ -110,11 +122,6 @@ npm i && npm run prod
     - Course bulk actions
     - Course filters
 - Users
-  - Api
-    - List
-    - Create
-    - Update
-    - Delete
   - Page
     - List
     - Bulk actions
@@ -127,41 +134,16 @@ npm i && npm run prod
 - Registration progress
   - Set password
   - User profile
-- Week
-  - Api
-    - Create
-    - Update
-    - Delete
-- Lesson
-  - Api
-    - Create
-    - Update
-    - Delete
-- Quiz
-  - Api
-    - Create
-    - Update
-    - Delete
-- Feedback Form
-  - Api
-    - Create
-    - Update
-    - Delete
-- Course
-  - Curriculum
-    - Api
-      - Sort
-    - Page
-- Quiz Questions
-  - Api
-    - Create
-    - Update
-    - Delete
-- Quiz Answers
-  - Api
-    - Create
-    - Update
-    - Delete
-- Quiz Page
-- Feedback Page
-- Lesson Page
+- Page permissions middleware
+- Appearance
+  - Logos
+    - Logo
+    - Favicon
+      - Upload
+      - View Favicon
+  - Buttons
+  - Menu
+  - Dashboard
+  - Login Page
+  - Course Page
+  - Custom Scripts

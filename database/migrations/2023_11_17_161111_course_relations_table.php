@@ -17,6 +17,11 @@ return new class extends Migration
             $table->unsignedInteger('related_id')->index();
             $table->unsignedTinyInteger('relation_type');
         });
+
+        Schema::table('course_relations', function (Blueprint $table) {
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('related_id')->references('id')->on('courses')->onDelete('cascade');
+        });
     }
 
     /**

@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('product');
             $table->string('driver');
         });
+
+        Schema::table('course_products', function (Blueprint $table) {
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+        });
     }
 
     /**

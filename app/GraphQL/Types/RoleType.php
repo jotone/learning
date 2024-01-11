@@ -20,26 +20,15 @@ class RoleType extends GraphQLType
     public function fields(): array
     {
         return [
-            'id' => [
-                'type' => Type::nonNull(Type::int()),
-                'description' => 'The id of the role',
-            ],
-            'name' => [
-                'type' => Type::string()
-            ],
+            'id' => ['type' => Type::nonNull(Type::int())],
+            'name' => ['type' => Type::string()],
             'slug' => [
                 'type' => Type::string(),
-                'resolve' => fn($root, array $args) => generateUrl(empty($root->slug) ? $args['name'] : $root->slug)
+                'resolve' => fn($role, $args) => generateUrl(empty($role->slug) ? $args['name'] : $role->slug)
             ],
-            'level' => [
-                'type' => Type::int()
-            ],
-            'created_at' => [
-                'type' => Type::string()
-            ],
-            'updated_at' => [
-                'type' => Type::string()
-            ]
+            'level' => ['type' => Type::int()],
+            'created_at' => ['type' => Type::string()],
+            'updated_at' => ['type' => Type::string()]
         ];
     }
 }

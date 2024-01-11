@@ -2,11 +2,11 @@
 
 namespace App\GraphQL\Schemas;
 
-use App\GraphQL\Types\RoleType;
-use App\Http\Controllers\GraphQL\Role\{MutationDestroy, MutationStore, MutationUpdate, Query};
+use App\GraphQL\Types\UserType;
+use App\Http\Controllers\GraphQL\User\Query;
 use Rebing\GraphQL\Support\Contracts\ConfigConvertible;
 
-class RoleSchema implements ConfigConvertible
+class UserSchema implements ConfigConvertible
 {
     public function toConfig(): array
     {
@@ -15,9 +15,9 @@ class RoleSchema implements ConfigConvertible
                 Query::class
             ],
             'mutation' => [
-                'create' => MutationStore::class,
-                'update' => MutationUpdate::class,
-                'destroy' => MutationDestroy::class
+//                'create' => MutationStore::class,
+//                'update' => MutationUpdate::class,
+//                'destroy' => MutationDestroy::class
             ],
             'middleware' => ['auth:sanctum'],
         ];
