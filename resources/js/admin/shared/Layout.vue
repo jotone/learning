@@ -99,6 +99,8 @@ import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
 
 const page = usePage();
 
+console.log(page.props.auth.apiToken)
+
 /**
  * Toggle the active status for the side menu
  */

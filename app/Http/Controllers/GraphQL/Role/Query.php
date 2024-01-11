@@ -33,26 +33,10 @@ class Query extends GraphQlPaginatedQuery
                 'name' => 'id',
                 'type' => Type::int(),
             ],
-            'name' => [
-                'name' => 'name',
-                'type' => Type::string(),
-            ],
             'slug' => [
                 'name' => 'slug',
                 'type' => Type::string(),
             ],
-            'level' => [
-                'name' => 'level',
-                'type' => Type::int(),
-            ],
-            'created_at' => [
-                'name' => 'created_at',
-                'type' => Type::string(),
-            ],
-            'updated_at' => [
-                'name' => 'updated_at',
-                'type' => Type::string()
-            ]
         ]);
     }
 
@@ -75,16 +59,8 @@ class Query extends GraphQlPaginatedQuery
                 $query->where('id', $args['id']);
             }
 
-            if (isset($args['name'])) {
-                $query->where('name', 'LIKE', "%{$args['name']}%");
-            }
-
             if (isset($args['slug'])) {
-                $query->where('slug', 'LIKE', "%{$args['slug']}%");
-            }
-
-            if (isset($args['level'])) {
-                $query->where('level', 'LIKE', "%{$args['level']}%");
+                $query->where('slug', $args['slug']);
             }
 
             if (!empty($args['search'])) {

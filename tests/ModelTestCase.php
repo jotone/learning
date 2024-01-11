@@ -53,4 +53,22 @@ class ModelTestCase extends TestCase
 
         is_callable($callback) && $callback($model);
     }
+
+    /**
+     * Run database saving model with errors response
+     *
+     * @param array $cases
+     * @return void
+     */
+    protected function dbErrorsTest(array $cases): void
+    {
+        foreach ($cases as $case) {
+            try {
+                self::$class::factory()->create([$case->field => $case->value]);
+            } catch (\Exception $e) {
+                $this->assertTrue($case->error_class === get_class($e));
+                $this->assertTrue(str_contains($e->getMessage(), $case->error_message));
+            }
+        }
+    }
 }

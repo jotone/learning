@@ -19,7 +19,7 @@ class RoleModelTest extends ModelTestCase
         $role = self::$class::factory()->create();
         $this->assertModelExists($role);
 
-        $test_cases = [
+        $this->dbErrorsTest([
             // Test the "roles" table "slug" field is "unique"
             (object)[
                 'field' => 'slug',
@@ -40,16 +40,7 @@ class RoleModelTest extends ModelTestCase
                 'error_class' => QueryException::class,
                 'error_message' => 'Numeric value out of range'
             ]
-        ];
-
-        foreach ($test_cases as $case) {
-            try {
-                self::$class::factory()->create([$case->field => $case->value]);
-            } catch (\Exception $e) {
-                $this->assertTrue($case->error_class === get_class($e));
-                $this->assertTrue(str_contains($e->getMessage(), $case->error_message));
-            }
-        }
+        ]);
     }
 
     public function testModify(): void
@@ -59,14 +50,14 @@ class RoleModelTest extends ModelTestCase
 
     public function testRelationToUsers(): void
     {
-        $model = self::$class::factory()->create();
-        $user = User::factory()->create(['role_id' => $model->id]);
+        $role = self::$class::factory()->create();
+        $user = User::factory()->create(['role_id' => $role->id]);
 
-        $this->assertTrue(in_array($user->id, $model->users()->pluck('users.id')->toArray()));
+        $this->assertTrue(in_array($user->id, $role->users()->pluck('users.id')->toArray()));
     }
 
     public function testRemove(): void
     {
-        $this->modelRemovingTest(fn($model) => $this->assertDatabaseMissing('users', ['role_id' => $model->id]));
+        $this->modelRemovingTest(fn($role) => $this->assertDatabaseMissing('users', ['role_id' => $role->id]));
     }
 }

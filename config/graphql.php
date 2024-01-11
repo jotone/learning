@@ -2,7 +2,8 @@
 
 declare(strict_types = 1);
 
-use App\GraphQL\Schemas\RoleSchema;
+use App\GraphQL\Schemas\{RoleSchema, UserSchema};
+use App\GraphQL\Types\{RoleType, UserType};
 use Rebing\GraphQL\Support\ExecutionMiddleware\{
     AddAuthUserContextValueMiddleware,
     AutomaticPersistedQueriesMiddleware,
@@ -101,7 +102,8 @@ return [
             // An array of middlewares, overrides the global ones
             'execution_middleware' => null,
         ],
-        'role' => RoleSchema::class
+        'role' => RoleSchema::class,
+        'user' => UserSchema::class
     ],
 
     // The global types available to all schemas.
@@ -114,6 +116,8 @@ return [
     // ]
     //
     'types' => [
+        'Role' => RoleType::class,
+        'User' => UserType::class
         // ExampleType::class,
         // ExampleRelationType::class,
         // \Rebing\GraphQL\Support\UploadType::class,
