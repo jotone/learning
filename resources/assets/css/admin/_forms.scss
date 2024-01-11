@@ -97,3 +97,12 @@ label {
     width: calc(100% - 20px);
   }
 }
+
+.form-wrap {
+  display: flex;
+  align-items: stretch;
+}
+
+@media screen and (max-width: 720px) {
+  .form-wrap {display: block}
+}

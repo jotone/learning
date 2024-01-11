@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td class="solid-col">
-      {{ namespace }}\{{ controller }}
+      <span>{{ namespace }}\</span>{{ controller }}
     </td>
     <td class="list-col">
       <label class="caption-inline" v-for="method in methods">

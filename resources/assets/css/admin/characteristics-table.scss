@@ -46,3 +46,26 @@
     }
   }
 }
+
+@media screen and (max-width: 720px) {
+  .characteristics-table {
+    th, td {padding: 10px}
+
+    thead th:first-child {
+      min-width: auto;
+      max-width: 250px;
+      width: auto;
+    }
+
+    td.solid-col {font-size: 14px}
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .characteristics-table {
+
+    td, th, td.solid-col, td.list-col label > span {font-size: 12px}
+
+    td.solid-col > span {display: none}
+  }
+}

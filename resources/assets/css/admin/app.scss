@@ -12,11 +12,6 @@
   width: 80%;
 }
 
-.f-st-fs {
-  display: flex;
-  align-items: stretch;
-}
-
 .f-c-c {
   display: flex;
   align-items: center;
@@ -185,10 +180,25 @@ section {
   }
 }
 
-@media screen and (max-width: 480px) {
-  .site-content-wrap > nav {
-    min-width: auto;
+@media screen and (max-width: 720px) {
+  .col-1-5, .col-4-5 {width: 100%}
 
-    .logo-image {max-width: 240px; padding: 10px}
+  .site-content-wrap {
+    main {
+      padding: 105px 20px;
+    }
+    > nav {
+      min-width: auto;
+
+      .logo-image {max-width: 240px; padding: 10px}
+    }
   }
+}
+
+@media screen and (max-width: 480px) {
+  .card .row {display: block}
+
+  .col-1-2 {width: 100%}
+
+  .site-content-wrap main {padding: 80px 10px}
 }
