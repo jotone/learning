@@ -77,6 +77,8 @@ npm i && npm run prod
     - ~~List~~
     - Create
     - Update
+    - Upload User Image
+    - Upload User signature
     - Delete
 - Settings
   - Api
@@ -111,6 +113,11 @@ npm i && npm run prod
     - Create
     - Update
     - Delete
+- Category Courses
+  - Api
+    - Set course relation
+    - Modify course relation
+    - Remove course Relation
 - Courses
   - Page
     - Category create
@@ -121,6 +128,11 @@ npm i && npm run prod
     - Course edit
     - Course bulk actions
     - Course filters
+- User Courses
+  - API
+    - Set course relation
+    - Modify course relation
+    - Remove course Relation
 - Users
   - Page
     - List

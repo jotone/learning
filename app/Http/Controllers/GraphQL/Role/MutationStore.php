@@ -6,6 +6,9 @@ use App\Models\Role;
 use Closure;
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\{Type, ResolveInfo};
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class MutationStore extends RoleMutation
 {
@@ -58,10 +61,19 @@ class MutationStore extends RoleMutation
 
         $args['slug'] = generateUrl($args['name']);
 
-        $role = Role::create($args);
+        DB::beginTransaction();
 
-        $this->savePermissions($role, json_decode(base64_decode($args['permissions']), true));
+        try {
+            $role = Role::create($args);
 
+            $this->savePermissions($role, json_decode(base64_decode($args['permissions']), true));
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new HttpResponseException(
+                response()->json(['errors' => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY)
+            );
+        }
         return $role;
     }
 }

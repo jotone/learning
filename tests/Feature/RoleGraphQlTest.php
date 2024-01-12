@@ -2,13 +2,13 @@
 
 namespace Feature;
 
+use App\Http\Controllers\GraphQL\Role\RoleMutation;
 use App\Models\{Role, User};
 use Tests\GraphQlTestCase;
 
 class RoleGraphQlTest extends GraphQlTestCase
 {
     const CONTROLLER = 'App\Http\Controllers\Dashboard\DashboardController';
-    const ERROR_MESSAGE = 'Operation is forbidden.';
 
     protected array $default_fields = [
         'total',
@@ -56,36 +56,21 @@ class RoleGraphQlTest extends GraphQlTestCase
     public function testStore(): void
     {
         $role = Role::factory()->make();
-
-        $this
-            ->actingAs($this->actor)
-            ->post(route('graphql.role'), [
-                'query' => sprintf(
-                    'mutation {create (name: "%s", level: %s, permissions: "%s") {id, name, slug, level}}',
-                    $role->name,
-                    $role->level,
-                    base64_encode(json_encode([
-                        self::CONTROLLER => ['index' => 1]
-                    ]))
-                )
+        $this->runStoreTest(
+            route: route('graphql.role'),
+            query: 'name: "%s", level: %s, permissions: "%s"',
+            params: [
+                $role->name,
+                $role->level,
+                base64_encode(json_encode([self::CONTROLLER => ['index' => 1]]))
+            ],
+            response_fields: 'id name slug level',
+            callback: fn() => $this->assertDatabaseHas('roles', [
+                'name' => $role->name,
+                'slug' => generateUrl($role->name),
+                'level' => $role->level,
             ])
-            ->assertOk()
-            ->assertJsonStructure([
-                'data' => [
-                    'create' => [
-                        'id',
-                        'name',
-                        'slug',
-                        'level',
-                    ]
-                ]
-            ]);
-
-        $this->assertDatabaseHas('roles', [
-            'name' => $role->name,
-            'slug' => generateUrl($role->name),
-            'level' => $role->level,
-        ]);
+        );
     }
 
     public function testStoreSecurity(): void
@@ -112,7 +97,7 @@ class RoleGraphQlTest extends GraphQlTestCase
 
         $content = json_decode($response->content(), 1);
 
-        $this->assertTrue($content['errors'][0]['message'] === self::ERROR_MESSAGE);
+        $this->assertTrue($content['errors'][0]['message'] === RoleMutation::ACCESS_FORBIDDEN_MESSAGE);
     }
 
     public function testUpdate(): void
@@ -177,7 +162,7 @@ class RoleGraphQlTest extends GraphQlTestCase
 
         $content = json_decode($response->content(), 1);
 
-        $this->assertTrue($content['errors'][0]['message'] === self::ERROR_MESSAGE);
+        $this->assertTrue($content['errors'][0]['message'] === RoleMutation::ACCESS_FORBIDDEN_MESSAGE);
     }
 
     public function testDestroy(): void
@@ -213,6 +198,6 @@ class RoleGraphQlTest extends GraphQlTestCase
 
         $content = json_decode($response->content(), 1);
 
-        $this->assertTrue($content['errors'][0]['message'] === self::ERROR_MESSAGE);
+        $this->assertTrue($content['errors'][0]['message'] === RoleMutation::ACCESS_FORBIDDEN_MESSAGE);
     }
 }

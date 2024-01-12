@@ -2,8 +2,7 @@
 
 namespace App\GraphQL\Schemas;
 
-use App\GraphQL\Types\UserType;
-use App\Http\Controllers\GraphQL\User\Query;
+use App\Http\Controllers\GraphQL\User\{MutationStore, Query};
 use Rebing\GraphQL\Support\Contracts\ConfigConvertible;
 
 class UserSchema implements ConfigConvertible
@@ -15,7 +14,7 @@ class UserSchema implements ConfigConvertible
                 Query::class
             ],
             'mutation' => [
-//                'create' => MutationStore::class,
+                'create' => MutationStore::class,
 //                'update' => MutationUpdate::class,
 //                'destroy' => MutationDestroy::class
             ],

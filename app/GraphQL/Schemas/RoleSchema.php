@@ -2,7 +2,6 @@
 
 namespace App\GraphQL\Schemas;
 
-use App\GraphQL\Types\RoleType;
 use App\Http\Controllers\GraphQL\Role\{MutationDestroy, MutationStore, MutationUpdate, Query};
 use Rebing\GraphQL\Support\Contracts\ConfigConvertible;
 
