@@ -88,4 +88,21 @@ class GraphQlTestCase extends TestCase
 
         is_callable($callback) && $callback($collection);
     }
+
+    protected function runStoreTest(string $route, string $query, array $params, $response_fields, ?callable $callback = null): void
+    {
+        $this
+            ->actingAs($this->actor)
+            ->post($route, [
+                'query' => preg_replace_array('/%s/', $params, "mutation {create ($query) {{$response_fields}}}")
+            ])
+            ->assertOk()
+            ->assertJsonStructure([
+                'data' => [
+                    'create' => explode(' ', $response_fields)
+                ]
+            ]);
+
+        is_callable($callback) && $callback();
+    }
 }
