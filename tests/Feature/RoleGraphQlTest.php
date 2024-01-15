@@ -56,7 +56,8 @@ class RoleGraphQlTest extends GraphQlTestCase
     public function testStore(): void
     {
         $role = Role::factory()->make();
-        $this->runStoreTest(
+        $this->runMutationTest(
+            type: 'create',
             route: route('graphql.role'),
             query: 'name: "%s", level: %s, permissions: "%s"',
             params: [
@@ -106,42 +107,28 @@ class RoleGraphQlTest extends GraphQlTestCase
 
         $new_data = Role::factory()->make();
 
-        $this
-            ->actingAs($this->actor)
-            ->post(route('graphql.role'), [
-                'query' => sprintf(
-                    'mutation {update (id: %s, name: "%s", slug: "%s", level: %s) {id, name, slug, level}}',
-                    $role->id,
-                    $new_data->name,
-                    $new_data->slug,
-                    $new_data->level
-                )
-            ])
-            ->assertOk()
-            ->assertJsonStructure([
-                'data' => [
-                    'update' => [
-                        'id',
-                        'name',
-                        'slug',
-                        'level',
-                    ]
-                ]
-            ]);
+        $data = [
+            'id' => $role->id,
+            'name' => $new_data->name,
+            'slug' => $new_data->slug,
+            'level' => $new_data->level
+        ];
 
-        $this
-            ->assertDatabaseHas('roles', [
-                'id' => $role->id,
-                'name' => $new_data->name,
-                'slug' => $new_data->slug,
-                'level' => $new_data->level,
-            ])
-            ->assertDatabaseMissing('roles', [
-                'id' => $role->id,
-                'name' => $role->name,
-                'slug' => $role->slug,
-                'level' => $role->level,
-            ]);
+        $this->runMutationTest(
+            type: 'update',
+            route: route('graphql.role'),
+            query: 'id: %s, name: "%s", slug: "%s", level: %s',
+            params: array_values($data),
+            response_fields: 'id name slug level',
+            callback: fn() => $this
+                ->assertDatabaseMissing('roles', [
+                    'id' => $role->id,
+                    'name' => $role->name,
+                    'slug' => $role->slug,
+                    'level' => $role->level,
+                ])
+                ->assertDatabaseHas('roles', $data)
+        );
     }
 
     public function testUpdateSecurity(): void

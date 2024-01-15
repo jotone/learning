@@ -3,9 +3,7 @@
 namespace Feature;
 
 use App\Http\Controllers\GraphQL\User\MutationStore;
-use App\Models\Role;
-use App\Models\Settings;
-use App\Models\User;
+use App\Models\{Role, Settings, User};
 use Tests\GraphQlTestCase;
 
 class UserGraphQlTest extends GraphQlTestCase
@@ -48,7 +46,8 @@ class UserGraphQlTest extends GraphQlTestCase
     {
         $user = User::factory()->make();
 
-        $this->runStoreTest(
+        $this->runMutationTest(
+            type: 'create',
             route: route('graphql.user'),
             query: 'first_name: "%s", last_name: "%s", email: "%s", timezone: "%s", country: "%s", region: "%s", city: "%s", address: "%s", zip: "%s", phone: "%s"',
             params: [
@@ -96,7 +95,7 @@ class UserGraphQlTest extends GraphQlTestCase
                     $user->last_name,
                     $user->email
                 ),
-                'callback' => function($content) {
+                'callback' => function ($content) {
                     $this->assertTrue($content['errors'][0]['message'] === sprintf(MutationStore::STUDENT_LIMIT_MESSAGE, 1));
                     Settings::where('key', 'students_max_count')->update(['value' => -1]);
                 }
@@ -123,5 +122,45 @@ class UserGraphQlTest extends GraphQlTestCase
 
             $case['callback'](json_decode($response->content(), 1));
         }
+    }
+
+    public function testUpdate(): void
+    {
+        $user = User::factory()->create();
+
+        $new_data = User::factory()->make();
+
+        $data = [
+            'id' => $user->id,
+            'first_name' => $new_data->first_name,
+            'last_name' => $new_data->last_name,
+            'timezone' => $new_data->timezone,
+            'country' => $new_data->country,
+            'region' => $new_data->region,
+            'city' => $new_data->city,
+            'zip' => $new_data->zip,
+            'phone' => $new_data->phone
+        ];
+
+        $this->runMutationTest(
+            type: 'update',
+            route: route('graphql.user'),
+            query: 'id: %s, first_name: "%s", last_name: "%s", timezone: "%s", country: "%s", region: "%s", city: "%s", zip: "%s", phone: "%s"',
+            params: array_values($data),
+            response_fields: 'id first_name last_name timezone country region city zip phone',
+            callback: fn() => $this
+                ->assertDatabaseMissing('users', [
+                    'id' => $user->id,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'timezone' => $user->timezone,
+                    'country' => $user->country,
+                    'region' => $user->region,
+                    'city' => $user->city,
+                    'zip' => $user->zip,
+                    'phone' => $user->phone,
+                ])
+                ->assertDatabaseHas('users', $data)
+        );
     }
 }

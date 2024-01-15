@@ -2,22 +2,46 @@
 
 namespace App\Http\Controllers\GraphQL\User;
 
-use App\Enums\ShirtSize;
-use App\Models\{Role, Settings, User};
-use GraphQL\Error\Error;
-use GraphQL\Type\Definition\Type;
+use App\Models\Role;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
+use App\Enums\{ShirtSize, UserStatus};
+use App\Models\User;
+use GraphQL\Error\Error;
+use GraphQL\Type\Definition\Type;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
-class MutationStore extends UserMutation
+class MutationUpdate extends UserMutation
 {
     /**
      * @var array
      */
     protected $attributes = [
-        'name' => 'create'
+        'name' => 'update'
+    ];
+
+    /**
+     * Fields allowed to update
+     * @var array|string[]
+     */
+    protected array $update_fields = [
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'about',
+        'status',
+        'timezone',
+        'country',
+        'city',
+        'region',
+        'address',
+        'ext_addr',
+        'zip',
+        'phone',
+        'shirt_size',
+        'role_id'
     ];
 
     /**
@@ -26,9 +50,14 @@ class MutationStore extends UserMutation
     public function args(): array
     {
         return [
+            'id' => [
+                'name' => 'id',
+                'type' => Type::nonNull(Type::int()),
+                'rules' => ['required', 'integer', 'exists:users,id']
+            ],
             'first_name' => [
                 'name' => 'first_name',
-                'type' => Type::nonNull(Type::string()),
+                'type' => Type::string(),
                 'rules' => ['required', 'string']
             ],
             'last_name' => [
@@ -38,8 +67,8 @@ class MutationStore extends UserMutation
             ],
             'email' => [
                 'name' => 'email',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'email', 'unique:users,email']
+                'type' => Type::string(),
+                'rules' => ['nullable', 'email']
             ],
             'password' => [
                 'name' => 'password',
@@ -55,6 +84,11 @@ class MutationStore extends UserMutation
                 'name' => 'about',
                 'type' => Type::string(),
                 'rules' => ['nullable', 'string']
+            ],
+            'status' => [
+                'name' => 'status',
+                'type' => Type::string(),
+                'rules' => ['nullable', 'string', Rule::in(array_column(UserStatus::cases(), 'name'))]
             ],
             'role_id' => [
                 'name' => 'role_id',
@@ -110,7 +144,7 @@ class MutationStore extends UserMutation
     }
 
     /**
-     * Store user
+     * Update user
      *
      * @param $root
      * @param $args
@@ -118,53 +152,37 @@ class MutationStore extends UserMutation
      */
     public function resolve($root, $args): User|Error
     {
-        // Check server student limit
-        $students_limit = Settings::where('key', 'students_max_count')->value('value');
-        if ($this->checkStudentLimit($students_limit)) {
-            return new Error(sprintf(self::STUDENT_LIMIT_MESSAGE, $students_limit));
-        }
-        // Get user role model
-        if (isset($args['role_id'])) {
-            $role = Role::find($args['role_id']);
-        } else {
-            $role = Role::firstWhere('slug', 'student');
-            $args['role_id'] = $role->id;
-        }
-        // Check if user model can be created
-        if ($this->checkUserRole($role)) {
+        // Find model
+        $user = User::findOrFail($args['id']);
+
+        // Check the user's role gives allowance to update another user
+        if (
+            !(auth()->id() === $user->id || auth()->user()->role->level < $user->role->level)
+            || isset($args['role_id']) && $this->checkUserRole(Role::find($args['role_id']))
+        ) {
             return new Error(self::ACCESS_FORBIDDEN_MESSAGE);
         }
 
         DB::beginTransaction();
 
         try {
-            // Create user
-            $user = User::create($args);
-
-            if (!empty($user->password)) {
-                $user->status = 'active';
-                $user->activated_at = now();
-                $user->save();
+            foreach ($args as $key => $val) {
+                if (in_array($key, $this->update_fields)) {
+                    $user->$key = $val;
+                }
             }
+            // Save user if it was changed
+            $user->isDirty() && $user->save();
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+
             throw new HttpResponseException(
                 response()->json(['errors' => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY)
             );
         }
 
         return $user;
-    }
-
-    /**
-     * Check students number limit. Returns true if limit was achieved
-     *
-     * @param int $students_limit
-     * @return bool
-     */
-    protected function checkStudentLimit(int $students_limit): bool
-    {
-        return $students_limit > 0 && User::students()->count() >= $students_limit;
     }
 }

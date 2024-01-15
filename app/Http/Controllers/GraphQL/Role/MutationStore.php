@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\GraphQL\Role;
 
 use App\Models\Role;
-use Closure;
 use GraphQL\Error\Error;
-use GraphQL\Type\Definition\{Type, ResolveInfo};
+use GraphQL\Type\Definition\Type;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,12 +47,9 @@ class MutationStore extends RoleMutation
      *
      * @param $root
      * @param $args
-     * @param $context
-     * @param ResolveInfo $resolveInfo
-     * @param Closure $getSelectFields
      * @return Role|Error
      */
-    public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): Role|Error
+    public function resolve($root, $args): Role|Error
     {
         if ($this->checkUserRoleLevel($args['level'])) {
             return new Error(self::ACCESS_FORBIDDEN_MESSAGE);

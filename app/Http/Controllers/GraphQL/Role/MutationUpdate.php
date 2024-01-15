@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\GraphQL\Role;
 
 use App\Models\Role;
-use Closure;
 use GraphQL\Error\Error;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
-use GraphQL\Type\Definition\{Type, ResolveInfo};
+use GraphQL\Type\Definition\Type;
 use Symfony\Component\HttpFoundation\Response;
 
 class MutationUpdate extends RoleMutation
@@ -54,14 +53,13 @@ class MutationUpdate extends RoleMutation
     }
 
     /**
+     * Update role
+     *
      * @param $root
      * @param $args
-     * @param $context
-     * @param ResolveInfo $resolveInfo
-     * @param Closure $getSelectFields
      * @return Role|Error
      */
-    public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): Role|Error
+    public function resolve($root, $args): Role|Error
     {
         // Find model
         $role = Role::findOrFail($args['id']);
@@ -84,8 +82,8 @@ class MutationUpdate extends RoleMutation
                     $role->{$key} = $val;
                 }
             }
-
-            $role->save();
+            // Save role if it was changed
+            $role->isDirty() && $role->save();
 
             DB::commit();
         } catch (\Exception $e) {

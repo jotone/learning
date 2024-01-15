@@ -75,7 +75,7 @@ npm i && npm run prod
 - Users
   - Api
     - ~~List~~
-    - Create
+    - ~~Create~~
     - Update
     - Upload User Image
     - Upload User signature
