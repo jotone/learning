@@ -76,7 +76,7 @@ npm i && npm run prod
   - Api
     - ~~List~~
     - ~~Create~~
-    - Update
+    - ~~Update~~
     - Upload User Image
     - Upload User signature
     - Delete
