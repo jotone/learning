@@ -77,7 +77,7 @@ npm i && npm run prod
     - ~~List~~
     - ~~Create~~
     - ~~Update~~
-    - Upload User Image
+    - ~~Upload User Image~~
     - Upload User signature
     - Delete
 - Settings

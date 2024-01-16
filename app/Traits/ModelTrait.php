@@ -15,14 +15,14 @@ trait ModelTrait
      * Store image
      *
      * @param null|string|UploadedFile $value
-     * @param string $entity
+     * @param string $folder
      * @param string $key
      * @return ?string
      */
-    private function saveImage(null|string|UploadedFile $value, string $entity, string $key = ''): ?string
+    private function saveImage(null|string|UploadedFile $value, string $folder, string $key = ''): ?string
     {
         if ($value instanceof UploadedFile) {
-            $folder = Str::finish('images/' . $entity . '/' . $this->getEntityId(), '/');
+            $folder = Str::finish($folder, '/');
             $img_url = FileHelper::saveFile($value, $folder);
 
             if (!empty($key)) {

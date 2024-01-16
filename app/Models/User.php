@@ -138,7 +138,7 @@ class User extends Authenticatable
         return Attribute::make(
             get: fn(mixed $value) => $this->getThumbs($value),
             set: fn(mixed $value, array $attributes) => $value instanceof UploadedFile && $value->isWritable()
-                ? $this->saveImage($value, 'users', 'user_img_processing')
+                ? $this->saveImage($value, 'images/users/' . $this->getEntityId(), 'user_img_processing')
                 : (is_string($value) ? $value : $attributes['img_url'] ?? null)
         );
     }
