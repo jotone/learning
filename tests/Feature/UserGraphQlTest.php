@@ -3,6 +3,7 @@
 namespace Feature;
 
 use App\Http\Controllers\GraphQL\User\UserMutation;
+use Illuminate\Http\UploadedFile;
 use App\Models\{Role, Settings, User};
 use Tests\GraphQlTestCase;
 
@@ -14,7 +15,7 @@ class UserGraphQlTest extends GraphQlTestCase
 
         $this->total = User::count();
         if (User::count() < 5) {
-            User::factory(5 + $this->total)->create([
+            User::factory(10)->create([
                 'role_id' => Role::where('slug', 'student')->value('id')
             ]);
         }
@@ -193,6 +194,63 @@ class UserGraphQlTest extends GraphQlTestCase
                 ])
                 ->assertDatabaseHas('users', $data)
         );
+    }
+
+    /**
+     * Test the image upload functionality for the User model via a GraphQL mutation.
+     *
+     * This method validates the image upload process through a GraphQL mutation by:
+     * - Creating a new user instance.
+     * - Constructing a GraphQL mutation request to update the user's image (img_url).
+     * - Sending a fake image file as part of the multipart/form-data request.
+     * - Asserting that the response contains the expected image URLs (original, large, small).
+     * - Checking that the image URL is correctly stored in the database for the user.
+     *
+     * The test simulates a real user updating their image and verifies both the server's response
+     * and the database update, ensuring the upload process works as intended.
+     */
+    public function testUploadImage(): void
+    {
+        $user = User::factory()->create();
+
+        $name = uniqid() . '.jpg';
+        $expected_file_url = '/images/users/' . $user->id . '/' . $name;
+        $this
+            ->actingAs($this->actor)
+            ->post(route('graphql.user'), [
+                'operations' => json_encode([
+                    'query' => 'mutation UpdateUser($id: Int!, $file: Upload!) {update(id: $id, img_url: $file) {id img_url}}',
+                    'variables' => [
+                        'id' => $user->id,
+                        'file' => null // The actual file will be mapped in the 'map' section
+                    ],
+                ]),
+                'map' => json_encode([
+                    '0' => ['variables.file']
+                ]),
+                '0' => UploadedFile::fake()->image($name),
+            ], [
+                'Content-Type' => 'multipart/form-data'
+            ])
+            ->assertOk()
+            ->assertJsonFragment([
+                'data' => [
+                    // The expected fields in the mutation response.
+                    'update' => [
+                        'id' => $user->id,
+                        'img_url' => [
+                            'original' => $expected_file_url,
+                            'large' => '/images/users/' . $user->id . '/thumb_large/' . $name,
+                            'small' => '/images/users/' . $user->id . '/thumb_small/' . $name,
+                        ]
+                    ]
+                ]
+            ]);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'img_url' => $expected_file_url
+        ]);
     }
 
     /**

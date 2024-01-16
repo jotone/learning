@@ -30,7 +30,7 @@ class UserType extends GraphQLType
                 'type' => Type::nonNull(Type::string()),
                 'resolve' => fn($user) => mb_strtolower($user->email)
             ],
-            'img_url' => ['type' => Type::string()],
+            'img_url' => ['type' => GraphQL::type('StringOrListOfStrings')],
             'about' => ['type' => Type::string()],
             'status' => ['type' => Type::string()],
             'activated_at' => ['type' => Type::string()],

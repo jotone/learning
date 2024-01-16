@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GraphQL\User;
 
+use Rebing\GraphQL\Support\Facades\GraphQL;
 use App\Enums\{ShirtSize, UserStatus};
 use App\Models\{Role, User};
 use GraphQL\Error\Error;
@@ -29,6 +30,7 @@ class MutationUpdate extends UserMutation
         'last_name',
         'email',
         'password',
+        'img_url',
         'about',
         'status',
         'timezone',
@@ -83,6 +85,11 @@ class MutationUpdate extends UserMutation
                 'name' => 'about',
                 'type' => Type::string(),
                 'rules' => ['nullable', 'string']
+            ],
+            'img_url' => [
+                'name' => 'img_url',
+                'type' => GraphQL::type('Upload'),
+                'rules' => ['nullable', 'image', 'max:1500'],
             ],
             'status' => [
                 'name' => 'status',
@@ -182,6 +189,6 @@ class MutationUpdate extends UserMutation
             );
         }
 
-        return $user;
+        return User::find($user->id);
     }
 }

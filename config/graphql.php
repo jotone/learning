@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use App\GraphQL\Schemas\{RoleSchema, UserSchema};
-use App\GraphQL\Types\{RoleType, UserType};
+use App\GraphQL\Types\{RoleType, StringOrListOfStringsType, UserType};
+use Rebing\GraphQL\Support\{PaginationType, SimplePaginationType, UploadType};
 use Rebing\GraphQL\Support\ExecutionMiddleware\{
     AddAuthUserContextValueMiddleware,
     AutomaticPersistedQueriesMiddleware,
@@ -117,10 +118,11 @@ return [
     //
     'types' => [
         'Role' => RoleType::class,
-        'User' => UserType::class
+        'User' => UserType::class,
         // ExampleType::class,
         // ExampleRelationType::class,
-        // \Rebing\GraphQL\Support\UploadType::class,
+        'StringOrListOfStrings' => StringOrListOfStringsType::class,
+        UploadType::class,
     ],
 
     // This callable will be passed the Error object for each errors GraphQL catch.
@@ -154,15 +156,15 @@ return [
 
     /*
      * You can define your own pagination type.
-     * Reference \Rebing\GraphQL\Support\PaginationType::class
+     * Reference PaginationType::class
      */
-    'pagination_type' => \Rebing\GraphQL\Support\PaginationType::class,
+    'pagination_type' => PaginationType::class,
 
     /*
      * You can define your own simple pagination type.
-     * Reference \Rebing\GraphQL\Support\SimplePaginationType::class
+     * Reference SimplePaginationType::class
      */
-    'simple_pagination_type' => \Rebing\GraphQL\Support\SimplePaginationType::class,
+    'simple_pagination_type' => SimplePaginationType::class,
 
     /*
      * Overrides the default field resolver

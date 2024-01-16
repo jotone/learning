@@ -36,8 +36,11 @@ class FileHelper
         $file_info = pathinfo($filename);
 
         $ext = match ($file->getClientMimeType()) {
-            'image/png' => 'png',
+            'image/apng' => 'apng',
+            'image/gif' => 'gif',
             'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
             default => $file_info['extension'],
         };
 
