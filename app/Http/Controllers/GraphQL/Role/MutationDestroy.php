@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\GraphQL\Role;
 
 use App\Models\Role;
-use Closure;
 use GraphQL\Error\Error;
-use GraphQL\Type\Definition\{Type, ResolveInfo};
+use GraphQL\Type\Definition\Type;
 
 class MutationDestroy extends RoleMutation
 {
@@ -15,6 +14,7 @@ class MutationDestroy extends RoleMutation
     protected $attributes = [
         'name' => 'destroy'
     ];
+
     /**
      * @return array
      */
@@ -34,12 +34,9 @@ class MutationDestroy extends RoleMutation
      *
      * @param $root
      * @param $args
-     * @param $context
-     * @param ResolveInfo $resolveInfo
-     * @param Closure $getSelectFields
-     * @return null
+     * @return null|Error
      */
-    public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
+    public function resolve($root, $args): ?Error
     {
         $role = Role::findOrFail($args['id']);
 
