@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\GraphQL\User;
 
-use App\Models\Role;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\DB;
 use App\Enums\{ShirtSize, UserStatus};
-use App\Models\User;
+use App\Models\{Role, User};
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -58,7 +57,7 @@ class MutationUpdate extends UserMutation
             'first_name' => [
                 'name' => 'first_name',
                 'type' => Type::string(),
-                'rules' => ['required', 'string']
+                'rules' => ['nullable', 'string']
             ],
             'last_name' => [
                 'name' => 'last_name',
