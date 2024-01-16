@@ -197,6 +197,7 @@ class GraphQlTestCase extends TestCase
                 ->assertOk()
                 // Assert that the response has an 'errors' JSON structure.
                 ->assertJsonStructure(['errors']);
+
             // Decode the JSON response content and pass it to the callback function provided in the test case.
             if (isset($case['callback']) && is_callable($case['callback'])) {
                 $case['callback'](json_decode($response->content(), 1));

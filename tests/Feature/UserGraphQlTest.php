@@ -13,7 +13,7 @@ class UserGraphQlTest extends GraphQlTestCase
         parent::setUp();
 
         $this->total = User::count();
-        if (User::students()->count() < 5) {
+        if (User::count() < 5) {
             User::factory(5 + $this->total)->create([
                 'role_id' => Role::where('slug', 'student')->value('id')
             ]);
@@ -208,7 +208,9 @@ class UserGraphQlTest extends GraphQlTestCase
      */
     public function testUpdateSecurity(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'role_id' => Role::where('slug', 'student')->value('id')
+        ]);
 
         $new_data = User::factory()->create();
 
@@ -236,13 +238,19 @@ class UserGraphQlTest extends GraphQlTestCase
                 ]
             ]);
 
+        $admin = User::select('users.id')
+            ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
+            ->where('roles.level', '<', 128)
+            ->inRandomOrder()
+            ->first();
+
         $this->runTestCases(route('graphql.user'), [
             // Test user cannot update another user
             [
                 'actor' => $user,
                 'query' => sprintf(
                     'mutation {update (id: %s, first_name: "%s") {id first_name}}',
-                    $this->actor->id,
+                    $admin->id,
                     $new_data->first_name
                 ),
                 'callback' => fn($content) => $this->assertTrue($content['errors'][0]['message'] === UserMutation::ACCESS_FORBIDDEN_MESSAGE)
