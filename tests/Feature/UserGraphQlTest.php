@@ -254,6 +254,59 @@ class UserGraphQlTest extends GraphQlTestCase
     }
 
     /**
+     * Test the signature upload functionality for the User model via a GraphQL mutation.
+     *
+     * This method validates the process of uploading a signature image through a GraphQL mutation by:
+     * - Creating a new user instance.
+     * - Constructing a GraphQL mutation request to update the user's signature image.
+     * - Sending a fake image file as part of the multipart/form-data request.
+     * - Asserting that the response contains the expected signature URL.
+     * - Checking that the signature URL is correctly stored in the database for the user.
+     *
+     * The test simulates a real user updating their signature image and verifies both the server's response
+     * and the database update, ensuring the upload process functions correctly.
+     */
+    public function testUploadSignature(): void
+    {
+        $user = User::factory()->create();
+
+        $name = uniqid() . '.jpg';
+        $expected_file_url = '/images/users/' . $user->id . '/' . $name;
+        $this
+            ->actingAs($this->actor)
+            ->post(route('graphql.user'), [
+                'operations' => json_encode([
+                    'query' => 'mutation UpdateUser($id: Int!, $file: Upload!) {update(id: $id, signature: $file) {id signature}}',
+                    'variables' => [
+                        'id' => $user->id,
+                        'file' => null // The actual file will be mapped in the 'map' section
+                    ],
+                ]),
+                'map' => json_encode([
+                    '0' => ['variables.file']
+                ]),
+                '0' => UploadedFile::fake()->image($name),
+            ], [
+                'Content-Type' => 'multipart/form-data'
+            ])
+            ->assertOk()
+            ->assertJsonFragment([
+                'data' => [
+                    // The expected fields in the mutation response.
+                    'update' => [
+                        'id' => $user->id,
+                        'signature' => $expected_file_url
+                    ]
+                ]
+            ]);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'signature' => $expected_file_url
+        ]);
+    }
+
+    /**
      * Test the security constraints of the 'update' mutation for users in the GraphQL API.
      *
      * This method performs multiple security-related tests to ensure proper access control in user updates:
