@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-//
-//Route::group(['middleware' => ['auth:sanctum']], function () {
-//});
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    // Update settings
+    Route::match(['patch', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
+});

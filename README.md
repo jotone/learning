@@ -74,8 +74,6 @@ npm i && npm run prod
 - ~~Roles~~
 - ~~Users.Api~~
 - Settings
-  - Api
-    - Update
   - Page
     - Main
     - Functionality
