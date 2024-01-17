@@ -5,6 +5,7 @@ namespace App\Http\Controllers\GraphQL\Role;
 use App\Classes\GraphQlPaginatedQuery;
 use App\Models\Role;
 use Closure;
+use Illuminate\Http\Request;
 use GraphQL\Type\Definition\{ResolveInfo, Type};
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -46,11 +47,12 @@ class Query extends GraphQlPaginatedQuery
      * @param $root
      * @param $args
      * @param $context
+     * @param Request $request
      * @param ResolveInfo $resolveInfo
      * @param Closure $getSelectFields
      * @return LengthAwarePaginator
      */
-    public function resolve($root, $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields): LengthAwarePaginator
+    public function resolve($root, $args, $context, Request $request, ResolveInfo $resolveInfo, Closure $getSelectFields): LengthAwarePaginator
     {
         $this->buildFilters($args);
 

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\GraphQL\User;
 
+use Closure;
+use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Http\Request;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use App\Enums\{ShirtSize, UserStatus};
 use App\Models\{Role, User};
@@ -42,6 +45,7 @@ class MutationUpdate extends UserMutation
         'zip',
         'phone',
         'shirt_size',
+        'signature',
         'role_id'
     ];
 
@@ -89,7 +93,7 @@ class MutationUpdate extends UserMutation
             'img_url' => [
                 'name' => 'img_url',
                 'type' => GraphQL::type('Upload'),
-                'rules' => ['nullable', 'image', 'max:1500'],
+                'rules' => ['nullable', 'image']
             ],
             'status' => [
                 'name' => 'status',
@@ -145,6 +149,11 @@ class MutationUpdate extends UserMutation
                 'name' => 'shirt_size',
                 'type' => Type::string(),
                 'rules' => ['nullable', 'string', Rule::in(array_column(ShirtSize::cases(), 'name'))]
+            ],
+            'signature' => [
+                'name' => 'signature',
+                'type' => GraphQL::type('Upload'),
+                'rules' => ['nullable', 'image']
             ]
         ];
     }
@@ -154,9 +163,11 @@ class MutationUpdate extends UserMutation
      *
      * @param $root
      * @param $args
+     * @param $context
+     * @param Request $request
      * @return User|Error
      */
-    public function resolve($root, $args): User|Error
+    public function resolve($root, $args, $context, Request $request): User|Error
     {
         // Find model
         $user = User::findOrFail($args['id']);
@@ -175,6 +186,10 @@ class MutationUpdate extends UserMutation
             foreach ($args as $key => $val) {
                 if (in_array($key, $this->update_fields)) {
                     $user->$key = $val;
+                } elseif ($key === 'signature') {
+                    $user->signature = $val;
+                    $user->signature_ip = $request->ip();
+                    $user->signature_date = now();
                 }
             }
             // Save user if it was changed
@@ -183,10 +198,7 @@ class MutationUpdate extends UserMutation
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-
-            throw new HttpResponseException(
-                response()->json(['errors' => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY)
-            );
+            return new Error($e->getMessage());
         }
 
         return User::find($user->id);

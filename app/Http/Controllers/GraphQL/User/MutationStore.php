@@ -149,9 +149,7 @@ class MutationStore extends UserMutation
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            throw new HttpResponseException(
-                response()->json(['errors' => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY)
-            );
+            return new Error($e->getMessage());
         }
 
         return $user;

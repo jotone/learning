@@ -150,7 +150,6 @@ class User extends Authenticatable
      */
     protected function shirtSize(): Attribute
     {
-        $sizes = config('enums.user.shirt_sizes') ?? [];
         return Attribute::make(
             get: fn(?int $val) => ShirtSize::fromValue($val),
             set: fn(string $size) => ShirtSize::fromName($size)
@@ -165,7 +164,9 @@ class User extends Authenticatable
     protected function signature(): Attribute
     {
         return Attribute::make(
-            set: fn(mixed $value) => $this->saveImage($value, 'users')
+            set: fn(mixed $value, array $attributes) => $value instanceof UploadedFile && $value->isWritable()
+                ? $this->saveImage($value, 'images/users/' . $this->getEntityId())
+                : (is_string($value) ? $value : $attributes['signature'] ?? null)
         );
     }
 
