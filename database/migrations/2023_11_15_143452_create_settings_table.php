@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('value')->nullable();
             $table->string('data_type', 31)->default('string');
             $table->string('section')->index();
-            $table->text('about')->nullable();
+            $table->text('extra_data')->nullable();
         });
     }
 

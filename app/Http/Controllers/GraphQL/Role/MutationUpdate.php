@@ -4,10 +4,8 @@ namespace App\Http\Controllers\GraphQL\Role;
 
 use App\Models\Role;
 use GraphQL\Error\Error;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use GraphQL\Type\Definition\Type;
-use Symfony\Component\HttpFoundation\Response;
 
 class MutationUpdate extends RoleMutation
 {

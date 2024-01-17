@@ -6,10 +6,8 @@ use App\Enums\ShirtSize;
 use App\Models\{Role, Settings, User};
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use Symfony\Component\HttpFoundation\Response;
 
 class MutationStore extends UserMutation
 {

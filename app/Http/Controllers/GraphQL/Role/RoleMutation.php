@@ -10,6 +10,7 @@ use Rebing\GraphQL\Support\Mutation;
 abstract class RoleMutation extends Mutation
 {
     const ACCESS_FORBIDDEN_MESSAGE = 'Operation is forbidden.';
+
     /**
      * @return Type
      */

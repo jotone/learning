@@ -25,7 +25,7 @@ class Settings extends Model
         'value',
         'data_type',
         'section',
-        'about'
+        'extra_data'
     ];
 
     /**

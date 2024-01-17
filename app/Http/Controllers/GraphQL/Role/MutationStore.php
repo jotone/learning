@@ -5,9 +5,7 @@ namespace App\Http\Controllers\GraphQL\Role;
 use App\Models\Role;
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\Response;
 
 class MutationStore extends RoleMutation
 {

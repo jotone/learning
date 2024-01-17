@@ -62,7 +62,7 @@ class AppInstall extends Command
                         'key' => $setting['key'],
                         'value' => $setting['value'],
                         'section' => $section,
-                        'about' => $setting['about'] ?? '',
+                        'extra_data' => $setting['extra_data'] ?? '',
                     ]);
                 }
             }
