@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
 class GraphQlTestCase extends TestCase
 {
@@ -46,10 +47,10 @@ class GraphQlTestCase extends TestCase
      * on the response. It also allows the execution of a custom callback for additional
      * assertions or logic with the response data.
      *
-     * @param string $route The GraphQL endpoint or route where the query will be sent.
-     * @param string $field The name of the GraphQL query field being tested.
-     * @param string $response_fields The fields expected in the response of the GraphQL query.
-     * @param callable|null $callback An optional callback for additional assertions or logic after receiving the response.
+     * @param string $route
+     * @param string $field
+     * @param string $response_fields
+     * @param callable|null $callback
      */
     protected function runQueryTest(string $route, string $field, string $response_fields, ?callable $callback = null): void
     {
@@ -110,10 +111,10 @@ class GraphQlTestCase extends TestCase
      * basic assertions on the response. It also allows the execution of a custom callback for
      * additional assertions or logic with the response data.
      *
-     * @param string $route The GraphQL endpoint or route where the query will be sent.
-     * @param string $field The name of the GraphQL query field being tested.
-     * @param string $response_fields The fields expected in the response of the GraphQL query.
-     * @param callable|null $callback An optional callback for additional assertions or logic after receiving the response.
+     * @param string $route
+     * @param string $field
+     * @param string $response_fields
+     * @param callable|null $callback
      */
     protected function runPaginationTest(string $route, string $field, string $response_fields, ?callable $callback = null): void
     {
@@ -145,12 +146,12 @@ class GraphQlTestCase extends TestCase
      * This method sends a GraphQL mutation request to a specified route and performs basic assertions
      * on the response. It can also execute a custom callback for additional assertions or logic.
      *
-     * @param string $type The name of the GraphQL mutation being tested. (create, update, delete, etc.)
-     * @param string $route The endpoint or route where the GraphQL server is accessible.
-     * @param string $query The GraphQL mutation query, with placeholders for dynamic parameters.
-     * @param array $params Parameters to replace placeholders in the query.
-     * @param string $response_fields The fields expected in the response of the GraphQL mutation.
-     * @param callable|null $callback An optional callback for additional assertions or logic after the request.
+     * @param string $type
+     * @param string $route
+     * @param string $query
+     * @param array $params
+     * @param string $response_fields
+     * @param callable|null $callback
      */
     protected function runMutationTest(string $type, string $route, string $query, array $params, string $response_fields, ?callable $callback = null): void
     {
@@ -171,6 +172,29 @@ class GraphQlTestCase extends TestCase
             ]);
 
         is_callable($callback) && $callback($response);
+    }
+
+    /**
+     * Test the deletion functionality of a model via a GraphQL mutation.
+     *
+     * This method is a generic test utility for verifying that a GraphQL 'destroy' mutation
+     * successfully deletes a model instance. It asserts that the deletion operation returns
+     * the expected response and that the model is removed from the database.
+     *
+     * @param string $route
+     * @param Model $model
+     */
+    protected function runDeleteTest(string $route, Model $model): void
+    {
+        $this
+            ->actingAs($this->actor)
+            ->post($route, [
+                'query' => 'mutation {destroy (id: ' . $model->id . ') {id}}'
+            ])
+            ->assertOk()
+            ->assertExactJson(['data' => ['destroy' => null]]);
+
+        $this->assertDatabaseMissing($model->getTable(), ['id' => $model->id]);
     }
 
     /**

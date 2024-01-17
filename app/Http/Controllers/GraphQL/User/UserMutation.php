@@ -29,6 +29,6 @@ abstract class UserMutation extends Mutation
      */
     protected function checkUserRole(Role $role): bool
     {
-        return 255 === auth()->user()->role->level || auth()->user()->role->level >= $role->level;
+        return 255 === auth()->user()->role->level || auth()->user()->role->level > $role->level;
     }
 }

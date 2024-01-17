@@ -72,14 +72,7 @@ npm i && npm run prod
 - `make test` - run tests
 
 - ~~Roles~~
-- Users
-  - Api
-    - ~~List~~
-    - ~~Create~~
-    - ~~Update~~
-    - ~~Upload User Image~~
-    - Upload User signature
-    - Delete
+- ~~Users.Api~~
 - Settings
   - Api
     - Update
