@@ -178,17 +178,7 @@ class RoleGraphQlTest extends GraphQlTestCase
      */
     public function testDestroy(): void
     {
-        $role = Role::factory()->create();
-
-        $this
-            ->actingAs($this->actor)
-            ->post(route('graphql.role'), [
-                'query' => 'mutation {destroy (id: ' . $role->id . ') {id}}'
-            ])
-            ->assertOk()
-            ->assertExactJson(['data' => ['destroy' => null]]);
-
-        $this->assertDatabaseMissing('roles', ['id' => $role->id]);
+        $this->runDeleteTest(route('graphql.role'), Role::factory()->create());
     }
 
     /**

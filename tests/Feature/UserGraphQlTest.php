@@ -378,4 +378,55 @@ class UserGraphQlTest extends GraphQlTestCase
             ]
         ]);
     }
+
+    /**
+     * Test the 'destroy' mutation for users in the GraphQL API.
+     *
+     * This method verifies the functionality of the GraphQL API for deleting an existing user.
+     * It checks that the user is properly removed from the database and that the API response
+     * confirms the successful deletion. The method sends a delete request for a specific user and
+     * then uses database assertions to ensure that the user no longer exists in the database.
+     */
+    public function testDestroy(): void
+    {
+        $this->runDeleteTest(route('graphql.user'), User::factory()->create());
+    }
+
+    /**
+     * Test security measures in the GraphQL 'destroy' mutation for users.
+     *
+     * This method validates that the GraphQL API correctly enforces security constraints during the deletion of user accounts. It checks:
+     * 1. A user with lower privileges (non-admin) cannot delete an admin account.
+     * 2. A user is prohibited from deleting their own account.
+     *
+     * Each scenario sends a mutation request to delete a user and asserts that an 'access forbidden' error is returned,
+     * indicating proper enforcement of security rules.
+     */
+    public function testDestroySecurity():void
+    {
+        $user = User::factory()->create([
+            'role_id' => Role::where('level', 255)->value('id')
+        ]);
+
+        $admin = User::select('users.id')
+            ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
+            ->where('roles.level', '<', 128)
+            ->inRandomOrder()
+            ->first();
+
+        $this->runTestCases(route('graphql.user'), [
+            // Test user with low level role is trying to remove an admin
+            [
+                'actor' => $user,
+                'query' => 'mutation {destroy (id: ' . $admin->id . ') {id}}',
+                'callback' => fn($content) => $this->assertTrue($content['errors'][0]['message'] === UserMutation::ACCESS_FORBIDDEN_MESSAGE)
+            ],
+            // Test user cannot remove himself
+            [
+                'actor' => $user,
+                'query' => 'mutation {destroy (id: ' . $user->id . ') {id}}',
+                'callback' => fn($content) => $this->assertTrue($content['errors'][0]['message'] === UserMutation::ACCESS_FORBIDDEN_MESSAGE)
+            ]
+        ]);
+    }
 }
