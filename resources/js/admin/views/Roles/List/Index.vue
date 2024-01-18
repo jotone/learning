@@ -79,7 +79,7 @@ import {Notification} from "../../../libs/Notification";
 import {FiltersInterface} from "../../../../contracts/FiltersInterface";
 import {RoleInterface} from "../../../../contracts/RoleInterface";
 // Components
-import {getFilters, Pagination, PerPage, RowActions, SearchForm, TableHeadCol} from '../../../components/DataTables';
+import {getFilters, Pagination, PerPage, RowActions, SearchForm, TableHeadCol} from '../../../components/DataTable';
 import RemovePopup from "../../../components/Popup/RemovePopup.vue";
 import TableRow from "./TableRow.vue";
 // Layout

@@ -15,14 +15,14 @@ class SettingsController extends Controller
      */
     public function update(Request $request): JsonResponse
     {
-        $args = $request->only(['footer_code', 'header_code']);
+        $args = $request->only(['site_title', 'default_timezone', 'footer_code', 'header_code']);
 
         $result = [];
         foreach ($args as $key => $val) {
-            if (in_array($key, ['footer_code', 'header_code'])) {
-                $result[] = Settings::where('key', $key)->update([
-                    'value' => $val
-                ]);
+            if (in_array($key, ['site_title', 'default_timezone', 'footer_code', 'header_code'])) {
+                $result[$key] = Settings::firstWhere('key', $key);
+                $result[$key]->value = $val;
+                $result[$key]->save();
             }
         }
 

@@ -7,16 +7,17 @@
   },
   "devDependencies":{
     "@inertiajs/vue3":"^1.0.14",
-    "@vitejs/plugin-vue":"^4.5.2",
-    "axios":"^1.6.3",
+    "@vitejs/plugin-vue":"^4.6.2",
+    "axios":"^1.6.5",
     "laravel-vite-plugin":"^0.8.1",
-    "postcss":"^8.4.32",
+    "postcss":"^8.4.33",
     "postcss-nesting":"^12.0.2",
-    "sass":"^1.69.7",
+    "sass":"^1.70.0",
     "vite":"^4.5.1",
-    "vue":"^3.4.4"
+    "vue":"^3.4.14"
   },
   "dependencies": {
-    "moment": "^2.29.4"
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.44"
   }
 }
