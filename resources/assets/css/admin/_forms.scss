@@ -72,6 +72,50 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
   padding: 14px;
 }
 
+.slider-checkbox-wrap {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+
+  .slider-checkbox-container {
+    background-color: #dee4ed;
+    border-radius: 12px;
+    position: relative;
+    height: 24px;
+    width: 42px;
+    cursor: pointer;
+
+    .slider-checkbox-circle {
+      background-color: #909bbf;
+      border-radius: 50%;
+      height: 16px;
+      width: 16px;
+      position: absolute;
+      left: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &.checked {
+      background-color: #ccdeff;
+
+      .slider-checkbox-circle {
+        background-color: #005aff;
+        left: auto;
+        right: 4px;
+      }
+    }
+  }
+
+  .slider-checkbox-text {
+    color: #00145e;
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  input {display: none}
+}
+
 label {
   &.caption {
     display: block;

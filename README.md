@@ -75,7 +75,7 @@ npm i && npm run prod
 - ~~Users.Api~~
 - Settings
   - Page
-    - Main
+    - ~~Main~~
     - Functionality
     - Email
       - Templates

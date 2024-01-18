@@ -51,7 +51,7 @@
       </div>
     </nav>
     <main>
-      <ul class="breadcrumbs">
+      <ul class="breadcrumbs" v-if="$attrs.hasOwnProperty('breadcrumbs')">
         <li v-for="item in $attrs.breadcrumbs">
           <a :href="item.url" v-if="'url' in item">
             {{ item.name }}
@@ -61,7 +61,7 @@
       </ul>
 
       <header>
-        <div class="page-name-wrap">
+        <div class="page-name-wrap" v-if="$attrs.hasOwnProperty('pageName')">
           <h1>{{ $attrs.pageName }}</h1>
 
           <template v-if="'buttons' in $attrs">
