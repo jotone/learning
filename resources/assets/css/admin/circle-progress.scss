@@ -1,0 +1,20 @@
+.circle-progress-wrap {
+  height: 24px;
+  width: 24px;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: #ccdeff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .inner-circle {
+    background-color: #fff;
+    border-radius: 50%;
+    height: 20px;
+    position: absolute;
+    width: 20px;
+  }
+}

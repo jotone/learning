@@ -176,7 +176,10 @@
       gap: 10px;
       justify-items: center;
 
-      .form-select {padding: 5px 20px 5px 10px}
+      .form-select {
+        border-color: #005aff;
+        padding: 5px 20px 5px 10px
+      }
     }
 
     .pagination-wrap ul {

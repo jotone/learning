@@ -1,5 +1,17 @@
 <template>
-  <form @submit.prevent="submit" class="f-st-fs">
+  <header>
+    <div class="page-name-wrap">
+      <h1 v-html="$attrs.hasOwnProperty('model') ? 'Edit Role' : 'Create Role'"></h1>
+
+      <button class="btn" form="roleForm" type="submit">
+        <span>Save Changes</span>
+      </button>
+    </div>
+  </header>
+
+  <Notifications/>
+
+  <form id="roleForm" @submit.prevent="submit" class="f-st-fs">
     <div class="col-4-5">
       <section>
         <h3 class="section-name">
@@ -84,16 +96,6 @@
         </table>
       </section>
     </div>
-
-    <div class="col-1-5">
-      <section style="text-align: center">
-        <h3>Actions</h3>
-
-        <div class="f-c-c">
-          <button class="btn blue" type="submit">Save</button>
-        </div>
-      </section>
-    </div>
   </form>
 </template>
 
@@ -106,6 +108,7 @@ import {Notification} from "../../../libs/Notification";
 // Components
 import Layout from "../../../shared/Layout.vue";
 import TableRow from "./TableRow.vue";
+import Notifications from "../../../components/Default/Notifications.vue";
 
 defineOptions({layout: Layout})
 

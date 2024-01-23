@@ -21,12 +21,20 @@ class SettingsController extends BaseDashboardController
                 'breadcrumbs' => [
                     ['name' => 'Settings']
                 ],
-                'data' => Settings::select(['key', 'value', 'extra_data'])->whereIn('key', [
-                    'site_url',
-                    'site_title',
-                    'default_timezone',
-                    'site_custom_url'
-                ])->get()->keyBy('key')->toArray(),
+                'data' => Settings::select(['key', 'value'])
+                    ->whereIn('key', [
+                        'site_url',
+                        'site_title',
+                        'default_timezone',
+                        'site_custom_url',
+                        'zapier_key',
+                        'digistore_key',
+                        'digistore_enable'
+                    ])
+                    ->orWhereIn('section', ['registration-process', 'site-parts'])
+                    ->get()
+                    ->pluck('value', 'key')
+                    ->toArray(),
                 'routes' => [
                     'settings' => [
                         'update' => route('api.settings.update')

@@ -76,7 +76,8 @@ npm i && npm run prod
 - Settings
   - Page
     - ~~Main~~
-    - Functionality
+    - ~~Functionality~~
+    - Check unpublished changes
     - Email
       - Templates
         - Create

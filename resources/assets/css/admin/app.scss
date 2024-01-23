@@ -1,4 +1,4 @@
-@import "../font-popins.scss", "icons", "breadcrumbs", "forms", "menu", "notification", "popup", "user-avatar";
+@import "../font-popins.scss", "icons", "breadcrumbs", "circle-progress", "forms", "menu", "notification", "popup", "user-avatar";
 
 .col-1-2 {
   width: 50%;
@@ -16,6 +16,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+a {
+  color: #005aff;
+  text-decoration: none;
 }
 
 .site-content-wrap {
@@ -79,11 +84,9 @@
         display: block;
         background-color: #ffffff;
         border-radius: 30px;
-        color: #005aff;
         font-size: 16px;
         line-height: 24px;
         text-align: center;
-        text-decoration: none;
         margin: 0 auto;
         padding: 10px 3px 10px 10px;
         height: 43px;
@@ -109,6 +112,8 @@
   display: flex;
   padding: 25px;
 }
+
+.underline {border-bottom: 1px solid #e6efff}
 
 section {
   h3 {

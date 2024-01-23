@@ -21,19 +21,10 @@ class RoleController extends BaseDashboardController
                 'breadcrumbs' => [
                     ['name' => 'Roles']
                 ],
-                'buttons' => [
-                    [
-                        'icon' => 'plus-icon',
-                        'name' => 'Role Create',
-                        'url' => route('dashboard.roles.create'),
-                    ]
-                ],
-                'pageName' => 'Roles',
                 'routes' => [
-                    'roles' => [
-                        'api' => route('graphql.role'),
-                        'edit' => route('dashboard.roles.edit', ':id')
-                    ]
+                    'api' => route('graphql.role'),
+                    'create' => route('dashboard.roles.create'),
+                    'edit' => route('dashboard.roles.edit', ':id')
                 ]
             ],
             scripts: [
@@ -64,7 +55,6 @@ class RoleController extends BaseDashboardController
                     ['name' => 'Roles', 'url' => route('dashboard.roles.index')],
                     ['name' => 'Create Role']
                 ],
-                'pageName' => 'Create Role',
                 'permissions' => $permissions,
                 'routes' => [
                     'roles' => [
@@ -102,7 +92,6 @@ class RoleController extends BaseDashboardController
                     ['name' => 'Edit Role']
                 ],
                 'model' => $role->load('permissions'),
-                'pageName' => sprintf('Edit Role "%s"', $role->name),
                 'permissions' => $permissions,
                 'routes' => [
                     'roles' => [

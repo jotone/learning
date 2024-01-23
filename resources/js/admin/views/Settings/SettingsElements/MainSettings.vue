@@ -54,7 +54,7 @@
 
     <div class="row">
       <div class="col-1-2">
-        <div class="slider-wrap">
+        <div class="wide-wrap">
           <SliderCheckbox
             name="site_custom_url_enable"
             text="Custom Domain"
