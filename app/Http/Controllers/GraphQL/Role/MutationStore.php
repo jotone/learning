@@ -27,6 +27,11 @@ class MutationStore extends RoleMutation
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'string']
             ],
+            'slug' => [
+                'name' => 'slug',
+                'type' => Type::string(),
+                'rules' => ['nullable', 'string']
+            ],
             'level' => [
                 'name' => 'level',
                 'type' => Type::nonNull(Type::int()),
@@ -53,7 +58,7 @@ class MutationStore extends RoleMutation
             return new Error(self::ACCESS_FORBIDDEN_MESSAGE);
         }
 
-        $args['slug'] = generateUrl($args['name']);
+        $args['slug'] = generateUrl(empty($args['slug']) ? $args['name'] : $args['slug']);
 
         DB::beginTransaction();
 

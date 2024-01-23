@@ -1,4 +1,17 @@
 <template>
+  <header>
+    <div class="page-name-wrap">
+      <h1>Roles</h1>
+
+        <a class="btn" :href="$attrs.routes.create">
+          <i class="icon plus-icon"></i>
+          <span>Role Create</span>
+        </a>
+    </div>
+  </header>
+
+  <Notifications/>
+
   <div class="card">
     <div class="content-table-wrap">
       <div class="content-table-controls">
@@ -80,6 +93,7 @@ import {FiltersInterface} from "../../../../contracts/FiltersInterface";
 import {RoleInterface} from "../../../../contracts/RoleInterface";
 // Components
 import {getFilters, Pagination, PerPage, RowActions, SearchForm, TableHeadCol} from '../../../components/DataTable';
+import Notifications from "../../../components/Default/Notifications.vue";
 import RemovePopup from "../../../components/Popup/RemovePopup.vue";
 import TableRow from "./TableRow.vue";
 // Layout
@@ -109,7 +123,7 @@ const rowActions = [
   {
     name: 'Edit',
     icon: 'edit-icon',
-    link: page.props.routes.roles.edit
+    link: page.props.routes.edit
   }, {
     name: 'Remove',
     icon: 'trash-icon',
@@ -122,7 +136,7 @@ const rowActions = [
             const requests = [];
             for (let i = 0, n = result.length; i < n; i++) {
               requests.push(request(
-                page.props.routes.roles.api,
+                page.props.routes.api,
                 `mutation {destroy(id:${result[i].id}){id}}`
               ));
             }
@@ -219,7 +233,7 @@ const showRowActions = (e, role: RoleInterface) => {
  * @param {null|function} callback
  */
 const getList = (filters: FiltersInterface, callback?: Function) =>
-  request(page.props.routes.roles.api, listQuery(filters))
+  request(page.props.routes.api, listQuery(filters))
     .then(response => {
       list.value = response.data.data.roles;
       typeof callback === 'function' && callback(filters)

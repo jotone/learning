@@ -35,6 +35,6 @@ const state = ref(props.checked)
 // Invert the current value of 'state' and emits a 'change' event
 const toggleStatus = () => {
   state.value = !state.value
-  emit('change', state.value)
+  emit('change', state.value, props.name)
 }
 </script>

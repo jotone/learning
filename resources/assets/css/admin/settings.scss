@@ -1,11 +1,35 @@
 .dropdown-list-wrap {
   margin: 40px 0;
+  width: 75%;
+
+  label.caption > span {
+    color: #00145e;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18px;
+  }
+
+  .btn {
+    min-width: 150px;
+    height: 44px;
+  }
 
   > li {
+    margin-bottom: 10px;
     width: 100%;
 
-    .slider-wrap {
-      margin: 15px 0;
+    .wide-wrap {
+      margin: 10px 0;
+    }
+
+    .options-list {
+      margin: 5px 0 30px 0;
+
+      li {
+        margin-bottom: 15px;
+
+        .slider-checkbox-text {font-weight: 400}
+      }
     }
 
     .list-element-title {
@@ -36,7 +60,7 @@
     }
 
     .list-element-content-wrap {
-      display: block;
+      display: none;
 
       label.caption {
         padding-right: 15px;
@@ -54,11 +78,26 @@
           font-size: 14px;
           font-weight: 400;
         }
+
+        .circle-progress-wrap {
+          right: 23px;
+        }
       }
 
       .form-input, .form-select {
         margin-top: 5px;
         width: 100%;
+      }
+
+      .text-bar-wrap {
+        background-color: #f2f7ff;
+        border: 1px solid #d6e0ff;
+        border-radius: 20px;
+        display: block;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+        padding: 15px 25px;
       }
     }
 

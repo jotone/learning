@@ -36,7 +36,7 @@ const props = defineProps({role: Object as PropType<RoleInterface>});
  * Link for the role edit page
  * @return {string}
  */
-const editUrl = computed((): string => page.props.routes.roles.edit.replace(/:id/, props.role.id))
+const editUrl = computed((): string => page.props.routes.edit.replace(/:id/, props.role.id))
 
 /**
  * Emit action click event

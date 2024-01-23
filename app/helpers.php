@@ -5,6 +5,25 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 /**
+ * Flatten a multidimensional array.
+ *
+ * @param array $array
+ * @param array $result
+ * @return array
+ */
+function flattenArray(array $array, array $result = []): array
+{
+    // Create a RecursiveIteratorIterator to iterate through the multidimensional array.
+    $values = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
+    // Append the value to the result array.
+    foreach($values as $val) {
+        $result[] = $val;
+    }
+    // Return the flattened array.
+    return $result;
+}
+
+/**
  * Generates a URL-friendly string from the given input.
  *
  * @param string|null $str
