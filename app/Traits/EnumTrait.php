@@ -35,4 +35,17 @@ trait EnumTrait
         }
         return null;
     }
+
+    /**
+     * Retrieve all the names and values
+     *
+     * @return array
+     */
+    public static function forSelect(): array
+    {
+        return array_combine(
+            array_column(self::cases(), 'value'),
+            array_column(self::cases(), 'name')
+        );
+    }
 }

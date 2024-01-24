@@ -9,7 +9,7 @@
       "value":""
     },
     {
-      "key":"digistore_enable",
+      "key":"enable_digistore",
       "value":false
     },
     {
@@ -50,10 +50,6 @@
     }
   ],
   "email-settings":[
-    {
-      "key":"footer_color",
-      "value":"#000000"
-    },
     {
       "key":"terms_of_service",
       "value":""

@@ -1,0 +1,27 @@
+[
+  {
+    "caption": "Facebook",
+    "type": "facebook",
+    "img": "facebook-icon"
+  },
+  {
+    "caption": "Instagram",
+    "type": "instagram",
+    "img": "instagram-icon"
+  },
+  {
+    "caption": "Tik Tok",
+    "type": "tiktok",
+    "img": "tiktok-icon"
+  },
+  {
+    "caption": "Youtube",
+    "type": "youtube",
+    "img": "youtube-icon"
+  },
+  {
+    "caption": "LinkedIn",
+    "type": "linkedin",
+    "img": "linkedin-icon"
+  }
+]

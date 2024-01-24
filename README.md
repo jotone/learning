@@ -77,13 +77,18 @@ npm i && npm run prod
   - Page
     - ~~Main~~
     - ~~Functionality~~
-    - Check unpublished changes
     - Email
+      - ~~SMTP~~
+      - ~~Global Settings~~
+      - Social Media
+        - ~~List~~
+        - Create
+        - Edit
+        - Remove
       - Templates
         - Create
         - Edit
         - Remove
-      - SMTP
     - Language
       - Api
       - Page

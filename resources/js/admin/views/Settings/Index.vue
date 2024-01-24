@@ -14,20 +14,25 @@
   <ul class="dropdown-list-wrap">
     <MainSettings :settings="mainSettingsForm"/>
     <Functionality :settings="functionalityForm"/>
+    <Email :settings="emailForm" :socials="$attrs.socials.current" @addSocialMedia="socialMediaModalView"/>
   </ul>
+
+  <SocialMediaPopup ref="socialMediaModal" :socials="$attrs.socials.list"/>
 </template>
 
 <script setup>
 // Vue libs
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import {usePage} from "@inertiajs/vue3";
 // Other Libs
 import axios from "axios";
 import {Notification} from "../../libs/Notification";
 // Components
+import Email from "./SettingsElements/Email.vue";
 import Functionality from "./SettingsElements/Functionality.vue";
 import MainSettings from "./SettingsElements/MainSettings.vue";
 import Notifications from "../../components/Default/Notifications.vue";
+import SocialMediaPopup from "./SocialMediaPopup.vue";
 // Layout
 import Layout from "../../shared/Layout.vue";
 
@@ -36,33 +41,24 @@ defineOptions({layout: Layout})
 // Page variables
 const page = usePage()
 
-const mainSettingsForm = reactive({
-  site_url: page.props.data.site_url,
-  site_title: page.props.data.site_title,
-  default_timezone: page.props.data.default_timezone,
-  site_custom_url: page.props.data.site_custom_url,
-})
+console.log(page.props)
 
-const functionalityForm = reactive({
-  site_url: page.props.data.site_url,
-  curriculum_menu: page.props.data.curriculum_menu,
-  enable_address: page.props.data.enable_address,
-  enable_custom_question: page.props.data.enable_custom_question,
-  enable_help_center: page.props.data.enable_help_center,
-  enable_lesson_complete: page.props.data.enable_lesson_complete,
-  enable_phone: page.props.data.enable_phone,
-  enable_search: page.props.data.enable_search,
-  enable_shirt_size: page.props.data.enable_shirt_size,
-  enable_signature: page.props.data.enable_signature,
-  enable_sticky_menu: page.props.data.enable_sticky_menu,
-  custom_question_1: page.props.data.custom_question_1,
-  custom_question_2: page.props.data.custom_question_2,
-  custom_question_3: page.props.data.custom_question_3,
-  search_title: page.props.data.search_title,
-  digistore_enable: page.props.data.digistore_enable,
-  digistore_key: page.props.data.digistore_key,
-  zapier_key: page.props.data.zapier_key,
-})
+const socialMediaModal = ref(null)
+const socialMediaModalView = () => {
+  socialMediaModal.value.open().then(res => {
+    console.log(res)
+  })
+}
+
+const fillForm = keys => {
+  let obj = {}
+  for (let key in page.props.data) {
+    if (keys.indexOf(key) >= 0) {
+      obj[key] = page.props.data[key]
+    }
+  }
+  return obj
+}
 
 const saveSettings = url => {
   const headers = {
@@ -81,4 +77,46 @@ const saveSettings = url => {
       console.error(e)
     })
 }
+
+const mainSettingsForm = reactive(fillForm([
+  'site_url',
+  'site_title',
+  'default_timezone',
+  'site_custom_url'
+]))
+
+const functionalityForm = reactive(fillForm([
+  'site_url',
+  'curriculum_menu',
+  'digistore_key',
+  'enable_address',
+  'enable_custom_question',
+  'enable_digistore',
+  'enable_help_center',
+  'enable_lesson_complete',
+  'enable_phone',
+  'enable_search',
+  'enable_shirt_size',
+  'enable_signature',
+  'enable_sticky_menu',
+  'custom_question_1',
+  'custom_question_2',
+  'custom_question_3',
+  'search_title',
+  'zapier_key'
+]))
+
+const emailForm = reactive(fillForm([
+  'smtp_username',
+  'smtp_password',
+  'smtp_host',
+  'smtp_port',
+  'smtp_encryption',
+  'smtp_from_address',
+  'smtp_from_name',
+  'terms_of_service',
+  'privacy_policy',
+  'legal_address',
+]))
+
 </script>

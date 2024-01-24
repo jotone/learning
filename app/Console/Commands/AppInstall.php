@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\{AdminMenu, Permission, Role, Settings, User};
+use App\Models\{AdminMenu, Permission, Role, Settings, SocialMedia, User};
 use Illuminate\Console\Command;
 
 class AppInstall extends Command
@@ -44,7 +44,7 @@ class AppInstall extends Command
                     'first_name' => 'Superuser',
                     'email' => 'superadmin@mail.com',
                     'email_verified_at' => now(),
-                    'password' => base64_decode('OFNUUFQwbUJCMDZnXkV1Mg=='),
+                    'password' => base64_decode('MmoyMUp3M1FqUWNTM2hV'),
                     'activated_at' => now(),
                     'role_id' => Role::firstWhere('level', '<', 1)->id,
                     'status' => 'active'
@@ -53,6 +53,7 @@ class AppInstall extends Command
 
         // Install settings
         $this->runWithTimer('Installing settings', function () use ($files) {
+            // Install main setting
             foreach ($files['settings'] as $section => $settings) {
                 foreach ($settings as $setting) {
                     if ($setting['key'] == 'sign_up_date') {
@@ -66,6 +67,8 @@ class AppInstall extends Command
                     ]);
                 }
             }
+            // Install social media
+            $this->installSocialMedia($files['social_media']);
         });
 
         // Installing side menu
@@ -150,27 +153,6 @@ class AppInstall extends Command
     }
 
     /**
-     * Run function with microseconds timer
-     *
-     * @param string $message
-     * @param callable $callback
-     * @return mixed
-     */
-    protected function runWithTimer(string $message, callable $callback): mixed
-    {
-        // Get current timestamp
-        $timestamp = microtime(true);
-        // Run routine
-        $result = $callback();
-        // Execution time
-        $timestamp = number_format((microtime(true) - $timestamp) * 1000);
-        // Show the console message
-        $this->components->twoColumnDetail($message, '<fg=gray>' . $timestamp . 'ms</> <fg=green>DONE</>');
-
-        return $result;
-    }
-
-    /**
      * Install roles
      *
      * @param array $roles
@@ -197,6 +179,42 @@ class AppInstall extends Command
             }
             $result[$role->slug] = $role->id;
         }
+        return $result;
+    }
+
+    /**
+     * Create list of social media
+     *
+     * @param array $list
+     * @return void
+     */
+    protected function installSocialMedia(array $list): void
+    {
+        foreach ($list as $i =>$item) {
+            SocialMedia::create(array_merge($item, [
+                'position' => $i
+            ]));
+        }
+    }
+
+    /**
+     * Run function with microseconds timer
+     *
+     * @param string $message
+     * @param callable $callback
+     * @return mixed
+     */
+    protected function runWithTimer(string $message, callable $callback): mixed
+    {
+        // Get current timestamp
+        $timestamp = microtime(true);
+        // Run routine
+        $result = $callback();
+        // Execution time
+        $timestamp = number_format((microtime(true) - $timestamp) * 1000);
+        // Show the console message
+        $this->components->twoColumnDetail($message, '<fg=gray>' . $timestamp . 'ms</> <fg=green>DONE</>');
+
         return $result;
     }
 }

@@ -8,6 +8,26 @@
 
   &.mirror {transform: scaleX(-1)}
 
+  &.facebook-icon {
+    mask-image: url("../../images/icons/facebook.svg");
+  }
+
+  &.instagram-icon {
+    mask-image: url("../../images/icons/instagram.svg");
+  }
+
+  &.linkedin-icon {
+    mask-image: url("../../images/icons/linkedin.svg");
+  }
+
+  &.tiktok-icon {
+    mask-image: url("../../images/icons/tiktok.svg");
+  }
+
+  &.youtube-icon {
+    mask-image: url("../../images/icons/youtube.svg");
+  }
+
   &.burger-menu-icon {
     mask-image: url("../../images/icons/burger-menu.svg");
   }

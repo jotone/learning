@@ -110,51 +110,6 @@ let list = ref([]);
 // Modal for the role remove
 const removeRoleModal = ref(null)
 
-// Selected row model ID
-let selectedRow = reactive({
-  model: {},
-  right: 0,
-  top: 0,
-  show: false
-});
-
-// List of actions for the row popup
-const rowActions = [
-  {
-    name: 'Edit',
-    icon: 'edit-icon',
-    link: page.props.routes.edit
-  }, {
-    name: 'Remove',
-    icon: 'trash-icon',
-    callback: () => {
-      const items = [{text: selectedRow.model.name, id: selectedRow.model.id}];
-      removeRoleModal.value
-        .open(items)
-        .then(result => {
-          if (false !== result && typeof result === 'object') {
-            const requests = [];
-            for (let i = 0, n = result.length; i < n; i++) {
-              requests.push(request(
-                page.props.routes.api,
-                `mutation {destroy(id:${result[i].id}){id}}`
-              ));
-            }
-            Promise.all(requests).then(() => {
-              getList(filters)
-              if (items.length > 1) {
-                let roles = items.reduce((sum, item, i) => i === 0 ? `"${item.text}"` : `"${sum}", "${item.text}"`, '')
-                Notification.warning(`Roles ${roles} were successfully removed.`);
-              } else {
-                Notification.warning(`Role "${items[0].text}" was successfully removed.`);
-              }
-            })
-          }
-        })
-    }
-  }
-]
-
 // Decoded URI query
 const query = decodeUriQuery(window.location.search)
 
@@ -226,6 +181,52 @@ const showRowActions = (e, role: RoleInterface) => {
   selectedRow.top = blockOffset.height * (row.rowIndex + 1);
   selectedRow.show = true;
 }
+
+
+// Selected row model ID
+let selectedRow = reactive({
+  model: {},
+  right: 0,
+  top: 0,
+  show: false
+});
+
+// List of actions for the row popup
+const rowActions = [
+  {
+    name: 'Edit',
+    icon: 'edit-icon',
+    link: page.props.routes.edit
+  }, {
+    name: 'Remove',
+    icon: 'trash-icon',
+    callback: () => {
+      const items = [{text: selectedRow.model.name, id: selectedRow.model.id}];
+      removeRoleModal.value
+        .open(items)
+        .then(result => {
+          if (false !== result && typeof result === 'object') {
+            const requests = [];
+            for (let i = 0, n = result.length; i < n; i++) {
+              requests.push(request(
+                page.props.routes.api,
+                `mutation {destroy(id:${result[i].id}){id}}`
+              ));
+            }
+            Promise.all(requests).then(() => {
+              getList(filters)
+              if (items.length > 1) {
+                let roles = items.reduce((sum, item, i) => i === 0 ? `"${item.text}"` : `"${sum}", "${item.text}"`, '')
+                Notification.warning(`Roles ${roles} were successfully removed.`);
+              } else {
+                Notification.warning(`Role "${items[0].text}" was successfully removed.`);
+              }
+            })
+          }
+        })
+    }
+  }
+]
 
 /**
  * Send request to get roles list

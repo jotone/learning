@@ -15,7 +15,7 @@ class SettingsController extends Controller
             'custom_question_2',
             'custom_question_3',
             'default_timezone',
-            'digistore_enable',
+            'enable_digistore',
             'digistore_key',
             'enable_address',
             'enable_custom_question',

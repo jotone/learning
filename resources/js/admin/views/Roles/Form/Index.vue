@@ -117,22 +117,28 @@ const request = inject('request')
 // Page variables
 const page = usePage();
 
-// Build the already set role permissions
-let rolePermissions = {};
-if ('model' in page.props) {
-  for (let i = 0, n = page.props.model.permissions.length; i < n; i++) {
-    const permission = page.props.model.permissions[i]
+/**
+ * Build the already set role permissions
+ */
+const getRolePermissions = () => {
+  let rolePermissions = {};
+  if ('model' in page.props) {
+    for (let i = 0, n = page.props.model.permissions.length; i < n; i++) {
+      const permission = page.props.model.permissions[i]
 
-    const controller = permission.controller.split('\\').pop();
-    rolePermissions[controller] = permission.allowed_methods
+      const controller = permission.controller.split('\\').pop();
+      rolePermissions[controller] = permission.allowed_methods
+    }
   }
+  return rolePermissions
 }
 
 /**
  * Build the role permissions list
  * @param form
+ * @param rolePermissions
  */
-const buildPermissions = (form: any) => {
+const buildPermissions = (form: any, rolePermissions: object) => {
   for (let type in page.props.permissions) {
     // Set form type body if it does not exist
     !form.hasOwnProperty(type) && (form[type] = {})
@@ -182,7 +188,9 @@ const submit = (e: SubmitEvent) => {
       query = `slug:"${form.slug}",${query}`
     } else if (field === 'dashboard' || field === 'graphql') {
       for (let controller in form[field]) {
-        data.permissions[field === 'dashboard' ? 'App\\Http\\Controllers\\Dashboard\\' : 'App\\GraphQL\\Schemas\\' + controller] = form[field][controller];
+        data.permissions[field === 'dashboard'
+          ? 'App\\Http\\Controllers\\Dashboard\\'
+          : 'App\\GraphQL\\Schemas\\' + controller] = form[field][controller];
       }
     }
   }
@@ -206,18 +214,21 @@ const submit = (e: SubmitEvent) => {
           form.slug = '';
           form.level = '';
           e.target.reset();
-          form = buildPermissions(form)
+          form = buildPermissions(form, getRolePermissions())
         }
       }
     })
 }
 
 // Page form variables
-let form = reactive({
-  name: page.props?.model?.name || '',
-  slug: page.props?.model?.slug || '',
-  level: page.props?.model?.level || page.props.auth.role.level
-})
-
-form = buildPermissions(form)
+let form = reactive(
+  buildPermissions(
+    {
+      name: page.props?.model?.name || '',
+      slug: page.props?.model?.slug || '',
+      level: page.props?.model?.level || page.props.auth.role.level
+    },
+    getRolePermissions()
+  )
+)
 </script>
