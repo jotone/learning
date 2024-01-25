@@ -18,8 +18,6 @@
   },
   "dependencies":{
     "moment":"^2.30.1",
-    "moment-timezone":"^0.5.44",
-    "select2":"^3.5.1",
-    "v-select2-component":"^0.4.7"
+    "moment-timezone":"^0.5.44"
   }
 }

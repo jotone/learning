@@ -101,7 +101,7 @@ export default {
       })
     },
     /**
-     * Remove element from the modal window list
+     * Remove an element from the modal window list
      * @param {int} id
      */
     removeItem(id) {

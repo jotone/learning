@@ -117,6 +117,9 @@ const request = inject('request')
 // Page variables
 const page = usePage();
 
+/*
+ * Methods
+ */
 /**
  * Build the already set role permissions
  */
@@ -158,7 +161,7 @@ const buildPermissions = (form: any, rolePermissions: object) => {
 }
 
 /**
- * Update the list of permissions of the form
+ * Update the list of permissions
  * @param {string} type
  * @param {string} controller
  * @param {string} action
@@ -170,6 +173,7 @@ const updateForm = (type: string, controller: string, action: string, value: num
 
 /**
  * Send form request
+ * @param e
  */
 const submit = (e: SubmitEvent) => {
   // Set mutation type depends on exists model or not
@@ -219,7 +223,9 @@ const submit = (e: SubmitEvent) => {
       }
     })
 }
-
+/*
+ * Variables
+ */
 // Page form variables
 let form = reactive(
   buildPermissions(

@@ -103,19 +103,13 @@ defineOptions({layout: Layout})
 
 // Get content roles function
 const request = inject('request')
+
 // Page variables
 const page = usePage()
-// Data-table items list
-let list = ref([]);
-// Modal for the role remove
-const removeRoleModal = ref(null)
 
-// Decoded URI query
-const query = decodeUriQuery(window.location.search)
-
-// Page filters list
-let filters = reactive(getFilters(query))
-
+/*
+ * Methods
+ */
 /**
  * GraphQL query string to get roles list
  * @param {FiltersInterface} filters
@@ -229,7 +223,7 @@ const rowActions = [
 ]
 
 /**
- * Send request to get roles list
+ * Send request to get a role list
  * @param {FiltersInterface} filters
  * @param {null|function} callback
  */
@@ -240,7 +234,18 @@ const getList = (filters: FiltersInterface, callback?: Function) =>
       typeof callback === 'function' && callback(filters)
     })
 
+/*
+ * Variables
+ */
+// Data-table items list
+let list = ref([]);
+// Modal for the role remove
+const removeRoleModal = ref(null)
+// Decoded URI query
+const query = decodeUriQuery(window.location.search)
+// Page filters list
+let filters = reactive(getFilters(query))
+
 // Load roles
 getList(filters)
-
 </script>

@@ -3,13 +3,14 @@
     <div class="default-popup-wrap">
       <div class="close-popup" @click="close"><i class="icon close-icon"></i></div>
 
-      <div class="popup-title-wrap">{{ type ? titleEdit :titleAdd }}</div>
+      <div class="popup-title-wrap">{{ type ? titleEdit : titleAdd }}</div>
 
       <div class="popup-body-wrap">
         <form>
           <label class="caption">
             <span>Type</span>
-<!--            <Select2 :settings=""/>  https://stackoverflow.com/questions/57158985/adding-image-and-text-to-vue-select-dropdown-->
+
+            <CustomSelector :options="options" :optionRow="selectorRow"/>
           </label>
         </form>
       </div>
@@ -18,12 +19,12 @@
 </template>
 
 <script>
-import Select2 from 'v-select2-component';
 import {DefaultPopupMixin} from "../../../mixins/default-popup-mixin.js";
+import CustomSelector from "../../components/Form/CustomSelector.vue";
 
 export default {
+  components: {CustomSelector},
   mixins: [DefaultPopupMixin],
-  components: {Select2},
   data() {
     return {
       titleAdd: 'Add Social Media',
@@ -32,11 +33,9 @@ export default {
       form: {
         type: '',
         caption: '',
-        img: '',
+        img: ''
       },
-      select2: {
-        settings: {minimumResultsForSearch: -1}
-      }
+      options: []
     }
   },
   props: {
@@ -46,9 +45,18 @@ export default {
     }
   },
   mounted() {
-    console.log(this.socials);
+    for (let type in this.socials) {
+      this.options.push({
+        name: this.socials[type],
+        icon: type
+      })
+    }
   },
   methods: {
+    selectorRow(option) {
+      console.log(option)
+      return `<i class="icon ${option.icon}"></i><span>${option.name}</span>`
+    },
     /**
      * Open modal window
      * @param {Array} list

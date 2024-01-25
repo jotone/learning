@@ -86,6 +86,9 @@ const viewSideMenu = () => {
   sideMenuActive.value = !sideMenuActive.value
 }
 
+/*
+ * Methods
+ */
 /**
  * Convert unix date (Y-m-d H:i:s) to the proper date format
  * @param {string} date
@@ -121,6 +124,6 @@ const request = (url, query) => new Promise((resolve, reject) => {
 })
 
 provide('request', request)
-// Provides the "convertDate" function on over the all project
+// Provides the "convertDate" function on over the all projects
 provide('convertDate', convertDate)
 </script>

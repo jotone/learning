@@ -89,13 +89,9 @@ const props = defineProps({
   }
 })
 
-// Page absolute path
-const path = ref(window.location.origin + window.location.pathname)
-
-let query = decodeUriQuery(window.location.search)
-if (!query.hasOwnProperty('page')) {
-  query.page = props.filters.page
-}
+/*
+ * Methods
+ */
 
 /**
  * Modify parameter of the URI query
@@ -109,4 +105,15 @@ const modifyQuery = (obj: object): string => encodeUriQuery(Object.assign({}, qu
  * @param {number} page
  */
 const changePage = (page: number) => emit('changePage', Object.assign({}, props.filters, {page: page}));
+
+/*
+ * Variables
+ */
+
+// Page absolute path
+const path = ref(window.location.origin + window.location.pathname)
+// Build a pagination query
+let query = decodeUriQuery(window.location.search)
+if (!query.hasOwnProperty('page')) {query.page = props.filters.page}
+
 </script>

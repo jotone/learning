@@ -41,7 +41,6 @@ defineOptions({layout: Layout})
 // Page variables
 const page = usePage()
 
-console.log(page.props)
 
 const socialMediaModal = ref(null)
 const socialMediaModalView = () => {
