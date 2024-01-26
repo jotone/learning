@@ -45,7 +45,7 @@ class SettingsController extends BaseDashboardController
                         'update' => route('api.settings.update')
                     ],
                     'socials' => [
-
+                        'store' => route('api.socials.store')
                     ]
                 ]
             ],

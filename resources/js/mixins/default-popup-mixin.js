@@ -2,6 +2,7 @@ export const DefaultPopupMixin = {
   data() {
     return {
       active: false,
+      items: [],
       resolver: () => {}
     }
   },

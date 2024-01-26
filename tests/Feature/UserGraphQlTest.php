@@ -15,9 +15,7 @@ class UserGraphQlTest extends GraphQlTestCase
 
         $this->total = User::count();
         if (User::count() < 5) {
-            User::factory(10)->create([
-                'role_id' => Role::where('slug', 'student')->value('id')
-            ]);
+            User::factory(10)->student()->create();
         }
     }
 
@@ -104,10 +102,10 @@ class UserGraphQlTest extends GraphQlTestCase
      * Test the security constraints of the 'create' mutation for users in the GraphQL API.
      *
      * This method performs two security-related tests:
-     * 1. It checks whether the API correctly enforces a limit on the number of students
-     *    that can be created, by trying to create a user when the student limit is reached.
-     * 2. It verifies that a user with a lower privilege level (e.g., student) cannot create
-     *    a user with higher privileges (e.g., superuser).
+     * - It checks whether the API correctly enforces a limit on the number of students
+     *   that can be created, by trying to create a user when the student limit is reached.
+     * - It verifies that a user with a lower privilege level (e.g., student) cannot create
+     *   a user with higher privileges (e.g., superuser).
      *
      * Each test case is designed to trigger specific security rules and checks if the API
      * responds with the appropriate error messages when these rules are violated.
@@ -310,9 +308,9 @@ class UserGraphQlTest extends GraphQlTestCase
      * Test the security constraints of the 'update' mutation for users in the GraphQL API.
      *
      * This method performs multiple security-related tests to ensure proper access control in user updates:
-     * 1. Verifies that a user can update their own information.
-     * 2. Checks that a user cannot update the information of another user.
-     * 3. Tests whether a user is restricted from assigning a new role to themselves.
+     * - Verifies that a user can update their own information.
+     * - Checks that a user cannot update the information of another user.
+     * - Tests whether a user is restricted from assigning a new role to themselves.
      *
      * Each test case is designed to assess specific security rules and validate if the API
      * responds with appropriate error messages or actions when these rules are either followed or violated.
@@ -395,9 +393,10 @@ class UserGraphQlTest extends GraphQlTestCase
     /**
      * Test security measures in the GraphQL 'destroy' mutation for users.
      *
-     * This method validates that the GraphQL API correctly enforces security constraints during the deletion of user accounts. It checks:
-     * 1. A user with lower privileges (non-admin) cannot delete an admin account.
-     * 2. A user is prohibited from deleting their own account.
+     * This method validates that the GraphQL API correctly enforces security constraints during the deletion of user accounts.
+     * It checks:
+     * - A user with lower privileges (non-admin) cannot delete an admin account.
+     * - A user is prohibited from deleting their own account.
      *
      * Each scenario sends a mutation request to delete a user and asserts that an 'access forbidden' error is returned,
      * indicating proper enforcement of security rules.
@@ -415,7 +414,7 @@ class UserGraphQlTest extends GraphQlTestCase
             ->first();
 
         $this->runTestCases(route('graphql.user'), [
-            // Test user with low level role is trying to remove an admin
+            // Test user with a low-level role is trying to remove an admin
             [
                 'actor' => $user,
                 'query' => 'mutation {destroy (id: ' . $admin->id . ') {id}}',

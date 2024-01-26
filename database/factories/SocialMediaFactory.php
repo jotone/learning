@@ -40,7 +40,7 @@ class SocialMediaFactory extends Factory
             'type' => $type,
             'caption' => ucfirst($type) . ' in ' . fake()->country,
             'link' => $types[$type],
-            'img' => $type . '-icon',
+            'icon' => $type . '-icon',
             'position' => self::$position
         ];
     }

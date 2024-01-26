@@ -25,7 +25,7 @@ class SocialMedia extends Model
         'type',
         'caption',
         'link',
-        'img',
+        'icon',
         'position'
     ];
 }

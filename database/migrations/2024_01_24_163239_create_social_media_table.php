@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('caption')->nullable();
             $table->string('link')->nullable();
-            $table->string('img')->nullable();
+            $table->string('icon')->nullable();
             $table->tinyInteger('position');
         });
     }

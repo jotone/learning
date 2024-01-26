@@ -112,8 +112,8 @@ import Notifications from "../../../components/Default/Notifications.vue";
 
 defineOptions({layout: Layout})
 
-// Get content roles function
-const request = inject('request')
+// Assign the GraphQL request function
+const requestGraphQL = inject('requestGraphQL')
 // Page variables
 const page = usePage();
 
@@ -176,10 +176,10 @@ const updateForm = (type: string, controller: string, action: string, value: num
  * @param e
  */
 const submit = (e: SubmitEvent) => {
-  // Set mutation type depends on exists model or not
+  // Set mutation type depends on an exists model or not
   const mutationType = page.props.hasOwnProperty('model') ? 'update' : 'create'
   let query = `name:"${form.name}",level:${form.level}`
-  // If it is update mutation
+  // If it is an update mutation
   if (page.props.hasOwnProperty('model')) {
     query = `id:${page.props.model.id},${query}`;
   }
@@ -202,7 +202,7 @@ const submit = (e: SubmitEvent) => {
   query += `,permissions:"${btoa(JSON.stringify(data.permissions))}"`
 
   // Send request
-  request(page.props.routes.roles.api, `mutation {${mutationType} (${query}) {id, name, slug, level}}`)
+  requestGraphQL(page.props.routes.roles.api, `mutation {${mutationType} (${query}) {id, name, slug, level}}`)
     .then(response => {
       if (response.data.hasOwnProperty('data')) {
         // Show notification

@@ -67,4 +67,18 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    public function admin(): Factory
+    {
+        return $this->state(fn(array $attributes) => [
+            'role_id' => Role::where('level', '<', 127)->where('level', '>', 0)->inRandomOrder()->value('id')
+        ]);
+    }
+
+    public function student(): Factory
+    {
+        return $this->state(fn(array $attributes) => [
+            'role_id' => Role::where('level', 255)->value('id')
+        ]);
+    }
 }

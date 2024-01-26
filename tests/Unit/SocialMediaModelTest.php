@@ -24,7 +24,7 @@ class SocialMediaModelTest extends ModelTestCase
             'type',
             'caption',
             'link',
-            'img'
+            'icon'
         ]);
     }
 

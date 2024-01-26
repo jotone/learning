@@ -20,7 +20,7 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * status
+     * Status
      *  0 - active,
      *  1 - missing-details,
      *  2 - inactive,
@@ -215,7 +215,7 @@ class User extends Authenticatable
      * @param $query
      * @return mixed
      */
-    public function scopeAdmins($query): mixed
+    public function scopeAdmin($query): mixed
     {
         return $query->where('role_id', Role::where('slug', 'admin')->value('id'));
     }
@@ -226,7 +226,7 @@ class User extends Authenticatable
      * @param $query
      * @return mixed
      */
-    public function scopeCoaches($query): mixed
+    public function scopeCoach($query): mixed
     {
         return $query->where('role_id', Role::where('slug', 'coach')->value('id'));
     }
@@ -237,9 +237,20 @@ class User extends Authenticatable
      * @param $query
      * @return mixed
      */
-    public function scopeStudents($query): mixed
+    public function scopeStudent($query): mixed
     {
         return $query->where('role_id', Role::where('slug', 'student')->value('id'));
+    }
+
+    /**
+     * Get only superusers
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeSuperuser($query): mixed
+    {
+        return $query->where('role_id', Role::where('slug', 'superuser')->value('id'));
     }
 
     /**

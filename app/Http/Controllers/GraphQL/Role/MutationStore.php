@@ -49,23 +49,23 @@ class MutationStore extends RoleMutation
      * Store role
      *
      * @param $root
-     * @param $args
+     * @param array $input
      * @return Role|Error
      */
-    public function resolve($root, $args): Role|Error
+    public function resolve($root, array $input): Role|Error
     {
-        if ($this->checkUserRoleLevel($args['level'])) {
+        if ($this->checkUserRoleLevel($input['level'])) {
             return new Error(self::ACCESS_FORBIDDEN_MESSAGE);
         }
 
-        $args['slug'] = generateUrl(empty($args['slug']) ? $args['name'] : $args['slug']);
+        $input['slug'] = generateUrl(empty($input['slug']) ? $input['name'] : $input['slug']);
 
         DB::beginTransaction();
 
         try {
-            $role = Role::create($args);
+            $role = Role::create($input);
 
-            $this->savePermissions($role, json_decode(base64_decode($args['permissions']), true));
+            $this->savePermissions($role, json_decode(base64_decode($input['permissions']), true));
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

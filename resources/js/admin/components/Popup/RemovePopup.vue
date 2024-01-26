@@ -59,8 +59,7 @@ export default {
   mixins: [DefaultPopupMixin],
   data() {
     return {
-      confirmationText: '',
-      items: []
+      confirmationText: ''
     }
   },
   props: {

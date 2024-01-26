@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\SettingsController;
+use App\Http\Controllers\Api\{SettingsController, SocialMediaController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,4 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Update settings
     Route::match(['patch', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
+    // Social Media API
+    Route::apiResource('/socials', SocialMediaController::class)->only(['store', 'update', 'destroy']);
 });

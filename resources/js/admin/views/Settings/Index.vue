@@ -14,18 +14,17 @@
   <ul class="dropdown-list-wrap">
     <MainSettings :settings="mainSettingsForm"/>
     <Functionality :settings="functionalityForm"/>
-    <Email :settings="emailForm" :socials="$attrs.socials.current" @addSocialMedia="socialMediaModalView"/>
+    <Email :settings="emailForm" :socials="socialList.current" @addSocialMedia="viewAddSocialMediaModal"/>
   </ul>
 
-  <SocialMediaPopup ref="socialMediaModal" :socials="$attrs.socials.list"/>
+  <SocialMediaPopup ref="socialMediaModal" :socials="socialList.list"/>
 </template>
 
 <script setup>
 // Vue libs
-import {reactive, ref} from "vue";
+import {inject, reactive, ref} from "vue";
 import {usePage} from "@inertiajs/vue3";
 // Other Libs
-import axios from "axios";
 import {Notification} from "../../libs/Notification";
 // Components
 import Email from "./SettingsElements/Email.vue";
@@ -38,16 +37,18 @@ import Layout from "../../shared/Layout.vue";
 
 defineOptions({layout: Layout})
 
+// Assign the http request function
+const request = inject('request')
 // Page variables
 const page = usePage()
 
-
+let socialList = reactive(page.props.socials)
 const socialMediaModal = ref(null)
-const socialMediaModalView = () => {
-  socialMediaModal.value.open().then(res => {
-    console.log(res)
-  })
-}
+const viewAddSocialMediaModal = () => socialMediaModal.value.open().then(res => null !== res && false !== res && socialList.current.push({
+  id: res.id,
+  caption: res.caption,
+  link: ''
+}))
 
 const fillForm = keys => {
   let obj = {}
@@ -60,15 +61,14 @@ const fillForm = keys => {
 }
 
 const saveSettings = url => {
-  const headers = {
-    headers: {
-      'Authorization': 'Bearer ' + page.props.auth.apiToken
-    }
-  }
-  const forms = [mainSettingsForm, functionalityForm]
+  const forms = [mainSettingsForm, functionalityForm, emailForm]
   let requests = []
   for (let i = 0, n = forms.length; i < n; i++) {
-    requests.push(axios.patch(url, forms[i], headers))
+    requests.push(request({
+      url: url,
+      method: "patch",
+      data: forms[i]
+    }))
   }
   Promise.all(requests)
     .then(() => Notification.success('Settings has been updated. Your changes have been saved!'))
@@ -115,7 +115,7 @@ const emailForm = reactive(fillForm([
   'smtp_from_name',
   'terms_of_service',
   'privacy_policy',
-  'legal_address',
+  'legal_address'
 ]))
 
 </script>

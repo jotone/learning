@@ -82,7 +82,7 @@ npm i && npm run prod
       - ~~Global Settings~~
       - Social Media
         - ~~List~~
-        - Create
+        - ~~Create~~
         - Edit
         - Remove
       - Templates

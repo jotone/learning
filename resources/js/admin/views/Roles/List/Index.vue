@@ -102,7 +102,7 @@ import Layout from "../../../shared/Layout.vue";
 defineOptions({layout: Layout})
 
 // Get content roles function
-const request = inject('request')
+const requestGraphQL = inject('requestGraphQL')
 
 // Page variables
 const page = usePage()
@@ -202,7 +202,7 @@ const rowActions = [
           if (false !== result && typeof result === 'object') {
             const requests = [];
             for (let i = 0, n = result.length; i < n; i++) {
-              requests.push(request(
+              requests.push(requestGraphQL(
                 page.props.routes.api,
                 `mutation {destroy(id:${result[i].id}){id}}`
               ));
@@ -228,7 +228,7 @@ const rowActions = [
  * @param {null|function} callback
  */
 const getList = (filters: FiltersInterface, callback?: Function) =>
-  request(page.props.routes.api, listQuery(filters))
+  requestGraphQL(page.props.routes.api, listQuery(filters))
     .then(response => {
       list.value = response.data.data.roles;
       typeof callback === 'function' && callback(filters)

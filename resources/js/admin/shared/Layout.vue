@@ -96,12 +96,48 @@ const viewSideMenu = () => {
  * @returns {string}
  */
 const convertDate = (date, format = 'DD MMM YYYY') => moment(date).format(format)
-
 /**
- * GraphQL Query request
+ * Make HTTP requests using Axios
+ * @param {object} props
+ * @return {Promise}
+ */
+const request = props => {
+  // Check if the 'url' property is provided in the props, throw an error if not.
+  if (!props.hasOwnProperty('url')) {
+    throw new ReferenceError("Url action attribute is not declared.");
+  }
+  // Set the HTTP method to 'get' by default if it's not specified in the props.
+  props.method = !props.hasOwnProperty("method") ? "get" : props.method.toLowerCase();
+  // Set default headers for the request.
+  props.headers = Object.assign({
+    accept: "application/json",
+    authorization: "Bearer " + page.props.auth.apiToken,
+    "Content-Type": props.method === "patch" || props.method === "delete"
+      ? "application/x-www-form-urlencoded"
+      : "multipart/form-data"
+  }, props.headers || {});
+  // Return a new Promise that resolves when the Axios request is successful.
+  return new Promise(resolve => axios(props)
+    .then(response => {
+      // Reload page by condition
+      if ('forceReload' in props && props.forceReload) {
+        window.location.reload();
+      }
+      // Run onSuccess callback if exists
+      if ("onSuccess" in props) {
+        typeof props.onSuccess === "function" && props.onSuccess(response);
+      }
+
+      resolve(response);
+    })
+    .catch(e => console.error(e))
+  )
+}
+/**
+ * GraphQL request
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-const request = (url, query) => new Promise((resolve, reject) => {
+const requestGraphQL = (url, query) => new Promise((resolve, reject) => {
   axios.post(url, {'query': query}, {
     headers: {
       accept: "application/json",
@@ -123,7 +159,8 @@ const request = (url, query) => new Promise((resolve, reject) => {
   })
 })
 
+// Provide the "convertDate", "request", "requestGraphQL" functions on over the all projects
 provide('request', request)
-// Provides the "convertDate" function on over the all projects
+provide('requestGraphQL', requestGraphQL)
 provide('convertDate', convertDate)
 </script>

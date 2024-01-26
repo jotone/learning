@@ -1,31 +1,34 @@
 <template>
   <div class="custom-selector-wrap">
-    <div class="custom-selector-element">
-      <input
-        class="custom-selector-input"
-        :placeholder="placeholder"
-        v-model="selected"
-        @change="emit('update:value', $event.target.value.trim())"
-      >
-    </div>
-    <div class="custom-selector-down-arrow">
-      <i class="icon chevron-icon"></i>
-    </div>
-    <div class="custom-selector-dropdown-list-wrap">
+    <input
+      class="custom-selector-input"
+      readonly
+      :placeholder="placeholder"
+      :value="selected.text"
+      @click="toggleDropdown"
+    >
+    <input style="display: none" v-model="selected.value">
+    <div class="custom-selector-dropdown-list-wrap" v-if="showDropdown">
       <ul class="custom-selector-dropdown-list">
-        <li v-for="option in options" v-html="row(option)"></li>
+        <template v-for="option in options">
+          <li v-html="row(option)" @click="changeValue(option)"></li>
+        </template>
       </ul>
     </div>
   </div>
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 
-const emit = defineEmits(['update:value'])
+const emit = defineEmits(['change'])
 
 const props = defineProps({
-  field: {
+  valueField: {
+    type: String,
+    default: null
+  },
+  textField: {
     type: String,
     default: null
   },
@@ -46,16 +49,44 @@ const props = defineProps({
     default: ''
   }
 })
-
 /*
  * Methods
  */
+const changeValue = option => {
+  selected.value = option.value;
+  selected.text = option.text;
+  emit('change', selected.value)
+}
+/**
+ * Gets the text to be displayed for a given option
+ * @param {object|string} option
+ * @return {string}
+ */
+const optionText = option => null === props.valueField ? option : option[props.valueField];
+/**
+ * Generates the HTML for a row in the dropdown
+ * @param {object|string} option
+ * @return {string}
+ */
 const row = option => null === props.optionRow
-  ? (null === props.field ? option : option[props.field])
+  ? `<span>${optionText(option)}</span>`
   : props.optionRow(option)
+/**
+ * Toggles the visibility of the dropdown
+ */
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value
+}
 
 /*
  * Variables
  */
-let selected = ref()
+// Current selected value
+let selected = reactive({
+  value: props.value.length ? props.value : optionText(props.options[0]),
+  text: (props.value.length ? props.value : props.options[0].text).ucfirst()
+})
+
+// Dropdown visibility value
+let showDropdown = ref(false)
 </script>

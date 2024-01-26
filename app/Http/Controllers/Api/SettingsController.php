@@ -44,10 +44,10 @@ class SettingsController extends Controller
      */
     public function update(Request $request): JsonResponse
     {
-        $args = $request->only(flattenArray($this->fields));
+        $input = $request->only(flattenArray($this->fields));
 
         $result = [];
-        foreach ($args as $key => $val) {
+        foreach ($input as $key => $val) {
             if (in_array($key, $this->fields['common'])) {
                 $result[$key] = Settings::firstWhere('key', $key);
                 $result[$key]->value = $val;
