@@ -87,7 +87,7 @@ export default {
   },
   computed: {
     editUrl() {
-      return this.$page.props.routes.socials.update.replace(':id', this.items.id)
+      return this.$page.props.routes.socials.update.replace(/:id/, this.items.id)
     }
   },
   methods: {

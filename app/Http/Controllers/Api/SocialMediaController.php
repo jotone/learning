@@ -74,6 +74,11 @@ class SocialMediaController extends Controller
     public function destroy(SocialMedia $social): JsonResponse
     {
         $social->delete();
+        // Reset positions
+        SocialMedia::orderBy('position')->get()->each(function ($social, $index) {
+            $social->position = $index;
+            $social->save();
+        });
         return response()->json(status: 204);
     }
 }
