@@ -122,7 +122,7 @@
                 <a href="#" @click.prevent="emit('editSocialMedia', social)">
                   <i class="icon edit-icon"></i>
                 </a>
-                <a href="#">
+                <a href="#" @click.prevent="emit('removeSocialMedia', social.id)">
                   <i class="icon trash-icon"></i>
                 </a>
               </div>
@@ -140,7 +140,7 @@
 <script setup>
 import SettingsElement from "./SettingsElement.vue";
 
-const emit = defineEmits(['addSocialMedia', 'editSocialMedia'])
+const emit = defineEmits(['addSocialMedia', 'editSocialMedia', 'removeSocialMedia'])
 
 const props = defineProps({
   isAdmin: {

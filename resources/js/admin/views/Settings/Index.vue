@@ -20,6 +20,7 @@
       :socials="socialList.current"
       @addSocialMedia="viewAddSocialMediaModal"
       @editSocialMedia="viewEditSocialMediaModal"
+      @removeSocialMedia="removeSocialMedia"
     />
   </ul>
 
@@ -85,6 +86,35 @@ const viewEditSocialMediaModal = social => {
       }
     }
   })
+}
+/**
+ * Remove a social media record identified by its 'id'.
+ * @param {int} id
+ */
+const removeSocialMedia = id => {
+  // Prompts the user for confirmation before proceeding with the deletion.
+  const res = confirm('Do you really want to remove this Social Media record?')
+  // Checks if the user confirmed the action.
+  if (res) {
+    // Makes an HTTP DELETE request to the server to remove the specified social media record.
+    request({
+      url: page.props.routes.socials.destroy.replace(/:id/, id),
+      method: 'delete',
+      onSuccess: response => {
+        // Check if the response status code is 204 (No Content), indicating successful deletion.
+        if (204 === response.status) {
+          for (let i = 0, n = socialList.current.length; i < n; i++) {
+            // Checks if the current item's ID matches the deleted ID.
+            if (id === socialList.current[i].id) {
+              // Removes the item from the list.
+              socialList.current.splice(i, 1)
+              break
+            }
+          }
+        }
+      }
+    })
+  }
 }
 /**
  * Fills a form object with data from page.props.data based on a list of keys.

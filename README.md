@@ -85,7 +85,7 @@ npm i && npm run prod
         - ~~Create~~
         - ~~Edit~~
         - Sort
-        - Remove
+        - ~~Remove~~
       - Templates
         - Create
         - Edit
