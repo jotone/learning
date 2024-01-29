@@ -33,12 +33,12 @@ class MutationDestroy extends RoleMutation
      * Remove role
      *
      * @param $root
-     * @param $args
+     * @param array $input
      * @return null|Error
      */
-    public function resolve($root, $args): ?Error
+    public function resolve($root, array $input): ?Error
     {
-        $role = Role::findOrFail($args['id']);
+        $role = Role::findOrFail($input['id']);
 
         if ($this->checkUserRoleLevel($role->level)) {
             return new Error(self::ACCESS_FORBIDDEN_MESSAGE);

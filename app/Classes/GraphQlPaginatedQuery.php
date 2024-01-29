@@ -58,24 +58,24 @@ abstract class GraphQlPaginatedQuery extends Query
     /**
      * Get request fields and set them to the filter values
      *
-     * @param array $args
+     * @param array $input
      */
-    protected function buildFilters(array $args): void
+    protected function buildFilters(array $input): void
     {
-        if (isset($args['order_by'])) {
-            $this->filters['order_by'] = $args['order_by'];
+        if (isset($input['order_by'])) {
+            $this->filters['order_by'] = $input['order_by'];
         }
-        if (isset($args['order_dir'])) {
-            $this->filters['order_dir'] = $args['order_dir'];
+        if (isset($input['order_dir'])) {
+            $this->filters['order_dir'] = $input['order_dir'];
         }
-        if (isset($args['per_page'])) {
-            $this->filters['per_page'] = $args['per_page'];
+        if (isset($input['per_page'])) {
+            $this->filters['per_page'] = $input['per_page'];
         }
-        if (isset($args['page'])) {
-            $this->filters['page'] = $args['page'];
+        if (isset($input['page'])) {
+            $this->filters['page'] = $input['page'];
         }
-        if (!empty($args['search'])) {
-            $this->filters['search'] = $args['search'];
+        if (!empty($input['search'])) {
+            $this->filters['search'] = $input['search'];
         }
     }
 

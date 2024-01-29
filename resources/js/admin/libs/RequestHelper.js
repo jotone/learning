@@ -1,6 +1,5 @@
 /**
  * Convert a URI query string into an object
- *
  * @param {string} uri
  * @returns {Object}
  */
@@ -36,7 +35,6 @@ function decodeUriQuery(uri) {
 
 /**
  * Convert an object into a URI query string
- *
  * @param {Object} obj
  * @param {string} prefix
  * @returns {string}

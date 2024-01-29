@@ -24,7 +24,7 @@ class RoleType extends GraphQLType
             'name' => ['type' => Type::string()],
             'slug' => [
                 'type' => Type::string(),
-                'resolve' => fn($role, $args) => generateUrl(empty($role->slug) ? $args['name'] : $role->slug)
+                'resolve' => fn($role, $input) => generateUrl(empty($role->slug) ? $input['name'] : $role->slug)
             ],
             'level' => ['type' => Type::int()],
             'created_at' => ['type' => Type::string()],

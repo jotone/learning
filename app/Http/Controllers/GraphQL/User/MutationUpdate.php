@@ -158,20 +158,20 @@ class MutationUpdate extends UserMutation
      * Update user
      *
      * @param $root
-     * @param $args
+     * @param array $input
      * @param $context
      * @param Request $request
      * @return User|Error
      */
-    public function resolve($root, $args, $context, Request $request): User|Error
+    public function resolve($root, array $input, $context, Request $request): User|Error
     {
         // Find model
-        $user = User::findOrFail($args['id']);
+        $user = User::findOrFail($input['id']);
 
         // Check the user's role gives allowance to update another user
         if (
             !(auth()->id() === $user->id || auth()->user()->role->level < $user->role->level)
-            || isset($args['role_id']) && $this->checkUserRole(Role::find($args['role_id']))
+            || isset($input['role_id']) && $this->checkUserRole(Role::find($input['role_id']))
         ) {
             return new Error(self::ACCESS_FORBIDDEN_MESSAGE);
         }
@@ -179,7 +179,7 @@ class MutationUpdate extends UserMutation
         DB::beginTransaction();
 
         try {
-            foreach ($args as $key => $val) {
+            foreach ($input as $key => $val) {
                 if (in_array($key, $this->update_fields)) {
                     $user->$key = $val;
                 } elseif ($key === 'signature') {

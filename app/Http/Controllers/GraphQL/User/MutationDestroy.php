@@ -33,12 +33,12 @@ class MutationDestroy extends UserMutation
      * Remove user
      *
      * @param $root
-     * @param $args
+     * @param array $input
      * @return null|Error
      */
-    public function resolve($root, $args): ?Error
+    public function resolve($root, array $input): ?Error
     {
-        $user = User::findOrFail($args['id']);
+        $user = User::findOrFail($input['id']);
         // Check user is not a student and check if user is deleting himself
         if ($this->checkUserRole($user->role) || $user->id == auth()->id()) {
             return new Error(self::ACCESS_FORBIDDEN_MESSAGE);

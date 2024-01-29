@@ -13,8 +13,12 @@
 import {PropType} from "vue";
 import {UserDataInterface} from "../../../contracts/UserDataInterface";
 
-const props = defineProps({user: Object as PropType<UserDataInterface>})
-
+const props = defineProps({
+  user: Object as PropType<UserDataInterface>
+})
+/*
+ * Methods
+ */
 /**
  * Generates a CRC lookup table for computing CRC checksums.
  * @param {number[]} [crcTable=[]] - The initial CRC lookup table.
@@ -89,6 +93,9 @@ const avatarOptions = (): object => {
   };
 }
 
+/*
+ * Variables
+ */
 // Get avatar options
 let data: object = {
   image: null

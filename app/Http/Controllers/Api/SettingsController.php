@@ -15,7 +15,7 @@ class SettingsController extends Controller
             'custom_question_2',
             'custom_question_3',
             'default_timezone',
-            'digistore_enable',
+            'enable_digistore',
             'digistore_key',
             'enable_address',
             'enable_custom_question',
@@ -44,10 +44,10 @@ class SettingsController extends Controller
      */
     public function update(Request $request): JsonResponse
     {
-        $args = $request->only(flattenArray($this->fields));
+        $input = $request->only(flattenArray($this->fields));
 
         $result = [];
-        foreach ($args as $key => $val) {
+        foreach ($input as $key => $val) {
             if (in_array($key, $this->fields['common'])) {
                 $result[$key] = Settings::firstWhere('key', $key);
                 $result[$key]->value = $val;

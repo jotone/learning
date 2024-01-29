@@ -112,27 +112,36 @@ import Notifications from "../../../components/Default/Notifications.vue";
 
 defineOptions({layout: Layout})
 
-// Get content roles function
-const request = inject('request')
+// Assign the GraphQL request function
+const requestGraphQL = inject('requestGraphQL')
 // Page variables
 const page = usePage();
 
-// Build the already set role permissions
-let rolePermissions = {};
-if ('model' in page.props) {
-  for (let i = 0, n = page.props.model.permissions.length; i < n; i++) {
-    const permission = page.props.model.permissions[i]
+/*
+ * Methods
+ */
+/**
+ * Build the already set role permissions
+ */
+const getRolePermissions = () => {
+  let rolePermissions = {};
+  if ('model' in page.props) {
+    for (let i = 0, n = page.props.model.permissions.length; i < n; i++) {
+      const permission = page.props.model.permissions[i]
 
-    const controller = permission.controller.split('\\').pop();
-    rolePermissions[controller] = permission.allowed_methods
+      const controller = permission.controller.split('\\').pop();
+      rolePermissions[controller] = permission.allowed_methods
+    }
   }
+  return rolePermissions
 }
 
 /**
  * Build the role permissions list
  * @param form
+ * @param rolePermissions
  */
-const buildPermissions = (form: any) => {
+const buildPermissions = (form: any, rolePermissions: object) => {
   for (let type in page.props.permissions) {
     // Set form type body if it does not exist
     !form.hasOwnProperty(type) && (form[type] = {})
@@ -152,7 +161,7 @@ const buildPermissions = (form: any) => {
 }
 
 /**
- * Update the list of permissions of the form
+ * Update the list of permissions
  * @param {string} type
  * @param {string} controller
  * @param {string} action
@@ -164,12 +173,13 @@ const updateForm = (type: string, controller: string, action: string, value: num
 
 /**
  * Send form request
+ * @param e
  */
 const submit = (e: SubmitEvent) => {
-  // Set mutation type depends on exists model or not
+  // Set mutation type depends on an exists model or not
   const mutationType = page.props.hasOwnProperty('model') ? 'update' : 'create'
   let query = `name:"${form.name}",level:${form.level}`
-  // If it is update mutation
+  // If it is an update mutation
   if (page.props.hasOwnProperty('model')) {
     query = `id:${page.props.model.id},${query}`;
   }
@@ -182,7 +192,9 @@ const submit = (e: SubmitEvent) => {
       query = `slug:"${form.slug}",${query}`
     } else if (field === 'dashboard' || field === 'graphql') {
       for (let controller in form[field]) {
-        data.permissions[field === 'dashboard' ? 'App\\Http\\Controllers\\Dashboard\\' : 'App\\GraphQL\\Schemas\\' + controller] = form[field][controller];
+        data.permissions[field === 'dashboard'
+          ? 'App\\Http\\Controllers\\Dashboard\\'
+          : 'App\\GraphQL\\Schemas\\' + controller] = form[field][controller];
       }
     }
   }
@@ -190,7 +202,7 @@ const submit = (e: SubmitEvent) => {
   query += `,permissions:"${btoa(JSON.stringify(data.permissions))}"`
 
   // Send request
-  request(page.props.routes.roles.api, `mutation {${mutationType} (${query}) {id, name, slug, level}}`)
+  requestGraphQL(page.props.routes.roles.api, `mutation {${mutationType} (${query}) {id, name, slug, level}}`)
     .then(response => {
       if (response.data.hasOwnProperty('data')) {
         // Show notification
@@ -206,18 +218,23 @@ const submit = (e: SubmitEvent) => {
           form.slug = '';
           form.level = '';
           e.target.reset();
-          form = buildPermissions(form)
+          form = buildPermissions(form, getRolePermissions())
         }
       }
     })
 }
-
+/*
+ * Variables
+ */
 // Page form variables
-let form = reactive({
-  name: page.props?.model?.name || '',
-  slug: page.props?.model?.slug || '',
-  level: page.props?.model?.level || page.props.auth.role.level
-})
-
-form = buildPermissions(form)
+let form = reactive(
+  buildPermissions(
+    {
+      name: page.props?.model?.name || '',
+      slug: page.props?.model?.slug || '',
+      level: page.props?.model?.level || page.props.auth.role.level
+    },
+    getRolePermissions()
+  )
+)
 </script>

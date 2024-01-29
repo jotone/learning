@@ -54,15 +54,15 @@ class MutationUpdate extends RoleMutation
      * Update role
      *
      * @param $root
-     * @param $args
+     * @param array $input
      * @return Role|Error
      */
-    public function resolve($root, $args): Role|Error
+    public function resolve($root, array $input): Role|Error
     {
         // Find model
-        $role = Role::findOrFail($args['id']);
+        $role = Role::findOrFail($input['id']);
 
-        if ($this->checkUserRoleLevel($role->level) || $this->checkUserRoleLevel($args['level'])) {
+        if ($this->checkUserRoleLevel($role->level) || $this->checkUserRoleLevel($input['level'])) {
             return new Error(self::ACCESS_FORBIDDEN_MESSAGE);
         }
 
@@ -70,12 +70,12 @@ class MutationUpdate extends RoleMutation
 
         try {
             // Update selected role fields
-            foreach ($args as $key => $val) {
+            foreach ($input as $key => $val) {
                 if ($key === 'permissions') {
                     // Remove current role permissions
                     $role->permissions()->each(fn($entity) => $entity->delete());
                     // Set new permissions
-                    $this->savePermissions($role, json_decode(base64_decode($args['permissions']), true));
+                    $this->savePermissions($role, json_decode(base64_decode($input['permissions']), true));
                 } else {
                     $role->{$key} = $val;
                 }

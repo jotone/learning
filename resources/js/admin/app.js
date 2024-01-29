@@ -40,3 +40,18 @@ createInertiaApp({
       .mount(el)
   }
 })
+
+Object.defineProperty(String.prototype, "ucfirst", {
+  value: function () {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+  },
+  enumerable: !1
+});
+/*
+-- DEPRECATED --
+Object.defineProperty(String.prototype, "lcfirst", {
+  value: function () {
+    return this.charAt(0).toLowerCase() + this.slice(1);
+  },
+  enumerable: !1
+});*/

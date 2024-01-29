@@ -1,3 +1,5 @@
+@import "custom-select";
+
 .dropdown-list-wrap {
   margin: 40px 0;
   width: 75%;
@@ -24,11 +26,35 @@
 
     .options-list {
       margin: 5px 0 30px 0;
+      position: relative;
 
       li {
         margin-bottom: 15px;
+        position: relative;
 
         .slider-checkbox-text {font-weight: 400}
+
+        .icon {background-color: #909BBF}
+
+        .sort-handle, .option-item-controls {position: absolute; bottom: 25px}
+
+        .sort-handle {
+          cursor: grab;
+          left: -35px;
+          padding: 5px 10px;
+
+          &:active {cursor: grabbing}
+        }
+
+        .option-item-controls {
+          display: flex;
+          align-items: center;
+          right: 20px;
+
+          a {
+            padding: 5px 2px;
+          }
+        }
       }
     }
 
@@ -87,6 +113,10 @@
       .form-input, .form-select {
         margin-top: 5px;
         width: 100%;
+      }
+
+      .form-input.has-controls {
+        padding-right: 45px;
       }
 
       .text-bar-wrap {

@@ -48,14 +48,11 @@ const props = defineProps({
   }
 })
 
-let active = ref(props.show)
-
-watch(props, val => {
-  active.value = val.show
-});
-
+/*
+ * Methods
+ */
 /**
- * Build action link
+ * Build an action link
  * @param {string} link
  */
 const buildUrl = (link: string) => link.replace(/:id/, props.model.id);
@@ -66,4 +63,14 @@ const closeRowActions = async (e) => {
     active.value = false
   }
 }
+
+/*
+ * Watchers
+ */
+watch(props, val => {active.value = val.show});
+
+/*
+ * Variables
+ */
+let active = ref(props.show)
 </script>

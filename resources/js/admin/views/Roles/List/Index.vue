@@ -102,65 +102,14 @@ import Layout from "../../../shared/Layout.vue";
 defineOptions({layout: Layout})
 
 // Get content roles function
-const request = inject('request')
+const requestGraphQL = inject('requestGraphQL')
+
 // Page variables
 const page = usePage()
-// Data-table items list
-let list = ref([]);
-// Modal for the role remove
-const removeRoleModal = ref(null)
 
-// Selected row model ID
-let selectedRow = reactive({
-  model: {},
-  right: 0,
-  top: 0,
-  show: false
-});
-
-// List of actions for the row popup
-const rowActions = [
-  {
-    name: 'Edit',
-    icon: 'edit-icon',
-    link: page.props.routes.edit
-  }, {
-    name: 'Remove',
-    icon: 'trash-icon',
-    callback: () => {
-      const items = [{text: selectedRow.model.name, id: selectedRow.model.id}];
-      removeRoleModal.value
-        .open(items)
-        .then(result => {
-          if (false !== result && typeof result === 'object') {
-            const requests = [];
-            for (let i = 0, n = result.length; i < n; i++) {
-              requests.push(request(
-                page.props.routes.api,
-                `mutation {destroy(id:${result[i].id}){id}}`
-              ));
-            }
-            Promise.all(requests).then(() => {
-              getList(filters)
-              if (items.length > 1) {
-                let roles = items.reduce((sum, item, i) => i === 0 ? `"${item.text}"` : `"${sum}", "${item.text}"`, '')
-                Notification.warning(`Roles ${roles} were successfully removed.`);
-              } else {
-                Notification.warning(`Role "${items[0].text}" was successfully removed.`);
-              }
-            })
-          }
-        })
-    }
-  }
-]
-
-// Decoded URI query
-const query = decodeUriQuery(window.location.search)
-
-// Page filters list
-let filters = reactive(getFilters(query))
-
+/*
+ * Methods
+ */
 /**
  * GraphQL query string to get roles list
  * @param {FiltersInterface} filters
@@ -227,19 +176,76 @@ const showRowActions = (e, role: RoleInterface) => {
   selectedRow.show = true;
 }
 
+
+// Selected row model ID
+let selectedRow = reactive({
+  model: {},
+  right: 0,
+  top: 0,
+  show: false
+});
+
+// List of actions for the row popup
+const rowActions = [
+  {
+    name: 'Edit',
+    icon: 'edit-icon',
+    link: page.props.routes.edit
+  }, {
+    name: 'Remove',
+    icon: 'trash-icon',
+    callback: () => {
+      const items = [{text: selectedRow.model.name, id: selectedRow.model.id}];
+      removeRoleModal.value
+        .open(items)
+        .then(result => {
+          if (false !== result && typeof result === 'object') {
+            const requests = [];
+            for (let i = 0, n = result.length; i < n; i++) {
+              requests.push(requestGraphQL(
+                page.props.routes.api,
+                `mutation {destroy(id:${result[i].id}){id}}`
+              ));
+            }
+            Promise.all(requests).then(() => {
+              getList(filters)
+              if (items.length > 1) {
+                let roles = items.reduce((sum, item, i) => i === 0 ? `"${item.text}"` : `"${sum}", "${item.text}"`, '')
+                Notification.warning(`Roles ${roles} were successfully removed.`);
+              } else {
+                Notification.warning(`Role "${items[0].text}" was successfully removed.`);
+              }
+            })
+          }
+        })
+    }
+  }
+]
+
 /**
- * Send request to get roles list
+ * Send request to get a role list
  * @param {FiltersInterface} filters
  * @param {null|function} callback
  */
 const getList = (filters: FiltersInterface, callback?: Function) =>
-  request(page.props.routes.api, listQuery(filters))
+  requestGraphQL(page.props.routes.api, listQuery(filters))
     .then(response => {
       list.value = response.data.data.roles;
       typeof callback === 'function' && callback(filters)
     })
 
+/*
+ * Variables
+ */
+// Data-table items list
+let list = ref([]);
+// Modal for the role remove
+const removeRoleModal = ref(null)
+// Decoded URI query
+const query = decodeUriQuery(window.location.search)
+// Page filters list
+let filters = reactive(getFilters(query))
+
 // Load roles
 getList(filters)
-
 </script>

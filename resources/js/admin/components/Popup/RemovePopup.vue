@@ -53,13 +53,13 @@
 </template>
 
 <script>
+import {DefaultPopupMixin} from "../../../mixins/default-popup-mixin.js";
+
 export default {
+  mixins: [DefaultPopupMixin],
   data() {
     return {
-      active: false,
-      confirmationText: '',
-      items: [],
-      resolver: () => {}
+      confirmationText: ''
     }
   },
   props: {
@@ -86,23 +86,6 @@ export default {
   },
   methods: {
     /**
-     * Close the modal window
-     * @param {event} e
-     */
-    close(e) {
-      if (e.target.classList.contains('overlay') || null !== e.target.closest('.close-popup')) {
-        this.active = false
-        this.resolver(false)
-      }
-    },
-    /**
-     * Click button handler
-     */
-    handle() {
-      this.resolver(this.items)
-      this.active = false;
-    },
-    /**
      * Open modal window
      * @param {Array} list
      * @return {Promise<unknown>}
@@ -117,7 +100,7 @@ export default {
       })
     },
     /**
-     * Remove element from the modal window list
+     * Remove an element from the modal window list
      * @param {int} id
      */
     removeItem(id) {

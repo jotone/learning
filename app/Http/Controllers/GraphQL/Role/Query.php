@@ -45,28 +45,28 @@ class Query extends GraphQlPaginatedQuery
      * Run query
      *
      * @param $root
-     * @param $args
+     * @param array $input
      * @param $context
      * @param Request $request
      * @param ResolveInfo $resolveInfo
      * @param Closure $getSelectFields
      * @return LengthAwarePaginator
      */
-    public function resolve($root, $args, $context, Request $request, ResolveInfo $resolveInfo, Closure $getSelectFields): LengthAwarePaginator
+    public function resolve($root, array $input, $context, Request $request, ResolveInfo $resolveInfo, Closure $getSelectFields): LengthAwarePaginator
     {
-        $this->buildFilters($args);
+        $this->buildFilters($input);
 
-        $where = function ($query) use ($args) {
-            if (isset($args['id'])) {
-                $query->where('id', $args['id']);
+        $where = function ($query) use ($input) {
+            if (isset($input['id'])) {
+                $query->where('id', $input['id']);
             }
 
-            if (isset($args['slug'])) {
-                $query->where('slug', $args['slug']);
+            if (isset($input['slug'])) {
+                $query->where('slug', $input['slug']);
             }
 
-            if (!empty($args['search'])) {
-                $search = mb_strtolower($args['search']);
+            if (!empty($input['search'])) {
+                $search = mb_strtolower($input['search']);
                 $query->whereRaw("LOWER(name) LIKE '%$search%' OR slug LIKE '%$search%' OR level LIKE '%$search%'");
             }
         };

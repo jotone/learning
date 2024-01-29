@@ -242,14 +242,14 @@
       <div class="col-1-2">
         <div class="wide-wrap">
           <SliderCheckbox
-            name="digistore_enable"
+            name="enable_digistore"
             text="Activate Integration"
-            :checked="!!settings.digistore_enable"
+            :checked="!!settings.enable_digistore"
             @change="updateSettingsValue"
           />
         </div>
 
-        <label class="caption" style="margin-top: 30px" v-if="settings.digistore_enable">
+        <label class="caption" style="margin-top: 30px" v-if="settings.enable_digistore">
           <span>Digistore24 API key</span>
           <input class="form-input" name="digistore_key" placeholder="Add the key" v-model="settings.digistore_key">
         </label>

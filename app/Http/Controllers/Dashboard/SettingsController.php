@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\SocialMedia as SocialMediaEnum;
 use App\Http\Controllers\BaseDashboardController;
-use App\Models\Settings;
+use App\Models\{Settings, SocialMedia};
 use Inertia\Response;
 
 class SettingsController extends BaseDashboardController
@@ -29,15 +30,23 @@ class SettingsController extends BaseDashboardController
                         'site_custom_url',
                         'zapier_key',
                         'digistore_key',
-                        'digistore_enable'
+                        'enable_digistore'
                     ])
-                    ->orWhereIn('section', ['registration-process', 'site-parts'])
+                    ->orWhereIn('section', ['email-settings', 'registration-process', 'smtp-settings', 'site-parts'])
                     ->get()
                     ->pluck('value', 'key')
                     ->toArray(),
+                'socials' => [
+                    'current' => SocialMedia::select(['id', 'type', 'caption', 'link', 'icon'])->orderBy('position')->get()->toArray(),
+                    'list' => SocialMediaEnum::forSelect(),
+                ],
                 'routes' => [
                     'settings' => [
                         'update' => route('api.settings.update')
+                    ],
+                    'socials' => [
+                        'store' => route('api.socials.store'),
+                        'update' => route('api.socials.update', ':id')
                     ]
                 ]
             ],

@@ -30,6 +30,9 @@ const props = defineProps({
   }
 });
 
+/*
+ * Methods
+ */
 /**
  * Check the order field is equal to the column name
  * @param {string} col

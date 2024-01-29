@@ -111,10 +111,10 @@ class MutationStore extends UserMutation
      * Store user
      *
      * @param $root
-     * @param $args
+     * @param array $input
      * @return User|Error
      */
-    public function resolve($root, $args): User|Error
+    public function resolve($root, array $input): User|Error
     {
         // Check server student limit
         $students_limit = Settings::where('key', 'students_max_count')->value('value');
@@ -122,13 +122,13 @@ class MutationStore extends UserMutation
             return new Error(sprintf(self::STUDENT_LIMIT_MESSAGE, $students_limit));
         }
         // Get user role model
-        if (isset($args['role_id'])) {
-            $role = Role::find($args['role_id']);
+        if (isset($input['role_id'])) {
+            $role = Role::find($input['role_id']);
         } else {
             $role = Role::firstWhere('slug', 'student');
-            $args['role_id'] = $role->id;
+            $input['role_id'] = $role->id;
         }
-        // Check if user model can be created
+        // Check if a user model can be created
         if ($this->checkUserRole($role)) {
             return new Error(self::ACCESS_FORBIDDEN_MESSAGE);
         }
@@ -137,7 +137,7 @@ class MutationStore extends UserMutation
 
         try {
             // Create user
-            $user = User::create($args);
+            $user = User::create($input);
 
             if (!empty($user->password)) {
                 $user->status = 'active';
@@ -161,6 +161,6 @@ class MutationStore extends UserMutation
      */
     protected function checkStudentLimit(int $students_limit): bool
     {
-        return $students_limit > 0 && User::students()->count() >= $students_limit;
+        return $students_limit > 0 && User::student()->count() >= $students_limit;
     }
 }

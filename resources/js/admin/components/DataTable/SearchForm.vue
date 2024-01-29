@@ -20,7 +20,6 @@ import {ref} from "vue";
 
 const emit = defineEmits(['runSearch'])
 
-// Component properties
 const props = defineProps({
   name: {
     type: String,
