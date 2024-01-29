@@ -37,7 +37,7 @@ class SettingsController extends BaseDashboardController
                     ->pluck('value', 'key')
                     ->toArray(),
                 'socials' => [
-                    'current' => SocialMedia::select(['id', 'caption', 'link'])->orderBy('position')->get()->toArray(),
+                    'current' => SocialMedia::select(['id', 'type', 'caption', 'link', 'icon'])->orderBy('position')->get()->toArray(),
                     'list' => SocialMediaEnum::forSelect(),
                 ],
                 'routes' => [
@@ -45,7 +45,8 @@ class SettingsController extends BaseDashboardController
                         'update' => route('api.settings.update')
                     ],
                     'socials' => [
-                        'store' => route('api.socials.store')
+                        'store' => route('api.socials.store'),
+                        'update' => route('api.socials.update', ':id')
                     ]
                 ]
             ],

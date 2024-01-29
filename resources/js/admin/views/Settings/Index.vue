@@ -14,7 +14,13 @@
   <ul class="dropdown-list-wrap">
     <MainSettings :settings="mainSettingsForm"/>
     <Functionality :settings="functionalityForm"/>
-    <Email :settings="emailForm" :socials="socialList.current" @addSocialMedia="viewAddSocialMediaModal"/>
+    <Email
+      :isAdmin="$attrs.auth.role.level === 0"
+      :settings="emailForm"
+      :socials="socialList.current"
+      @addSocialMedia="viewAddSocialMediaModal"
+      @editSocialMedia="viewEditSocialMediaModal"
+    />
   </ul>
 
   <SocialMediaPopup ref="socialMediaModal" :socials="socialList.list"/>
@@ -42,40 +48,87 @@ const request = inject('request')
 // Page variables
 const page = usePage()
 
-let socialList = reactive(page.props.socials)
-const socialMediaModal = ref(null)
-const viewAddSocialMediaModal = () => socialMediaModal.value.open().then(res => null !== res && false !== res && socialList.current.push({
-  id: res.id,
-  caption: res.caption,
-  link: ''
-}))
-
+/*
+ * Methods
+ */
+/**
+ * Opens a modal for adding a new social media entry.
+ * @return {*}
+ */
+const viewAddSocialMediaModal = () => socialMediaModal.value
+  // Opens the modal and waits for it to close.
+  .open()
+  .then(
+    // Checks if the result is not null or false, indicating a successful submission.
+    res => null !== res && false !== res
+      // Adds the new social media entry to the current list of social media.
+      && socialList.current.push({
+        id: res.id,
+        caption: res.caption,
+        link: ''
+      })
+  );
+/**
+ * Opens a modal for editing an existing social media entry. Updates the entry in socialList with the new values.
+ * @param social
+ */
+const viewEditSocialMediaModal = social => {
+  // Sets the type of the modal to 'edit' for UI/UX purposes.
+  socialMediaModal.value.type = 'edit'
+  // Opens the modal with the current social media entry data and waits for it to close.
+  socialMediaModal.value.open(social).then(res => {
+    // find and update the edited entry.
+    for (let i = 0, n = socialList.current.length; i < n; i++) {
+      if (res.id === socialList.current[i].id) {
+        socialList.current[i] = res;
+        break
+      }
+    }
+  })
+}
+/**
+ * Fills a form object with data from page.props.data based on a list of keys.
+ * @param keys
+ * @return {Object}
+ */
 const fillForm = keys => {
   let obj = {}
   for (let key in page.props.data) {
+    // If the key is in the provided list, add it to the obj.
     if (keys.indexOf(key) >= 0) {
       obj[key] = page.props.data[key]
     }
   }
   return obj
 }
-
+/**
+ * Saves settings by making API requests for each form and showing a success notification upon completion.
+ * @param url
+ */
 const saveSettings = url => {
+  // Prepares a list of forms to be submitted.
   const forms = [mainSettingsForm, functionalityForm, emailForm]
   let requests = []
   for (let i = 0, n = forms.length; i < n; i++) {
+    // Creating a patch request for each and adding it to the request array.
     requests.push(request({
       url: url,
       method: "patch",
       data: forms[i]
     }))
   }
+  // Wait for all requests are complete.
   Promise.all(requests)
     .then(() => Notification.success('Settings has been updated. Your changes have been saved!'))
-    .catch(e => {
-      console.error(e)
-    })
+    .catch(e => console.error(e))
 }
+
+/*
+ * Variables
+ */
+// List
+let socialList = reactive(page.props.socials)
+const socialMediaModal = ref(null)
 
 const mainSettingsForm = reactive(fillForm([
   'site_url',

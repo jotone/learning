@@ -13,6 +13,9 @@ export const DefaultPopupMixin = {
      */
     close(e) {
       if (e.target.classList.contains('overlay') || null !== e.target.closest('.close-popup')) {
+        if (typeof this.reset === 'function') {
+          this.reset();
+        }
         this.active = false
         this.resolver(false)
       }
@@ -23,6 +26,9 @@ export const DefaultPopupMixin = {
     handle() {
       this.resolver(this.items)
       this.active = false;
-    },
+      if (typeof this.reset === 'function') {
+        this.reset();
+      }
+    }
   }
 }

@@ -6,7 +6,7 @@
       <div class="popup-title-wrap">{{ settings[type].title }}</div>
 
       <div class="popup-body-wrap">
-        <form @submit.prevent="submit" :action="settings[type].url">
+        <form @submit.prevent="submit" :action="type === 'add' ? $page.props.routes.socials.store : editUrl">
           <label class="caption">
             <span>Type</span>
 
@@ -15,6 +15,7 @@
               valueField="value"
               :options="options"
               :optionRow="selectorRow"
+              :value="items.type"
               @change="updateTypeValue"
             />
           </label>
@@ -22,17 +23,17 @@
           <label class="caption">
             <span>Caption</span>
 
-            <input required class="form-input" placeholder="Social media caption" v-model="form.caption">
+            <input required class="form-input" placeholder="Social media caption" v-model="items.caption">
           </label>
 
           <label class="caption">
             <span>Icon</span>
 
-            <input class="form-input" placeholder="Social media icon" v-model="form.icon">
+            <input class="form-input" placeholder="Social media icon" v-model="items.icon">
           </label>
 
           <button class="btn blue" type="submit">
-            {{ settings[type].title }}
+            {{ settings[type].button }}
           </button>
         </form>
       </div>
@@ -43,7 +44,6 @@
 <script>
 import {DefaultPopupMixin} from "../../../mixins/default-popup-mixin.js";
 import CustomSelector from "../../components/Form/CustomSelector.vue";
-import axios from "axios";
 
 export default {
   components: {CustomSelector},
@@ -65,19 +65,14 @@ export default {
       settings: {
         add: {
           title: 'Add Social Media',
-          url: this.$page.props.routes.socials.store
+          button: 'Add'
         },
         edit: {
           title: 'Edit Social Media',
-          url: '#'
+          button: 'Apply'
         }
       },
       type: 'add',
-      form: {
-        type: options[0].value,
-        caption: '',
-        icon: ''
-      },
       options: options
     }
   },
@@ -87,30 +82,55 @@ export default {
       required: true
     }
   },
+  beforeMount() {
+    this.reset();
+  },
+  computed: {
+    editUrl() {
+      return this.$page.props.routes.socials.update.replace(':id', this.items.id)
+    }
+  },
   methods: {
     /**
      * Open modal window
-     * @param {Array} list
+     * @param item
      * @return {Promise<unknown>}
      */
-    open(list) {
+    open(item = null) {
       this.active = true;
+
+      if (null !== item) {
+        this.items = {
+          id: item.id,
+          type: item.type,
+          caption: item.caption,
+          icon: item.icon
+        }
+      }
 
       return new Promise(resolve => {
         this.resolver = resolve
       })
     },
-
     selectorRow(option) {
       return `<i class="icon ${option.icon}"></i><span>${option.text}</span>`
+    },
+    reset() {
+      this.type = 'add';
+      this.items = {
+        id: null,
+        type: this.options[0].value,
+        caption: '',
+        icon: ''
+      }
     },
     submit(e) {
       this.request({
         url: e.target.getAttribute('action'),
         method: this.type === 'add' ? 'post' : 'put',
-        data: this.form,
+        data: this.items,
         onSuccess: response => {
-          if (201 === response.status) {
+          if (201 === response.status || 200 === response.status) {
             this.items = response.data;
           }
           this.handle()
@@ -118,7 +138,7 @@ export default {
       })
     },
     updateTypeValue(data) {
-      this.form.type = data
+      this.items.type = data
     }
   }
 }

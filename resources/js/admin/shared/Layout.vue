@@ -112,9 +112,9 @@ const request = props => {
   props.headers = Object.assign({
     accept: "application/json",
     authorization: "Bearer " + page.props.auth.apiToken,
-    "Content-Type": props.method === "patch" || props.method === "delete"
-      ? "application/x-www-form-urlencoded"
-      : "multipart/form-data"
+    "Content-Type": props.method === "get" || props.method === "post"
+      ? "multipart/form-data"
+      : "application/x-www-form-urlencoded"
   }, props.headers || {});
   // Return a new Promise that resolves when the Axios request is successful.
   return new Promise(resolve => axios(props)

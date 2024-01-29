@@ -83,7 +83,8 @@ npm i && npm run prod
       - Social Media
         - ~~List~~
         - ~~Create~~
-        - Edit
+        - ~~Edit~~
+        - Sort
         - Remove
       - Templates
         - Create

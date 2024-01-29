@@ -106,12 +106,30 @@
           <li v-for="social in socials">
             <label class="caption">
               <span>{{ social.caption }}</span>
-              <input class="form-input" :name="`socials[${social.id}]`" :placeholder="`Link to ${social.caption} page`" v-model="social.link">
+              <input
+                class="form-input"
+                :class="{'has-controls': isAdmin}"
+                :name="`socials[${social.id}]`"
+                :placeholder="`Link to ${social.caption} page`"
+                v-model="social.link"
+              >
             </label>
+            <template v-if="isAdmin">
+              <div class="sort-handle">
+                <i class="icon double-hellip-icon"></i>
+              </div>
+              <div class="option-item-controls">
+                <a href="#" @click.prevent="emit('editSocialMedia', social)">
+                  <i class="icon edit-icon"></i>
+                </a>
+                <a href="#">
+                  <i class="icon trash-icon"></i>
+                </a>
+              </div>
+            </template>
           </li>
         </ul>
-
-        <button class="btn blue" @click="emit('addSocialMedia')">
+        <button class="btn blue" @click="emit('addSocialMedia')" v-if="isAdmin">
           Add Item
         </button>
       </div>
@@ -122,9 +140,13 @@
 <script setup>
 import SettingsElement from "./SettingsElement.vue";
 
-const emit = defineEmits(['addSocialMedia'])
+const emit = defineEmits(['addSocialMedia', 'editSocialMedia'])
 
 const props = defineProps({
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
   settings: {
     type: Object,
     required: true
