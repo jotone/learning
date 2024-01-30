@@ -91,6 +91,35 @@ class SocialMediaApiTest extends TestCase
     }
 
     /**
+     * Tests the sorting functionality for SocialMedia records.
+     *
+     * This test simulates the process of reordering social media records by sending a PATCH request
+     * with a new order for the records. It then verifies that the database reflects the updated order
+     * for each record.
+     */
+    public function testSort(): void
+    {
+        // Retrieve a random order of social media record IDs.
+        $models = SocialMedia::inRandomOrder()->pluck('id')->toArray();
+        // Build the request data array with each model's ID and its new position.
+        $request_data = [];
+        foreach ($models as $i => $id) {
+            $request_data[] = ['id' => $id, 'position' => $i];
+        }
+        // Sending a PATCH request to the sort endpoint with the new order of social media records.
+        $this->actingAs($this->actor)
+            ->patchJson(route('api.socials.sort'), ['list' => $request_data])
+            ->assertOk();
+        // Verify that the database has been updated to reflect the new order for each social media record.
+        foreach ($models as $i => $id) {
+            $this->assertDatabaseHas('social_media', [
+                'id' => $id,
+                'position' => $i
+            ]);
+        }
+    }
+
+    /**
      * Tests the "delete" functionality for a SocialMedia record.
      *
      * This function simulates a user sending a DELETE request to the appropriate

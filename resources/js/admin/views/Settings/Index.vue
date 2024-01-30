@@ -1,4 +1,6 @@
 <template>
+  <div></div>
+
   <header>
     <div class="page-name-wrap">
       <h1>Settings</h1>
@@ -17,19 +19,14 @@
     <Email
       :isAdmin="$attrs.auth.role.level === 0"
       :settings="emailForm"
-      :socials="socialList.current"
-      @addSocialMedia="viewAddSocialMediaModal"
-      @editSocialMedia="viewEditSocialMediaModal"
-      @removeSocialMedia="removeSocialMedia"
+      :socials="$attrs.socials"
     />
   </ul>
-
-  <SocialMediaPopup ref="socialMediaModal" :socials="socialList.list"/>
 </template>
 
 <script setup>
 // Vue libs
-import {inject, reactive, ref} from "vue";
+import {inject, reactive} from "vue";
 import {usePage} from "@inertiajs/vue3";
 // Other Libs
 import {Notification} from "../../libs/Notification";
@@ -38,7 +35,6 @@ import Email from "./SettingsElements/Email.vue";
 import Functionality from "./SettingsElements/Functionality.vue";
 import MainSettings from "./SettingsElements/MainSettings.vue";
 import Notifications from "../../components/Default/Notifications.vue";
-import SocialMediaPopup from "./SocialMediaPopup.vue";
 // Layout
 import Layout from "../../shared/Layout.vue";
 
@@ -52,70 +48,6 @@ const page = usePage()
 /*
  * Methods
  */
-/**
- * Opens a modal for adding a new social media entry.
- * @return {*}
- */
-const viewAddSocialMediaModal = () => socialMediaModal.value
-  // Opens the modal and waits for it to close.
-  .open()
-  .then(
-    // Checks if the result is not null or false, indicating a successful submission.
-    res => null !== res && false !== res
-      // Adds the new social media entry to the current list of social media.
-      && socialList.current.push({
-        id: res.id,
-        caption: res.caption,
-        link: ''
-      })
-  );
-/**
- * Opens a modal for editing an existing social media entry. Updates the entry in socialList with the new values.
- * @param social
- */
-const viewEditSocialMediaModal = social => {
-  // Sets the type of the modal to 'edit' for UI/UX purposes.
-  socialMediaModal.value.type = 'edit'
-  // Opens the modal with the current social media entry data and waits for it to close.
-  socialMediaModal.value.open(social).then(res => {
-    // find and update the edited entry.
-    for (let i = 0, n = socialList.current.length; i < n; i++) {
-      if (res.id === socialList.current[i].id) {
-        socialList.current[i] = res;
-        break
-      }
-    }
-  })
-}
-/**
- * Remove a social media record identified by its 'id'.
- * @param {int} id
- */
-const removeSocialMedia = id => {
-  // Prompts the user for confirmation before proceeding with the deletion.
-  const res = confirm('Do you really want to remove this Social Media record?')
-  // Checks if the user confirmed the action.
-  if (res) {
-    // Makes an HTTP DELETE request to the server to remove the specified social media record.
-    request({
-      url: page.props.routes.socials.destroy.replace(/:id/, id),
-      method: 'delete',
-      onSuccess: response => {
-        // Check if the response status code is 204 (No Content), indicating successful deletion.
-        if (204 === response.status) {
-          for (let i = 0, n = socialList.current.length; i < n; i++) {
-            // Checks if the current item's ID matches the deleted ID.
-            if (id === socialList.current[i].id) {
-              // Removes the item from the list.
-              socialList.current.splice(i, 1)
-              break
-            }
-          }
-        }
-      }
-    })
-  }
-}
 /**
  * Fills a form object with data from page.props.data based on a list of keys.
  * @param keys
@@ -156,10 +88,6 @@ const saveSettings = url => {
 /*
  * Variables
  */
-// List
-let socialList = reactive(page.props.socials)
-const socialMediaModal = ref(null)
-
 const mainSettingsForm = reactive(fillForm([
   'site_url',
   'site_title',

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\{SocialMediaStoreRequest, SocialMediaUpdateRequest};
+use App\Http\Requests\{SocialMediaSortRequest, SocialMediaStoreRequest, SocialMediaUpdateRequest};
 use App\Models\SocialMedia;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -63,6 +63,25 @@ class SocialMediaController extends Controller
         }
 
         return response()->json($social);
+    }
+
+    /**
+     * Update the social media positions
+     *
+     * @param SocialMediaSortRequest $request
+     * @return JsonResponse
+     */
+    public function sort(SocialMediaSortRequest $request): JsonResponse
+    {
+        $input = $request->validated();
+
+        foreach ($input['list'] as $item) {
+            $social = SocialMedia::findOrFail($item['id']);
+            $social->position = $item['position'];
+            $social->save();
+        }
+
+        return response()->json($input['list']);
     }
 
     /**

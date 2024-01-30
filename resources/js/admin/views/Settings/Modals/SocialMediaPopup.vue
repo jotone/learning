@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import {DefaultPopupMixin} from "../../../mixins/default-popup-mixin.js";
-import CustomSelector from "../../components/Form/CustomSelector.vue";
+import {DefaultPopupMixin} from "../../../../mixins/default-popup-mixin.js";
+import CustomSelector from "../../../components/Form/CustomSelector.vue";
 
 export default {
   components: {CustomSelector},

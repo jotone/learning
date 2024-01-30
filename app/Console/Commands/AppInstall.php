@@ -44,7 +44,7 @@ class AppInstall extends Command
                     'first_name' => 'Superuser',
                     'email' => 'superadmin@mail.com',
                     'email_verified_at' => now(),
-                    'password' => base64_decode('MmoyMUp3M1FqUWNTM2hV'),
+                    'password' => base64_decode('OFNUUFQwbUJCMDZnXkV1Mg=='),
                     'activated_at' => now(),
                     'role_id' => Role::firstWhere('level', '<', 1)->id,
                     'status' => 'active'

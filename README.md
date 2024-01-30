@@ -80,12 +80,7 @@ npm i && npm run prod
     - Email
       - ~~SMTP~~
       - ~~Global Settings~~
-      - Social Media
-        - ~~List~~
-        - ~~Create~~
-        - ~~Edit~~
-        - Sort
-        - ~~Remove~~
+      - ~~Social Media~~
       - Templates
         - Create
         - Edit
