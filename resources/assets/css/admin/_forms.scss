@@ -62,6 +62,13 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
   padding: 12px 20px;
 }
 
+.form-input.readonly {
+  background-color: #f2f7ff;
+  color: #005aff;
+  user-select: none;
+  pointer-events:none;
+}
+
 .form-select {
   appearance: none;
   background: #ffffff url("../../images/icons/angle-down.svg") no-repeat 99% center / 24px;
@@ -145,8 +152,8 @@ label {
     margin: 5px 0;
   }
 
-  .form-input {
-    margin: 18px 0;
+  .form-input, .form-select {
+    margin-top: 5px;
     width: calc(100% - 20px);
   }
 }
@@ -154,6 +161,10 @@ label {
 .form-wrap {
   display: flex;
   align-items: stretch;
+}
+
+.form-row {
+  padding: 20px 0;
 }
 
 @media screen and (max-width: 720px) {

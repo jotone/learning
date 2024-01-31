@@ -143,6 +143,38 @@
         </button>
       </div>
     </div>
+
+    <div class="row underline">
+      <div class="col-1-2">
+        <label class="caption">
+          <span class="title">Template List</span>
+          <span class="about">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor velit mauris.
+          </span>
+        </label>
+      </div>
+
+      <div class="col-1-2">
+        <ul class="options-list">
+          <li v-for="template in templates">
+            <label class="caption">
+              <input class="form-input readonly" style="padding-right: 50px" :value="template.title">
+            </label>
+            <div class="option-item-controls">
+              <a :href="templateEdit(template.id)">
+                <i class="icon edit-icon"></i>
+              </a>
+              <a href="#" @click.prevent="templateRemove(template.id)" v-if="isAdmin">
+                <i class="icon trash-icon"></i>
+              </a>
+            </div>
+          </li>
+        </ul>
+        <a class="btn blue" v-if="isAdmin" style="width: 150px" :href="page.props.routes.templates.create">
+          Add Item
+        </a>
+      </div>
+    </div>
   </SettingsElement>
 
   <Teleport to="body">
@@ -176,6 +208,10 @@ const props = defineProps({
   socials: {
     type: Object,
     required: true
+  },
+  templates: {
+    type: Array,
+    default: []
   }
 });
 /*
@@ -253,6 +289,32 @@ const socialMediaSort = () => {
     method: 'patch',
     data: {list: result}
   })
+}
+const templateEdit = id => page.props.routes.templates.edit.replace(/:id/, id);
+
+const templateRemove = id => {
+// Prompts the user for confirmation before proceeding with the deletion.
+  const res = confirm('Do you really want to remove this Email template?');
+  if (res) {
+    // Makes an HTTP DELETE request to the server to remove the specified email template.
+    request({
+      url: page.props.routes.templates.destroy.replace(/:id/, id),
+      method: 'delete',
+      onSuccess: response => {
+        // Check if the response status code is 204 (No Content), indicating successful deletion.
+        if (204 === response.status) {
+          for (let i = 0, n = props.templates.length; i < n; i++) {
+            // Checks if the current item's ID matches the deleted ID.
+            if (id === props.templates[i].id) {
+              // Removes the item from the list.
+              props.templates.splice(i, 1)
+              break;
+            }
+          }
+        }
+      }
+    })
+  }
 }
 
 /*

@@ -82,9 +82,13 @@ npm i && npm run prod
       - ~~Global Settings~~
       - ~~Social Media~~
       - Templates
+        - ~~Model~~
+        - ~~Application Installation~~
+        - Editor
         - Create
         - Edit
         - Remove
+        - Installation json list
     - Language
       - Api
       - Page

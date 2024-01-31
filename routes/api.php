@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\{SettingsController, SocialMediaController};
+use App\Http\Controllers\Api\{EmailTemplateController, SettingsController, SocialMediaController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    // Email Templates
+    Route::apiResource('/templates', EmailTemplateController::class)->only(['store', 'update', 'destroy']);
     // Update settings
     Route::match(['patch', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
     // Social Media API

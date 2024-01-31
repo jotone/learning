@@ -11,6 +11,10 @@ use Illuminate\Support\Str;
  */
 class CourseProductFactory extends Factory
 {
+    /**
+     * The name of the factory's corresponding model.
+     * @var string
+     */
     protected $model = CourseProduct::class;
 
     /**

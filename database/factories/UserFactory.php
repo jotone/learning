@@ -15,6 +15,10 @@ class UserFactory extends Factory
 {
     use FakerFactoryTrait;
 
+    /**
+     * The name of the factory's corresponding model.
+     * @var string
+     */
     protected $model = User::class;
 
     /**

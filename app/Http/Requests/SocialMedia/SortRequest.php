@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\SocialMedia;
 
-class SocialMediaSortRequest extends DefaultRequest
+use App\Http\Requests\DefaultRequest;
+
+class SortRequest extends DefaultRequest
 {
     /**
      * Get the validation rules that apply to the request.

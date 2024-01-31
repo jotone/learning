@@ -32,9 +32,11 @@
             <input class="form-input" placeholder="Social media icon" v-model="items.icon">
           </label>
 
-          <button class="btn blue" type="submit">
-            {{ settings[type].button }}
-          </button>
+          <div class="form-row">
+            <button class="btn blue" type="submit">
+              {{ settings[type].button }}
+            </button>
+          </div>
         </form>
       </div>
     </div>

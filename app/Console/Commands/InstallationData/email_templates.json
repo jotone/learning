@@ -1,0 +1,34 @@
+[
+  {
+    "title":"Registration Email",
+    "slug":"registration-email",
+    "subject":"Welcome to the %course.name%",
+    "variables": {
+      "course.name": {
+        "type": "model",
+        "model": "Course",
+        "field": "name"
+      },
+      "user.name": {
+        "type": "model",
+        "model": "User",
+        "field": "full_name"
+      },
+      "activate_url":{
+        "type": "route",
+        "route": "sign-up.show",
+        "model": "User",
+        "field": "email"
+      }
+    },
+    "body":[
+      "<td style=\"color:#00145e;font-size:30px;font-weight:500;line-height:45px;text-align: center\">Welcome %user.name%</td>",
+      "<td style=\"color:#00145e;font-size:14px;font-weight:500;line-height:24px;text-align: center\">The CopeMember team wishes you much success with your courses!<br>Please confirm your registration by clicking the following button:</td>",
+      "<td></td>",
+      "<td style=\"text-align:center\"><a class=\"btn blue\" href=\"%activate_url%\">Activate Your Account</a></td>",
+      "<td></td>",
+      "<td style=\"color:#80acff;font-size:14px;font-weight:500;line-height:24px;text-align: center\">If the button is not working, click the link below:</td>",
+      "<td style=\"color:#80acff;font-size:14px;font-weight:500;line-height:24px;text-align:center;text-decoration:underline\">click here</td>"
+    ]
+  }
+]

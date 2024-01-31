@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\{AdminMenu, Permission, Role, Settings, SocialMedia, User};
+use App\Models\{AdminMenu, EmailTemplate, Permission, Role, Settings, SocialMedia, User};
 use Illuminate\Console\Command;
 
 class AppInstall extends Command
@@ -50,6 +50,13 @@ class AppInstall extends Command
                     'status' => 'active'
                 ])
         );
+
+        // Install email templates
+        $this->runWithTimer('Installing email templates', function () use ($files) {
+            foreach($files['email_templates'] as $template) {
+                EmailTemplate::create($template);
+            }
+        });
 
         // Install settings
         $this->runWithTimer('Installing settings', function () use ($files) {

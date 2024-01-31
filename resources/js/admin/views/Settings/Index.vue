@@ -20,6 +20,7 @@
       :isAdmin="$attrs.auth.role.level === 0"
       :settings="emailForm"
       :socials="$attrs.socials"
+      :templates="$attrs.templates"
     />
   </ul>
 </template>
@@ -44,7 +45,6 @@ defineOptions({layout: Layout})
 const request = inject('request')
 // Page variables
 const page = usePage()
-
 /*
  * Methods
  */
