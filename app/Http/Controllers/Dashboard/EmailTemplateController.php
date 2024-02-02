@@ -53,7 +53,10 @@ class EmailTemplateController extends BaseDashboardController
                 ]
             ],
             scripts: [
-                'css' => ['resources/assets/css/admin/content-table.scss']
+                'css' => [
+                    'resources/assets/css/admin/content-table.scss',
+                    'resources/assets/css/admin/email-editor.scss'
+                ]
             ]
         );
     }

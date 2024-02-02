@@ -9,12 +9,12 @@
         <form @submit.prevent="submit">
           <label class="caption">
             <span>Name</span>
-            <input class="form-input" name="name" placeholder="Variable Name..." v-model="form.name">
+            <input class="form-input" name="name" placeholder="Variable Name..." required v-model="items.name">
           </label>
 
           <label class="caption">
             <span>Entity</span>
-            <select class="form-select" name="type" v-model="form.type" @change="entityChanged">
+            <select class="form-select" name="type" v-model="items.type" @change="entityChanged">
               <option v-for="(item, type) in entities.list" :value="type">
                 {{ type }}
               </option>
@@ -23,16 +23,16 @@
 
           <label class="caption">
             <span>Entity Fields</span>
-            <select class="form-select" name="field" v-model="form.field">
-              <option v-for="(name, field) in entities.list[form.type].fields" :value="field">
+            <select class="form-select" name="field" v-model="items.field">
+              <option v-for="(name, field) in entities.list[items.type].fields" :value="field">
                 {{ name }}
               </option>
             </select>
           </label>
 
-          <label class="caption" v-if="form.type === 'Route'">
+          <label class="caption" v-if="items.type === 'Route'">
             <span>Entity Encryption Model</span>
-            <select class="form-select" v-model="form.encrypt">
+            <select class="form-select" v-model="items.encrypt">
               <template v-for="(fields, type) in entities.encryption">
                 <option v-for="(name, field) in fields" :value="`${type}:${field}`">
                   {{ type }} {{ name }}
@@ -65,10 +65,10 @@ export default {
   },
   data() {
     return {
-      form: {
+      items: {
         name: '',
-        type: "User",
-        field: "first_name",
+        type: 'User',
+        field: 'first_name',
         encrypt: null
       },
       settings: {
@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     entityChanged() {
-      this.form.field = Object.keys(this.entities.list[this.form.type].fields)[0];
+      this.items.field = Object.keys(this.entities.list[this.items.type].fields)[0];
     },
     /**
      * Open modal window
@@ -96,13 +96,14 @@ export default {
     open(item = null) {
       this.active = true;
 
+      this.type = null === item ? 'add' : 'edit';
+
       return new Promise(resolve => {
         this.resolver = resolve
       })
     },
     submit() {
-      console.log(this.form)
-      // this.items
+      this.handle()
     }
   }
 }

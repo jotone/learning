@@ -230,8 +230,6 @@ const socialMediaAdd = () => socialMediaModal.value.open().then(
  * @param social
  */
 const socialMediaEdit = social => {
-  // Sets the type of the modal to 'edit' for UI/UX purposes.
-  socialMediaModal.value.type = 'edit'
   // Opens the modal with the current social media entry data and waits for it to close.
   socialMediaModal.value.open(social).then(res => {
     // find and update the edited entry.

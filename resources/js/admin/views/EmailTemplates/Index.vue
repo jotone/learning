@@ -42,6 +42,12 @@
           </div>
         </div>
       </section>
+
+      <section>
+        <h3 class="section-name">Email Edit</h3>
+
+        <EmailContentEditor :items="form.body"/>
+      </section>
     </div>
   </form>
 </template>
@@ -52,6 +58,7 @@ import {usePage} from "@inertiajs/vue3";
 import Layout from "../../shared/Layout.vue";
 import Notifications from "../../components/Default/Notifications.vue";
 import VariablesTable from "./VariablesTable.vue";
+import EmailContentEditor from "./EmailContentEditor.vue";
 
 defineOptions({layout: Layout})
 

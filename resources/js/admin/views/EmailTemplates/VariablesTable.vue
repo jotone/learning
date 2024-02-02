@@ -19,20 +19,20 @@
     <tbody>
     <tr v-for="(data, name) in variables">
       <td>
-        <a href="#" @click.prevent="variablePopupEdit">%{{ name }}%</a>
+        <span>%{{ name }}%</span>
       </td>
       <td>
-        <a href="#" @click.prevent="variablePopupEdit">
+        <span>
           <template v-if="data.type === 'model'">
             {{ data.model }}
           </template>
           <template v-if="data.type === 'route'">
             {{ data.model }} {{ entities.list[data.model].fields[data.field] }}
           </template>
-        </a>
+        </span>
       </td>
       <td>
-        <a href="#" @click.prevent="variablePopupEdit">
+        <span>
           <template v-if="data.type === 'model'">
             {{ entities.list[data.model].fields[data.field] }}
           </template>
@@ -40,10 +40,10 @@
           <template v-if="data.type === 'route'">
             {{ data.route }}
           </template>
-        </a>
+        </span>
       </td>
       <td>
-        <a class="row-actions" href="#" @click.prevent="variableRemove(name)">
+        <a href="#" class="row-actions" @click.prevent="variableRemove(name)">
           <i class="icon trash-icon"></i>
         </a>
       </td>
@@ -78,18 +78,34 @@ const props = defineProps({
     required: true
   }
 })
-const variablePopupAdd = () => {
-  variableModal.value.open().then(res => {
-    console.log(res)
-  })
-}
+/*
+ * Methods
+ */
+const variablePopupAdd = () => variableModal.value.open().then(res => {
+  if (res) {
+    if ('Route' === res.type) {
+      const model = res.encrypt.split(':')
+      props.variables[res.name] = {
+        type: "route",
+        route: res.field,
+        model: model[0],
+        field: model[1]
+      }
+    } else {
+      props.variables[res.name] = {
+        type: "model",
+        model: res.type,
+        field: res.field
+      }
+    }
+  }
+})
 
-const variablePopupEdit = () => {
-
-}
-
-const variableRemove = () => {
-
+const variableRemove = (name) => {
+  const res = confirm('Do you really want to remove this variable?')
+  if (res) {
+    delete props.variables[name];
+  }
 }
 
 const variableModal = ref(null)
