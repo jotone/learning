@@ -1,4 +1,4 @@
-@import "icons-editor";
+@import "icons-editor", "color-picker";
 
 .email-editor-wrap {
   background-color: #f4f6fb;
@@ -89,7 +89,6 @@
       min-height: 26px;
       min-width: 50px;
       margin: 2px;
-      text-decoration: underline;
       background-color: #cbd6e5;
 
       &[data-tag="br"] {display: block}
@@ -108,7 +107,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin: 10px 0 0 20px;
+      margin-top: 10px;
 
       .btn {
         min-height: 44px;
@@ -126,5 +125,9 @@
         }
       }
     }
+  }
+
+  .hu-color-picker .color-type, .hu-color-picker .color-type + div {
+    display: none;
   }
 }
