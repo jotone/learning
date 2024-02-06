@@ -33,9 +33,11 @@
   </Teleport>
 </template>
 
-<script setup>
-import EditRowPopup from "./Modals/EditRowPopup.vue";
+<script setup lang="ts">
+// Vue libs
 import {ref} from "vue";
+// Components
+import EditRowPopup from "./Modals/EditRowPopup.vue";
 
 const props = defineProps({
   items: {
@@ -46,16 +48,30 @@ const props = defineProps({
 /*
  * Methods
  */
-const addRow = () => props.items.push({style: {}, text: ""})
-const editRow = (i) => {
+/**
+ * Add a row to the email content list
+ * @return {number}
+ */
+const addRow = (): number => props.items.push({style: {'text-align': 'center'}, text: "<br>"})
+/**
+ * Edit a row of the email content list
+ * @param {number} i
+ */
+const editRow = (i: number) => {
   editRowModal.value.open(props.items[i]).then(res => {
-    console.log(res)
+    props.items[i] = res
   })
 }
-const removeRow = (i) => {
+/**
+ * Remove a row from the email content list
+ * @param {number} i
+ */
+const removeRow = (i: number) => {
   let res = props.items[i].text.length ? confirm('Do you really want to remove this row?') : true;
   res && props.items.splice(i, 1);
 }
-
+/*
+ * Variables
+ */
 const editRowModal = ref(null)
 </script>

@@ -8,12 +8,7 @@
         </label>
       </div>
       <div class="col-1-2">
-        <input
-          disabled
-          class="form-input"
-          placeholder="Site URL..."
-          :value="settings.site_url"
-        />
+        <input disabled class="form-input" :value="settings.site_url"/>
       </div>
     </div>
 

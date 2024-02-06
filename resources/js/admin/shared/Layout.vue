@@ -95,7 +95,7 @@ const viewSideMenu = () => {
  * @param {string} format
  * @returns {string}
  */
-const convertDate = (date, format = 'DD MMM YYYY') => moment(date).format(format)
+const convertDate = (date, format = 'DD MMM YYYY') => moment(date).format(format);
 /**
  * Make HTTP requests using Axios
  * @param {object} props
@@ -160,7 +160,7 @@ const requestGraphQL = (url, query) => new Promise((resolve, reject) => {
 })
 
 // Provide the "convertDate", "request", "requestGraphQL" functions on over the all projects
+provide('convertDate', convertDate)
 provide('request', request)
 provide('requestGraphQL', requestGraphQL)
-provide('convertDate', convertDate)
 </script>

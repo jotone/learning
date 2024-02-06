@@ -78,23 +78,30 @@
 }
 
 .default-popup-wrap .email-body-elements-wrap {
+  .button-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
   ul.text-elements-list {
     margin: 10px 0;
 
     li {
-      color: #00145e;
       cursor: pointer;
       display: inline-block;
       padding: 5px;
       min-height: 26px;
       min-width: 50px;
       margin: 2px;
-      background-color: #cbd6e5;
+      background-color: #f4f6fb;
+      opacity: .6;
 
       &[data-tag="br"] {display: block}
 
       &:hover, &.active {
-        background-color: #909bbf;
+        opacity: 1;
       }
     }
   }
@@ -103,26 +110,19 @@
     display: flex;
     align-items: stretch;
 
-    .button-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 10px;
+    .button-row .btn {
+      min-height: 44px;
+      min-width: 44px;
+      height: 44px;
+      width: 44px;
+      padding: 0;
 
-      .btn {
-        min-height: 44px;
-        min-width: 44px;
-        height: 44px;
-        width: 44px;
-        padding: 0;
+      .icon {background-color: #909bbf}
 
-        .icon {background-color: #909bbf}
+      &.active {
+        background-color: #005aff;
 
-        &.active {
-          background-color: #005aff;
-
-          .icon {background-color: white}
-        }
+        .icon {background-color: white}
       }
     }
   }

@@ -125,25 +125,6 @@
     <div class="row underline">
       <div class="col-1-2">
         <label class="caption">
-          <span class="title">Help Center</span>
-          <span class="about">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor velit mauris.</span>
-        </label>
-      </div>
-      <div class="col-1-2">
-        <div class="wide-wrap">
-          <SliderCheckbox
-            name="enable_help_center"
-            text="Enable Help Center"
-            :checked="!!settings.enable_help_center"
-            @change="updateSettingsValue"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div class="row underline">
-      <div class="col-1-2">
-        <label class="caption">
           <span class="title">Curriculum Menu Type</span>
           <span class="about">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor velit mauris.</span>
         </label>
@@ -169,25 +150,6 @@
             name="enable_lesson_complete"
             text="Enable Lesson Complete"
             :checked="!!settings.enable_lesson_complete"
-            @change="updateSettingsValue"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div class="row underline">
-      <div class="col-1-2">
-        <label class="caption">
-          <span class="title">Community Settings</span>
-          <span class="about">Stick the community menu on all pages.</span>
-        </label>
-      </div>
-      <div class="col-1-2">
-        <div class="wide-wrap">
-          <SliderCheckbox
-            name="enable_sticky_menu"
-            text="Enable Sticky Menu"
-            :checked="!!settings.enable_sticky_menu"
             @change="updateSettingsValue"
           />
         </div>

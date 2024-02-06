@@ -11,7 +11,7 @@
 
   <Notifications/>
 
-  <form id="roleForm" @submit.prevent="submit" class="f-st-fs">
+  <form id="templateForm" @submit.prevent="submit" class="f-st-fs">
     <div class="col-4-5">
       <section>
         <h3 class="section-name">{{ form.title }}</h3>
@@ -53,12 +53,15 @@
 </template>
 
 <script setup>
+// Vue libs
 import {reactive} from "vue";
 import {usePage} from "@inertiajs/vue3";
-import Layout from "../../shared/Layout.vue";
-import Notifications from "../../components/Default/Notifications.vue";
-import VariablesTable from "./VariablesTable.vue";
+// Components
 import EmailContentEditor from "./EmailContentEditor.vue";
+import VariablesTable from "./VariablesTable.vue";
+import Notifications from "../../components/Default/Notifications.vue";
+// Layout
+import Layout from "../../shared/Layout.vue";
 
 defineOptions({layout: Layout})
 
@@ -66,7 +69,7 @@ defineOptions({layout: Layout})
 const page = usePage()
 
 const submit = () => {
-
+  console.log(form)
 }
 
 /*

@@ -214,15 +214,7 @@
       "value":0
     },
     {
-      "key":"enable_help_center",
-      "value":true
-    },
-    {
       "key":"enable_lesson_complete",
-      "value":true
-    },
-    {
-      "key":"enable_sticky_menu",
       "value":true
     },
     {

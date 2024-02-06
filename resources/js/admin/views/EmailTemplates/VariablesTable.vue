@@ -63,8 +63,10 @@
   </Teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
+// Vue libs
 import {ref} from "vue";
+// Components
 import {TableHeadCol} from "../../components/DataTable/index.js";
 import VariablePopup from "./Modals/VariablePopup.vue";
 
@@ -80,6 +82,10 @@ const props = defineProps({
 })
 /*
  * Methods
+ */
+/**
+ * Open the variable modal window
+ * @return {*}
  */
 const variablePopupAdd = () => variableModal.value.open().then(res => {
   if (res) {
@@ -100,8 +106,11 @@ const variablePopupAdd = () => variableModal.value.open().then(res => {
     }
   }
 })
-
-const variableRemove = (name) => {
+/**
+ * Remove a variable
+ * @param {string} name
+ */
+const variableRemove = (name: string) => {
   const res = confirm('Do you really want to remove this variable?')
   if (res) {
     delete props.variables[name];
