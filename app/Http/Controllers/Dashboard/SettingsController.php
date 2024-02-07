@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Enums\SocialMedia as SocialMediaEnum;
 use App\Http\Controllers\BaseDashboardController;
-use App\Models\{Settings, SocialMedia};
+use App\Models\{EmailTemplate, Settings, SocialMedia};
 use Inertia\Response;
 
 class SettingsController extends BaseDashboardController
@@ -36,20 +36,27 @@ class SettingsController extends BaseDashboardController
                     ->get()
                     ->pluck('value', 'key')
                     ->toArray(),
-                'socials' => [
-                    'current' => SocialMedia::select(['id', 'type', 'caption', 'link', 'icon'])->orderBy('position')->get()->toArray(),
-                    'list' => SocialMediaEnum::forSelect(),
-                ],
                 'routes' => [
                     'settings' => [
                         'update' => route('api.settings.update')
                     ],
                     'socials' => [
                         'destroy' => route('api.socials.destroy', ':id'),
+                        'sort' => route('api.socials.sort'),
                         'store' => route('api.socials.store'),
                         'update' => route('api.socials.update', ':id')
+                    ],
+                    'templates' => [
+                        'create' => route('dashboard.settings.templates.create'),
+                        'destroy' => route('api.templates.destroy', ':id'),
+                        'edit' => route('dashboard.settings.templates.edit', ':id')
                     ]
-                ]
+                ],
+                'socials' => [
+                    'current' => SocialMedia::select(['id', 'type', 'caption', 'link', 'icon'])->orderBy('position')->get()->toArray(),
+                    'list' => SocialMediaEnum::forSelect(),
+                ],
+                'templates' => EmailTemplate::select(['id', 'title'])->get()
             ],
             scripts: [
                 'css' => ['resources/assets/css/admin/settings.scss']

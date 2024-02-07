@@ -77,19 +77,11 @@ npm i && npm run prod
   - Page
     - ~~Main~~
     - ~~Functionality~~
-    - Email
+    - ~~Email~~
       - ~~SMTP~~
       - ~~Global Settings~~
-      - Social Media
-        - ~~List~~
-        - ~~Create~~
-        - ~~Edit~~
-        - Sort
-        - ~~Remove~~
-      - Templates
-        - Create
-        - Edit
-        - Remove
+      - ~~Social Media~~
+      - ~~Templates~~
     - Language
       - Api
       - Page

@@ -29,18 +29,18 @@
       position: relative;
 
       li {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         position: relative;
 
         .slider-checkbox-text {font-weight: 400}
 
         .icon {background-color: #909BBF}
 
-        .sort-handle, .option-item-controls {position: absolute; bottom: 25px}
+        .sort-handle, .option-item-controls {position: absolute; bottom: 6px}
 
         .sort-handle {
           cursor: grab;
-          left: -35px;
+          left: -30px;
           padding: 5px 10px;
 
           &:active {cursor: grabbing}
@@ -49,7 +49,7 @@
         .option-item-controls {
           display: flex;
           align-items: center;
-          right: 20px;
+          right: 25px;
 
           a {
             padding: 5px 2px;
@@ -137,4 +137,11 @@
       .list-element-content-wrap {display: block}
     }
   }
+}
+
+@media screen and (max-width: 1024px) {
+  .dropdown-list-wrap {width: 100%}
+}
+@media screen and (max-width: 720px) {
+  .row {display: block}
 }

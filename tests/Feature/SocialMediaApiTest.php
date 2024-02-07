@@ -1,27 +1,12 @@
 <?php
-
 namespace Feature;
 
-use App\Models\{SocialMedia, User};
-use Tests\TestCase;
+use App\Models\SocialMedia;
+use Tests\ApiTestCase;
 
-class SocialMediaApiTest extends TestCase
+class SocialMediaApiTest extends ApiTestCase
 {
-    /**
-     * User that performs a request
-     *
-     * @var User|null
-     */
-    protected ?User $actor = null;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        if (is_null($this->actor)) {
-            $this->actor = User::superuser()->first();
-        }
-    }
+    protected static string $route = 'api.socials.';
 
     /**
      * Tests the store functionality of the SocialMedia model.
@@ -41,14 +26,8 @@ class SocialMediaApiTest extends TestCase
             'caption' => $model->caption,
             'icon' => $model->icon
         ];
-        // Simulate a user being logged in and sending a POST request to the 'store' route,
-        // then check if the response has the correct status and data.
-        $this->actingAs($this->actor)
-            ->postJson(route('api.socials.store'), $model->toArray())
-            ->assertCreated()
-            ->assertJsonFragment($data);
-        // Verify that the database now contains a new record with the provided data.
-        $this->assertDatabaseHas('social_media', $data);
+        // Call a custom method to run the store test, passing in the model and prepared data.
+        $this->runStoreTest($model, $data);
     }
 
     /**
@@ -65,29 +44,37 @@ class SocialMediaApiTest extends TestCase
         $model = SocialMedia::factory()->create();
         // Generate new data for the update using the factory.
         $new_data = SocialMedia::factory()->make();
-        // Prepare the new data for updating the model.
-        $data = [
-            'type' => $new_data->type,
-            'caption' => $new_data->caption,
-            'link' => $new_data->link,
-            'icon' => $new_data->icon
-        ];
-        // Act as a specific user, send a PUT request to the 'update' route with the new data, and assert the response.
-        $this->actingAs($this->actor)
-            ->putJson(route('api.socials.update', $model->id), $data)
-            ->assertOk()
-            ->assertJsonFragment(array_merge(['id' => $model->id], $data));
 
-        // Verify that the old data is not present and the new data is correctly stored in the database.
-        $this
-            ->assertDatabaseMissing('social_media', [
-                'id' => $model->id,
-                'type' => $model->type,
-                'caption' => $model->caption,
-                'link' => $model->link,
-                'icon' => $model->icon
-            ])
-            ->assertDatabaseHas('social_media', array_merge(['id' => $model->id], $data));
+        $this->runUpdateTest($model, $new_data, ['type', 'caption', 'link', 'icon']);
+    }
+
+    /**
+     * Tests the sorting functionality for SocialMedia records.
+     *
+     * This test simulates the process of reordering social media records by sending a PATCH request
+     * with a new order for the records. It then verifies that the database reflects the updated order
+     * for each record.
+     */
+    public function testSort(): void
+    {
+        // Retrieve a random order of social media record IDs.
+        $models = SocialMedia::inRandomOrder()->pluck('id')->toArray();
+        // Build the request data array with each model's ID and its new position.
+        $request_data = [];
+        foreach ($models as $i => $id) {
+            $request_data[] = ['id' => $id, 'position' => $i];
+        }
+        // Sending a PATCH request to the sort endpoint with the new order of social media records.
+        $this->actingAs($this->actor)
+            ->patchJson(route('api.socials.sort'), ['list' => $request_data])
+            ->assertOk();
+        // Verify that the database has been updated to reflect the new order for each social media record.
+        foreach ($models as $i => $id) {
+            $this->assertDatabaseHas('social_media', [
+                'id' => $id,
+                'position' => $i
+            ]);
+        }
     }
 
     /**
@@ -102,12 +89,6 @@ class SocialMediaApiTest extends TestCase
     public function testDestroy(): void
     {
         // Create and persist an instance of the SocialMedia model to the database.
-        $model = SocialMedia::factory()->create();
-        // Act as a specific user, send a DELETE request to the 'destroy' route for the created model, and assert the response status.
-        $this->actingAs($this->actor)
-            ->deleteJson(route('api.socials.destroy', $model->id))
-            ->assertNoContent();
-        // Verify that the database no longer contains the deleted record.
-        $this->assertDatabaseMissing('social_media', ['id' => $model->id]);
+        $this->runDestroyTest(SocialMedia::factory()->create());
     }
 }

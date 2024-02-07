@@ -13,6 +13,10 @@ class CourseFactory extends Factory
 {
     use FakerFactoryTrait;
 
+    /**
+     * The name of the factory's corresponding model.
+     * @var string
+     */
     protected $model = Course::class;
 
     /**
@@ -22,7 +26,7 @@ class CourseFactory extends Factory
      */
     public function definition(): array
     {
-        $name = $this->faker->company . ' of ' . $this->faker->lastName;
+        $name = fake()->company . ' of ' . fake()->lastName;
 
         $admin = $this->getAdmin();
 
@@ -31,7 +35,7 @@ class CourseFactory extends Factory
         return [
             'name' => $name,
             'url' => generateUrl($name),
-            'description' => $this->faker->text(mt_rand(40, 150)),
+            'description' => fake()->text(mt_rand(40, 150)),
             'img_url' => $this->image(),
             'invitation_email' => 0,
             'position' => $this->model::query()->count(),
@@ -40,9 +44,9 @@ class CourseFactory extends Factory
             'tracking_status' => mt_rand(0, 12),
             'instructor_id' => $admin->id ?? null,
             'terms_conditions_enable' => 1,
-            'terms_conditions_text' => $this->faker->text(mt_rand(40, 150)),
+            'terms_conditions_text' => fake()->text(mt_rand(40, 150)),
             'free_trial_enable' => $free_trial_enable,
-            'free_trial_upgrade_url' => $free_trial_enable ? $this->faker->url : null,
+            'free_trial_upgrade_url' => $free_trial_enable ? fake()->url : null,
             'free_trial_upgrade_title' => $free_trial_enable ? $name . ' Free Trial' : null
         ];
     }

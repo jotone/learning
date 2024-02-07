@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\{SocialMediaStoreRequest, SocialMediaUpdateRequest};
+use App\Http\Controllers\BaseApiController;
+use App\Http\Requests\SocialMedia\{SortRequest, StoreRequest, UpdateRequest};
 use App\Models\SocialMedia;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
-class SocialMediaController extends Controller
+class SocialMediaController extends BaseApiController
 {
     /**
      * Create a social media entity
      *
-     * @param SocialMediaStoreRequest $request
+     * @param StoreRequest $request
      * @return JsonResponse
      */
-    public function store(SocialMediaStoreRequest $request): JsonResponse
+    public function store(StoreRequest $request): JsonResponse
     {
         $input = $request->validated();
 
@@ -39,30 +39,31 @@ class SocialMediaController extends Controller
      * Update the specified social media entity
      *
      * @param SocialMedia $social
-     * @param SocialMediaUpdateRequest $request
+     * @param UpdateRequest $request
      * @return JsonResponse
      */
-    public function update(SocialMedia $social, SocialMediaUpdateRequest $request): JsonResponse
+    public function update(SocialMedia $social, UpdateRequest $request): JsonResponse
+    {
+        return $this->updateSimpleModel($social, $request);
+    }
+
+    /**
+     * Update the social media positions
+     *
+     * @param SortRequest $request
+     * @return JsonResponse
+     */
+    public function sort(SortRequest $request): JsonResponse
     {
         $input = $request->validated();
 
-        DB::beginTransaction();
-
-        try {
-            foreach ($input as $key => $val) {
-                $social->{$key} = $val;
-            }
-
-            // Update entity
-            $social->isDirty() && $social->save();
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $this->serverError($e);
+        foreach ($input['list'] as $item) {
+            $social = SocialMedia::findOrFail($item['id']);
+            $social->position = $item['position'];
+            $social->save();
         }
 
-        return response()->json($social);
+        return response()->json($input['list']);
     }
 
     /**

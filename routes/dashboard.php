@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\{
     CommunityController,
     CourseController,
     DashboardController,
+    EmailTemplateController,
     EventsController,
     GetStartedController,
     HelpCenterController,
@@ -41,6 +42,8 @@ Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.crea
 Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
 
 Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+Route::get('/settings/templates', [EmailTemplateController::class, 'create'])->name('settings.templates.create');
+Route::get('/settings/templates/{template}/edit', [EmailTemplateController::class, 'edit'])->name('settings.templates.edit');
 
 Route::get('/testimonials', [TestimonialController::class, 'index'])->name('testimonials.index');
 

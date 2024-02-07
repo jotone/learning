@@ -11,8 +11,16 @@ use Illuminate\Support\Arr;
  */
 class SocialMediaFactory extends Factory
 {
+    /**
+     * The name of the factory's corresponding model.
+     * @var string
+     */
     protected $model = SocialMedia::class;
 
+    /**
+     * Model position generator
+     * @var int
+     */
     protected static int $position = -1;
 
     /**

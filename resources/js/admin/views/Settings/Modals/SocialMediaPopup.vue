@@ -32,9 +32,11 @@
             <input class="form-input" placeholder="Social media icon" v-model="items.icon">
           </label>
 
-          <button class="btn blue" type="submit">
-            {{ settings[type].button }}
-          </button>
+          <div class="form-row">
+            <button class="btn blue" type="submit">
+              {{ settings[type].button }}
+            </button>
+          </div>
         </form>
       </div>
     </div>
@@ -42,8 +44,8 @@
 </template>
 
 <script>
-import {DefaultPopupMixin} from "../../../mixins/default-popup-mixin.js";
-import CustomSelector from "../../components/Form/CustomSelector.vue";
+import {DefaultPopupMixin} from "../../../../mixins/default-popup-mixin.js";
+import CustomSelector from "../../../components/Form/CustomSelector.vue";
 
 export default {
   components: {CustomSelector},
@@ -82,9 +84,6 @@ export default {
       required: true
     }
   },
-  beforeMount() {
-    this.reset();
-  },
   computed: {
     editUrl() {
       return this.$page.props.routes.socials.update.replace(/:id/, this.items.id)
@@ -99,13 +98,12 @@ export default {
     open(item = null) {
       this.active = true;
 
-      if (null !== item) {
-        this.items = {
-          id: item.id,
-          type: item.type,
-          caption: item.caption,
-          icon: item.icon
-        }
+      this.type = null === item ? 'add' : 'edit';
+      this.items = {
+        id: null === item ? null : item.id,
+        type: null === item ? this.options[0].value : item.type,
+        caption: null === item ? '' : item.caption,
+        icon: null === item ? '' : item.icon
       }
 
       return new Promise(resolve => {
@@ -114,15 +112,6 @@ export default {
     },
     selectorRow(option) {
       return `<i class="icon ${option.icon}"></i><span>${option.text}</span>`
-    },
-    reset() {
-      this.type = 'add';
-      this.items = {
-        id: null,
-        type: this.options[0].value,
-        caption: '',
-        icon: ''
-      }
     },
     submit(e) {
       this.request({

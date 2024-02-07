@@ -28,6 +28,7 @@ a {
   align-items: stretch;
   justify-content: flex-start;
   min-height: 100vh;
+  position: relative;
 
   > nav {
     background-color: #000e42;
@@ -110,7 +111,7 @@ a {
 
 .row {
   display: flex;
-  padding: 25px;
+  padding: 20px 25px;
 }
 
 .underline {border-bottom: 1px solid #e6efff}
@@ -118,8 +119,9 @@ a {
 section {
   h3 {
     color: #00145e;
-    font-size: 24px;
-    margin: 25px 0;
+    font-size: 30px;
+    line-height: 45px;
+    margin: 25px 0 10px 0;
   }
 }
 
@@ -186,12 +188,13 @@ section {
 }
 
 @media screen and (max-width: 720px) {
-  .col-1-5, .col-4-5 {width: 100%}
+  .col-1-2, .col-1-5, .col-4-5 {width: 100%}
 
   .site-content-wrap {
     main {
       padding: 105px 20px;
     }
+
     > nav {
       min-width: auto;
 
@@ -202,8 +205,6 @@ section {
 
 @media screen and (max-width: 480px) {
   .card .row {display: block}
-
-  .col-1-2 {width: 100%}
 
   .site-content-wrap main {padding: 80px 10px}
 }

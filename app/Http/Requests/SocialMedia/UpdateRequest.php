@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\SocialMedia;
 
 use App\Enums\SocialMedia;
+use App\Http\Requests\DefaultRequest;
 use Illuminate\Validation\Rule;
 
-class SocialMediaUpdateRequest extends DefaultRequest
+class UpdateRequest extends DefaultRequest
 {
     /**
      * Get the validation rules that apply to the request.

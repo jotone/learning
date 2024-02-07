@@ -178,3 +178,10 @@
     }
   }
 }
+
+@media screen and (max-width: 720px) {
+  .default-popup-wrap {
+    width: calc(100% - 20px);
+    margin: 0 auto;
+  }
+}

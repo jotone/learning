@@ -33,7 +33,7 @@ class RoleController extends BaseDashboardController
     }
 
     /**
-     * Returns the page for creating role
+     * Returns the page for creating a role
      *
      * @return Response
      */
@@ -68,7 +68,7 @@ class RoleController extends BaseDashboardController
     }
 
     /**
-     * Returns the page for editing role
+     * Returns the page for an editing role
      *
      * @param Role $role
      * @return Response
@@ -105,7 +105,7 @@ class RoleController extends BaseDashboardController
     }
 
     /**
-     * Generate list of permissions for GraphQL controllers
+     * Generate a list of permissions for GraphQL controllers
      * @return array
      */
     protected function graphQlList(): array
@@ -127,7 +127,7 @@ class RoleController extends BaseDashboardController
     }
 
     /**
-     * Get list of permissions for Dashboard controllers
+     * Get a list of permissions for Dashboard controllers
      * @return array
      * @throws \ReflectionException
      */

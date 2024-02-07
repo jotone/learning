@@ -102,45 +102,99 @@
         </label>
       </div>
       <div class="col-1-2">
-        <ul class="options-list">
-          <li v-for="social in socials">
-            <label class="caption">
-              <span>{{ social.caption }}</span>
-              <input
-                class="form-input"
-                :class="{'has-controls': isAdmin}"
-                :name="`socials[${social.id}]`"
-                :placeholder="`Link to ${social.caption} page`"
-                v-model="social.link"
-              >
-            </label>
-            <template v-if="isAdmin">
-              <div class="sort-handle">
-                <i class="icon double-hellip-icon"></i>
-              </div>
-              <div class="option-item-controls">
-                <a href="#" @click.prevent="emit('editSocialMedia', social)">
-                  <i class="icon edit-icon"></i>
-                </a>
-                <a href="#" @click.prevent="emit('removeSocialMedia', social.id)">
-                  <i class="icon trash-icon"></i>
-                </a>
-              </div>
-            </template>
-          </li>
-        </ul>
-        <button class="btn blue" @click="emit('addSocialMedia')" v-if="isAdmin">
+        <draggable
+          class="options-list"
+          handle=".sort-handle"
+          itemKey="id"
+          tag="ul"
+          :list="socials.current"
+          @change="socialMediaSort"
+        >
+          <template #item="{element}">
+            <li>
+              <label class="caption">
+                <span>{{ element.caption }}</span>
+                <input
+                  class="form-input"
+                  :class="{'has-controls': isAdmin}"
+                  :name="`socials[${element.id}]`"
+                  :placeholder="`Link to ${element.caption} page`"
+                  v-model="element.link"
+                >
+              </label>
+              <template v-if="isAdmin">
+                <div class="sort-handle">
+                  <i class="icon double-hellip-icon"></i>
+                </div>
+                <div class="option-item-controls">
+                  <a href="#" @click.prevent="socialMediaEdit(element)">
+                    <i class="icon edit-icon"></i>
+                  </a>
+                  <a href="#" @click.prevent="socialMediaRemove(element.id)">
+                    <i class="icon trash-icon"></i>
+                  </a>
+                </div>
+              </template>
+            </li>
+          </template>
+        </draggable>
+        <button class="btn blue" v-if="isAdmin" @click.prevent="socialMediaAdd">
           Add Item
         </button>
       </div>
     </div>
+
+    <div class="row underline">
+      <div class="col-1-2">
+        <label class="caption">
+          <span class="title">Template List</span>
+          <span class="about">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent porttitor velit mauris.
+          </span>
+        </label>
+      </div>
+
+      <div class="col-1-2">
+        <ul class="options-list">
+          <li v-for="template in templates">
+            <label class="caption">
+              <input class="form-input readonly" style="padding-right: 50px" :value="template.title">
+            </label>
+            <div class="option-item-controls">
+              <a :href="templateEdit(template.id)">
+                <i class="icon edit-icon"></i>
+              </a>
+              <a href="#" @click.prevent="templateRemove(template.id)" v-if="isAdmin">
+                <i class="icon trash-icon"></i>
+              </a>
+            </div>
+          </li>
+        </ul>
+        <a class="btn blue" v-if="isAdmin" style="width: 150px" :href="page.props.routes.templates.create">
+          Add Item
+        </a>
+      </div>
+    </div>
   </SettingsElement>
+
+  <Teleport to="body">
+    <SocialMediaPopup ref="socialMediaModal" :socials="socials.list"/>
+  </Teleport>
 </template>
 
 <script setup>
+// Vue libs
+import {inject, ref} from "vue";
+import {usePage} from "@inertiajs/vue3";
+// Components
+import draggable from "vuedraggable";
 import SettingsElement from "./SettingsElement.vue";
+import SocialMediaPopup from "../Modals/SocialMediaPopup.vue";
 
-const emit = defineEmits(['addSocialMedia', 'editSocialMedia', 'removeSocialMedia'])
+// Assign the http request function
+const request = inject('request')
+// Page variables
+const page = usePage()
 
 const props = defineProps({
   isAdmin: {
@@ -152,8 +206,118 @@ const props = defineProps({
     required: true
   },
   socials: {
+    type: Object,
+    required: true
+  },
+  templates: {
     type: Array,
     default: []
   }
 });
+/*
+ * Methods
+ */
+/**
+ * Opens a modal for adding a new social media entry.
+ * @return {*}
+ */
+const socialMediaAdd = () => socialMediaModal.value.open().then(
+  // Checks if the result is not null or false, indicating a successful submission.
+  res => null !== res && false !== res && props.socials.current.push(res)
+);
+/**
+ * Opens a modal for editing an existing social media entry. Updates the entry in socials with the new values.
+ * @param social
+ */
+const socialMediaEdit = social => {
+  // Opens the modal with the current social media entry data and waits for it to close.
+  socialMediaModal.value.open(social).then(res => {
+    // find and update the edited entry.
+    for (let i = 0, n = props.socials.current.length; i < n; i++) {
+      if (res.id === props.socials.current[i].id) {
+        props.socials.current[i] = res;
+        break
+      }
+    }
+  })
+}
+/**
+ * Remove a social media record identified by its 'id'.
+ * @param {int} id
+ */
+const socialMediaRemove = id => {
+  // Prompts the user for confirmation before proceeding with the deletion.
+  const res = confirm('Do you really want to remove this Social Media record?')
+  // Checks if the user confirmed the action.
+  if (res) {
+    // Makes an HTTP DELETE request to the server to remove the specified social media record.
+    request({
+      url: page.props.routes.socials.destroy.replace(/:id/, id),
+      method: 'delete',
+      onSuccess: response => {
+        // Check if the response status code is 204 (No Content), indicating successful deletion.
+        if (204 === response.status) {
+          for (let i = 0, n = props.socials.current.length; i < n; i++) {
+            // Checks if the current item's ID matches the deleted ID.
+            if (id === props.socials.current[i].id) {
+              // Removes the item from the list.
+              props.socials.current.splice(i, 1)
+              break;
+            }
+          }
+        }
+      }
+    })
+  }
+}
+/**
+ * Sorting list handler
+ */
+const socialMediaSort = () => {
+  let result = []
+  for (let i = 0, n = props.socials.current.length; i < n; i++) {
+    result.push({
+      id: props.socials.current[i].id,
+      position: i
+    });
+  }
+
+  request({
+    url: page.props.routes.socials.sort,
+    method: 'patch',
+    data: {list: result}
+  })
+}
+const templateEdit = id => page.props.routes.templates.edit.replace(/:id/, id);
+
+const templateRemove = id => {
+// Prompts the user for confirmation before proceeding with the deletion.
+  const res = confirm('Do you really want to remove this Email template?');
+  if (res) {
+    // Makes an HTTP DELETE request to the server to remove the specified email template.
+    request({
+      url: page.props.routes.templates.destroy.replace(/:id/, id),
+      method: 'delete',
+      onSuccess: response => {
+        // Check if the response status code is 204 (No Content), indicating successful deletion.
+        if (204 === response.status) {
+          for (let i = 0, n = props.templates.length; i < n; i++) {
+            // Checks if the current item's ID matches the deleted ID.
+            if (id === props.templates[i].id) {
+              // Removes the item from the list.
+              props.templates.splice(i, 1)
+              break;
+            }
+          }
+        }
+      }
+    })
+  }
+}
+
+/*
+ * Variables
+ */
+// List of social media
+const socialMediaModal = ref(null)
 </script>
