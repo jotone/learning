@@ -48,6 +48,7 @@ class SettingsController extends BaseDashboardController
                     ],
                     'templates' => [
                         'create' => route('dashboard.settings.templates.create'),
+                        'destroy' => route('api.templates.destroy', ':id'),
                         'edit' => route('dashboard.settings.templates.edit', ':id')
                     ]
                 ],

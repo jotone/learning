@@ -138,3 +138,10 @@
     }
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .dropdown-list-wrap {width: 100%}
+}
+@media screen and (max-width: 720px) {
+  .row {display: block}
+}

@@ -188,7 +188,7 @@ section {
 }
 
 @media screen and (max-width: 720px) {
-  .col-1-5, .col-4-5 {width: 100%}
+  .col-1-2, .col-1-5, .col-4-5 {width: 100%}
 
   .site-content-wrap {
     main {
@@ -205,8 +205,6 @@ section {
 
 @media screen and (max-width: 480px) {
   .card .row {display: block}
-
-  .col-1-2 {width: 100%}
 
   .site-content-wrap main {padding: 80px 10px}
 }

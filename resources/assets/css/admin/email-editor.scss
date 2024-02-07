@@ -13,7 +13,7 @@
 
     tr:not(.add-row-wrap) {
       .table-element-wrap {
-        border: 1px solid #cbd6e5;
+        border: 1px solid #f4f6fb;
         border-radius: 6px;
         overflow: hidden;
         margin-top: -1px;
@@ -82,7 +82,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 10px;
+    margin: 15px 0;
   }
 
   ul.text-elements-list {
@@ -129,5 +129,13 @@
 
   .hu-color-picker .color-type, .hu-color-picker .color-type + div {
     display: none;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .default-popup-wrap .email-body-elements-wrap {
+    .text-elements-controls {display: block}
+
+    .button-row {justify-content: center}
   }
 }

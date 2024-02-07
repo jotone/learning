@@ -3,6 +3,7 @@
 namespace App\Http\Requests\EmailTemplate;
 
 use App\Http\Requests\DefaultRequest;
+use App\Models\EmailTemplate;
 
 class StoreRequest extends DefaultRequest
 {
@@ -20,5 +21,23 @@ class StoreRequest extends DefaultRequest
             'variables' => ['nullable', 'array'],
             'body' => ['nullable', 'array']
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        if (!$this->request->has('slug')) {
+            $slug = generateUrl($this->request->get('title'));
+            if (EmailTemplate::where('slug', $slug)->count()) {
+                $slug .= '-' . uniqid();
+            }
+            $this->merge([
+                'slug' => $slug
+            ]);
+        }
     }
 }

@@ -246,7 +246,7 @@ const updateSettingsValue = (value: any, field: string) => {
  * @param key
  */
 const generateKey = (length: number, key = ''): string => {
-  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567897@#$%*()';
+  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567897@#$%*';
   // Append a character from 'characters' at the random index to the 'key'
   for (let i = 0; i < length; i++) key += characters[Math.floor(Math.random() * characters.length)];
   return key;

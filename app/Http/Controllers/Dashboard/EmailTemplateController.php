@@ -23,11 +23,14 @@ class EmailTemplateController extends BaseDashboardController
                     ]
                 ],
                 'routes' => [
-                    'store' => route('api.templates.store')
+                    'save' => route('api.templates.store')
                 ]
             ],
             scripts: [
-                'css' => ['resources/assets/css/admin/content-table.scss']
+                'css' => [
+                    'resources/assets/css/admin/content-table.scss',
+                    'resources/assets/css/admin/email-editor.scss'
+                ]
             ]
         );
     }
@@ -48,8 +51,7 @@ class EmailTemplateController extends BaseDashboardController
                 ],
                 'model' => $template,
                 'routes' => [
-                    'store' => route('api.templates.store'),
-                    'update' => route('api.templates.update', $template->id)
+                    'save' => route('api.templates.update', $template->id)
                 ]
             ],
             scripts: [

@@ -19,7 +19,7 @@
       </tr>
       <tr class="add-row-wrap">
         <td title="Add a Row">
-          <button class="add-row-btn" @click="addRow">
+          <button class="add-row-btn" type="button" @click="addRow">
             <i class="icon plus-icon"></i>
           </button>
         </td>
@@ -59,7 +59,9 @@ const addRow = (): number => props.items.push({style: {'text-align': 'center'}, 
  */
 const editRow = (i: number) => {
   editRowModal.value.open(props.items[i]).then(res => {
-    props.items[i] = res
+    if (res) {
+      props.items[i] = res
+    }
   })
 }
 /**

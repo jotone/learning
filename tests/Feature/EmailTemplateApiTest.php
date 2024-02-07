@@ -12,7 +12,7 @@ class EmailTemplateApiTest extends ApiTestCase
     /**
      * Tests the store (create) functionality for the EmailTemplate model.
      *
-     * This method simulates creating a new EmailTemplate with  out persisting it to the database,
+     * This method simulates creating a new EmailTemplate without persisting it to the database,
      * prepares the necessary data for a POST request, and then delegates to runStoreTest
      * to perform the actual test assertions and validations.
      */

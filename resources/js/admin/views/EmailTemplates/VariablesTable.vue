@@ -17,7 +17,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(data, name) in variables">
+    <tr v-for="(data, name) in variablesList">
       <td>
         <span>%{{ name }}%</span>
       </td>
@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 // Vue libs
-import {ref} from "vue";
+import {reactive, ref} from 'vue';
 // Components
 import {TableHeadCol} from "../../components/DataTable/index.js";
 import VariablePopup from "./Modals/VariablePopup.vue";
@@ -91,19 +91,20 @@ const variablePopupAdd = () => variableModal.value.open().then(res => {
   if (res) {
     if ('Route' === res.type) {
       const model = res.encrypt.split(':')
-      props.variables[res.name] = {
+      variablesList[res.name] = {
         type: "route",
         route: res.field,
         model: model[0],
         field: model[1]
       }
     } else {
-      props.variables[res.name] = {
+      variablesList[res.name] = {
         type: "model",
         model: res.type,
         field: res.field
       }
     }
+    console.log(variablesList)
   }
 })
 /**
@@ -116,6 +117,9 @@ const variableRemove = (name: string) => {
     delete props.variables[name];
   }
 }
-
-const variableModal = ref(null)
+/*
+ * Variables
+ */
+const variablesList = reactive(Object.keys(props.variables).length ? props.variables: {});
+const variableModal = ref(null);
 </script>

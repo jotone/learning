@@ -108,35 +108,31 @@
                 />
               </div>
 
-              <div class="button-row">
-                <label class="caption">
-                  <span>Font Size</span>
-                  <input
-                    autocomplete="off"
-                    class="form-input"
-                    type="number"
-                    min="1"
-                    step="1"
-                    :value="fontSize"
-                    @input="updateFormValue('font-size', $event.target.value.trim() + 'px')"
-                  >
-                </label>
-              </div>
+              <label class="caption">
+                <span>Font Size</span>
+                <input
+                  autocomplete="off"
+                  class="form-input"
+                  type="number"
+                  min="1"
+                  step="1"
+                  :value="fontSize"
+                  @input="updateFormValue('font-size', $event.target.value.trim() + 'px')"
+                >
+              </label>
 
-              <div class="button-row">
-                <label class="caption">
-                  <span>Line Height</span>
-                  <input
-                    autocomplete="off"
-                    class="form-input"
-                    type="number"
-                    min="1"
-                    step="1"
-                    :value="lineHeight"
-                    @input="updateFormValue('line-height', $event.target.value.trim() + 'px')"
-                  >
-                </label>
-              </div>
+              <label class="caption">
+                <span>Line Height</span>
+                <input
+                  autocomplete="off"
+                  class="form-input"
+                  type="number"
+                  min="1"
+                  step="1"
+                  :value="lineHeight"
+                  @input="updateFormValue('line-height', $event.target.value.trim() + 'px')"
+                >
+              </label>
             </div>
           </div>
 

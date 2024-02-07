@@ -1,5 +1,45 @@
 [
   {
+    "title":"Course Invitation Email",
+    "slug":"course-invitation-email",
+    "subject":"%user.name%, You Have Access to %course.name%. (%site_url%)",
+    "variables":{
+      "course.name":{
+        "type":"model",
+        "model":"Course",
+        "field":"name"
+      },
+      "user.name":{
+        "type":"model",
+        "model":"User",
+        "field":"full_name"
+      },
+      "site_url":{
+        "type":"route",
+        "route":"home.index",
+        "model":"User",
+        "field":"email"
+      }
+    },
+    "body":[
+      {
+        "style":{
+          "text-align":"center"
+        },
+        "text":"<span style=\"color:#000000;font-size:24px;font-weight:500;line-height:30px;\">You have been granted access to</span>"
+      },
+      {
+        "text":"<br>"
+      },
+      {
+        "style":{
+          "text-align":"center"
+        },
+        "text":"<span style=\"color:#000000;font-size:24px;font-weight:500;line-height:30px;\">%course.name%</span>"
+      }
+    ]
+  },
+  {
     "title":"Registration Email",
     "slug":"registration-email",
     "subject":"Welcome to the %course.name%",
@@ -23,30 +63,80 @@
     },
     "body":[
       {
-        "style":{"text-align":"center"},
+        "style":{
+          "text-align":"center"
+        },
         "text":"<span style=\"color:#00145e;font-size:30px;font-weight:500;line-height:45px\">Welcome %user.name%</span>"
       },
       {
-        "style":{"text-align":"center"},
+        "style":{
+          "text-align":"center"
+        },
         "text":"<span style=\"color:#00145e;font-size:14px;font-weight:500;line-height:24px\">The CopeMember team wishes you much success with your courses!</span><br><span style=\"color:#00145e;font-size:14px;font-weight:500;line-height:24px\">Please confirm your registration by clicking the following button:</span>"
       },
       {
         "text":"<br>"
       },
       {
-        "style":{"text-align":"center"},
+        "style":{
+          "text-align":"center"
+        },
         "text":"<a class=\"btn blue\" href=\"%activate_url%\">Activate Your Account</a>"
       },
       {
         "text":"<br>"
       },
       {
-        "style":{"text-align":"center"},
+        "style":{
+          "text-align":"center"
+        },
         "text":"<span style=\"color:#80acff;font-size:14px;font-weight:500;line-height:24px\">If the button is not working, click the link below:</span>"
       },
       {
-        "style":{"text-align":"center"},
+        "style":{
+          "text-align":"center"
+        },
         "text":"<span>test </span><a style=\"color:#80acff;font-size:14px;font-weight:500;line-height:24px;text-decoration:underline\" href=%activate_url%>click here</a><span> some text</span>"
+      }
+    ]
+  },
+  {
+    "title":"Reset Password Email",
+    "slug":"reset-password-email",
+    "subject":"Reset password on %site_url%",
+    "variables":{
+      "user.email":{
+        "type":"model",
+        "model":"User",
+        "field":"email"
+      },
+      "user.name":{
+        "type":"model",
+        "model":"User",
+        "field":"full_name"
+      },
+      "site_url":{
+        "type":"route",
+        "route":"home.index",
+        "model":"User",
+        "field":"email"
+      }
+    },
+    "body":[
+      {
+        "style":{
+          "text-align":"center"
+        },
+        "text":"<span style=\"color:#000000;font-size:24px;font-weight:500;line-height:30px;\">Hello, %user.name%.</span>"
+      },
+      {
+        "text":"<br>"
+      },
+      {
+        "style":{
+          "text-align":"center"
+        },
+        "text":"<span style=\"color:#000000;font-size:16px;line-height:20px;\">You recently requested a password reset for your %site_url% account %user.email%. To complete the process, click the button below:<span>"
       }
     ]
   }
