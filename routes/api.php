@@ -18,6 +18,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Email Templates
     Route::apiResource('/templates', EmailTemplateController::class)->only(['store', 'update', 'destroy']);
     // Update settings
+    Route::post('/settings', [SettingsController::class, 'smtp'])->name('settings.smtp');
     Route::match(['patch', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
     // Social Media API
     Route::patch('/socials', [SocialMediaController::class, 'sort'])->name('socials.sort');

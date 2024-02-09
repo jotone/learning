@@ -16,13 +16,24 @@
           <li>
             <label class="caption">
               <span>Username</span>
-              <input class="form-input" name="smtp_username" placeholder="Set a username" v-model="settings.smtp_username">
+              <input
+                class="form-input"
+                name="smtp_username"
+                placeholder="Set a username"
+                v-model="settings.smtp_username"
+              >
             </label>
           </li>
           <li>
             <label class="caption">
               <span>Password</span>
-              <input class="form-input" name="smtp_password" placeholder="Set a password" v-model="settings.smtp_password">
+              <input
+                class="form-input"
+                name="smtp_password"
+                type="password"
+                placeholder="Set a password"
+                v-model="settings.smtp_password"
+              >
             </label>
           </li>
           <li>
@@ -40,20 +51,43 @@
           <li>
             <label class="caption">
               <span>Encryption</span>
-              <input class="form-input" name="smtp_encryption" placeholder="Set an encryption method" v-model="settings.smtp_encryption">
+              <input
+                class="form-input"
+                name="smtp_encryption"
+                placeholder="Set an encryption method"
+                v-model="settings.smtp_encryption"
+              >
             </label>
           </li>
           <li>
             <label class="caption">
               <span>From Email</span>
-              <input class="form-input" name="smtp_from_address" placeholder="Set a form email" v-model="settings.smtp_from_address">
+              <input
+                class="form-input"
+                name="smtp_from_address"
+                placeholder="Set a form email"
+                type="email"
+                v-model="settings.smtp_from_address"
+              >
             </label>
           </li>
           <li>
             <label class="caption">
               <span>From Name</span>
-              <input class="form-input" name="smtp_from_name" placeholder="Set a form name" v-model="settings.smtp_from_name">
+              <input
+                class="form-input"
+                name="smtp_from_name"
+                placeholder="Set a form name"
+                v-model="settings.smtp_from_name"
+              >
             </label>
+          </li>
+          <li>
+            <div class="form-row">
+              <button type="button" class="btn blue" @click="saveSmtpSettings">
+                Save and send test email
+              </button>
+            </div>
           </li>
         </ul>
       </div>
@@ -73,19 +107,28 @@
           <li>
             <label class="caption">
               <span>Terms of Service Link</span>
-              <input class="form-input" name="terms_of_service" placeholder="Set the Terms of Service Link" v-model="settings.terms_of_service">
+              <input class="form-input"
+                name="terms_of_service"
+                placeholder="Set the Terms of Service Link"
+                v-model="settings.terms_of_service">
             </label>
           </li>
           <li>
             <label class="caption">
               <span>Privacy Policy Link</span>
-              <input class="form-input" name="privacy_policy" placeholder="Set the Privacy Policy Link" v-model="settings.privacy_policy">
+              <input class="form-input"
+                name="privacy_policy"
+                placeholder="Set the Privacy Policy Link"
+                v-model="settings.privacy_policy">
             </label>
           </li>
           <li>
             <label class="caption">
               <span>Address</span>
-              <input class="form-input" name="legal_address" placeholder="Set a legal address" v-model="settings.legal_address">
+              <input class="form-input"
+                name="legal_address"
+                placeholder="Set a legal address"
+                v-model="settings.legal_address">
             </label>
           </li>
         </ul>
@@ -184,13 +227,14 @@
 
 <script setup>
 // Vue libs
-import {inject, ref} from "vue";
-import {usePage} from "@inertiajs/vue3";
+import {inject, ref} from 'vue';
+import {usePage} from '@inertiajs/vue3';
 // Components
-import draggable from "vuedraggable";
-import SettingsElement from "./SettingsElement.vue";
-import SocialMediaPopup from "../Modals/SocialMediaPopup.vue";
+import draggable from 'vuedraggable';
+import SettingsElement from './SettingsElement.vue';
+import SocialMediaPopup from '../Modals/SocialMediaPopup.vue';
 
+const emit = defineEmits(['notify']);
 // Assign the http request function
 const request = inject('request')
 // Page variables
@@ -288,8 +332,16 @@ const socialMediaSort = () => {
     data: {list: result}
   })
 }
+/**
+ * Generate a link to the email-template edit page
+ * @param id
+ * @returns {*}
+ */
 const templateEdit = id => page.props.routes.templates.edit.replace(/:id/, id);
-
+/**
+ * Generate a link for email template remove
+ * @param id
+ */
 const templateRemove = id => {
 // Prompts the user for confirmation before proceeding with the deletion.
   const res = confirm('Do you really want to remove this Email template?');
@@ -314,6 +366,26 @@ const templateRemove = id => {
     })
   }
 }
+/**
+ * Send request to save the SMTP settings.
+ * @returns {Promise}
+ */
+const saveSmtpSettings = () => request({
+  url: page.props.routes.settings.smtp,
+  method: 'post',
+  data: {
+    smtp_username: props.settings.smtp_username,
+    smtp_password: props.settings.smtp_password,
+    smtp_host: props.settings.smtp_host,
+    smtp_port: props.settings.smtp_port,
+    smtp_encryption: props.settings.smtp_encryption,
+    smtp_from_address: props.settings.smtp_from_address,
+    smtp_from_name: props.settings.smtp_from_name
+  },
+  onSuccess: response => 200 === response.status && emit('notify', 'success', {
+    msg: ['SMTP setting were successfully saved.']
+  })
+}).catch(e => null !== e?.response?.data?.errors && emit('notify', 'danger', e.response.data.errors))
 
 /*
  * Variables

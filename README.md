@@ -78,18 +78,14 @@ npm i && npm run prod
     - ~~Main~~
     - ~~Functionality~~
     - ~~Email~~
-      - ~~SMTP~~
-      - ~~Global Settings~~
-      - ~~Social Media~~
-      - ~~Templates~~
-    - Language
-      - Api
-      - Page
     - Coaches
       - List
       - Create
       - Edit
       - Delete
+    - Language
+      - Api
+      - Page
 - Page permissions middleware
 - Categories
   - Api

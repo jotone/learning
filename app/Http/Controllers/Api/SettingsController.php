@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SettingSmtpRequest;
+use App\Mail\TestSMTP;
 use App\Models\Settings;
+use Illuminate\Support\Facades\{Config, Mail};
 use Illuminate\Http\{JsonResponse, Request};
 
 class SettingsController extends Controller
@@ -34,6 +37,39 @@ class SettingsController extends Controller
             'site_custom_url',
         ]
     ];
+
+    /**
+     * Save smtp settings and send a test letter
+     *
+     * @param SettingSmtpRequest $request
+     * @return JsonResponse
+     */
+    public function smtp(SettingSmtpRequest $request): JsonResponse
+    {
+        $args = $request->validated();
+
+        Settings::where('key', 'smtp_username')->update(['value' => $args['smtp_username']]);
+        Settings::where('key', 'smtp_password')->update(['value' => $args['smtp_password']]);
+        Settings::where('key', 'smtp_host')->update(['value' => $args['smtp_host']]);
+        Settings::where('key', 'smtp_port')->update(['value' => $args['smtp_port']]);
+        Settings::where('key', 'smtp_encryption')->update(['value' => $args['smtp_encryption']]);
+        Settings::where('key', 'smtp_from_address')->update(['value' => $args['smtp_from_address']]);
+        Settings::where('key', 'smtp_from_name')->update(['value' => $args['smtp_from_name']]);
+
+        if (config('app.env') != 'local') {
+            Config::set('mail.mailers.smtp.username', $args['smtp_username']);
+            Config::set('mail.mailers.smtp.password', $args['smtp_password']);
+            Config::set('mail.mailers.smtp.host', $args['smtp_host']);
+            Config::set('mail.mailers.smtp.port', $args['smtp_port']);
+            Config::set('mail.mailers.smtp.encryption', $args['smtp_encryption']);
+            Config::set('mail.from.address', $args['smtp_from_address']);
+            Config::set('mail.from.name', $args['smtp_from_name']);
+        }
+
+        Mail::to(config('mail.from.address'))->send(new TestSMTP());
+
+        return response()->json();
+    }
 
     /**
      * Update settings

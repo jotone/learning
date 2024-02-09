@@ -21,6 +21,7 @@
       :settings="emailForm"
       :socials="$attrs.socials"
       :templates="$attrs.templates"
+      @notify="callNotification"
     />
   </ul>
 </template>
@@ -62,6 +63,13 @@ const fillForm = keys => {
     }
   }
   return obj
+}
+const callNotification = (type, messages) => {
+  for (let i in messages) {
+    for (let j in messages[i]) {
+      Notification[type](messages[i][j]);
+    }
+  }
 }
 /**
  * Saves settings by making API requests for each form and showing a success notification upon completion.

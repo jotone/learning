@@ -204,7 +204,7 @@ section {
 }
 
 @media screen and (max-width: 480px) {
-  .card .row {display: block}
+  .row, .form-row {display: block}
 
   .site-content-wrap main {padding: 80px 10px}
 }

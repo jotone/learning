@@ -38,6 +38,7 @@ class SettingsController extends BaseDashboardController
                     ->toArray(),
                 'routes' => [
                     'settings' => [
+                        'smtp' => route('api.settings.smtp'),
                         'update' => route('api.settings.update')
                     ],
                     'socials' => [

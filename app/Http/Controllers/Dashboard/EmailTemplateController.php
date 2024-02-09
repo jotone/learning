@@ -8,6 +8,11 @@ use Inertia\Response;
 
 class EmailTemplateController extends BaseDashboardController
 {
+    /**
+     * Email Template creation page
+     *
+     * @return Response
+     */
     public function create(): Response
     {
         return $this->view(
@@ -35,6 +40,12 @@ class EmailTemplateController extends BaseDashboardController
         );
     }
 
+    /**
+     * Email Template edit page
+     *
+     * @param EmailTemplate $template
+     * @return Response
+     */
     public function edit(EmailTemplate $template): Response
     {
         return $this->view(

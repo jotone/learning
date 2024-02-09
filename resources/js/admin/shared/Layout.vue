@@ -117,7 +117,7 @@ const request = props => {
       : "application/x-www-form-urlencoded"
   }, props.headers || {});
   // Return a new Promise that resolves when the Axios request is successful.
-  return new Promise(resolve => axios(props)
+  return new Promise((resolve, reject) => axios(props)
     .then(response => {
       // Reload page by condition
       if ('forceReload' in props && props.forceReload) {
@@ -130,7 +130,7 @@ const request = props => {
 
       resolve(response);
     })
-    .catch(e => console.error(e))
+    .catch(e => reject(e))
   )
 }
 /**
