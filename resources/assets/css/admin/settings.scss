@@ -139,6 +139,17 @@
   }
 }
 
+.content-table-wrap .user-info-wrap {
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+
+  .user-credentials {
+    position: relative;
+    align-items: flex-start;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .dropdown-list-wrap {width: 100%}
 }

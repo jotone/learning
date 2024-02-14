@@ -20,15 +20,19 @@
 </template>
 
 <script setup lang="ts">
+// Vue libs
 import {computed, inject, PropType} from 'vue';
 import {usePage} from "@inertiajs/vue3";
+// Interfaces
 import {RoleInterface} from "../../../../contracts/RoleInterface.js";
 
+// Implement function to convert dates into the proper view
 const convertDate = inject('convertDate');
 
-const emit = defineEmits(['action'])
-
+// Use data passed to the page
 const page = usePage();
+
+const emit = defineEmits(['action']);
 
 const props = defineProps({role: Object as PropType<RoleInterface>});
 

@@ -112,7 +112,7 @@ class Query extends GraphQlPaginatedQuery
             ],
             'role_id' => [
                 'name' => 'role_id',
-                'type' => Type::int()
+                'type' => Type::listOf(Type::int())
             ],
             'activated_at' => [
                 'name' => 'activated_at',
@@ -144,14 +144,15 @@ class Query extends GraphQlPaginatedQuery
     {
         $this->buildFilters($input);
 
-        $where = function ($query) use ($input) {
-            if (isset($input['id'])) {
-                $query->where('id', $input['id']);
-            }
-
+        $where = function ($query) use ($input, &$fields) {
             foreach ($this->fields as $field) {
                 if (isset($input[$field])) {
-                    $query->where($field, $input[$field]);
+                    if ($field === 'role_id') {
+                        // Filter users based on multiple role IDs
+                        $query->whereIn('role_id', $input['role_id']);
+                    } else {
+                        $query->where($field, $input[$field]);
+                    }
                 }
             }
 

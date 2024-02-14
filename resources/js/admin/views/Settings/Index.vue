@@ -1,6 +1,4 @@
 <template>
-  <div></div>
-
   <header>
     <div class="page-name-wrap">
       <h1>Settings</h1>
@@ -23,6 +21,7 @@
       :templates="$attrs.templates"
       @notify="callNotification"
     />
+    <Coaches :roles="$attrs.roles" :routes="$attrs.routes"/>
   </ul>
 </template>
 
@@ -33,6 +32,7 @@ import {usePage} from "@inertiajs/vue3";
 // Other Libs
 import {Notification} from "../../libs/Notification";
 // Components
+import Coaches from './SettingsElements/Coaches.vue';
 import Email from "./SettingsElements/Email.vue";
 import Functionality from "./SettingsElements/Functionality.vue";
 import MainSettings from "./SettingsElements/MainSettings.vue";

@@ -32,10 +32,11 @@
         position: relative;
       }
 
-      td a, td span {
+      td > a, td > span {
         display: flex;
         align-items: center;
         color: #909bbf;
+        cursor: pointer;
         font-size: 14px;
         line-height: 18px;
         min-height: 70px;
@@ -184,7 +185,8 @@
 
       .form-select {
         border-color: #005aff;
-        padding: 5px 20px 5px 10px
+        padding: 5px 20px 5px 10px;
+        width: auto;
       }
     }
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Enums\SocialMedia as SocialMediaEnum;
 use App\Http\Controllers\BaseDashboardController;
-use App\Models\{EmailTemplate, Settings, SocialMedia};
+use App\Models\{EmailTemplate, Role, Settings, SocialMedia};
 use Inertia\Response;
 
 class SettingsController extends BaseDashboardController
@@ -36,6 +36,7 @@ class SettingsController extends BaseDashboardController
                     ->get()
                     ->pluck('value', 'key')
                     ->toArray(),
+                'roles' => Role::whereIn('slug', ['coach'])->pluck('id')->toArray(),
                 'routes' => [
                     'settings' => [
                         'smtp' => route('api.settings.smtp'),
@@ -51,6 +52,10 @@ class SettingsController extends BaseDashboardController
                         'create' => route('dashboard.settings.templates.create'),
                         'destroy' => route('api.templates.destroy', ':id'),
                         'edit' => route('dashboard.settings.templates.edit', ':id')
+                    ],
+                    'user' => [
+                        'edit' => '#:id',
+                        'api' => route('graphql.user')
                     ]
                 ],
                 'socials' => [
@@ -60,7 +65,10 @@ class SettingsController extends BaseDashboardController
                 'templates' => EmailTemplate::select(['id', 'title'])->get()
             ],
             scripts: [
-                'css' => ['resources/assets/css/admin/settings.scss']
+                'css' => [
+                    'resources/assets/css/admin/content-table.scss',
+                    'resources/assets/css/admin/settings.scss'
+                ]
             ]);
     }
 }

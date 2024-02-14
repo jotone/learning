@@ -79,7 +79,7 @@ npm i && npm run prod
     - ~~Functionality~~
     - ~~Email~~
     - Coaches
-      - List
+      - ~~List~~
       - Create
       - Edit
       - Delete

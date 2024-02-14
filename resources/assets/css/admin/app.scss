@@ -187,6 +187,27 @@ section {
   }
 }
 
+.user-info-wrap {
+  height: auto;
+
+  .avatar-wrap {padding: 20px}
+
+  .user-credentials {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    color: #00145e;
+    width: 70%;
+    overflow: hidden;
+    position: absolute;
+
+    .user-name {font-size: 16px; font-weight: 600; line-height: 24px}
+
+    .user-email {font-size: 14px; line-height: 20px}
+  }
+}
+
 @media screen and (max-width: 720px) {
   .col-1-2, .col-1-5, .col-4-5 {width: 100%}
 

@@ -22,14 +22,7 @@
 
         <li class="actor-menu-wrap">
           <ul>
-            <li class="user-info-wrap">
-              <Avatar :user="$attrs.auth"/>
-
-              <div class="user-credentials">
-                <div class="user-name">{{ $attrs.auth.first_name }} {{ $attrs.auth.last_name }}</div>
-                <div class="user-email">{{ $attrs.auth.email }}</div>
-              </div>
-            </li>
+            <UserInfo :user="$attrs.auth" tag="li"/>
             <li>
               <a href="#">
                 <i class="icon profile-icon"></i>
@@ -73,6 +66,7 @@ import moment from "moment";
 
 import Avatar from "../components/User/Avatar.vue";
 import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
+import UserInfo from '../components/Default/UserInfo.vue';
 
 const page = usePage();
 
