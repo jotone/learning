@@ -191,7 +191,8 @@ const rowActions = [
     name: 'Edit',
     icon: 'edit-icon',
     link: page.props.routes.edit
-  }, {
+  },
+  {
     name: 'Remove',
     icon: 'trash-icon',
     callback: () => {

@@ -38,24 +38,11 @@
       border-bottom: 1px solid #153267;
       height: auto;
 
-      .avatar-wrap {padding: 20px}
-
       .user-credentials {
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        flex-direction: column;
         color: #ffffff;
         left: 85px;
         top: 50%;
-        width: 70%;
         transform: translateY(-50%);
-        overflow: hidden;
-        position: absolute;
-
-        .user-name {font-size: 16px; font-weight: 600; line-height: 24px}
-
-        .user-email {font-size: 14px; line-height: 20px}
       }
     }
 
