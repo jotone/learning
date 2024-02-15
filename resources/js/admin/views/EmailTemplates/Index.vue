@@ -13,53 +13,48 @@
 
   <form id="templateForm" @submit.prevent="submit" class="f-st-fs">
     <div class="col-4-5">
-      <section>
-        <h3 class="section-name">{{ form.title }}</h3>
-        <div class="card">
-          <div class="row">
-            <label class="caption col-1-2">
-              <span>Email Title</span>
-              <input
-                autocomplete="off"
-                class="form-input"
-                name="title"
-                placeholder="Email Title..."
-                required
-                v-model="form.title"
-              >
-            </label>
+      <fieldset class="card">
+        <legend>{{ form.title }}</legend>
 
-            <label class="caption col-1-2" v-if="$attrs.auth.role.level === 0">
-              <span>Email Slug</span>
-              <input
-                autocomplete="off"
-                class="form-input"
-                name="slug"
-                placeholder="Email Slug..."
-                required
-                v-model="form.slug"
-              >
-            </label>
+        <div class="row">
+          <label class="caption col-1-2">
+            <span>Email Title</span>
+            <input
+              autocomplete="off"
+              class="form-input"
+              name="title"
+              placeholder="Email Title..."
+              required
+              v-model="form.title"
+            >
+          </label>
+
+          <label class="caption col-1-2" v-if="$attrs.auth.role.level === 0">
+            <span>Email Slug</span>
+            <input
+              autocomplete="off"
+              class="form-input"
+              name="slug"
+              placeholder="Email Slug..."
+              required
+              v-model="form.slug"
+            >
+          </label>
+        </div>
+      </fieldset>
+      <fieldset class="card">
+        <legend>Variables</legend>
+        <div class="simple-table-wrap">
+          <div class="table-container">
+            <VariablesTable :entities="entities" :variables="form.variables"/>
           </div>
         </div>
-      </section>
-
-      <section>
-        <h3 class="section-name">Variables</h3>
-        <div class="card">
-          <div class="simple-table-wrap">
-            <div class="table-container">
-              <VariablesTable :entities="entities" :variables="form.variables"/>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h3 class="section-name">Email Edit</h3>
+      </fieldset>
+      <fieldset>
+        <legend>Email Edit</legend>
 
         <EmailContentEditor :items="form.body"/>
-      </section>
+      </fieldset>
     </div>
   </form>
 </template>

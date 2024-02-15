@@ -13,58 +13,53 @@
 
   <form id="roleForm" @submit.prevent="submit" class="f-st-fs">
     <div class="col-4-5">
-      <section>
-        <h3 class="section-name">
-          Role data
-        </h3>
-        <div class="card">
-          <div class="row">
-            <div class="col-1-2">
-              <label class="caption">
-                <span>Name</span>
-                <input
-                  autocomplete="off"
-                  class="form-input"
-                  name="name"
-                  placeholder="Role name..."
-                  required
-                  v-model="form.name">
-              </label>
+      <fieldset class="card">
+        <legend>Role data</legend>
 
-              <label class="caption" :style="{display: $attrs.auth.role.level === 0 ? 'block': 'none'}">
-                <span>Slug</span>
-                <input
-                  autocomplete="off"
-                  class="form-input"
-                  name="slug"
-                  placeholder="Role slug..."
-                  v-model="form.slug">
-              </label>
-            </div>
-            <div class="col-1-2">
-              <label class="caption">
-                <span>Level</span>
-                <input
-                  autocomplete="off"
-                  class="form-input"
-                  name="level"
-                  placeholder="Role level..."
-                  type="number"
-                  max="255"
-                  required
-                  :min="$attrs.auth.role.level"
-                  v-model="form.level"
-                >
-              </label>
-            </div>
+        <div class="row">
+          <div class="col-1-2">
+            <label class="caption">
+              <span>Name</span>
+              <input
+                autocomplete="off"
+                class="form-input"
+                name="name"
+                placeholder="Role name..."
+                required
+                v-model="form.name">
+            </label>
+
+            <label class="caption" :style="{display: $attrs.auth.role.level === 0 ? 'block': 'none'}">
+              <span>Slug</span>
+              <input
+                autocomplete="off"
+                class="form-input"
+                name="slug"
+                placeholder="Role slug..."
+                v-model="form.slug">
+            </label>
+          </div>
+          <div class="col-1-2">
+            <label class="caption">
+              <span>Level</span>
+              <input
+                autocomplete="off"
+                class="form-input"
+                name="level"
+                placeholder="Role level..."
+                type="number"
+                max="255"
+                required
+                :min="$attrs.auth.role.level"
+                v-model="form.level"
+              >
+            </label>
           </div>
         </div>
-      </section>
+      </fieldset>
 
-      <section>
-        <h3 class="section-name">
-          List of permissions
-        </h3>
+      <fieldset>
+        <legend>List of permissions</legend>
 
         <table class="characteristics-table">
           <thead>
@@ -94,7 +89,7 @@
           </template>
           </tbody>
         </table>
-      </section>
+      </fieldset>
     </div>
   </form>
 </template>
@@ -176,8 +171,9 @@ const updateForm = (type: string, controller: string, action: string, value: num
  * @param e
  */
 const submit = (e: SubmitEvent) => {
-  // Set mutation type depends on an exists model or not
-  const mutationType = page.props.hasOwnProperty('model') ? 'update' : 'create'
+  // The mutation type depends on if a model exists or not
+  const mutationType = page.props.hasOwnProperty('model') ? 'update' : 'create';
+
   let query = `name:"${form.name}",level:${form.level}`
   // If it is an update mutation
   if (page.props.hasOwnProperty('model')) {
