@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\{
     AppearanceController,
+    CoachController,
     CommentController,
     CommunityController,
     CourseController,
@@ -42,6 +43,8 @@ Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.crea
 Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
 
 Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+Route::get('/settings/coaches', [CoachController::class, 'create'])->name('settings.coaches.create');
+Route::get('/settings/coaches/{coach}/edit', [CoachController::class, 'edit'])->name('settings.coaches.edit');
 Route::get('/settings/templates', [EmailTemplateController::class, 'create'])->name('settings.templates.create');
 Route::get('/settings/templates/{template}/edit', [EmailTemplateController::class, 'edit'])->name('settings.templates.edit');
 

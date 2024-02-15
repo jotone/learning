@@ -140,10 +140,18 @@ const requestGraphQL = (url, query) => new Promise((resolve, reject) => {
   }).then(response => {
     if (200 === response.status) {
       if ('errors' in response.data) {
-        console.error(response.data.errors)
         for (let i = 0, n = response.data.errors.length; i < n; i++) {
           const error = response.data.errors[i];
-          Notification.danger(error.message);
+          if (error.extensions.hasOwnProperty('validation')) {
+            for (let field in error.extensions.validation) {
+              const errorMessages = error.extensions.validation[field]
+              for (let j = 0, m = errorMessages.length; j < m; j++) {
+                Notification.danger(errorMessages[j]);
+              }
+            }
+          } else {
+            Notification.danger(response.data.errors[i].message);
+          }
         }
         reject(response.data.errors)
       } else {

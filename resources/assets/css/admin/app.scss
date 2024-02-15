@@ -109,10 +109,24 @@ a {
   border-radius: 20px;
 }
 
+fieldset {
+  position: relative;
+  margin-top: 80px;
+
+  legend {
+    position: absolute;
+    top: -55px;
+    color: #00145e;
+    font-size: 30px;
+    line-height: 45px;
+  }
+}
+
 .row {
   display: flex;
   padding: 20px 25px;
 }
+
 
 .underline {border-bottom: 1px solid #e6efff}
 

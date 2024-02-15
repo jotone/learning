@@ -5,11 +5,11 @@
         <div class="content-table-controls">
           <SearchForm
             placeholder="Search for a Role by the name or slug…"
-            :search="$attrs.filters?.search"
+            :search="filters?.search"
             @runSearch="runSearch"
           />
 
-          <a class="btn" href="#">
+          <a class="btn" :href="routes.user.create">
             <i class="icon user-plus-icon"></i>
             <span>Create Coach</span>
           </a>
