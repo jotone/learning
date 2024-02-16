@@ -175,4 +175,17 @@ class CategoryGraphQlTest extends GraphQlTestCase
             'img_url' => $expected_file_url
         ]);
     }
+
+    /**
+     * Test the 'destroy' mutation for categories in the GraphQL API.
+     *
+     * This method verifies the functionality of the GraphQL API for deleting an existing category.
+     * It checks that the category is properly removed from the database and that the API response
+     * confirms the successful deletion. The method sends a delete request for a specific category and
+     * then uses database assertions to ensure that the category no longer exists in the database.
+     */
+    public function testDestroy(): void
+    {
+        $this->runDeleteTest(route('graphql.category'), Category::factory()->create());
+    }
 }

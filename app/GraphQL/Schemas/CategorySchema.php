@@ -2,9 +2,7 @@
 
 namespace App\GraphQL\Schemas;
 
-use App\Http\Controllers\GraphQL\Category\MutationStore;
-use App\Http\Controllers\GraphQL\Category\MutationUpdate;
-use App\Http\Controllers\GraphQL\Category\Query;
+use App\Http\Controllers\GraphQL\Category\{MutationDestroy, MutationStore, MutationUpdate, Query};
 use Rebing\GraphQL\Support\Contracts\ConfigConvertible;
 
 class CategorySchema implements ConfigConvertible
@@ -17,7 +15,8 @@ class CategorySchema implements ConfigConvertible
             ],
             'mutation' => [
                 'create' => MutationStore::class,
-                'update' => MutationUpdate::class
+                'update' => MutationUpdate::class,
+                'destroy' => MutationDestroy::class
             ],
             'middleware' => ['auth:sanctum'],
         ];
