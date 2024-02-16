@@ -2,10 +2,8 @@
 
 namespace Feature;
 
-use App\Http\Controllers\GraphQL\Role\RoleMutation;
 use App\Models\Category;
-use App\Models\Role;
-use App\Models\User;
+use Illuminate\Http\UploadedFile;
 use Tests\GraphQlTestCase;
 
 class CategoryGraphQlTest extends GraphQlTestCase
@@ -82,5 +80,99 @@ class CategoryGraphQlTest extends GraphQlTestCase
                 'description' => $category->description,
             ])
         );
+    }
+
+    /**
+     * Tests the update functionality for a Category model.
+     *
+     * This test ensures that an existing category can be updated with new information
+     * through a GraphQL mutation.
+     * It verifies that the update operation correctly changes the category's details
+     * in the database and checks the integrity of the update by asserting the absence
+     * of the old data and the presence of the new data in the database.
+     *
+     * @return void
+     */
+    public function testUpdate(): void
+    {
+        $category = Category::factory()->create();
+
+        $new_data = Category::factory()->make();
+
+        $data = [
+            'id' => $category->id,
+            'name' => $new_data->name,
+            'url' => $new_data->url
+        ];
+
+        $this->runMutationTest(
+            type: 'update',
+            route: route('graphql.category'),
+            query: 'id: %s, name: "%s", url: "%s"',
+            params: array_values($data),
+            response_fields: 'id name url',
+            callback: fn() => $this
+                ->assertDatabaseMissing('categories', [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'url' => $category->url,
+                ])
+                ->assertDatabaseHas('categories', $data)
+        );
+    }
+
+    /**
+     * Tests the image upload functionality for a Category model through a GraphQL mutation.
+     *
+     * This test case simulates an authenticated user uploading an image for a category.
+     * It constructs a fake image file and sends a POST request to a specified GraphQL endpoint
+     * designed to handle category updates, including image uploads.
+     * The test verifies the response to ensure it matches the expected output, including
+     * checking the URL of the uploaded image as stored in the database.
+     *
+     * @return void
+     */
+    public function testUploadImage(): void
+    {
+        $category = Category::factory()->create();
+
+        $name = uniqid() . '.jpg';
+        $expected_file_url = '/images/categories/' . $category->id . '/' . $name;
+        $r = $this
+            ->actingAs($this->actor)
+            ->post(route('graphql.category'), [
+                'operations' => json_encode([
+                    'query' => 'mutation UpdateCategory($id: Int!, $file: Upload!) {update(id: $id, img_url: $file) {id img_url}}',
+                    'variables' => [
+                        'id' => $category->id,
+                        'file' => null // The actual file will be mapped in the 'map' section
+                    ],
+                ]),
+                'map' => json_encode([
+                    '0' => ['variables.file']
+                ]),
+                '0' => UploadedFile::fake()->image($name),
+            ], [
+                'Content-Type' => 'multipart/form-data'
+            ])
+            ->assertOk()
+            ->assertJsonFragment([
+                'data' => [
+                    // The expected fields in the mutation response.
+                    'update' => [
+                        'id' => $category->id,
+                        'img_url' => [
+                            'original' => $expected_file_url,
+                            'large' => '/images/categories/' . $category->id . '/thumb_large/' . $name,
+                            'small' => '/images/categories/' . $category->id . '/thumb_small/' . $name,
+                        ]
+                    ]
+                ]
+            ]);
+
+        $this->assertDatabaseHas('categories', [
+            'id' => $category->id,
+            'img_url' => $expected_file_url
+        ]);
     }
 }

@@ -3,19 +3,22 @@
 namespace App\Http\Controllers\GraphQL\Category;
 
 use App\Models\Category;
+use App\Models\Role;
+use App\Models\User;
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
 
-class MutationStore extends Mutation
+class MutationUpdate extends Mutation
 {
     /**
      * @var array
      */
     protected $attributes = [
-        'name' => 'create'
+        'name' => 'update'
     ];
 
     /**
@@ -32,10 +35,15 @@ class MutationStore extends Mutation
     public function args(): array
     {
         return [
+            'id' => [
+                'name' => 'id',
+                'type' => Type::nonNull(Type::int()),
+                'rules' => ['required', 'integer', 'exists:categories,id']
+            ],
             'name' => [
                 'name' => 'name',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'string']
+                'type' => Type::string(),
+                'rules' => ['nullable', 'string']
             ],
             'url' => [
                 'name' => 'url',
@@ -65,7 +73,7 @@ class MutationStore extends Mutation
     }
 
     /**
-     * Store category
+     * Update category
      *
      * @param $root
      * @param array $input
@@ -73,22 +81,17 @@ class MutationStore extends Mutation
      */
     public function resolve($root, array $input): Category|Error
     {
+        // Find model
+        $category = Category::findOrFail($input['id']);
+
         DB::beginTransaction();
 
-        // Form the category url value
-        $input['url'] = generateUrl(empty($input['url']) ? $input['name'] : $input['url']);
-        // Check if a such url already exists and modify it
-        if (Category::where('url', $input['url'])->count()) {
-            $input['url'] .= '-' . uniqid();
-        }
-        // Set current category position
-        if (!isset($input['position'])) {
-            $input['position'] = Category::count();
-        }
-
         try {
-            // Create category
-            $category = Category::create($input);
+            foreach ($input as $key => $val) {
+                $category->$key = $val;
+            }
+            // Save category if it was changed
+            $category->isDirty() && $category->save();
 
             DB::commit();
         } catch (\Exception $e) {
@@ -96,6 +99,6 @@ class MutationStore extends Mutation
             return new Error($e->getMessage());
         }
 
-        return $category;
+        return Category::find($category->id);
     }
 }
