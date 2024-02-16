@@ -77,7 +77,7 @@ npm i && npm run prod
 - Categories
   - Api
     - ~~List~~
-    - Create
+    - ~~Create~~
     - Update
     - Delete
 - Page permissions middleware

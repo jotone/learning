@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Category;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Tests\ModelTestCase;
 
 class CategoriesModelTest extends ModelTestCase
@@ -15,7 +16,17 @@ class CategoriesModelTest extends ModelTestCase
 
     public function testCreate(): void
     {
+        $category = self::$class::factory()->create();
         $this->assertModelExists(self::$class::factory()->create());
+        // Test the "email_templates" table "slug" field is "unique"
+        $this->dbErrorsTest([
+            (object)[
+                'field' => 'url',
+                'value' => $category->url,
+                'error_class' => UniqueConstraintViolationException::class,
+                'error_message' => 'Integrity constraint violation'
+            ]
+        ]);
     }
 
     public function testModify(): void

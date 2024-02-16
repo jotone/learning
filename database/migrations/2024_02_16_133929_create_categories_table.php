@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('url')->index();
+            $table->string('url')->unique()->index();
             $table->string('img_url')->nullable();
             $table->text('description')->nullable();
             $table->string('learn_more_link')->nullable();

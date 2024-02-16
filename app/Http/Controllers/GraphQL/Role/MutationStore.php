@@ -63,6 +63,7 @@ class MutationStore extends RoleMutation
         DB::beginTransaction();
 
         try {
+            // Create the role
             $role = Role::create($input);
 
             $this->savePermissions($role, json_decode(base64_decode($input['permissions']), true));
