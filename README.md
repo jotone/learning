@@ -74,12 +74,7 @@ npm i && npm run prod
 - ~~Roles~~
 - ~~Users.Api~~
 - ~~Settings~~
-- Categories
-  - Api
-    - ~~List~~
-    - ~~Create~~
-    - Update
-    - Delete
+- ~~Categories.Api~~
 - Page permissions middleware
 - Courses
   - Model

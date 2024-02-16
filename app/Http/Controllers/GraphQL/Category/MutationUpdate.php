@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\GraphQL\Category;
 
 use App\Models\Category;
-use App\Models\Role;
-use App\Models\User;
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
