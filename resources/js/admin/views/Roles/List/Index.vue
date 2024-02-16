@@ -78,7 +78,8 @@
     ref="removeRoleModal"
     :listMessages="{
       bottom: ['This will delete all content irrevocably.', 'Type <b>Delete</b> to confirm.']
-    }"/>
+    }"
+  />
 </template>
 
 <script setup lang="ts">

@@ -4,7 +4,7 @@
       <div class="content-table-wrap">
         <div class="content-table-controls">
           <SearchForm
-            placeholder="Search for a Role by the name or slug…"
+            placeholder="Search for a Coach by the name or slug…"
             :search="filters?.search"
             @runSearch="runSearch"
           />
@@ -66,6 +66,14 @@
       </div>
     </div>
   </SettingsElement>
+
+  <RemovePopup
+    title="Are you sure you want to delete this Coach?"
+    ref="removeCoachModal"
+    :listMessages="{
+      bottom: ['This will delete all content irrevocably.', 'Type <b>Delete</b> to confirm.']
+    }"
+  />
 </template>
 
 <script setup lang="ts">
@@ -73,6 +81,7 @@
 import {inject, reactive, ref} from 'vue';
 // Other Libs
 import {decodeUriQuery, encodeUriQuery} from "../../../libs/RequestHelper";
+import {Notification} from "../../../libs/Notification";
 // Interfaces
 import {FiltersInterface} from "../../../../contracts/FiltersInterface";
 import {UserDataInterface} from '../../../../contracts/UserDataInterface';
@@ -80,6 +89,7 @@ import {UserDataInterface} from '../../../../contracts/UserDataInterface';
 import CoachesTableRow from './CoachesTableRow.vue';
 import SettingsElement from './SettingsElement.vue';
 import {getFilters, Pagination, PerPage, RowActions, SearchForm, TableHeadCol} from '../../../components/DataTable/index.js';
+import RemovePopup from '../../../components/Popup/RemovePopup.vue';
 
 const props = defineProps({
   roles: {
@@ -92,14 +102,14 @@ const props = defineProps({
   }
 });
 
-// Get content roles function
+// Get content function
 const requestGraphQL = inject('requestGraphQL')
 
 /*
  * Methods
  */
 /**
- * GraphQL query string to get roles list
+ * GraphQL query string to get coaches list
  * @param {FiltersInterface} filters
  * @returns {string}
  */
@@ -184,13 +194,39 @@ const rowActions = [
     name: 'Remove',
     icon: 'trash-icon',
     callback: () => {
+      const items = [{
+        text: `${selectedRow.model.first_name} ${selectedRow.model.last_name} (${selectedRow.model.email})`,
+        id: selectedRow.model.id
+      }];
 
+      removeCoachModal.value
+        .open(items)
+        .then(result => {
+          if (false !== result && typeof result === 'object') {
+            const requests = [];
+            for (let i = 0, n = result.length; i < n; i++) {
+              requests.push(requestGraphQL(
+                props.routes.user.api,
+                `mutation {destroy(id:${result[i].id}){id}}`
+              ));
+            }
+            Promise.all(requests).then(() => {
+              getList(filters)
+              if (items.length > 1) {
+                let users = items.reduce((sum, item, i) => i === 0 ? `"${item.text}"` : `"${sum}", "${item.text}"`, '')
+                Notification.warning(`Coaches ${users} were successfully removed.`);
+              } else {
+                Notification.warning(`Coach "${items[0].text}" was successfully removed.`);
+              }
+            })
+          }
+        })
     }
   }
 ]
 
 /**
- * Send request to get a role list
+ * Send request to get a coach list
  * @param {FiltersInterface} filters
  * @param {null|function} callback
  */
@@ -206,10 +242,12 @@ const getList = (filters: FiltersInterface, callback?: Function) => {
  */
 // Data-table items list
 let list = ref([]);
+// Modal for the coach remove
+const removeCoachModal = ref(null)
 // Decoded URI query
 const query = decodeUriQuery(window.location.search)
 // Page filters list
 let filters = reactive(getFilters(query))
-// Load roles
+// Load coaches
 getList(filters)
 </script>

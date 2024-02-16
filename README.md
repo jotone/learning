@@ -73,19 +73,7 @@ npm i && npm run prod
 
 - ~~Roles~~
 - ~~Users.Api~~
-- Settings
-  - Page
-    - ~~Main~~
-    - ~~Functionality~~
-    - ~~Email~~
-    - Coaches
-      - ~~List~~
-      - ~~Create~~
-      - ~~Edit~~
-      - Delete
-    - Language
-      - Api
-      - Page
+- ~~Settings~~
 - Page permissions middleware
 - Categories
   - Api
@@ -145,3 +133,7 @@ npm i && npm run prod
   - Login Page
   - Course Page
   - Custom Scripts
+- Settings
+  - Language
+    - Api
+    - Page
