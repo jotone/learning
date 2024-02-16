@@ -81,7 +81,7 @@ npm i && npm run prod
     - Coaches
       - ~~List~~
       - ~~Create~~
-      - Edit
+      - ~~Edit~~
       - Delete
     - Language
       - Api

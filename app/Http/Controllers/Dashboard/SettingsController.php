@@ -56,7 +56,7 @@ class SettingsController extends BaseDashboardController
                     'user' => [
                         'api' => route('graphql.user'),
                         'create' => route('dashboard.settings.coaches.create'),
-                        'edit' => '#:id',
+                        'edit' => route('dashboard.settings.coaches.edit', ':id')
                     ]
                 ],
                 'socials' => [

@@ -88,10 +88,10 @@
 import {inject, reactive} from 'vue';
 import {usePage} from '@inertiajs/vue3';
 // Other Libs
-import {Notification} from "../../../libs/Notification";
+import {Notification} from '../../../libs/Notification';
 // Components
-import Layout from "../../../shared/Layout.vue";
-import Notifications from "../../../components/Default/Notifications.vue";
+import Layout from '../../../shared/Layout.vue';
+import Notifications from '../../../components/Default/Notifications.vue';
 
 defineOptions({layout: Layout})
 
@@ -109,44 +109,48 @@ const page = usePage();
  */
 const submit = e => {
   // The mutation type depends on if a model exists or not
-  const mutationType = page.props.hasOwnProperty('model') ? 'update' : 'create'
+  const mutationType = page.props.hasOwnProperty('model') ? 'update' : 'create';
 
-  requestGraphQL(page.props.routes.users.api, `mutation {${mutationType} (
-    first_name:"${form.first_name}"
-    last_name:"${form.last_name}"
-    email:"${form.email}"
-    password:"${form.password}"
-    confirmation:"${form.confirmation}"
-    role_id:${page.props.role_id}
-  ) {id,first_name,last_name,email}}`).then(response => {
-    if (response.data.hasOwnProperty('data')) {
-      // Show notification
-      Notification.success(
-        page.props.hasOwnProperty('model')
-          ? `Coach "${response.data.data.update.email}" was successfully modified.`
-          : `Coach "${response.data.data.create.email}" was successfully created.`
-      )
+  let query = `first_name:"${form.first_name}",last_name:"${form.last_name}",email:"${form.email}"`;
 
-      // Reset form if created
-      if (!page.props.hasOwnProperty('model')) {
-        form.first_name = '';
-        form.last_name = '';
-        form.email = '';
-        form.password = '';
-        form.confirmation = '';
-        e.target.reset();
+  if (page.props.hasOwnProperty('model')) {
+    query += `,id:${page.props.model.id}`
+  }
+
+  if (null !== form.password && form.password.length) {
+    query += `,password:"${form.password}",confirmation:"${form.confirmation}",role_id:${page.props.role_id}`;
+  }
+
+  requestGraphQL(page.props.routes.users.api, `mutation {${mutationType} (${query}) {id,first_name,last_name,email}}`)
+    .then(response => {
+      if (response.data.hasOwnProperty('data')) {
+        // Show notification
+        Notification.success(
+          page.props.hasOwnProperty('model')
+            ? `Coach "${response.data.data.update.email}" was successfully modified.`
+            : `Coach "${response.data.data.create.email}" was successfully created.`
+        )
+
+        // Reset form if created
+        if (!page.props.hasOwnProperty('model')) {
+          form.first_name = '';
+          form.last_name = '';
+          form.email = '';
+          form.password = '';
+          form.confirmation = '';
+          e.target.reset();
+        }
       }
-    }
-  })
+    })
 }
 
 /*
  * Variables
  */
 let form = reactive({
-  first_name: null,
-  last_name: null,
-  email: null,
+  first_name: page.props?.model?.first_name,
+  last_name: page.props?.model?.last_name,
+  email: page.props?.model?.email,
   password: null,
   confirmation: null
 })
