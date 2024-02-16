@@ -38,7 +38,8 @@ class Query extends GraphQlPaginatedQuery
         'region',
         'zip',
         'phone',
-        'shirt_size'
+        'shirt_size',
+        'created_at'
     ];
 
     /**
@@ -101,10 +102,6 @@ class Query extends GraphQlPaginatedQuery
             'shirt_size' => [
                 'name' => 'status',
                 'type' => Type::string(),
-            ],
-            'time_online' => [
-                'name' => 'time_online',
-                'type' => Type::int()
             ],
             'compromised' => [
                 'name' => 'compromised',

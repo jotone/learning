@@ -74,14 +74,17 @@ npm i && npm run prod
 - ~~Roles~~
 - ~~Users.Api~~
 - ~~Settings~~
-- Page permissions middleware
 - Categories
   - Api
-    - List
+    - ~~List~~
     - Create
     - Update
     - Delete
+- Page permissions middleware
 - Courses
+  - Model
+    - Category relation
+    - User relation
   - Api
     - List
     - Create
