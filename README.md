@@ -78,11 +78,7 @@ npm i && npm run prod
     - ~~Main~~
     - ~~Functionality~~
     - ~~Email~~
-    - Coaches
-      - ~~List~~
-      - ~~Create~~
-      - ~~Edit~~
-      - Delete
+    - ~~Coaches~~
     - Language
       - Api
       - Page
