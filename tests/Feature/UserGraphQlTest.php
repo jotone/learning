@@ -13,10 +13,10 @@ class UserGraphQlTest extends GraphQlTestCase
     {
         parent::setUp();
 
-        $this->total = User::count();
         if (User::count() < 5) {
             User::factory(10)->student()->create();
         }
+        $this->total = User::count();
     }
 
     /**

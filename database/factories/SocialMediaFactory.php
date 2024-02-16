@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\SocialMedia;
+use App\Traits\FakerFactoryTrait;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 
@@ -11,17 +12,13 @@ use Illuminate\Support\Arr;
  */
 class SocialMediaFactory extends Factory
 {
+    use FakerFactoryTrait;
+
     /**
      * The name of the factory's corresponding model.
      * @var string
      */
     protected $model = SocialMedia::class;
-
-    /**
-     * Model position generator
-     * @var int
-     */
-    protected static int $position = -1;
 
     /**
      * Define the model's default state.
@@ -30,10 +27,6 @@ class SocialMediaFactory extends Factory
      */
     public function definition(): array
     {
-        if (self::$position < 0) {
-            self::$position = $this->model::count();
-        }
-
         $types = [
             'facebook' => 'https://facebook/.com',
             'instagram' => 'https://www.instagram.com',
@@ -49,7 +42,7 @@ class SocialMediaFactory extends Factory
             'caption' => ucfirst($type) . ' in ' . fake()->country,
             'link' => $types[$type],
             'icon' => $type . '-icon',
-            'position' => self::$position
+            'position' => $this->getPosition()
         ];
     }
 }

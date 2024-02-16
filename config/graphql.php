@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\GraphQL\Schemas\{RoleSchema, UserSchema};
-use App\GraphQL\Types\{RoleType, StringOrListOfStringsType, UserType};
+use App\GraphQL\Schemas\{CategorySchema, RoleSchema, UserSchema};
+use App\GraphQL\Types\{CategoryType, RoleType, StringOrListOfStringsType, UserType};
 use Rebing\GraphQL\Support\{PaginationType, SimplePaginationType, UploadType};
 use Rebing\GraphQL\Support\ExecutionMiddleware\{
     AddAuthUserContextValueMiddleware,
@@ -103,6 +103,7 @@ return [
             // An array of middlewares, overrides the global ones
             'execution_middleware' => null,
         ],
+        'category' => CategorySchema::class,
         'role' => RoleSchema::class,
         'user' => UserSchema::class
     ],
@@ -117,10 +118,9 @@ return [
     // ]
     //
     'types' => [
+        'Category' => CategoryType::class,
         'Role' => RoleType::class,
         'User' => UserType::class,
-        // ExampleType::class,
-        // ExampleRelationType::class,
         'StringOrListOfStrings' => StringOrListOfStringsType::class,
         UploadType::class,
     ],
