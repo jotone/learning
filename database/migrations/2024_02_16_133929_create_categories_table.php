@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('img_url')->nullable();
             $table->text('description')->nullable();
             $table->string('learn_more_link')->nullable();
+            $table->string('type');
             $table->unsignedInteger('position');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

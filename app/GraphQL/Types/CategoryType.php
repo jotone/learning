@@ -31,8 +31,9 @@ class CategoryType extends GraphQLType
             'description' => ['type' => Type::string()],
             'learn_more_link' => ['type' => Type::string()],
             'position' => ['type' => Type::int()],
+            'type' => ['type' => Type::string()],
             'created_at' => ['type' => Type::string()],
-            'updated_at' => ['type' => Type::string()]
+            'updated_at' => ['type' => Type::string()],
         ];
     }
 }

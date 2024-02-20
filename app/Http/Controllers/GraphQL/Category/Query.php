@@ -34,7 +34,8 @@ class Query extends GraphQlPaginatedQuery
      */
     private array $fields = [
         'name',
-        'url'
+        'url',
+        'type'
     ];
 
     public function args(): array
@@ -51,6 +52,10 @@ class Query extends GraphQlPaginatedQuery
             'url' => [
                 'name' => 'url',
                 'type' => Type::string(),
+            ],
+            'type' => [
+                'name' => 'type',
+                'type' => Type::string()
             ],
             'created_at' => [
                 'name' => 'created_at',

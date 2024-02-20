@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('url')->index();
+            $table->string('url')->unique()->index();
             $table->text('description')->nullable();
             $table->string('img_url')->nullable();
             $table->string('lang', 15)->default('en');
@@ -29,6 +29,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('optional_duration')->nullable();
             $table->string('optional_expire_page')->nullable();
 
+            $table->unsignedInteger('category_id')->nullable();
             $table->unsignedInteger('instructor_id')->nullable();
 
             $table->boolean('invitation_email')->unsigned()->default(1);

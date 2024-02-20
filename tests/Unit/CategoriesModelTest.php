@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Category;
+use App\Models\Course;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Tests\ModelTestCase;
 
@@ -14,6 +15,15 @@ class CategoriesModelTest extends ModelTestCase
         self::$class = Category::class;
     }
 
+    /**
+     * Tests the creation of a model instance and validates database constraints, particularly uniqueness.
+     *
+     * This method performs several key actions:
+     * - Test asserts that a newly created model instance exists in the database.
+     * - Validates the uniqueness constraint of the "url" field in the model's table to ensure data integrity.
+     *
+     * @return void
+     */
     public function testCreate(): void
     {
         $category = self::$class::factory()->create();
@@ -29,6 +39,14 @@ class CategoriesModelTest extends ModelTestCase
         ]);
     }
 
+    /**
+     * Tests the modification capabilities of a model.
+     *
+     * This function specifically tests updating various fields of a model to ensure
+     * that modifications are properly handled and persisted in the database.
+     *
+     * @return void
+     */
     public function testModify(): void
     {
         $this->modelModificationTest([
@@ -38,10 +56,36 @@ class CategoriesModelTest extends ModelTestCase
         ]);
     }
 
+    /**
+     * Tests the association between the Category and Course models.
+     * This method verifies that a Course can be associated with a Category through the has-many relationships.
+     *
+     * @return void
+     */
+    public function testRelatedCourses(): void
+    {
+        // Creating a new Category instance
+        $category = Category::factory()->create();
+        // Creating a new Course instance
+        $course = Course::factory()->create([
+            'category_id' => $category->id
+        ]);
+
+        $this->assertTrue(in_array($course->url, $category->courses()->pluck('url')->toArray()));
+    }
+
+    /**
+     * Tests the removal of a Category model and its effects on related data.
+     *
+     * @return void
+     */
     public function testRemove(): void
     {
-        $this->modelRemovingTest(fn($category) => $this->assertDatabaseMissing('category_relations', [
-            'category_id' => $category->id
-        ]));
+        $this->modelRemovingTest(
+            self::$class::count() ? self::$class::inRandomOrder()->first() : self::$class::factory()->create(),
+            fn($category) => $this
+                // Assert the related courses were removed
+                ->assertDatabaseMissing('courses', ['category_id' => $category->id])
+        );
     }
 }

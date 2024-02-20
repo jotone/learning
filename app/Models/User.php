@@ -152,7 +152,9 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: fn(?int $val) => ShirtSize::fromValue($val),
-            set: fn(string $size) => ShirtSize::fromName($size)
+            set: fn(string $val) => is_numeric($val) && isset(ShirtSize::forSelect()[$val])
+                ? $val
+                : ShirtSize::fromName($val)
         );
     }
 
@@ -179,7 +181,9 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: fn(?int $val) => UserStatus::fromValue($val),
-            set: fn(string $val) => UserStatus::fromName($val)
+            set: fn(string $val) => is_numeric($val) && isset(UserStatus::forSelect()[$val])
+                ? $val
+                : UserStatus::fromName($val)
         );
     }
 
@@ -239,7 +243,7 @@ class User extends Authenticatable
      */
     public function scopeStudent($query): mixed
     {
-        return $query->where('role_id', Role::where('slug', 'student')->value('id'));
+        return $query->where('role_id', Role::where('level', 255)->value('id'));
     }
 
     /**
@@ -250,7 +254,7 @@ class User extends Authenticatable
      */
     public function scopeSuperuser($query): mixed
     {
-        return $query->where('role_id', Role::where('slug', 'superuser')->value('id'));
+        return $query->where('role_id', Role::where('level', 0)->value('id'));
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use Illuminate\Database\Eloquent\Model;
+
 class ModelTestCase extends TestCase
 {
     /**
@@ -9,7 +11,7 @@ class ModelTestCase extends TestCase
      *
      * @var string
      */
-    protected static $class;
+    protected static string $class;
 
     /**
      * Default test for model updating
@@ -42,12 +44,12 @@ class ModelTestCase extends TestCase
     /**
      * Default test for model removing
      *
+     * @param Model $model
      * @param callable|null $callback
      * @return void
      */
-    protected function modelRemovingTest(?callable $callback = null): void
+    protected function modelRemovingTest(Model $model, ?callable $callback = null): void
     {
-        $model = self::$class::factory()->create();
         $model->delete();
         $this->assertModelMissing($model);
 

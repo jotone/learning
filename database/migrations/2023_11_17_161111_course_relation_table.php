@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('course_relations', function (Blueprint $table) {
+        Schema::create('course_relation', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('course_id')->index();
             $table->unsignedInteger('related_id')->index();
             $table->unsignedTinyInteger('relation_type');
         });
 
-        Schema::table('course_relations', function (Blueprint $table) {
+        Schema::table('course_relation', function (Blueprint $table) {
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->foreign('related_id')->references('id')->on('courses')->onDelete('cascade');
         });
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('course_relations');
+        Schema::dropIfExists('course_relation');
     }
 };

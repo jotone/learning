@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\GraphQL\Category;
 
+use App\Enums\CategoryType;
 use App\Models\Category;
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
 
@@ -31,6 +33,7 @@ class MutationUpdate extends Mutation
      */
     public function args(): array
     {
+        $category_enums = CategoryType::forSelect();
         return [
             'id' => [
                 'name' => 'id',
@@ -61,6 +64,14 @@ class MutationUpdate extends Mutation
                 'name' => 'learn_more_link',
                 'type' => Type::string(),
                 'rules' => ['nullable', 'string']
+            ],
+            'type' => [
+                'name' => 'type',
+                'type' => Type::string(),
+                'rules' => ['nullable', 'string', Rule::in(array_merge(
+                    array_values($category_enums),
+                    array_keys($category_enums)
+                ))]
             ],
             'position' => [
                 'name' => 'position',

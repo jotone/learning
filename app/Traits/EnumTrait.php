@@ -7,14 +7,14 @@ trait EnumTrait
     /**
      * Get enum value by its definition
      * @param string $name
-     * @return int
+     * @return mixed
      * @throws \Exception
      */
-    public static function fromName(string $name): int
+    public static function fromName(string $name): mixed
     {
         foreach (self::cases() as $case) {
             if ($case->name === $name) {
-                return (int)$case->value;
+                return is_numeric($case->value) ? (int)$case->value : $case->value;
             }
         }
         throw new \Exception("Not a valid enum name");
@@ -22,11 +22,11 @@ trait EnumTrait
 
     /**
      * Get enum name by its value
-     * @param null|int $val
+     * @param mixed $val
      * @return null|string
      * @throws \Exception
      */
-    public static function fromValue(?int $val): ?string
+    public static function fromValue(mixed $val): ?string
     {
         foreach (self::cases() as $case) {
             if ($case->value === $val . '') {
