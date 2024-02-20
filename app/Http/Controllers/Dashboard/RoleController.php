@@ -41,8 +41,9 @@ class RoleController extends BaseDashboardController
     {
         try {
             $permissions = [
+                'api' => $this->controllerList('Http/Controllers/Api/'),
                 'graphql' => $this->graphQlList(),
-                'dashboard' => $this->dashboardList()
+                'dashboard' => $this->controllerList('Http/Controllers/Dashboard/')
             ];
         } catch (\ReflectionException $e) {
             abort(500, $e->getMessage());
@@ -77,8 +78,9 @@ class RoleController extends BaseDashboardController
     {
         try {
             $permissions = [
+                'api' => $this->controllerList('Http/Controllers/Api/'),
                 'graphql' => $this->graphQlList(),
-                'dashboard' => $this->dashboardList()
+                'dashboard' => $this->controllerList('Http/Controllers/Dashboard/')
             ];
         } catch (\ReflectionException $e) {
             abort(500, $e->getMessage());
@@ -128,15 +130,16 @@ class RoleController extends BaseDashboardController
 
     /**
      * Get a list of permissions for Dashboard controllers
+     * @param string $folder
      * @return array
      * @throws \ReflectionException
      */
-    protected function dashboardList(): array
+    protected function controllerList(string $folder): array
     {
         $permissions = [];
-        foreach (glob(app_path('Http/Controllers/Dashboard/') . '*.php') as $file) {
+        foreach (glob(app_path($folder) . '*.php') as $file) {
             $controller = pathinfo($file, PATHINFO_FILENAME);
-            $class = 'App\Http\Controllers\Dashboard\\' . $controller;
+            $class = 'App\\' . preg_replace('/\//', '\\', $folder) . $controller;
             $methods = [];
             foreach ((new \ReflectionClass($class))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
                 if ($method->class == $class && $method->name !== '__construct') {

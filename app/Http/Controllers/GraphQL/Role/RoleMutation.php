@@ -24,23 +24,16 @@ abstract class RoleMutation extends Mutation
      *
      * @param Role $role
      * @param array $permissions
-     * @return void
+     * @return array
      */
-    protected function savePermissions(Role $role, array $permissions): void
+    protected function savePermissions(Role $role, array $permissions): array
     {
+        $result = [];
         if (!empty($permissions)) {
-            // Loop through the provided permissions
-            foreach ($permissions as $controller => $controller_methods) {
-                $methods = [];
-                // Loop through the controller methods
-                foreach ($controller_methods as $method => $allowance) {
-                    if (toBool($allowance)) {
-                        $methods[] = $method;
-                    }
-                }
+            foreach ($permissions as $controller => $methods) {
                 // If there are permitted methods for this controller, create a permission
                 if (!empty($methods)) {
-                    Permission::create([
+                    $result[] = Permission::create([
                         'role_id' => $role->id,
                         'controller' => $controller,
                         'allowed_methods' => $methods
@@ -48,6 +41,8 @@ abstract class RoleMutation extends Mutation
                 }
             }
         }
+
+        return $result;
     }
 
     /**

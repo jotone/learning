@@ -78,6 +78,15 @@
               @updateForm="updateForm"
             />
           </template>
+          <template v-for="(methods, controller) in $attrs.permissions.api">
+            <TableRow
+              :controller="controller"
+              :methods="methods"
+              :list="form.api"
+              namespace="Api"
+              @updateForm="updateForm"
+            />
+          </template>
           <template v-for="(methods, controller) in $attrs.permissions.dashboard">
             <TableRow
               :controller="controller"
@@ -96,14 +105,14 @@
 
 <script setup lang="ts">
 // Vue libs
-import {inject, reactive} from "vue";
-import {usePage} from "@inertiajs/vue3";
+import {inject, reactive} from 'vue';
+import {usePage} from '@inertiajs/vue3';
 // Other Libs
-import {Notification} from "../../../libs/Notification";
+import {Notification} from '../../../libs/Notification';
 // Components
-import Layout from "../../../shared/Layout.vue";
-import TableRow from "./TableRow.vue";
-import Notifications from "../../../components/Default/Notifications.vue";
+import Layout from '../../../shared/Layout.vue';
+import TableRow from './TableRow.vue';
+import Notifications from '../../../components/Default/Notifications.vue';
 
 defineOptions({layout: Layout})
 
@@ -180,22 +189,33 @@ const submit = (e: SubmitEvent) => {
     query = `id:${page.props.model.id},${query}`;
   }
 
-  let data = {
-    permissions: {}
-  }
+  let permissions = {}
   for (let field in form) {
     if (field === 'slug' && form.slug.length) {
       query = `slug:"${form.slug}",${query}`
-    } else if (field === 'dashboard' || field === 'graphql') {
+    } else if (['api', 'dashboard', 'graphql'].indexOf(field) >= 0) {
       for (let controller in form[field]) {
-        data.permissions[field === 'dashboard'
-          ? 'App\\Http\\Controllers\\Dashboard\\'
-          : 'App\\GraphQL\\Schemas\\' + controller] = form[field][controller];
+        for (let method in form[field][controller]) {
+          if (form[field][controller][method]) {
+            let path = (
+              field === 'graphql'
+                ? 'App\\GraphQL\\Schemas\\'
+                : 'App\\Http\\Controllers\\' + (field === 'api' ? 'Api\\' : 'Dashboard\\')
+            ) + controller;
+
+            if (!permissions.hasOwnProperty(path)) {
+              permissions[path] = []
+            }
+
+            permissions[path].push(method)
+          }
+        }
       }
     }
   }
+
   // Set permissions to the query
-  query += `,permissions:"${btoa(JSON.stringify(data.permissions))}"`
+  query += `,permissions:"${btoa(JSON.stringify(permissions))}"`
 
   // Send request
   requestGraphQL(page.props.routes.roles.api, `mutation {${mutationType} (${query}) {id, name, slug, level}}`)

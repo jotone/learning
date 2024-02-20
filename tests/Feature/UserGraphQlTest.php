@@ -24,6 +24,8 @@ class UserGraphQlTest extends GraphQlTestCase
      *
      * This method uses the runQueryTest function to send a GraphQL query for users and performs
      * an assertion on the response. The assertion is specified in the callback function.
+     *
+     * @return void
      */
     public function testQuery(): void
     {
@@ -42,6 +44,8 @@ class UserGraphQlTest extends GraphQlTestCase
      *
      * This method verifies that the GraphQL endpoint correctly handles pagination for user queries.
      * It checks the response's pagination properties and data consistency using a custom assertion in the callback function.
+     *
+     * @return void
      */
     public function testPagination(): void
     {
@@ -61,6 +65,8 @@ class UserGraphQlTest extends GraphQlTestCase
      * This method tests the GraphQL mutation for creating a new user It validates that the mutation
      * correctly stores the user in the database and that the response is as expected. A custom callback
      * is used to perform additional database assertions.
+     *
+     * @return void
      */
     public function testStore(): void
     {
@@ -109,12 +115,13 @@ class UserGraphQlTest extends GraphQlTestCase
      *
      * Each test case is designed to trigger specific security rules and checks if the API
      * responds with the appropriate error messages when these rules are violated.
+     *
+     * @return void
      */
     public function testStoreSecurity(): void
     {
         $user = User::factory()->make();
         $roles = Role::whereIn('slug', ['student', 'superuser'])->pluck('id', 'slug');
-        $actor = User::factory()->create(['role_id' => $roles['student']]);
         Settings::where('key', 'students_max_count')->update(['value' => 1]);
 
         $this->runTestCases(route('graphql.user'), [
@@ -127,14 +134,18 @@ class UserGraphQlTest extends GraphQlTestCase
                     $user->last_name,
                     $user->email
                 ),
-                'callback' => function ($content) {
+                'callback' => function ($response) {
+                    // Assert that the response has an 'errors' JSON structure.
+                    $response->assertJsonStructure(['errors']);
+                    // Decode the JSON response content and pass it to the callback function provided in the test case.
+                    $content = json_decode($response->content(), 1);
                     $this->assertTrue($content['errors'][0]['message'] === sprintf(UserMutation::STUDENT_LIMIT_MESSAGE, 1));
                     Settings::where('key', 'students_max_count')->update(['value' => -1]);
                 }
             ],
             // Attempt to create a superuser by the student role
             [
-                'actor' => $actor,
+                'actor' => User::factory()->create(['role_id' => $roles['student']]),
                 'query' => sprintf(
                     'mutation {create (first_name: "%s", last_name: "%s", email: "%s", role_id: %s) {id first_name last_name email role_id}}',
                     $user->first_name,
@@ -142,7 +153,13 @@ class UserGraphQlTest extends GraphQlTestCase
                     $user->email,
                     $roles['superuser']
                 ),
-                'callback' => fn($content) => $this->assertTrue($content['errors'][0]['message'] === UserMutation::ACCESS_FORBIDDEN_MESSAGE)
+                'callback' => function ($response) {
+                    // Assert that the response has an 'errors' JSON structure.
+                    $response->assertJsonStructure(['errors']);
+                    // Assert that the response has an error message.
+                    $content = json_decode($response->content(), 1);
+                    $this->assertTrue($content['errors'][0]['message'] === UserMutation::ACCESS_FORBIDDEN_MESSAGE);
+                }
             ]
         ]);
     }
@@ -153,6 +170,8 @@ class UserGraphQlTest extends GraphQlTestCase
      * This method verifies the functionality of the GraphQL API for updating an existing user.
      * It ensures that the mutation updates the user with new data correctly and checks both the
      * response and the database to confirm the update.
+     *
+     * @return void
      */
     public function testUpdate(): void
     {
@@ -206,6 +225,8 @@ class UserGraphQlTest extends GraphQlTestCase
      *
      * The test simulates a real user updating their image and verifies both the server's response
      * and the database update, ensuring the upload process works as intended.
+     *
+     * @return void
      */
     public function testUploadImage(): void
     {
@@ -263,6 +284,8 @@ class UserGraphQlTest extends GraphQlTestCase
      *
      * The test simulates a real user updating their signature image and verifies both the server's response
      * and the database update, ensuring the upload process functions correctly.
+     *
+     * @return void
      */
     public function testUploadSignature(): void
     {
@@ -314,6 +337,8 @@ class UserGraphQlTest extends GraphQlTestCase
      *
      * Each test case is designed to assess specific security rules and validate if the API
      * responds with appropriate error messages or actions when these rules are either followed or violated.
+     *
+     * @return void
      */
     public function testUpdateSecurity(): void
     {
@@ -323,30 +348,6 @@ class UserGraphQlTest extends GraphQlTestCase
 
         $new_data = User::factory()->create();
 
-        // Test user can update himself
-        $this->actingAs($user)
-            ->post(route('graphql.user'), [
-                'query' => sprintf(
-                    'mutation {update (id: %s, first_name: "%s", last_name: "%s", city: "%s") {id first_name last_name email city}}',
-                    $user->id,
-                    $new_data->first_name,
-                    $new_data->last_name,
-                    $new_data->city
-                )
-            ])->assertOk()
-            ->assertJsonMissing(['errors'])
-            ->assertJsonFragment([
-                'data' => [
-                    'update' => [
-                        'id' => $user->id,
-                        'first_name' => $new_data->first_name,
-                        'last_name' => $new_data->last_name,
-                        'email' => $user->email,
-                        'city' => $new_data->city
-                    ]
-                ]
-            ]);
-
         $admin = User::select('users.id')
             ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
             ->where('roles.level', '<', 128)
@@ -354,7 +355,31 @@ class UserGraphQlTest extends GraphQlTestCase
             ->first();
 
         $this->runTestCases(route('graphql.user'), [
-            // Test user cannot update another user
+            // Test the user can update himself
+            [
+                'actor' => $user,
+                'query' => sprintf(
+                    'mutation {update (id: %s, first_name: "%s", last_name: "%s", city: "%s") {id first_name last_name email city}}',
+                    $user->id,
+                    $new_data->first_name,
+                    $new_data->last_name,
+                    $new_data->city
+                ),
+                'callback' => fn($response) => $response
+                    ->assertJsonMissing(['errors'])
+                    ->assertJsonFragment([
+                        'data' => [
+                            'update' => [
+                                'id' => $user->id,
+                                'first_name' => $new_data->first_name,
+                                'last_name' => $new_data->last_name,
+                                'email' => $user->email,
+                                'city' => $new_data->city
+                            ]
+                        ]
+                    ])
+            ],
+            // Test the user cannot update a user with a higher role,
             [
                 'actor' => $user,
                 'query' => sprintf(
@@ -362,7 +387,13 @@ class UserGraphQlTest extends GraphQlTestCase
                     $admin->id,
                     $new_data->first_name
                 ),
-                'callback' => fn($content) => $this->assertTrue($content['errors'][0]['message'] === UserMutation::ACCESS_FORBIDDEN_MESSAGE)
+                'callback' => function ($response) {
+                    // Assert that the response has an 'errors' JSON structure.
+                    $response->assertJsonStructure(['errors']);
+                    // Assert that the response has an error message.
+                    $content = json_decode($response->content(), 1);
+                    $this->assertTrue($content['errors'][0]['message'] === UserMutation::ACCESS_FORBIDDEN_MESSAGE);
+                }
             ],
             // Test user cannot set another role by himself
             [
@@ -372,7 +403,13 @@ class UserGraphQlTest extends GraphQlTestCase
                     $user->id,
                     Role::where('level', '<', 255)->inRandomOrder()->value('id')
                 ),
-                'callback' => fn($content) => $this->assertTrue($content['errors'][0]['message'] === UserMutation::ACCESS_FORBIDDEN_MESSAGE)
+                'callback' => function ($response) {
+                    // Assert that the response has an 'errors' JSON structure.
+                    $response->assertJsonStructure(['errors']);
+                    // Assert that the response has an error message.
+                    $content = json_decode($response->content(), 1);
+                    $this->assertTrue($content['errors'][0]['message'] === UserMutation::ACCESS_FORBIDDEN_MESSAGE);
+                }
             ]
         ]);
     }
@@ -384,6 +421,8 @@ class UserGraphQlTest extends GraphQlTestCase
      * It checks that the user is properly removed from the database and that the API response
      * confirms the successful deletion. The method sends a delete request for a specific user and
      * then uses database assertions to ensure that the user no longer exists in the database.
+     *
+     * @return void
      */
     public function testDestroy(): void
     {
@@ -400,8 +439,10 @@ class UserGraphQlTest extends GraphQlTestCase
      *
      * Each scenario sends a mutation request to delete a user and asserts that an 'access forbidden' error is returned,
      * indicating proper enforcement of security rules.
+     *
+     * @return void
      */
-    public function testDestroySecurity():void
+    public function testDestroySecurity(): void
     {
         $user = User::factory()->create([
             'role_id' => Role::where('level', 255)->value('id')
@@ -418,13 +459,15 @@ class UserGraphQlTest extends GraphQlTestCase
             [
                 'actor' => $user,
                 'query' => 'mutation {destroy (id: ' . $admin->id . ') {id}}',
-                'callback' => fn($content) => $this->assertTrue($content['errors'][0]['message'] === UserMutation::ACCESS_FORBIDDEN_MESSAGE)
+                'status' => 403,
+                'callback' => fn($response) => $this->assertTrue($response->content() === '"Forbidden operation"')
             ],
             // Test user cannot remove himself
             [
                 'actor' => $user,
                 'query' => 'mutation {destroy (id: ' . $user->id . ') {id}}',
-                'callback' => fn($content) => $this->assertTrue($content['errors'][0]['message'] === UserMutation::ACCESS_FORBIDDEN_MESSAGE)
+                'status' => 403,
+                'callback' => fn($response) => $this->assertTrue($response->content() === '"Forbidden operation"')
             ]
         ]);
     }
