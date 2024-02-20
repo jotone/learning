@@ -77,7 +77,7 @@ class Category extends Model
             // Remove category images
             FileHelper::recursiveRemove(public_path('images/categories/' . $model->id));
             // Detach category courses
-            $model->courses()->each(fn($ent) => $ent->category_id = null);
+            $model->courses()->each(fn($ent) => $ent->update(['category_id' => null]));
         });
     }
 }
