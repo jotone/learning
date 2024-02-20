@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\CourseTracking;
 use App\Models\Course;
 use App\Traits\FakerFactoryTrait;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -38,9 +39,9 @@ class CourseFactory extends Factory
             'description' => fake()->text(mt_rand(40, 150)),
             'img_url' => $this->image(),
             'invitation_email' => 0,
-            'position' => $this->model::query()->count(),
+            'position' => $this->getPosition(),
             'status' => 'active',
-            'tracking_type' => 1,
+            'tracking_type' => 'enable_for_every_submission',
             'tracking_status' => mt_rand(0, 12),
             'instructor_id' => $admin->id ?? null,
             'terms_conditions_enable' => 1,

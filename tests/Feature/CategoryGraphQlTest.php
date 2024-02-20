@@ -3,6 +3,7 @@
 namespace Feature;
 
 use App\Models\Category;
+use App\Models\Course;
 use Illuminate\Http\UploadedFile;
 use Tests\GraphQlTestCase;
 
@@ -72,17 +73,18 @@ class CategoryGraphQlTest extends GraphQlTestCase
         $this->runMutationTest(
             type: 'create',
             route: route('graphql.category'),
-            query: 'name: "%s", url: "%s", description: "%s"',
+            query: 'name: "%s", url: "%s", description: "%s", type: "course"',
             params: [
                 $category->name,
                 $category->url,
-                $category->description,
+                $category->description
             ],
-            response_fields: 'id name url description',
+            response_fields: 'id name url description type',
             callback: fn() => $this->assertDatabaseHas('categories', [
                 'name' => $category->name,
                 'url' => generateUrl($category->url),
                 'description' => $category->description,
+                'type' => Course::class
             ])
         );
     }

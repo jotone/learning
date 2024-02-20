@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Classes\FileHelper;
+use App\Enums\CategoryType;
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 
 class Category extends Model
@@ -25,7 +26,8 @@ class Category extends Model
         'img_url',
         'description',
         'learn_more_link',
-        'position'
+        'position',
+        'type'
     ];
 
     /**
@@ -44,13 +46,27 @@ class Category extends Model
     }
 
     /**
-     * Get category courses
+     * Get or set the category type
      *
-     * @return MorphToMany
+     * @return Attribute
      */
-    public function courses(): MorphToMany
+    protected function type(): Attribute
     {
-        return $this->morphedByMany(Course::class, 'entity', 'category_relations');
+        return Attribute::make(
+            set: fn(string $val) => str_starts_with($val, 'App\\Models') && isset(CategoryType::forSelect()[$val])
+                ? $val
+                : CategoryType::fromName($val)
+        );
+    }
+
+    /**
+     * Get related courses
+     *
+     * @return HasMany
+     */
+    public function courses(): HasMany
+    {
+        return $this->hasMany(Course::class, 'category_id', 'id');
     }
 
     protected static function boot(): void
@@ -61,7 +77,7 @@ class Category extends Model
             // Remove category images
             FileHelper::recursiveRemove(public_path('images/categories/' . $model->id));
             // Detach category courses
-            $model->courses()->detach();
+            $model->courses()->each(fn($ent) => $ent->category_id = null);
         });
     }
 }

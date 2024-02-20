@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
+use App\Models\{Category, Course};
 use App\Traits\FakerFactoryTrait;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -34,7 +34,8 @@ class CategoryFactory extends Factory
             'img_url' => $this->image(5),
             'description' => fake()->text(mt_rand(40, 150)),
             'learn_more_link' => mt_rand(0, 1) ? fake()->url : null,
-            'position' => $this->getPosition()
+            'position' => $this->getPosition(),
+            'type' => Course::class
         ];
     }
 }

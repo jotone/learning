@@ -75,11 +75,9 @@ npm i && npm run prod
 - ~~Users.Api~~
 - ~~Settings~~
 - ~~Categories.Api~~
-- Page permissions middleware
+- ~~Page permissions middleware~~
 - Courses
-  - Model
-    - Category relation
-    - User relation
+  - ~~Model~~
   - Api
     - List
     - Create

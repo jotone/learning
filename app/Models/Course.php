@@ -8,7 +8,7 @@ use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\{BelongsToMany, HasMany};
+use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasMany};
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
@@ -108,18 +108,37 @@ class Course extends Model
             get: function ($val) {
                 dd('Course Status', $val);
             },
-            set: fn(string $val) => CourseStatus::fromName($val)
+            set: fn(string $val) => is_numeric($val) && isset(CourseStatus::forSelect()[$val])
+                ? $val
+                : CourseStatus::fromName($val)
         );
     }
 
+    /**
+     * Get or set the course tracking type
+     *
+     * @return Attribute
+     */
     protected function trackingType(): Attribute
     {
         return Attribute::make(
             get: function ($val) {
                 dd('Course Status', $val);
             },
-            set: fn(string $val) => CourseTracking::fromName($val)
+            set: fn(string $val) => is_numeric($val) && isset(CourseTracking::forSelect()[$val])
+                ? $val
+                : CourseTracking::fromName($val)
         );
+    }
+
+    /**
+     * Related category
+     *
+     * @return BelongsTo
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     /**
@@ -129,7 +148,7 @@ class Course extends Model
      */
     public function courseRelation(): BelongsToMany
     {
-        return $this->belongsToMany(self::class, 'course_relations', 'course_id', 'related_id')->withPivot([
+        return $this->belongsToMany(self::class, 'course_relation', 'course_id', 'related_id')->withPivot([
             'relation_type'
         ]);
     }
@@ -175,7 +194,7 @@ class Course extends Model
             // Remove related products
             $model->products()->each(fn($q) => $q->delete());
             // Remove course relations
-            DB::table('course_relations')
+            DB::table('course_relation')
                 ->where('course_id', $model->id)
                 ->orWhere('related_id', $model->id)
                 ->delete();
