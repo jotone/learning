@@ -2,22 +2,56 @@
   "student": {
     "name": "Student",
     "level": 255,
-    "permissions": {}
+    "permissions": {
+      "App\\GraphQL\\Schemas\\UserSchema": ["query", "create", "update"]
+    }
   },
   "coach": {
     "name": "Coach",
     "level": 127,
     "permissions": {
+      "App\\GraphQL\\Schemas\\CategorySchema": ["query", "create", "update", "destroy"],
+      "App\\GraphQL\\Schemas\\UserSchema": ["query", "create", "update", "destroy"],
+      "App\\Http\\Controllers\\Api\\SettingsController": ["smtp", "update"],
+      "App\\Http\\Controllers\\Api\\SocialMediaController": ["update"],
+      "App\\Http\\Controllers\\Dashboard\\AppearanceController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\CommentController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\CommunityController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\CourseController": ["index"],
       "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"],
-      "App\\Http\\Controllers\\Dashboard\\RoleController": ["index"]
+      "App\\Http\\Controllers\\Dashboard\\EventsController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\GetStartedController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\HelpCenterController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\ReferralController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\SettingsController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\TestimonialController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\UserController": ["index"]
     }
   },
   "admin": {
     "name": "Administrator",
     "level": 63,
     "permissions": {
+      "App\\GraphQL\\Schemas\\CategorySchema": ["query", "create", "update", "destroy"],
+      "App\\GraphQL\\Schemas\\RoleSchema": ["query", "create", "update", "destroy"],
+      "App\\GraphQL\\Schemas\\UserSchema": ["query", "create", "update", "destroy"],
+      "App\\Http\\Controllers\\Api\\EmailTemplateController": ["store", "update", "destroy"],
+      "App\\Http\\Controllers\\Api\\SettingsController": ["smtp", "update"],
+      "App\\Http\\Controllers\\Api\\SocialMediaController": ["update"],
+      "App\\Http\\Controllers\\Dashboard\\AppearanceController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\CoachController": ["create", "edit"],
+      "App\\Http\\Controllers\\Dashboard\\CommentController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\CommunityController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\CourseController": ["index"],
       "App\\Http\\Controllers\\Dashboard\\DashboardController": ["index"],
-      "App\\Http\\Controllers\\Dashboard\\RoleController": ["index"]
+      "App\\Http\\Controllers\\Dashboard\\EmailTemplateController": ["create", "edit"],
+      "App\\Http\\Controllers\\Dashboard\\EventsController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\GetStartedController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\HelpCenterController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\ReferralController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\SettingsController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\TestimonialController": ["index"],
+      "App\\Http\\Controllers\\Dashboard\\UserController": ["index"]
     }
   },
   "superuser": {

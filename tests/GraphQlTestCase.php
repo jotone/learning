@@ -217,16 +217,15 @@ class GraphQlTestCase extends TestCase
             // Send a POST request as the specified 'actor' to the given route with the 'query'.
             $response = $this->actingAs($case['actor'])
                 ->post($route, ['query' => $case['query']])
-                // Assert that the response status is 200 OK.
-                ->assertOk()
-                // Assert that the response has an 'errors' JSON structure.
-                ->assertJsonStructure(['errors']);
+                // Assert the response status.
+                ->assertStatus($case['status'] ?? 200);
 
             // Decode the JSON response content and pass it to the callback function provided in the test case.
             if (isset($case['callback']) && is_callable($case['callback'])) {
-                $case['callback'](json_decode($response->content(), 1));
+                $case['callback']($response);
             }
         }
+
     }
 
     /**

@@ -18,7 +18,7 @@ class CategorySchema implements ConfigConvertible
                 'update' => MutationUpdate::class,
                 'destroy' => MutationDestroy::class
             ],
-            'middleware' => ['auth:sanctum'],
+            'middleware' => ['auth:sanctum', 'admin'],
         ];
     }
 }

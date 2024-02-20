@@ -24,6 +24,8 @@ class CategoryGraphQlTest extends GraphQlTestCase
      * This method uses the runQueryTest function to send a GraphQL query for categories
      * and performs an assertion on the response.
      * The assertion is specified in the callback function.
+     *
+     * @return void
      */
     public function testQuery(): void
     {
@@ -38,10 +40,11 @@ class CategoryGraphQlTest extends GraphQlTestCase
     /**
      * Test the pagination feature of the 'categories' GraphQL query.
      *
-     * This method verifies that the GraphQL endpoint correctly handles pagination for
-     * category queries.
+     * This method verifies that the GraphQL endpoint correctly handles pagination for category queries.
      * It checks the response's pagination properties and data consistency using a custom
      * assertion in the callback function.
+     *
+     * @return void
      */
     public function testPagination(): void
     {
@@ -60,6 +63,8 @@ class CategoryGraphQlTest extends GraphQlTestCase
      * It validates that the mutation correctly stores the category in the database and
      * that the response is as expected.
      * A custom callback is used to perform additional database assertions.
+     *
+     * @return void
      */
     public function testStore(): void
     {
@@ -138,7 +143,7 @@ class CategoryGraphQlTest extends GraphQlTestCase
 
         $name = uniqid() . '.jpg';
         $expected_file_url = '/images/categories/' . $category->id . '/' . $name;
-        $r = $this
+        $this
             ->actingAs($this->actor)
             ->post(route('graphql.category'), [
                 'operations' => json_encode([
@@ -183,6 +188,8 @@ class CategoryGraphQlTest extends GraphQlTestCase
      * It checks that the category is properly removed from the database and that the API response
      * confirms the successful deletion. The method sends a delete request for a specific category and
      * then uses database assertions to ensure that the category no longer exists in the database.
+     *
+     * @return void
      */
     public function testDestroy(): void
     {

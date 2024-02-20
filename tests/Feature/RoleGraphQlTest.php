@@ -25,6 +25,8 @@ class RoleGraphQlTest extends GraphQlTestCase
      *
      * This method uses the runQueryTest function to send a GraphQL query for roles and performs
      * an assertion on the response. The assertion is specified in the callback function.
+     *
+     * @return void
      */
     public function testQuery(): void
     {
@@ -41,6 +43,8 @@ class RoleGraphQlTest extends GraphQlTestCase
      *
      * This method verifies that the GraphQL endpoint correctly handles pagination for role queries.
      * It checks the response's pagination properties and data consistency using a custom assertion in the callback function.
+     *
+     * @return void
      */
     public function testPagination(): void
     {
@@ -58,6 +62,8 @@ class RoleGraphQlTest extends GraphQlTestCase
      * This method tests the GraphQL mutation for creating a new role. It validates that the mutation
      * correctly stores the role in the database and that the response is as expected. A custom callback
      * is used to perform additional database assertions.
+     *
+     * @return void
      */
     public function testStore(): void
     {
@@ -69,7 +75,7 @@ class RoleGraphQlTest extends GraphQlTestCase
             params: [
                 $role->name,
                 $role->level,
-                base64_encode(json_encode([self::CONTROLLER => ['index' => 1]]))
+                base64_encode(json_encode([self::CONTROLLER => ['index']]))
             ],
             response_fields: 'id name slug level',
             callback: fn() => $this->assertDatabaseHas('roles', [
@@ -86,26 +92,18 @@ class RoleGraphQlTest extends GraphQlTestCase
      * This method checks whether the GraphQL API correctly restricts access to the role creation
      * mutation based on the user's role. It ensures that a user with insufficient permissions
      * cannot create a new role.
+     *
+     * @return void
      */
     public function testStoreSecurity(): void
     {
         $role = Role::factory()->make();
 
-        $low_level_actor = User::factory()->create([
-            'role_id' => Role::orderBy('level', 'desc')->value('id')
-        ]);
-
-        $this->runTestCases(route('graphql.role'), [
-            'actor' => $low_level_actor,
-            'query' => sprintf(
-                'mutation {create (name: "%s", level: 0, permissions: "%s") {id, name, slug, level}}',
-                $role->name,
-                base64_encode(json_encode([
-                    self::CONTROLLER => ['index' => 1]
-                ]))
-            ),
-            'callback' => fn($content) => $this->assertTrue($content['errors'][0]['message'] === RoleMutation::ACCESS_FORBIDDEN_MESSAGE)
-        ]);
+        $this->testMutationSecurity(sprintf(
+            'mutation {create (name: "%s", level: 0, permissions: "%s") {id, name, slug, level}}',
+            $role->name,
+            base64_encode(json_encode([self::CONTROLLER => ['index']]))
+        ));
     }
 
     /**
@@ -114,6 +112,8 @@ class RoleGraphQlTest extends GraphQlTestCase
      * This method verifies the functionality of the GraphQL API for updating an existing role.
      * It ensures that the mutation updates the role with new data correctly and checks both the
      * response and the database to confirm the update.
+     *
+     * @return void
      */
     public function testUpdate(): void
     {
@@ -152,20 +152,13 @@ class RoleGraphQlTest extends GraphQlTestCase
      * mutation based on the user's role. It ensures that a user with insufficient permissions
      * cannot update an existing role, and verifies that the appropriate access control measures
      * are in place by expecting a specific 'access forbidden' error message.
+     *
+     * @return void
      */
     public function testUpdateSecurity(): void
     {
         $role = Role::factory()->create();
-
-        $low_level_actor = User::factory()->create([
-            'role_id' => Role::orderBy('level', 'desc')->value('id')
-        ]);
-
-        $this->runTestCases(route('graphql.role'), [
-            'actor' => $low_level_actor,
-            'query' => 'mutation {update (id: ' . $role->id . ', level: 0) {id, level}}',
-            'callback' => fn($content) => $this->assertTrue($content['errors'][0]['message'] === RoleMutation::ACCESS_FORBIDDEN_MESSAGE)
-        ]);
+        $this->testMutationSecurity('mutation {update (id: ' . $role->id . ', level: 0) {id, level}}');
     }
 
     /**
@@ -175,6 +168,8 @@ class RoleGraphQlTest extends GraphQlTestCase
      * It checks that the role is properly removed from the database and that the API response
      * confirms the successful deletion. The method sends a delete request for a specific role and
      * then uses database assertions to ensure that the role no longer exists in the database.
+     *
+     * @return void
      */
     public function testDestroy(): void
     {
@@ -188,19 +183,32 @@ class RoleGraphQlTest extends GraphQlTestCase
      * mutation based on the user's role. It ensures that a user with insufficient permissions
      * cannot delete an existing role. The test verifies this by expecting an 'access forbidden'
      * error message in the response when a low-level user attempts to perform the deletion.
+     *
+     * @return void
      */
     public function testDestroySecurity(): void
     {
         $role = Role::factory()->create();
+        $this->testMutationSecurity('mutation {destroy (id: ' . $role->id . ') {id}}');
+    }
 
+    /**
+     * Run a default mutation query by the user with a low level role
+     *
+     * @param string $query
+     * @return void
+     */
+    protected function testMutationSecurity(string $query): void
+    {
         $low_level_actor = User::factory()->create([
             'role_id' => Role::orderBy('level', 'desc')->value('id')
         ]);
 
         $this->runTestCases(route('graphql.role'), [
             'actor' => $low_level_actor,
-            'query' => 'mutation {destroy (id: ' . $role->id . ') {id}}',
-            'callback' => fn($content) => $this->assertTrue($content['errors'][0]['message'] === RoleMutation::ACCESS_FORBIDDEN_MESSAGE)
+            'query' => $query,
+            'status' => 403,
+            'callback' => fn($response) => $this->assertTrue($response->content() === '"Forbidden operation"')
         ]);
     }
 }

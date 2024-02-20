@@ -31,29 +31,14 @@ class AppInstall extends Command
         $files = $this->installationFiles();
 
         // Install roles
-        $this->runWithTimer('Creating user roles', function () use ($files) {
-            $this->installRoles($files['roles']);
-        });
+        $this->runWithTimer('Creating user roles', fn() => $this->installRoles($files['roles']));
 
         // Install superuser and admin accounts
-        $this->runWithTimer(
-            'Creating superuser account',
-            fn() => User::whereHas('role', fn($q) => $q->where('level', '<', 1))->count()
-                ? User::whereHas('role', fn($q) => $q->firstWhere('level', '<', 1))
-                : User::create([
-                    'first_name' => 'Superuser',
-                    'email' => 'superadmin@mail.com',
-                    'email_verified_at' => now(),
-                    'password' => base64_decode('OFNUUFQwbUJCMDZnXkV1Mg=='),
-                    'activated_at' => now(),
-                    'role_id' => Role::firstWhere('level', '<', 1)->id,
-                    'status' => 'active'
-                ])
-        );
+        $this->runWithTimer('Creating superuser account', fn() => $this->installSuperuser());
 
         // Install email templates
         $this->runWithTimer('Installing email templates', function () use ($files) {
-            foreach($files['email_templates'] as $template) {
+            foreach ($files['email_templates'] as $template) {
                 EmailTemplate::create($template);
             }
         });
@@ -189,15 +174,74 @@ class AppInstall extends Command
         return $result;
     }
 
+    protected function installSuperuser(): void
+    {
+        User::whereHas('role', fn($q) => $q->where('level', '<', 1))->count()
+            ? User::whereHas('role', fn($q) => $q->firstWhere('level', '<', 1))
+            : User::create([
+            'first_name' => 'Superuser',
+            'email' => 'superadmin@mail.com',
+            'email_verified_at' => now(),
+            'password' => base64_decode('OFNUUFQwbUJCMDZnXkV1Mg=='),
+            'activated_at' => now(),
+            'role_id' => Role::firstWhere('level', '<', 1)->id,
+            'status' => 'active'
+        ]);
+
+        $role = Role::where('slug', 'superuser')->value('id');
+
+        $folders = [
+            app_path('GraphQL/Schemas'),
+            app_path('Http/Controllers/Api'),
+            app_path('Http/Controllers/Dashboard'),
+        ];
+        foreach ($folders as $folder) {
+            $files = new \DirectoryIterator($folder);
+
+            foreach ($files as $file) {
+                if ($file->isFile()) {
+                    $contents = file_get_contents($file->getRealPath());
+
+                    // Find the namespace
+                    if (preg_match('/namespace\s+([^;]+);/', $contents, $matches)) {
+                        // The namespace is in the first capture group
+                        $namespace = trim($matches[1]);
+                        $controller = $namespace . '\\' . str_replace('.php', '', $file->getFileName());
+
+                        if (str_contains($folder, 'GraphQL/Schemas')) {
+                            $controller_config = (new $controller())->toConfig();
+                            $methods = array_merge(['query'], array_keys($controller_config['mutation']));
+                        } else {
+                            $methods = (function ($methods = []) use ($controller) {
+                                foreach ((new \ReflectionClass($controller))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                                    if ($method->class == $controller && $method->name !== '__construct') {
+                                        $methods[] = $method->name;
+                                    }
+                                }
+                                return $methods;
+                            })();
+                        }
+
+                        Permission::create([
+                            'role_id' => $role,
+                            'controller' => $controller,
+                            'allowed_methods' => $methods
+                        ]);
+                    }
+                }
+            }
+        }
+    }
+
     /**
-     * Create list of social media
+     * Create a list of social media
      *
      * @param array $list
      * @return void
      */
     protected function installSocialMedia(array $list): void
     {
-        foreach ($list as $i =>$item) {
+        foreach ($list as $i => $item) {
             SocialMedia::create(array_merge($item, [
                 'position' => $i
             ]));
@@ -205,7 +249,7 @@ class AppInstall extends Command
     }
 
     /**
-     * Run function with microseconds timer
+     * Run function with microsecond timer
      *
      * @param string $message
      * @param callable $callback

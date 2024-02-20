@@ -15,6 +15,8 @@ class SocialMediaApiTest extends ApiTestCase
      * for storing a new "SocialMedia" record.
      * It checks if the API correctly creates the resource and returns a 201 status code along
      * with the expected data. Finally, it verifies that the new data exists in the database.
+     *
+     * @return void
      */
     public function testStore(): void
     {
@@ -37,6 +39,8 @@ class SocialMediaApiTest extends ApiTestCase
      * The test verifies that the API responds with a 200-status code and the updated data.
      * Furthermore, it checks that the database has been updated accordingly and no longer
      * contains the old data but the new updated data instead.
+     *
+     * @return void
      */
     public function testUpdate(): void
     {
@@ -54,6 +58,8 @@ class SocialMediaApiTest extends ApiTestCase
      * This test simulates the process of reordering social media records by sending a PATCH request
      * with a new order for the records. It then verifies that the database reflects the updated order
      * for each record.
+     *
+     * @return void
      */
     public function testSort(): void
     {
@@ -85,6 +91,8 @@ class SocialMediaApiTest extends ApiTestCase
      * It verifies that the API responds with a 204 status code, indicating the
      * resource was successfully deleted.
      * Lastly, it confirms that the record is no longer present in the database.
+     *
+     * @return void
      */
     public function testDestroy(): void
     {

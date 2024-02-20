@@ -15,6 +15,8 @@ class EmailTemplateApiTest extends ApiTestCase
      * This method simulates creating a new EmailTemplate without persisting it to the database,
      * prepares the necessary data for a POST request, and then delegates to runStoreTest
      * to perform the actual test assertions and validations.
+     *
+     * @return void
      */
     public function testStore(): void
     {
@@ -35,6 +37,8 @@ class EmailTemplateApiTest extends ApiTestCase
      *
      * It creates a persisted instance of EmailTemplate, generates new data intended for update,
      * and uses the runUpdateTest method to ensure the update process behaves as expected.
+     *
+     * @return void
      */
     public function testUpdate(): void
     {
@@ -54,6 +58,8 @@ class EmailTemplateApiTest extends ApiTestCase
      * It verifies that the API responds with a 204 status code, indicating the
      * resource was successfully deleted.
      * Lastly, it confirms that the record is no longer present in the database.
+     *
+     * @return void
      */
     public function testDestroy(): void
     {
