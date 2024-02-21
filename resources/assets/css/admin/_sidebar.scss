@@ -1,0 +1,39 @@
+.sidebar-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #f2f7ff;
+  border-bottom-left-radius: 30px;
+  border-top-left-radius: 30px;
+  height: 100vh;
+  width: 400px;
+  scrollbar-width: none;
+  overflow: auto;
+
+  .sidebar-caption {
+    border-bottom: 1px solid #ccdeff;
+    color: #00145e;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 40px;
+    padding: 45px 45px 30px 45px;
+    text-align: center;
+  }
+
+  .sidebar-close {
+    position: absolute;
+    top: 48px;
+    right: 15px;
+    cursor: pointer;
+
+    .icon {
+      background-color: #00145e;
+      height: 32px;
+      width: 32px;
+    }
+  }
+
+  .sidebar-body {
+    padding: 45px;
+  }
+}

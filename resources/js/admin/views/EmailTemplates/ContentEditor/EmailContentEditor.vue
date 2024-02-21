@@ -27,18 +27,12 @@
       </tbody>
     </table>
   </div>
-
-  <Teleport to="body">
-    <EditRowPopup ref="editRowModal"/>
-  </Teleport>
 </template>
 
 <script setup lang="ts">
-// Vue libs
-import {ref} from "vue";
-// Components
-import EditRowPopup from "./Modals/EditRowPopup.vue";
+const emit = defineEmits(['showSidebar'])
 
+// Components
 const props = defineProps({
   items: {
     type: Array,
@@ -52,17 +46,16 @@ const props = defineProps({
  * Add a row to the email content list
  * @return {number}
  */
-const addRow = (): number => props.items.push({style: {'text-align': 'center'}, text: "<br>"})
+const addRow = () => {
+  props.items.push({style: {'text-align': 'center'}, text: "<br>"})
+  emit('showSidebar', props.items.length - 1)
+}
 /**
  * Edit a row of the email content list
  * @param {number} i
  */
 const editRow = (i: number) => {
-  editRowModal.value.open(props.items[i]).then(res => {
-    if (res) {
-      props.items[i] = res
-    }
-  })
+
 }
 /**
  * Remove a row from the email content list
@@ -72,8 +65,4 @@ const removeRow = (i: number) => {
   let res = props.items[i].text.length ? confirm('Do you really want to remove this row?') : true;
   res && props.items.splice(i, 1);
 }
-/*
- * Variables
- */
-const editRowModal = ref(null)
 </script>

@@ -77,65 +77,62 @@
   }
 }
 
-.default-popup-wrap .email-body-elements-wrap {
-  .button-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 15px 0;
-  }
+.sidebar-wrap .email-row-edit-wrap {
+  width: 100%;
 
-  ul.text-elements-list {
-    margin: 10px 0;
+  .text-elements-list {
+    padding: 20px;
 
     li {
-      cursor: pointer;
-      display: inline-block;
-      padding: 5px;
-      min-height: 26px;
-      min-width: 50px;
-      margin: 2px;
       background-color: #f4f6fb;
-      opacity: .6;
-
-      &[data-tag="br"] {display: block}
+      color: #00145e;
+      cursor: pointer;
+      min-height: 24px;
+      line-height: 24px;
+      margin: 10px 0;
+      width: 100%;
 
       &:hover, &.active {
-        opacity: 1;
+        background-color: white;
       }
     }
   }
 
-  .text-elements-controls {
-    display: flex;
-    align-items: stretch;
+  .email-row-elements-controls {
+    padding: 0 0 20px 20px;
 
-    .button-row .btn {
-      min-height: 44px;
-      min-width: 44px;
+    .form-text {
+      font-size: 12px;
+      line-height: 12px;
+      padding: 15px;
+    }
+
+    .buttons-row {
+      margin: 20px 0;
+      padding-right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .editor-button {
+      background-color: #f2f7ff;
+      border-color: #909bbf;
+      border-radius: 50%;
       height: 44px;
+      min-width: auto;
       width: 44px;
-      padding: 0;
+      padding: 10px;
 
       .icon {background-color: #909bbf}
 
       &.active {
         background-color: #005aff;
+        border-color: #005aff;
 
         .icon {background-color: white}
       }
     }
-  }
-
-  .hu-color-picker .color-type, .hu-color-picker .color-type + div {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 720px) {
-  .default-popup-wrap .email-body-elements-wrap {
-    .text-elements-controls {display: block}
-
-    .button-row {justify-content: center}
   }
 }

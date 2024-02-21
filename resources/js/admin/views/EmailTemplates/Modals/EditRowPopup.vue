@@ -147,7 +147,7 @@
 
 <script>
 import {DefaultPopupMixin} from "../../../../mixins/default-popup-mixin.js";
-import EditRowButton from "./EditRowButton.vue";
+import EditRowButton from "../ContentEditor/EditRowButton.vue";
 import EditRowString from "./EditRowString.vue";
 import {ColorPicker, SliderCheckbox} from "../../../components/Form/";
 

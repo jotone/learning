@@ -16,7 +16,7 @@
       <fieldset class="card">
         <legend>Role data</legend>
 
-        <div class="row">
+        <div class="row padding">
           <div class="col-1-2">
             <label class="caption">
               <span>Name</span>

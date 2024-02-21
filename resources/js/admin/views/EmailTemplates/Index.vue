@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div class="page-name-wrap">
+    <div class="page-name-wrap content-container">
       <h1>Emails</h1>
 
       <button class="btn" form="templateForm" type="submit">
@@ -11,63 +11,69 @@
 
   <Notifications/>
 
-  <form id="templateForm" @submit.prevent="submit" class="f-st-fs">
-    <div class="col-4-5">
-      <fieldset class="card">
-        <legend>{{ form.title }}</legend>
+  <form class="content-container" id="templateForm" @submit.prevent="submit">
+    <fieldset class="card">
+      <legend>{{ form.title }}</legend>
 
-        <div class="row">
-          <label class="caption col-1-2">
-            <span>Email Title</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="title"
-              placeholder="Email Title..."
-              required
-              v-model="form.title"
-            >
-          </label>
+      <div class="row padding">
+        <label class="caption col-1-2">
+          <span>Email Title</span>
+          <input
+            autocomplete="off"
+            class="form-input"
+            name="title"
+            placeholder="Email Title..."
+            required
+            v-model="form.title"
+          >
+        </label>
 
-          <label class="caption col-1-2" v-if="$attrs.auth.role.level === 0">
-            <span>Email Slug</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="slug"
-              placeholder="Email Slug..."
-              required
-              v-model="form.slug"
-            >
-          </label>
+        <label class="caption col-1-2" v-if="$attrs.auth.role.level === 0">
+          <span>Email Slug</span>
+          <input
+            autocomplete="off"
+            class="form-input"
+            name="slug"
+            placeholder="Email Slug..."
+            required
+            v-model="form.slug"
+          >
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Email Edit</legend>
+
+      <EmailContentEditor :items="form.body" @showSidebar="toggleSidebar"/>
+    </fieldset>
+
+    <fieldset class="card">
+      <legend>Variables</legend>
+      <div class="simple-table-wrap">
+        <div class="table-container">
+          <VariablesTable :entities="entities" :variables="form.variables"/>
         </div>
-      </fieldset>
-      <fieldset class="card">
-        <legend>Variables</legend>
-        <div class="simple-table-wrap">
-          <div class="table-container">
-            <VariablesTable :entities="entities" :variables="form.variables"/>
-          </div>
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend>Email Edit</legend>
-
-        <EmailContentEditor :items="form.body"/>
-      </fieldset>
-    </div>
+      </div>
+    </fieldset>
   </form>
+
+  <Sidebar ref="sidebar" caption="Edit Email Content">
+    <EmailRowEditor :item="emailRow"/>
+  </Sidebar>
 </template>
 
 <script setup>
 // Vue libs
-import {inject, reactive} from 'vue';
+import {inject, reactive, ref} from 'vue';
 import {usePage} from '@inertiajs/vue3';
 // Other Libs
 import {Notification} from '../../libs/Notification';
 // Components
-import EmailContentEditor from './EmailContentEditor.vue';
+import EmailContentEditor from './ContentEditor/EmailContentEditor.vue';
+import EmailRowEditor from './ContentEditor/EmailRowEditor.vue';
 import Notifications from '../../components/Default/Notifications.vue';
+import Sidebar from '../../components/Default/Sidebar.vue';
 import VariablesTable from './VariablesTable.vue';
 // Layout
 import Layout from '../../shared/Layout.vue';
@@ -101,9 +107,16 @@ const submit = () => {
   })
 }
 
+const toggleSidebar = i => {
+  sidebar.value.toggleShow(true);
+  emailRow = form.body[i];
+}
+
 /*
  * Variables
  */
+let sidebar = ref(null)
+let emailRow = reactive({})
 // Page form variables
 let form = reactive({
   title: page.props?.model?.title || '',
