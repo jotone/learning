@@ -1,6 +1,6 @@
 <template xmlns="http://www.w3.org/1999/html">
   <SettingsElement name="Functionality">
-    <div class="row underline">
+    <div class="row padding underline">
       <div class="col-1-2">
         <label class="caption">
           <span class="title">Registration profile</span>
@@ -98,7 +98,7 @@
       </div>
     </div>
 
-    <div class="row underline">
+    <div class="row padding underline">
       <div class="col-1-2">
         <label class="caption">
           <span class="title">Search</span>
@@ -122,7 +122,7 @@
       </div>
     </div>
 
-    <div class="row underline">
+    <div class="row padding underline">
       <div class="col-1-2">
         <label class="caption">
           <span class="title">Curriculum Menu Type</span>
@@ -137,7 +137,7 @@
       </div>
     </div>
 
-    <div class="row underline">
+    <div class="row padding underline">
       <div class="col-1-2">
         <label class="caption">
           <span class="title">Lesson Complete</span>
@@ -156,7 +156,7 @@
       </div>
     </div>
 
-    <div class="row underline">
+    <div class="row padding underline">
       <div class="col-1-2">
         <label class="caption">
           <span class="title">Zapier Integration</span>
@@ -177,7 +177,7 @@
           <span>Zapier API Key</span>
           <input class="form-input" name="zapier_key" placeholder="Add the key" v-model="settings.zapier_key">
         </label>
-        <label class="caption">
+        <label class="caption wide-wrap">
           <span>Zapier URL</span>
           <input class="form-input" name="zapier_url" disabled :value="settings.site_url">
         </label>
@@ -190,7 +190,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row padding">
       <div class="col-1-2">
         <label class="caption">
           <span class="title">Digistore24 Integration</span>

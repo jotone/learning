@@ -1,6 +1,6 @@
 <template>
   <SettingsElement name="Email">
-    <div class="row underline">
+    <div class="row padding underline">
       <div class="col-1-2">
         <label class="caption">
           <span class="title">SMTP Settings</span>
@@ -93,7 +93,7 @@
       </div>
     </div>
 
-    <div class="row underline">
+    <div class="row padding underline">
       <div class="col-1-2">
         <label class="caption">
           <span class="title">Email Global Settings</span>
@@ -135,7 +135,7 @@
       </div>
     </div>
 
-    <div class="row underline">
+    <div class="row padding underline">
       <div class="col-1-2">
         <label class="caption">
           <span class="title">Social Media Links on Footer</span>
@@ -187,7 +187,7 @@
       </div>
     </div>
 
-    <div class="row underline">
+    <div class="row padding underline">
       <div class="col-1-2">
         <label class="caption">
           <span class="title">Template List</span>

@@ -44,7 +44,7 @@
       </div>
     </nav>
     <main>
-      <ul class="breadcrumbs" v-if="$attrs.hasOwnProperty('breadcrumbs')">
+      <ul class="breadcrumbs content-container" v-if="$attrs.hasOwnProperty('breadcrumbs')">
         <li v-for="item in $attrs.breadcrumbs">
           <a :href="item.url" v-if="'url' in item">
             {{ item.name }}

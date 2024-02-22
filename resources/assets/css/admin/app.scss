@@ -1,4 +1,4 @@
-@import "../font-popins.scss", "icons", "breadcrumbs", "circle-progress", "forms", "menu", "notification", "popup", "user-avatar";
+@import "../font-popins.scss", "icons", "breadcrumbs", "circle-progress", "forms", "menu", "notification", "popup", "sidebar", "user-avatar";
 
 .col-1-2 {
   width: 50%;
@@ -122,22 +122,11 @@ fieldset {
   }
 }
 
-.row {
-  display: flex;
-  padding: 20px 25px;
-}
+.row {display: flex}
 
+.row.padding {padding: 20px 25px}
 
 .underline {border-bottom: 1px solid #e6efff}
-
-section {
-  h3 {
-    color: #00145e;
-    font-size: 30px;
-    line-height: 45px;
-    margin: 25px 0 10px 0;
-  }
-}
 
 .scrollbar {
   &::-webkit-scrollbar {width: 8px}
@@ -156,6 +145,10 @@ section {
   margin: 20px 0;
 
   h1 {font-size: 50px; font-weight: 600}
+}
+
+.content-container {
+  width: calc(100% - 400px)
 }
 
 @media screen and (max-width: 1440px) {

@@ -1,9 +1,5 @@
 <template>
-  <button
-    type="button"
-    class="btn"
-    :class="{active: value === align}"
-  >
+  <button type="button" class="btn editor-button" :class="{active: value === align}">
     <i class="icon" :class="icon"></i>
   </button>
 </template>

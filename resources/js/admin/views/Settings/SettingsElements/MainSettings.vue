@@ -1,6 +1,6 @@
 <template>
   <SettingsElement name="Main Settings">
-    <div class="row">
+    <div class="row padding">
       <div class="col-1-2">
         <label class="caption">
           <span class="title">Site URL</span>
@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row padding">
       <div class="col-1-2">
         <label for="site_title" class="caption">
           <span class="title">System Name</span>
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row padding">
       <div class="col-1-2">
         <label for="default_timezone" class="caption">
           <span class="title">Timezone</span>
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row padding">
       <div class="col-1-2">
         <div class="wide-wrap">
           <SliderCheckbox
