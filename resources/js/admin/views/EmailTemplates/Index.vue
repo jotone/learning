@@ -59,13 +59,13 @@
   </form>
 
   <Sidebar ref="sidebar" caption="Edit Email Content">
-    <EmailRowEditor :item="emailRow"/>
+    <EmailRowEditor :item="emailRow" :key="rowEditorCounter"/>
   </Sidebar>
 </template>
 
 <script setup>
 // Vue libs
-import {inject, reactive, ref} from 'vue';
+import {inject, nextTick, reactive, ref} from 'vue';
 import {usePage} from '@inertiajs/vue3';
 // Other Libs
 import {Notification} from '../../libs/Notification';
@@ -86,6 +86,12 @@ defineOptions({layout: Layout})
 // Page variables
 const page = usePage()
 
+/*
+ * Methods
+ */
+const forceRerender = () => {
+  rowEditorCounter.value += 1;
+};
 const submit = () => {
   request({
     url: page.props.routes.save,
@@ -108,15 +114,20 @@ const submit = () => {
 }
 
 const toggleSidebar = i => {
-  sidebar.value.toggleShow(true);
   emailRow = form.body[i];
+  sidebar.value.toggleShow(true);
+  forceRerender();
 }
 
 /*
  * Variables
  */
-let sidebar = ref(null)
-let emailRow = reactive({})
+// Sidebar element reference
+let sidebar = ref(null);
+// Editable email row
+let emailRow = reactive({});
+// EmailRowEditor Component re-render helper
+const rowEditorCounter = ref(0);
 // Page form variables
 let form = reactive({
   title: page.props?.model?.title || '',

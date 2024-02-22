@@ -33,6 +33,14 @@
           ></textarea>
         </label>
 
+        <SliderCheckbox
+          name="isButton"
+          text="Is a Button"
+          v-if="element.tag === 'a'"
+          :checked="element.attributes.hasOwnProperty('class')"
+          @change="toggleFormValue('isButton')"
+        />
+
         <label class="caption" v-if="element.tag === 'a'">
           <span>URL</span>
           <input autocomplete="off" class="form-input" name="text" :value="element?.attributes?.href">
@@ -88,28 +96,58 @@
           <span>Text Color</span>
           <ColorPicker :value="color" @change="updateFormValue('color', $event)"/>
         </label>
+
+        <label class="caption">
+          <span>Font Size</span>
+          <input
+            autocomplete="off"
+            class="form-input"
+            type="number"
+            min="1"
+            step="1"
+            :value="fontSize"
+            @input="updateFormValue('font-size', $event.target.value.trim() + 'px')"
+          >
+        </label>
+
+        <label class="caption">
+          <span>Line Height</span>
+          <input
+            autocomplete="off"
+            class="form-input"
+            type="number"
+            min="1"
+            step="1"
+            :value="lineHeight"
+            @input="updateFormValue('line-height', $event.target.value.trim() + 'px')"
+          >
+        </label>
       </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, reactive, ref} from 'vue';
+import {computed, reactive, ref, watch} from 'vue';
 import {ColorPicker, SliderCheckbox} from '../../../components/Form/';
 import EditRowButton from './EditRowButton.vue';
 
 const props = defineProps({
   item: {
     type: Object,
-    default: null
+    default: {}
   }
 })
+
+const emit = defineEmits(['changeContent'])
 
 /*
  * Computed
  */
-const bgColor = computed((): string => getStyleValue('background-color', '#ffffff'))
-const color = computed((): string => getStyleValue('color', '#00145e'))
+const bgColor = computed((): string => getStyleValue('background-color', '#ffffff'));
+const color = computed((): string => getStyleValue('color', '#00145e'));
+const fontSize = computed((): string => getStyleValue('font-size', 12));
+const lineHeight = computed((): string => getStyleValue('line-height', 18));
 const textAlign = computed((): string => !props.item?.style || !props.item.style.hasOwnProperty('text-align')
   ? ''
   : props.item.style['text-align'])
@@ -119,14 +157,18 @@ const textAlign = computed((): string => !props.item?.style || !props.item.style
  */
 /**
  * Check the element contain style attribute and create it if not
+ * @param {object} el
+ * @return {object} el
  */
-const checkElementHasAttributes = () => {
-  if (!element.hasOwnProperty('attributes')) {
-    element.attributes = {}
+const checkElementHasAttributes = (el = null) => {
+  if (!el.hasOwnProperty('attributes')) {
+    el.attributes = {}
   }
-  if (!element.attributes.hasOwnProperty('style')) {
-    element.attributes.style = {}
+  if (!el.attributes.hasOwnProperty('style')) {
+    el.attributes.style = {}
   }
+
+  return el;
 }
 /**
  * Processes an array of elements to transform style strings into objects and handle specific tags.
@@ -134,7 +176,7 @@ const checkElementHasAttributes = () => {
  * @return {Array<Object>}
  */
 const fillElements = (elements: Array<Object>) => {
-  return elements.reduce((result, el) => {
+  return elements.reduce((result: Array<Object>, el: object) => {
     // Deconstruct the element for easier access to properties.
     const {tag, attributes, text} = el;
 
@@ -236,12 +278,49 @@ const parseHtmlContent = (html: string) => {
   }
   return fillElements(elements);
 }
+const serialize = elements => elements.map(el => {
+  // Directly return <br> for line breaks.
+  if (el.tag === 'br') {
+    return '<br>';
+  }
+
+  el = checkElementHasAttributes(el);
+  if (!el.attributes.style.hasOwnProperty('color')) {
+    el.attributes.style.color = getStyleValue('color', '#00145e');
+  }
+  if (!el.attributes.style.hasOwnProperty('background-color')) {
+    el.attributes.style['background-color'] = getStyleValue('background-color', '#ffffff');
+  }
+  if (!el.attributes.style.hasOwnProperty('font-size')) {
+    el.attributes.style['font-size'] = getStyleValue('font-size', 12) + 'px';
+  }
+  if (!el.attributes.style.hasOwnProperty('line-height')) {
+    el.attributes.style['line-height'] = getStyleValue('line-height', 18) + 'px';
+  }
+
+  const attributes = Object.entries(el.attributes || {}).map(([type, value]) => {
+    if (type === 'style') {
+      // Special handling for styled to concatenate rules.
+      return `style="${Object.entries(value).map(([key, val]) => `${key}:${val}`).join(';')}"`;
+    }
+    // General attribute formatting.
+    return `${type}="${value}"`;
+  }).join(' ');
+  // Construct element string.
+  return `<${el.tag} ${attributes}>${el.text || ''}</${el.tag}>`;
+}).join('');
+
 const setElementAttrByTag = () => {
   if ('a' === element.tag) {
-    checkElementHasAttributes();
+    element = checkElementHasAttributes(element);
 
     element.attributes.href = ''
   }
+
+  // Use Array.map for iteration and Array.join to concatenate.
+  props.item.text = serialize(elements)
+
+  emit('changeContent', props.item)
 }
 /**
  * Convert an element style object to CSS string
@@ -258,7 +337,7 @@ const stylesToString = (el: object): string => el?.attributes?.style
  */
 const toggleFormValue = (key: string) => {
   // Ensures the element has attributes defined before proceeding.
-  checkElementHasAttributes();
+  element = checkElementHasAttributes(element);
   switch (key) {
     // For style-related keys, toggle between deleting the attribute and setting a specific value.
     case 'font-style':
@@ -297,8 +376,8 @@ const toggleFormValue = (key: string) => {
  * @param {any} value
  */
 const updateFormValue = (key: string, value: any) => {
-  checkElementHasAttributes();
-  elements[activeEl.value].attributes.style[key] = value
+  element = checkElementHasAttributes(element);
+  element.attributes.style[key] = value
 }
 /*
  * Variables
@@ -308,4 +387,13 @@ let elements = reactive(parseHtmlContent(props.item.text))
 let activeEl = ref(0)
 
 let element = reactive(elements[activeEl.value])
+
+/*
+ * Watchers
+ */
+watch(props, val => emit('changeContent', val.item));
+watch(element, () => {
+  props.item.text = serialize(elements)
+  emit('changeContent', props.item)
+})
 </script>

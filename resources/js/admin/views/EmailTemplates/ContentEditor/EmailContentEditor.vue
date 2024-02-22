@@ -54,9 +54,7 @@ const addRow = () => {
  * Edit a row of the email content list
  * @param {number} i
  */
-const editRow = (i: number) => {
-
-}
+const editRow = (i: number) => emit('showSidebar', i)
 /**
  * Remove a row from the email content list
  * @param {number} i
