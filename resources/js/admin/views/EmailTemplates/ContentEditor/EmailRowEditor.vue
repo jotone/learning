@@ -13,7 +13,7 @@
     <div class="email-row-elements-controls">
       <label class="caption">
         <span>Tag</span>
-        <select name="tag" class="form-select" v-model="element.tag" @change="setElementAttrByTag">
+        <select name="tag" class="form-select" v-model="element.tag" @change="changeElementTag">
           <option value="a">a</option>
           <option value="br">br</option>
           <option value="div">div</option>
@@ -309,12 +309,15 @@ const serialize = elements => elements.map(el => {
   // Construct element string.
   return `<${el.tag} ${attributes}>${el.text || ''}</${el.tag}>`;
 }).join('');
-
-const setElementAttrByTag = () => {
+/**
+ * Check the Element tag was changed.
+ */
+const changeElementTag = () => {
   if ('a' === element.tag) {
     element = checkElementHasAttributes(element);
-
-    element.attributes.href = ''
+    element.attributes.href = '';
+  } else {
+    delete element.attributes.href;
   }
 
   // Use Array.map for iteration and Array.join to concatenate.

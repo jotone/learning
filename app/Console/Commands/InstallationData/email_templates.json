@@ -72,7 +72,14 @@
         "style":{
           "text-align":"center"
         },
-        "text":"<span style=\"color:#00145e;font-size:14px;font-weight:500;line-height:24px\">The CopeMember team wishes you much success with your courses!</span><br><span style=\"color:#00145e;font-size:14px;font-weight:500;line-height:24px\">Please confirm your registration by clicking the following button:</span>"
+        "text":"<span style=\"color:#00145e;font-size:14px;font-weight:500;line-height:24px\">The CopeMember team wishes you much success with your courses!</span>"
+      },
+      {
+        "text": "<br>"
+      },
+      {
+        "style": {"text-align":  "center"},
+        "text": "<span style=\"color:#00145e;font-size:14px;font-weight:500;line-height:24px\">Please confirm your registration by clicking the following button:</span>"
       },
       {
         "text":"<br>"
@@ -96,7 +103,7 @@
         "style":{
           "text-align":"center"
         },
-        "text":"<span>test </span><a style=\"color:#80acff;font-size:14px;font-weight:500;line-height:24px;text-decoration:underline\" href=%activate_url%>click here</a><span> some text</span>"
+        "text":"<a style=\"color:#80acff;font-size:14px;font-weight:500;line-height:24px;text-decoration:underline\" href=%activate_url%>click here</a>"
       }
     ]
   },

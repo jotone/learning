@@ -14,7 +14,7 @@ class CategoryGraphQlTest extends GraphQlTestCase
         parent::setUp();
 
         if (Category::count() < 5) {
-            Category::factory(5 - $this->total + 1)->create();
+            Category::factory(6)->create();
         }
         $this->total = Category::count();
     }

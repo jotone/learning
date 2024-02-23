@@ -18,7 +18,7 @@ class RoleFactory extends Factory
 
     public function definition(): array
     {
-        $name = fake()->jobTitle;
+        $name = fake()->jobTitle . ' in ' . fake()->company;
         // Generate unique slug
         $slug = generateUrl($name);
         if ($this->model::where('slug', $slug)->count()) {

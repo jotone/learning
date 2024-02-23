@@ -7,7 +7,7 @@ use App\Enums\{ShirtSize, UserStatus};
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany};
+use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasMany};
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
@@ -204,6 +204,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get related courses for the instructor
+     *
+     * @return HasMany
+     */
+    public function instructorCourses(): HasMany
+    {
+        return $this->hasMany(Course::class, 'instructor_id', 'id');
+    }
+
+    /**
      * Related role
      *
      * @return BelongsTo
@@ -270,6 +280,8 @@ class User extends Authenticatable
             FileHelper::recursiveRemove(public_path('images/users/' . $model->id));
             // Remove course relation
             $model->courses()->detach();
+            // Set course instructor_id as null
+            $model->instructorCourses()->each(fn($ent) => $ent->update(['instructor_id' => null]));
         });
     }
 }
