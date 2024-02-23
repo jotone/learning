@@ -197,6 +197,6 @@ class MutationUpdate extends UserMutation
             return new Error($e->getMessage());
         }
 
-        return User::find($user->id);
+        return $user->fresh();
     }
 }

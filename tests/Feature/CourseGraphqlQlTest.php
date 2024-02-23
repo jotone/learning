@@ -2,7 +2,8 @@
 
 namespace Feature;
 
-use App\Models\Course;
+use App\Enums\CourseStatus;
+use App\Models\{Course, Settings};
 use Tests\GraphQlTestCase;
 
 class CourseGraphqlQlTest extends GraphQlTestCase
@@ -39,7 +40,7 @@ class CourseGraphqlQlTest extends GraphQlTestCase
     /**
      * Test the pagination feature of the 'courses' GraphQL query.
      *
-     * This method verifies that the GraphQL endpoint correctly handles pagination for category queries.
+     * This method verifies that the GraphQL endpoint correctly handles pagination for course queries.
      * It checks the response's pagination properties and data consistency using a custom
      * assertion in the callback function.
      *
@@ -52,6 +53,40 @@ class CourseGraphqlQlTest extends GraphQlTestCase
             field: 'courses',
             response_fields: 'id name url',
             callback: fn($collection) => $this->assertTrue($collection->data[0]->url === Course::orderBy('id', 'desc')->value('url'))
+        );
+    }
+
+    /**
+     * Test the 'create' mutation for courses in the GraphQL API.
+     *
+     * This method tests the GraphQL mutation for creating a new course.
+     * It validates that the mutation correctly stores the course in the database and
+     * that the response is as expected.
+     * A custom callback is used to perform additional database assertions.
+     *
+     * @return void
+     */
+    public function testStore(): void
+    {
+        $lang = Settings::where('key', 'main_language')->value('value');
+        $course = Course::factory()->make();
+        $this->runMutationTest(
+            type: 'create',
+            route: route('graphql.course'),
+            query: 'name: "%s", url: "%s", description: "%s"',
+            params: [
+                $course->name,
+                $course->url,
+                $course->description
+            ],
+            response_fields: 'id name url description lang status',
+            callback: fn() => $this->assertDatabaseHas('courses', [
+                'name' => $course->name,
+                'url' => generateUrl($course->url),
+                'description' => $course->description,
+                'lang' => $lang,
+                'status' => CourseStatus::fromName('draft')
+            ])
         );
     }
 }

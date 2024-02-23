@@ -105,9 +105,7 @@ class Course extends Model
     protected function status(): Attribute
     {
         return Attribute::make(
-            get: function ($val) {
-                dd('Course Status', $val);
-            },
+            get: fn(int $val) => CourseStatus::fromValue($val),
             set: fn(string $val) => is_numeric($val) && isset(CourseStatus::forSelect()[$val])
                 ? $val
                 : CourseStatus::fromName($val)
@@ -122,9 +120,7 @@ class Course extends Model
     protected function trackingType(): Attribute
     {
         return Attribute::make(
-            get: function ($val) {
-                dd('Course Status', $val);
-            },
+            get: fn(int $val) => CourseTracking::fromValue($val),
             set: fn(string $val) => is_numeric($val) && isset(CourseTracking::forSelect()[$val])
                 ? $val
                 : CourseTracking::fromName($val)
