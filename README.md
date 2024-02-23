@@ -80,7 +80,7 @@ npm i && npm run prod
   - ~~Model~~
   - Api
     - ~~List~~
-    - Create
+    - ~~Create~~
     - Update
     - Delete
 - Settings Emails

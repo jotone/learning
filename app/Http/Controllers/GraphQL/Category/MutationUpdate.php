@@ -107,6 +107,6 @@ class MutationUpdate extends Mutation
             return new Error($e->getMessage());
         }
 
-        return Category::find($category->id);
+        return $category->fresh();
     }
 }
