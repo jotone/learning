@@ -3,6 +3,7 @@
     "name": "Student",
     "level": 255,
     "permissions": {
+      "App\\GraphQL\\Schemas\\CourseSchema": ["query"],
       "App\\GraphQL\\Schemas\\UserSchema": ["query", "create", "update"]
     }
   },
@@ -11,6 +12,7 @@
     "level": 127,
     "permissions": {
       "App\\GraphQL\\Schemas\\CategorySchema": ["query", "create", "update", "destroy"],
+      "App\\GraphQL\\Schemas\\CourseSchema": ["query", "create", "update", "destroy"],
       "App\\GraphQL\\Schemas\\UserSchema": ["query", "create", "update", "destroy"],
       "App\\Http\\Controllers\\Api\\SettingsController": ["smtp", "update"],
       "App\\Http\\Controllers\\Api\\SocialMediaController": ["update"],
@@ -33,6 +35,7 @@
     "level": 63,
     "permissions": {
       "App\\GraphQL\\Schemas\\CategorySchema": ["query", "create", "update", "destroy"],
+      "App\\GraphQL\\Schemas\\CourseSchema": ["query", "create", "update", "destroy"],
       "App\\GraphQL\\Schemas\\RoleSchema": ["query", "create", "update", "destroy"],
       "App\\GraphQL\\Schemas\\UserSchema": ["query", "create", "update", "destroy"],
       "App\\Http\\Controllers\\Api\\EmailTemplateController": ["store", "update", "destroy"],

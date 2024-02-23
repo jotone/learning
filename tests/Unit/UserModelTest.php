@@ -156,6 +156,8 @@ class UserModelTest extends ModelTestCase
             fn($user) => $this
                 // Assert that the 'user_courses' table does not have any records
                 ->assertDatabaseMissing('user_courses', ['user_id' => $user->id])
+                // Assert the user is no longer an instructor for his courses
+                ->assertDatabaseMissing('courses', ['instructor_id' => $user->id])
         );
     }
 }

@@ -154,6 +154,16 @@ class Course extends Model
     }
 
     /**
+     * Get related instructor entity
+     *
+     * @return BelongsTo
+     */
+    public function instructor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'instructor_id', 'id');
+    }
+
+    /**
      * Get course products
      *
      * @return HasMany

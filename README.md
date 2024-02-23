@@ -79,10 +79,11 @@ npm i && npm run prod
 - Courses
   - ~~Model~~
   - Api
-    - List
+    - ~~List~~
     - Create
     - Update
     - Delete
+- Settings Emails
 - Category Courses
   - Api
     - Set course relation

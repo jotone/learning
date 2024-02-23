@@ -15,7 +15,7 @@ class RoleGraphQlTest extends GraphQlTestCase
         parent::setUp();
 
         if (Role::count() < 5) {
-            Role::factory(5 - $this->total + 1)->create();
+            Role::factory(6)->create();
         }
         $this->total = Role::count();
     }
