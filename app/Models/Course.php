@@ -54,6 +54,7 @@ class Course extends Model
 
         'optional_duration',
         'optional_expire_page',
+        'category_id',
         'instructor_id',
         'published_at',
         'terms_conditions_enable',
