@@ -57,6 +57,10 @@ class CourseType extends GraphQLType
             'instructor' => [
                 'type' => GraphQL::type('User'),
                 'resolve' => fn($course) => $course->instructor
+            ],
+            'users' => [
+                'type' => Type::listOf(GraphQL::type('User')),
+                'resolve' => fn($course) => $course->users
             ]
         ];
     }

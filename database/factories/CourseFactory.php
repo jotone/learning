@@ -37,7 +37,7 @@ class CourseFactory extends Factory
             'name' => $name,
             'url' => generateUrl($name),
             'description' => fake()->text(mt_rand(40, 150)),
-            'img_url' => $this->image(),
+            'img_url' => $this->imageUrl(),
             'invitation_email' => 0,
             'position' => $this->getPosition(),
             'status' => 'active',

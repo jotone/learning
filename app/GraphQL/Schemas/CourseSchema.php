@@ -2,8 +2,7 @@
 
 namespace App\GraphQL\Schemas;
 
-use App\Http\Controllers\GraphQL\Course\MutationStore;
-use App\Http\Controllers\GraphQL\Course\Query;
+use App\Http\Controllers\GraphQL\Course\{MutationStore, MutationUpdate, Query};
 use Rebing\GraphQL\Support\Contracts\ConfigConvertible;
 
 class CourseSchema implements ConfigConvertible
@@ -15,9 +14,10 @@ class CourseSchema implements ConfigConvertible
                 Query::class
             ],
             'mutation' => [
-                'create' => MutationStore::class
+                'create' => MutationStore::class,
+                'update' => MutationUpdate::class
             ],
-            'middleware' => ['auth:sanctum', 'admin'],
+//            'middleware' => ['auth:sanctum', 'admin'],
         ];
     }
 }

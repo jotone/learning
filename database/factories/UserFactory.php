@@ -43,7 +43,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => 'password',
             'remember_token' => Str::random(10),
-            'img_url' => $this->image(),
+            'img_url' => $this->imageUrl(),
             'about' => fake()->realText(150),
             'status' => 'active',
             'activated_at' => now(),

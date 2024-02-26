@@ -31,7 +31,7 @@ class CategoryFactory extends Factory
         return [
             'name' => $name,
             'url' => generateUrl($name) . '-' . uniqid(),
-            'img_url' => $this->image(5),
+            'img_url' => $this->imageUrl(5),
             'description' => fake()->text(mt_rand(40, 150)),
             'learn_more_link' => mt_rand(0, 1) ? fake()->url : null,
             'position' => $this->getPosition(),
