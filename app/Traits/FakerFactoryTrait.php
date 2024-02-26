@@ -21,7 +21,7 @@ trait FakerFactoryTrait
      * @param int $precision
      * @return File|string|null
      */
-    protected function image(int $precision = 2): File|string|null
+    protected function imageUrl(int $precision = 2): File|string|null
     {
         if ($precision < 1) {
             $precision = 1;

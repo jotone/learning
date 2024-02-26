@@ -83,7 +83,7 @@ class Course extends Model
     ];
 
     /**
-     * Set course avatar image
+     * Set course preview image
      *
      * @return Attribute
      */
@@ -94,6 +94,23 @@ class Course extends Model
             set: fn(mixed $value, array $attributes) => $value instanceof UploadedFile && $value->isWritable()
                 ? $this->saveImage($value, 'images/courses/' . $this->getEntityId(), 'course_img_processing')
                 : (is_string($value) ? $value : $attributes['img_url'] ?? null)
+        );
+    }
+
+    /**
+     * Set course certificate image
+     *
+     * @return Attribute
+     */
+    protected function certificateImgUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn(mixed $value) => $value,
+            set: function (mixed $value, array $attributes) {
+                return $value instanceof UploadedFile && $value->isWritable()
+                    ? $this->saveImage($value, 'images/courses/' . $this->getEntityId())
+                    : (is_string($value) ? $value : $attributes['certificate_img_url'] ?? null);
+            }
         );
     }
 
