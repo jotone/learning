@@ -5,7 +5,7 @@
 
         <a class="btn" :href="$attrs.routes.create">
           <i class="icon plus-icon"></i>
-          <span>Role Create</span>
+          <span>Create Role</span>
         </a>
     </div>
   </header>

@@ -85,14 +85,21 @@ abstract class GraphQlPaginatedQuery extends Query
      * @param $where
      * @param $relations
      * @param $fields
+     * @param callable|null $map
      * @return LengthAwarePaginator
      */
-    protected function getCollection($where, $relations, $fields): LengthAwarePaginator
+    protected function getCollection($where, $relations, $fields, ?callable $map = null): LengthAwarePaginator
     {
-        return $this->attributes['model']::with($relations)
+        $items = $this->attributes['model']::with($relations)
             ->where($where)
             ->orderBy($this->filters['order_by'], $this->filters['order_dir'])
             ->orderBy('id', 'desc')
             ->paginate($this->filters['per_page'], $fields, 'page', $this->filters['page']);
+
+        if (is_callable($map)) {
+            $items->getCollection()->filter(fn($model) => $map($model));
+        }
+
+        return $items;
     }
 }
