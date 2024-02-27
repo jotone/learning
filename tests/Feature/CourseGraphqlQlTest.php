@@ -238,4 +238,19 @@ class CourseGraphqlQlTest extends GraphQlTestCase
             'certificate_img_url' => $expected_file_url
         ]);
     }
+
+    /**
+     * Test the 'destroy' mutation for courses in the GraphQL API.
+     *
+     * This method verifies the functionality of the GraphQL API for deleting an existing course.
+     * It checks that the course is properly removed from the database and that the API response
+     * confirms the successful deletion. The method sends a delete request for a specific course and
+     * then uses database assertions to ensure that the course no longer exists in the database.
+     *
+     * @return void
+     */
+    public function testDestroy(): void
+    {
+        $this->runDeleteTest(route('graphql.course'), Course::factory()->create());
+    }
 }

@@ -72,17 +72,11 @@ npm i && npm run prod
 - `make test` - run tests
 
 - ~~Roles~~
-- ~~Users.Api~~
+- ~~Users API~~
 - ~~Settings~~
-- ~~Categories.Api~~
+- ~~Categories API~~
 - ~~Page permissions middleware~~
-- Courses
-  - ~~Model~~
-  - Api
-    - ~~List~~
-    - ~~Create~~
-    - Update
-    - Delete
+- ~~Courses API~~
 - Settings Emails
 - Category Courses
   - Api
