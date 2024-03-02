@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\{AdminMenu, EmailTemplate, Permission, Role, Settings, SocialMedia, User};
+use App\Models\{AdminMenu, EmailTemplate, PageColumn, PageColumnSection, Permission, Role, Settings, SocialMedia, User};
 use Illuminate\Console\Command;
 
 class AppInstall extends Command
@@ -41,6 +41,11 @@ class AppInstall extends Command
             foreach ($files['email_templates'] as $template) {
                 EmailTemplate::create($template);
             }
+        });
+
+        // Install pages column settings
+        $this->runWithTimer('Installing pages column settings', function () use ($files) {
+            $this->installPageColumns($files['columns']);
         });
 
         // Install settings
@@ -142,6 +147,32 @@ class AppInstall extends Command
         }
 
         return $files;
+    }
+
+    public function installPageColumns(array $columns): void
+    {
+        foreach ($columns as $page => $section) {
+            $pos = 0;
+            $table_pos = 0;
+            foreach ($section as $slug => $section_data) {
+                $page_section = PageColumnSection::create([
+                    'name' => $section_data['name'],
+                    'slug' => $slug,
+                    'page' => $page,
+                    'icon' => $section_data['img'] ?? null,
+                    'position' => $pos
+                ]);
+                foreach ($section_data['items'] as $i => $data) {
+                    PageColumn::create(array_merge($data, [
+                        'section_id' => $page_section->id,
+                        'position' => $i,
+                        'table_position' => $table_pos
+                    ]));
+                    $table_pos++;
+                }
+                $pos++;
+            }
+        }
     }
 
     /**

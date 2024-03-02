@@ -1,3 +1,5 @@
+@import "column-selector";
+
 .simple-table-wrap, .content-table-wrap {
   position: relative;
   padding: 30px;
@@ -16,7 +18,6 @@
       width: 100%;
 
       th, td {
-        padding: 8px;
         text-align: left;
         vertical-align: middle;
       }
@@ -32,7 +33,7 @@
         position: relative;
       }
 
-      td > a, td > span {
+      td > a, td > span, .static-fields > a {
         display: flex;
         align-items: center;
         color: #909bbf;
@@ -104,17 +105,17 @@
       }
     }
 
-    .column-selector-wrap i {
+    .column-selector-button-wrap .icon {
       background-color: #005aff;
       cursor: pointer;
-      height: 22px;
-      width: 22px;
+      height: 28px;
+      width: 28px;
     }
   }
 
   .table-container table {
     th, td {
-      .bulk-select {text-align: center; width: 30px}
+      .bulk-select {text-align: center; padding: 5px}
 
       .static {
         background-color: white;

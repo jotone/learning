@@ -28,7 +28,11 @@ Route::get('/comments', [CommentController::class, 'index'])->name('comments.ind
 
 Route::get('/communities', [CommunityController::class, 'index'])->name('communities.index');
 
-Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
+Route::group(['as' => 'courses.'], function () {
+    Route::get('/courses', [CourseController::class, 'index'])->name('index');
+    Route::get('/courses/create', [CourseController::class, 'create'])->name('create');
+    Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->name('edit');
+});
 
 Route::get('/events', [EventsController::class, 'index'])->name('events.index');
 
@@ -38,15 +42,19 @@ Route::get('/help-center', [HelpCenterController::class, 'index'])->name('help-c
 
 Route::get('/referrals', [ReferralController::class, 'index'])->name('referrals.index');
 
-Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
-Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
-Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+Route::group(['as' => 'roles.'], function () {
+    Route::get('/roles', [RoleController::class, 'index'])->name('index');
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('create');
+    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('edit');
+});
 
-Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
-Route::get('/settings/coaches', [CoachController::class, 'create'])->name('settings.coaches.create');
-Route::get('/settings/coaches/{coach}/edit', [CoachController::class, 'edit'])->name('settings.coaches.edit');
-Route::get('/settings/templates', [EmailTemplateController::class, 'create'])->name('settings.templates.create');
-Route::get('/settings/templates/{template}/edit', [EmailTemplateController::class, 'edit'])->name('settings.templates.edit');
+Route::group(['as' => 'settings.'], function () {
+    Route::get('/settings', [SettingsController::class, 'index'])->name('index');
+    Route::get('/settings/coaches', [CoachController::class, 'create'])->name('coaches.create');
+    Route::get('/settings/coaches/{coach}/edit', [CoachController::class, 'edit'])->name('coaches.edit');
+    Route::get('/settings/templates', [EmailTemplateController::class, 'create'])->name('templates.create');
+    Route::get('/settings/templates/{template}/edit', [EmailTemplateController::class, 'edit'])->name('templates.edit');
+});
 
 Route::get('/testimonials', [TestimonialController::class, 'index'])->name('testimonials.index');
 

@@ -71,9 +71,10 @@ class Query extends GraphQlPaginatedQuery
             }
         };
 
-        $fields = $getSelectFields()->getSelect();
-        $relations = $getSelectFields()->getRelations();
-
-        return $this->getCollection($where, $relations, $fields);
+        return $this->getCollection(
+            $where,
+            $getSelectFields()->getRelations(),
+            $getSelectFields()->getSelect()
+        );
     }
 }

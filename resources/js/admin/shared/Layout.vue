@@ -64,7 +64,6 @@ import {Notification} from "../libs/Notification.js";
 import axios from "axios";
 import moment from "moment";
 
-import Avatar from "../components/User/Avatar.vue";
 import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
 import UserInfo from '../components/Default/UserInfo.vue';
 

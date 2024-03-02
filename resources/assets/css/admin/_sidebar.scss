@@ -16,7 +16,7 @@
     font-size: 25px;
     font-weight: 600;
     line-height: 40px;
-    padding: 45px 45px 30px 45px;
+    padding: 45px 55px 30px 35px;
     text-align: center;
   }
 
@@ -35,5 +35,12 @@
 
   .sidebar-body {
     padding: 45px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .sidebar-wrap {
+    top: 65px;
+    height: calc(100vh - 65px);
   }
 }

@@ -1,15 +1,15 @@
 <template>
   <tr>
     <td class="static">
-      <div class="static-fields">
+      <a :href="editUrl" class="static-fields">
         <UserInfo :user="user"/>
-      </div>
+      </a>
     </td>
     <td>
-      <span>{{ convertDate(user.created_at) }}</span>
+      <a :href="editUrl">{{ convertDate(user.created_at) }}</a>
     </td>
     <td>
-      <span>{{ convertDate(user.last_activity) }}</span>
+      <a :href="editUrl">{{ convertDate(user.last_activity) }}</a>
     </td>
     <td>
       <a class="row-actions" @click.prevent="showActionsPanel">
@@ -21,7 +21,8 @@
 
 <script setup lang="ts">
 // Vue libs
-import {inject, PropType} from 'vue';
+import {computed, inject, PropType} from 'vue';
+import {usePage} from '@inertiajs/vue3';
 // Interfaces
 import {UserDataInterface} from '../../../../contracts/UserDataInterface.js';
 // Components
@@ -33,6 +34,13 @@ const convertDate = inject('convertDate');
 const emit = defineEmits(['action']);
 
 const props = defineProps({user: Object as PropType<UserDataInterface>});
+
+const page = usePage();
+
+/**
+ * Generates an url to coach edit page
+ */
+const editUrl = computed(() => page.props.routes.user.edit.replace(/:id/, props.user.id))
 /**
  * Emit action click event
  * @param {event} e

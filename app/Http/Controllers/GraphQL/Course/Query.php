@@ -108,8 +108,19 @@ class Query extends GraphQlPaginatedQuery
         };
 
         $fields = $getSelectFields()->getSelect();
-        $relations = $getSelectFields()->getRelations();
 
-        return $this->getCollection($where, $relations, $fields);
+        // Provide a custom field "users_count" resolver
+        if (in_array('courses.users_count', $fields)) {
+            unset($fields[array_search('courses.users_count', $fields)]);
+            $fields = array_values($fields);
+            $map = function ($model) {
+                $model->users_count = $model->users()->count();
+                return $model;
+            };
+        } else {
+            $map = null;
+        }
+
+        return $this->getCollection($where, $getSelectFields()->getRelations(), $fields, $map);
     }
 }

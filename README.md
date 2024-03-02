@@ -77,22 +77,20 @@ npm i && npm run prod
 - ~~Categories API~~
 - ~~Page permissions middleware~~
 - ~~Courses API~~
-- Settings Emails
-- Category Courses
-  - Api
-    - Set course relation
-    - Modify course relation
-    - Remove course Relation
 - Courses
   - Page
+    - Course list
+      - Column editor
+        - ~~List~~
+        - Update
     - Category create
     - Category edit
-    - Course list
     - Course columns
     - Course Create
     - Course edit
     - Course bulk actions
     - Course filters
+- Settings Emails
 - User Courses
   - API
     - Set course relation

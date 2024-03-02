@@ -1,25 +1,25 @@
 {
-  "private":true,
-  "type":"module",
-  "scripts":{
+  "private": true,
+  "type": "module",
+  "scripts": {
     "watch": "vite",
-    "dev":"vite",
-    "build":"vite build"
+    "dev": "vite",
+    "build": "vite build"
   },
-  "devDependencies":{
-    "@inertiajs/vue3":"^1.0.14",
-    "@vitejs/plugin-vue":"^4.6.2",
-    "laravel-vite-plugin":"^0.8.1",
-    "postcss":"^8.4.33",
-    "postcss-nesting":"^12.0.2",
-    "sass":"^1.70.0",
-    "vite":"^4.5.2",
-    "vue":"^3.4.15"
+  "devDependencies": {
+    "@inertiajs/vue3": "^1.0.15",
+    "@vitejs/plugin-vue": "^4.6.2",
+    "laravel-vite-plugin": "^0.8.1",
+    "postcss": "^8.4.35",
+    "postcss-nesting": "^12.0.4",
+    "sass": "^1.71.1",
+    "vite": "^4.5.2",
+    "vue": "^3.4.21"
   },
-  "dependencies":{
-    "moment":"^2.30.1",
-    "moment-timezone":"^0.5.44",
-    "vuedraggable":"^4.1.0",
-    "vue-color-kit":"^1.0.6"
+  "dependencies": {
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.45",
+    "vue-color-kit": "^1.0.6",
+    "vuedraggable": "^4.1.0"
   }
 }

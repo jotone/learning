@@ -61,6 +61,9 @@ class CourseType extends GraphQLType
             'users' => [
                 'type' => Type::listOf(GraphQL::type('User')),
                 'resolve' => fn($course) => $course->users
+            ],
+            'users_count' => [
+                'type' => Type::nonNull(Type::int())
             ]
         ];
     }
