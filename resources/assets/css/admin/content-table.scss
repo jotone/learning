@@ -1,3 +1,5 @@
+@import "column-selector";
+
 .simple-table-wrap, .content-table-wrap {
   position: relative;
   padding: 30px;
@@ -16,7 +18,6 @@
       width: 100%;
 
       th, td {
-        padding: 8px;
         text-align: left;
         vertical-align: middle;
       }
@@ -104,7 +105,7 @@
       }
     }
 
-    .column-selector-wrap .icon {
+    .column-selector-button-wrap .icon {
       background-color: #005aff;
       cursor: pointer;
       height: 28px;
@@ -114,7 +115,7 @@
 
   .table-container table {
     th, td {
-      .bulk-select {text-align: center; width: 30px}
+      .bulk-select {text-align: center; padding: 5px}
 
       .static {
         background-color: white;

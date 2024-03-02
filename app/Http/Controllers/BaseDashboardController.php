@@ -2,13 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{AdminMenu, Settings};
+use App\Models\{AdminMenu, PageColumnSection, Settings};
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Inertia\{Inertia, Response};
 
 class BaseDashboardController extends Controller
 {
+    /**
+     * Render the specified content-table view
+     *
+     * @param string $view
+     * @param string $section
+     * @param array $shared
+     * @param array $scripts
+     * @return Response
+     */
+    protected function contentTable(string $view, string $section, array $shared = [], array $scripts = []): Response
+    {
+        // Get page column sections
+        if (!empty($section)) {
+            $sections = PageColumnSection::where('page', $section)
+                ->with([
+                    'columns' => fn($q) => $q->orderBy('position')
+                ])
+                ->orderBy('position')
+                ->get();
+
+            $shared['sections'] = [];
+            foreach ($sections as $section) {
+                $shared['sections'][$section->position] = [
+                    'name' => $section->name,
+                    'icon' => $section->icon,
+                    'page' => $section->page,
+                    'slug' => $section->slug,
+                    'columns' => $section->columns->map(function ($model) {
+                        unset($model->section_id);
+                        return $model;
+                    })
+                ];
+            }
+        }
+
+        return $this->view($view, $shared, $scripts);
+    }
+
     /**
      * Render the specified view
      *
@@ -19,7 +58,7 @@ class BaseDashboardController extends Controller
      */
     protected function view(string $view, array $shared = [], array $scripts = []): Response
     {
-        $response =  Inertia::render($view, array_merge_recursive([
+        $response = Inertia::render($view, array_merge_recursive([
             'menu' => $this->buildSideMenu(),
             'routes' => [
                 'dashboard' => [
@@ -77,7 +116,7 @@ class BaseDashboardController extends Controller
     }
 
     /**
-     * Retrieve list of dashboard menu methods with actions
+     * Retrieve a list of dashboard menu methods with actions
      *
      * @return array
      */

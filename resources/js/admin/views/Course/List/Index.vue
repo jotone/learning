@@ -28,7 +28,7 @@
           @runSearch="runSearch"
         />
 
-        <div class="column-selector-wrap">
+        <div class="column-selector-button-wrap" @click="toggleSidebar">
           <i class="icon column-selector-icon"></i>
         </div>
       </div>
@@ -39,8 +39,17 @@
           <tr>
             <th class="static">
               <div class="static-fields">
-                <TableHeadCol field="name" :filters="filters" name="Name" @changeDirection="changeDirection"/>
+                <div class="bulk-select"><input type="checkbox" name="checkAll"></div>
+                <TableHeadCol name="Thumbnail"/>
               </div>
+            </th>
+            <th v-for="column in columns">
+              <TableHeadCol
+                :field="column.field"
+                :filters="filters"
+                :name="column.name"
+                @changeDirection="changeDirection"
+              />
             </th>
           </tr>
           </thead>
@@ -48,6 +57,10 @@
       </div>
     </div>
   </div>
+
+  <Sidebar ref="sidebar" caption="Choose Visible Columns">
+    <ColumnSelector :sections="$attrs.sections" :columns="columns"/>
+  </Sidebar>
 </template>
 
 <script setup lang="ts">
@@ -55,13 +68,16 @@
 import {inject, reactive, ref} from 'vue';
 import {usePage} from '@inertiajs/vue3';
 // Other Libs
-import {decodeUriQuery, encodeUriQuery} from "../../../libs/RequestHelper";
+import {decodeUriQuery, encodeUriQuery} from '../../../libs/RequestHelper';
 import Notifications from '../../../components/Default/Notifications.vue';
 // Interfaces
-import {FiltersInterface} from "../../../../contracts/FiltersInterface";
+import {FiltersInterface} from '../../../../contracts/FiltersInterface';
 // Layout
-import Layout from "../../../shared/Layout.vue";
+import Layout from '../../../shared/Layout.vue';
 import {getFilters, SearchForm, TableHeadCol} from '../../../components/DataTable/index.js';
+import Sidebar from '../../../components/Default/Sidebar.vue';
+import ColumnSelector from '../../../components/DataTable/ColumnSelector.vue';
+import {ColumnSectionInterface} from '../../../../contracts/ColumnSectionInterface';
 
 defineOptions({layout: Layout})
 
@@ -130,16 +146,48 @@ const getList = (filters: FiltersInterface, callback?: Function) =>
       typeof callback === 'function' && callback(filters)
     })
 
+/**
+ * Show or hide sidebar
+ * @param status
+ */
+const toggleSidebar = (status: boolean = true) => {
+  sidebar.value.toggleShow(status);
+}
+/*
+ * Methods
+ */
+/**
+ * Get enabled columns list
+ * @param sections
+ */
+let activeColumns = (sections: Array<ColumnSectionInterface>) => Object.values( // Reset the result array indexes
+  // Go through every section
+  sections.reduce((result, section) => {
+    // Go through every enabled column in the section
+    section.columns.filter(col => col.enable)
+      // Fill the result array with column values
+      .reduce((sum, col) => result[col.table_position] = {
+        id: col.id,
+        field: col.field,
+        name: col.name
+      }, {})
+    return result;
+  }, {})
+);
+
 /*
  * Variables
  */
+// Sidebar element reference
+let sidebar = ref(null);
 // Data-table items list
 let list = ref([]);
 // Decoded URI query
 const query = decodeUriQuery(window.location.search)
 // Page filters list
 let filters = reactive(getFilters(query))
-
+// List of active columns
+let columns = ref(activeColumns(page.props.sections))
 // Load roles
 getList(filters)
 </script>

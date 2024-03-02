@@ -81,6 +81,8 @@ npm i && npm run prod
   - Page
     - Course list
       - Column editor
+        - ~~List~~
+        - Update
     - Category create
     - Category edit
     - Course columns

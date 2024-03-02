@@ -28,6 +28,26 @@
     mask-image: url("../../images/icons/youtube.svg");
   }
 
+  &.arrow-icon {
+    mask-image: url("../../images/icons/arrow.svg");
+  }
+
+  &.book-icon {
+    mask-image: url("../../images/icons/book.svg");
+  }
+
+  &.book-check-icon {
+    mask-image: url("../../images/icons/book-check.svg");
+  }
+
+  &.book-cog-icon {
+    mask-image: url("../../images/icons/book-cog.svg");
+  }
+
+  &.book-info-icon {
+    mask-image: url("../../images/icons/book-info.svg");
+  }
+
   &.book-plus-icon {
     mask-image: url("../../images/icons/book-plus.svg");
   }
@@ -60,8 +80,16 @@
     mask-image: url("../../images/icons/edit.svg");
   }
 
+  &.heart-icon {
+    mask-image: url("../../images/icons/heart.svg");
+  }
+
   &.hellip-icon {
     mask-image: url("../../images/icons/hellip.svg");
+  }
+
+  &.hellip-double-icon {
+    mask-image: url("../../images/icons/hellip-double.svg");
   }
 
   &.plus-icon {

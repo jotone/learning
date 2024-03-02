@@ -1,0 +1,119 @@
+{
+  "courses":{
+    "identification":{
+      "name":"Identification",
+      "img":"book-info-icon",
+      "items":[
+        {
+          "name":"Name",
+          "field":"name",
+          "enable":1
+        },
+        {
+          "name":"Categories",
+          "field":"category_name",
+          "enable":1
+        },
+        {
+          "name":"Author / Instructor",
+          "field":"instructor_email",
+          "enable":1
+        },
+        {
+          "name":"Language",
+          "field":"lang",
+          "enable":1
+        }
+      ]
+    },
+    "administration":{
+      "name":"Administration",
+      "img":"book-cog-icon",
+      "items":[
+        {
+          "name":"Email address",
+          "field":"#",
+          "enable":0
+        },
+        {
+          "name":"Course status",
+          "field":"status",
+          "enable":1
+        },
+        {
+          "name":"Featured",
+          "field":"#",
+          "enable":0
+        },
+        {
+          "name":"Creation Date",
+          "field":"created_at",
+          "enable":1
+        },
+        {
+          "name":"Last updated",
+          "field":"updated_at",
+          "enable":1
+        }
+      ]
+    },
+    "content":{
+      "name":"Content",
+      "img":"book-icon",
+      "items":[
+        {
+          "name":"# of Modules",
+          "field":"#",
+          "enable":0
+        },
+        {
+          "name":"# of Lessons",
+          "field":"#",
+          "enable":0
+        },
+        {
+          "name":"Course Duration",
+          "field":"optional_duration",
+          "enable":1
+        }
+      ]
+    },
+    "engagement":{
+      "name":"User Engagement",
+      "img":"heart-icon",
+      "items":[
+        {
+          "name":"# of Users",
+          "field":"users_count",
+          "enable":1
+        },
+        {
+          "name":"Competition Rate",
+          "field":"#",
+          "enable":0
+        },
+        {
+          "name":"Reviews",
+          "field":"#",
+          "enable":0
+        }
+      ]
+    },
+    "evaluation":{
+      "name":"Evaluation",
+      "img":"book-check-icon",
+      "items":[
+        {
+          "name":"Rating",
+          "field":"#",
+          "enable":0
+        },
+        {
+          "name":"Certificate",
+          "field":"certificate_enable",
+          "enable":1
+        }
+      ]
+    }
+  }
+}
