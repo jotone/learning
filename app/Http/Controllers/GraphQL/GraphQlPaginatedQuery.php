@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes;
+namespace App\Http\Controllers\GraphQL;
 
 use GraphQL\Type\Definition\Type;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -85,21 +85,32 @@ abstract class GraphQlPaginatedQuery extends Query
      * @param $where
      * @param $relations
      * @param $fields
-     * @param callable|null $map
+     * @param array $extra_queries
      * @return LengthAwarePaginator
      */
-    protected function getCollection($where, $relations, $fields, ?callable $map = null): LengthAwarePaginator
+    protected function getCollection($where, $relations, $fields, array $extra_queries = []): LengthAwarePaginator
     {
-        $items = $this->attributes['model']::with($relations)
+        $query = $this->attributes['model']::with($relations)
             ->where($where)
             ->orderBy($this->filters['order_by'], $this->filters['order_dir'])
-            ->orderBy('id', 'desc')
-            ->paginate($this->filters['per_page'], $fields, 'page', $this->filters['page']);
+            ->orderBy('id', 'desc');
 
-        if (is_callable($map)) {
-            $items->getCollection()->filter(fn($model) => $map($model));
+        if (!empty($extra_queries)) {
+            if (isset($extra_queries['select'])) {
+                $query->select($extra_queries['select']);
+            }
+            if (isset($extra_queries['count']) && (is_array($extra_queries['count']) || is_string($extra_queries['count']))) {
+                $query->withCount($extra_queries['count']);
+            }
+            if (isset($extra_queries['custom']) && is_array($extra_queries['custom'])) {
+                foreach ($extra_queries['custom'] as $custom_query) {
+                    if (is_callable($custom_query)) {
+                        $query = $custom_query($query);
+                    }
+                }
+            }
         }
 
-        return $items;
+        return $query->paginate($this->filters['per_page'], $fields, 'page', $this->filters['page']);
     }
 }

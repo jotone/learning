@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GraphQL\Category;
 
-use App\Classes\GraphQlPaginatedQuery;
+use App\Http\Controllers\GraphQL\GraphQlPaginatedQuery;
 use App\Models\Category;
 use Closure;
 use GraphQL\Type\Definition\{ResolveInfo, Type};

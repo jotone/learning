@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\GraphQL\Course;
 
-use App\Classes\GraphQlPaginatedQuery;
+use App\Http\Controllers\GraphQL\GraphQlPaginatedQuery;
 use App\Models\Course;
 use Closure;
+use Illuminate\Support\Facades\DB;
 use GraphQL\Type\Definition\{ResolveInfo, Type};
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
@@ -109,18 +110,40 @@ class Query extends GraphQlPaginatedQuery
 
         $fields = $getSelectFields()->getSelect();
 
-        // Provide a custom field "users_count" resolver
+        // Provide a custom fields resolver
+        $query = [
+            'select' => ['courses.*'],
+            'custom' => []
+        ];
+        // Get "users_count" property
         if (in_array('courses.users_count', $fields)) {
             unset($fields[array_search('courses.users_count', $fields)]);
             $fields = array_values($fields);
-            $map = function ($model) {
-                $model->users_count = $model->users()->count();
-                return $model;
-            };
-        } else {
-            $map = null;
+            $query['count'] = ['users'];
+        }
+        // Get "category_name" property
+        if (in_array('courses.category_name', $fields)) {
+            unset($fields[array_search('courses.category_name', $fields)]);
+
+            $query['select'][] = 'categories.name as category_name';
+            $query['custom'][] = fn($q) => $q->leftJoin('categories', 'courses.category_id', '=', 'categories.id');
+        }
+        // Get "instructor_email" property
+        if (in_array('courses.instructor_email', $fields)) {
+            unset($fields[array_search('courses.instructor_email', $fields)]);
+
+            $query['select'][] = 'instructors.email as instructor_email';
+            $query['custom'][] = fn($q) => $q->leftJoin(
+                DB::raw('(SELECT id, email FROM users) instructors'),
+                fn($join) => $join->on('courses.instructor_id', '=', 'instructors.id')
+            );
         }
 
-        return $this->getCollection($where, $getSelectFields()->getRelations(), $fields, $map);
+        return $this->getCollection(
+            $where,
+            $getSelectFields()->getRelations(),
+            array_values($fields),
+            $query
+        );
     }
 }

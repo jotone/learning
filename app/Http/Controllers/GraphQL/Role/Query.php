@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\GraphQL\Role;
 
-use App\Classes\GraphQlPaginatedQuery;
+use App\Http\Controllers\GraphQL\GraphQlPaginatedQuery;
 use App\Models\Role;
 use Closure;
-use Illuminate\Http\Request;
 use GraphQL\Type\Definition\{ResolveInfo, Type};
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class Query extends GraphQlPaginatedQuery

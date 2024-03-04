@@ -4,7 +4,6 @@ namespace App\Classes;
 
 use DirectoryIterator;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
 
 class FileHelper
 {

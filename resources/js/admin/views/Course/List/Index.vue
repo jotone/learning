@@ -44,12 +44,28 @@
               </div>
             </th>
             <th v-for="column in columns">
-              <TableHeadCol
-                :field="column.field"
-                :filters="filters"
-                :name="column.name"
-                @changeDirection="changeDirection"
-              />
+              <template v-if="column.field === 'category_name'">
+                <TableHeadCol
+                  :field="column.field"
+                  :filters="filters"
+                  :name="column.name"
+                  :showPlusIcon="true"
+                  @changeDirection="changeDirection"
+                />
+              </template>
+
+              <template v-else-if="column.field === 'status'">
+
+              </template>
+
+              <template v-else>
+                <TableHeadCol
+                  :field="column.field"
+                  :filters="filters"
+                  :name="column.name"
+                  @changeDirection="changeDirection"
+                />
+              </template>
             </th>
           </tr>
           </thead>

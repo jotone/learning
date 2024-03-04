@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GraphQL\User;
 
-use App\Classes\GraphQlPaginatedQuery;
+use App\Http\Controllers\GraphQL\GraphQlPaginatedQuery;
 use App\Models\User;
 use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
