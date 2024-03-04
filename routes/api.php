@@ -18,7 +18,7 @@ Route::group(['middleware' => ['auth:sanctum', 'admin']], function () {
     // Page Columns API
     Route::group(['as' => 'page-columns.', 'prefix' => 'page-columns'], function () {
         Route::match(['patch', 'put'], '/{column}', [PageColumnController::class, 'update'])->name('update');
-//        Route::patch('/sort', [PageColumnController::class, 'sort'])->name('sort');
+        Route::patch('/sort', [PageColumnController::class, 'sort'])->name('sort');
     });
     // Email Templates API
     Route::apiResource('/templates', EmailTemplateController::class)->only(['store', 'update', 'destroy']);
