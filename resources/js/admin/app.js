@@ -47,11 +47,3 @@ Object.defineProperty(String.prototype, "ucfirst", {
   },
   enumerable: !1
 });
-/*
--- DEPRECATED --
-Object.defineProperty(String.prototype, "lcfirst", {
-  value: function () {
-    return this.charAt(0).toLowerCase() + this.slice(1);
-  },
-  enumerable: !1
-});*/
