@@ -1,5 +1,5 @@
 <template>
-  <draggable item-key="field" handle="li" tag="ul" :list="list" @change="onSort">
+  <draggable item-key="field" handle="li" tag="ul" :list="list">
     <template #item="{ element }">
       <li>
         <i class="icon sort hellip-double-icon"></i>
@@ -21,9 +21,4 @@ const props = defineProps({
     required: true
   }
 })
-/*
- * Methods
- */
-const onSort = () => {
-}
 </script>

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\{AdminMenu, PageColumnSection, Settings};
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Inertia\{Inertia, Response};
@@ -23,6 +22,10 @@ class BaseDashboardController extends Controller
     {
         // Get page column sections
         if (!empty($section)) {
+            $shared['routes']['page_columns'] = [
+                'update' => route('api.page-columns.update', ':id'),
+                'sort' => route('api.page-columns.sort')
+            ];
             $sections = PageColumnSection::where('page', $section)
                 ->with([
                     'columns' => fn($q) => $q->orderBy('position')

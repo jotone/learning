@@ -55,11 +55,24 @@
           </thead>
         </table>
       </div>
+
+      <div class="page-controls-wrap">
+        <PerPage :value="filters.per_page" @changeLimit="changeLimit"/>
+        <Pagination
+          v-if="list.last_page > 1"
+          :current="list.current_page"
+          :filters="filters"
+          :last="list.last_page"
+          :perPage="list.per_page"
+          :total="list.total"
+          @changePage="changePage"
+        />
+      </div>
     </div>
   </div>
 
   <Sidebar ref="sidebar" caption="Choose Visible Columns">
-    <ColumnSelector :sections="$attrs.sections" :columns="columns"/>
+    <ColumnSelector :sections="$attrs.sections" :columns="columns" @changeColumnStatus="toggleColumn"/>
   </Sidebar>
 </template>
 
@@ -71,18 +84,20 @@ import {usePage} from '@inertiajs/vue3';
 import {decodeUriQuery, encodeUriQuery} from '../../../libs/RequestHelper';
 import Notifications from '../../../components/Default/Notifications.vue';
 // Interfaces
+import {ColumnSectionInterface} from '../../../../contracts/ColumnSectionInterface';
 import {FiltersInterface} from '../../../../contracts/FiltersInterface';
+// Components
+import {getFilters, Pagination, PerPage, SearchForm, TableHeadCol} from '../../../components/DataTable/index.js';
+import ColumnSelector from '../../../components/DataTable/ColumnSelector.vue';
+import Sidebar from '../../../components/Default/Sidebar.vue';
 // Layout
 import Layout from '../../../shared/Layout.vue';
-import {getFilters, SearchForm, TableHeadCol} from '../../../components/DataTable/index.js';
-import Sidebar from '../../../components/Default/Sidebar.vue';
-import ColumnSelector from '../../../components/DataTable/ColumnSelector.vue';
-import {ColumnSectionInterface} from '../../../../contracts/ColumnSectionInterface';
 
 defineOptions({layout: Layout})
 
 // Get content roles function
-const requestGraphQL = inject('requestGraphQL')
+const request = inject('request');
+const requestGraphQL = inject('requestGraphQL');
 
 // Page variables
 const page = usePage()
@@ -135,6 +150,19 @@ const runSearch = (search: string) => {
 }
 
 /**
+ * Click pagination element
+ * @param {FiltersInterface} filters
+ */
+const changePage = (filters: FiltersInterface) => getList(filters, (filters: FiltersInterface) => {
+  let state = {page: filters.page}
+  if (filters.search.length) {
+    state.search = filters.search
+  }
+  // Change uri state
+  window.history.pushState(window.location.origin + window.location.pathname, "", '?' + encodeUriQuery(state))
+})
+
+/**
  * Send request to get a role list
  * @param {FiltersInterface} filters
  * @param {null|function} callback
@@ -145,6 +173,37 @@ const getList = (filters: FiltersInterface, callback?: Function) =>
       list.value = response.data.data.courses;
       typeof callback === 'function' && callback(filters)
     })
+
+/**
+ * Check the page column changed its status
+ * @param section
+ * @param field
+ * @param value
+ */
+const toggleColumn = (section: string, field: string, value: boolean) => {
+  let found = false;
+  for (let i = 0, n = page.props.sections.length; i < n; i++) {
+    if (page.props.sections[i].slug === section) {
+      const columns = page.props.sections[i].columns;
+      for (let j = 0, m = columns.length; j < m; j++) {
+        if (columns[j].field === field) {
+          columns[j].enable = value;
+          request({
+            url: page.props.routes.page_columns.update.replace(/:id/, columns[j].id),
+            method: 'patch',
+            data: {enable: value}
+          })
+          break;
+        }
+      }
+    }
+    if (found) {
+      break;
+    }
+  }
+
+  columns.value = activeColumns(page.props.sections)
+}
 
 /**
  * Show or hide sidebar

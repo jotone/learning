@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Classes\Str;
 use App\Models\{Category, Course};
 use App\Traits\FakerFactoryTrait;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -30,7 +31,7 @@ class CategoryFactory extends Factory
 
         return [
             'name' => $name,
-            'url' => generateUrl($name) . '-' . uniqid(),
+            'url' => Str::generateUrl($name) . '-' . uniqid(),
             'img_url' => $this->imageUrl(5),
             'description' => fake()->text(mt_rand(40, 150)),
             'learn_more_link' => mt_rand(0, 1) ? fake()->url : null,

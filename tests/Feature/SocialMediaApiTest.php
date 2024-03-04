@@ -1,5 +1,5 @@
 <?php
-namespace Feature;
+namespace Tests\Feature;
 
 use App\Models\SocialMedia;
 use Tests\ApiTestCase;

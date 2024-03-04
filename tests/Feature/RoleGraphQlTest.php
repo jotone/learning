@@ -1,8 +1,8 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
-use App\Http\Controllers\GraphQL\Role\RoleMutation;
+use App\Classes\Str;
 use App\Models\{Role, User};
 use Tests\GraphQlTestCase;
 
@@ -80,7 +80,7 @@ class RoleGraphQlTest extends GraphQlTestCase
             response_fields: 'id name slug level',
             callback: fn() => $this->assertDatabaseHas('roles', [
                 'name' => $role->name,
-                'slug' => generateUrl($role->name),
+                'slug' => Str::generateUrl($role->name),
                 'level' => $role->level,
             ])
         );

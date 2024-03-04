@@ -64,13 +64,14 @@ const fillForm = keys => {
   }
   return obj
 }
-const callNotification = (type, messages) => {
-  for (let i in messages) {
-    for (let j in messages[i]) {
-      Notification[type](messages[i][j]);
-    }
-  }
-}
+
+/**
+ * Custom notifications
+ * @param type
+ * @param messages
+ */
+const callNotification = (type, messages) => messages.forEach(messageGroup => messageGroup.forEach(message => Notification[type](message)));
+
 /**
  * Saves settings by making API requests for each form and showing a success notification upon completion.
  * @param url

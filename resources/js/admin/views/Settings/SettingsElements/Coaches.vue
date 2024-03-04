@@ -86,9 +86,9 @@ import {Notification} from "../../../libs/Notification";
 import {FiltersInterface} from "../../../../contracts/FiltersInterface";
 import {UserDataInterface} from '../../../../contracts/UserDataInterface';
 // Components
+import {getFilters, Pagination, PerPage, RowActions, SearchForm, TableHeadCol} from '../../../components/DataTable/index.js';
 import CoachesTableRow from './CoachesTableRow.vue';
 import SettingsElement from './SettingsElement.vue';
-import {getFilters, Pagination, PerPage, RowActions, SearchForm, TableHeadCol} from '../../../components/DataTable/index.js';
 import RemovePopup from '../../../components/Popup/RemovePopup.vue';
 
 const props = defineProps({
@@ -166,6 +166,11 @@ const changePage = (filters: FiltersInterface) => getList(filters, (filters: Fil
   window.history.pushState(window.location.origin + window.location.pathname, "", '?' + encodeUriQuery(state))
 })
 
+/**
+ * View row actions in a tooltip panel
+ * @param e
+ * @param user
+ */
 const showRowActions = (e, user: UserDataInterface) => {
   const row = e.target.closest('tr');
   const blockOffset = row.getBoundingClientRect();
@@ -175,6 +180,22 @@ const showRowActions = (e, user: UserDataInterface) => {
   selectedRow.show = true;
 }
 
+/**
+ * Send request to get a coach list
+ * @param {FiltersInterface} filters
+ * @param {null|function} callback
+ */
+const getList = (filters: FiltersInterface, callback?: Function) => {
+  requestGraphQL(props.routes.user.api, listQuery(filters))
+    .then(response => {
+      list.value = response.data.data.users;
+      typeof callback === 'function' && callback(filters)
+    })
+}
+
+/*
+ * Variables
+ */
 // Selected row model ID
 let selectedRow = reactive({
   model: {},
@@ -225,29 +246,20 @@ const rowActions = [
   }
 ]
 
-/**
- * Send request to get a coach list
- * @param {FiltersInterface} filters
- * @param {null|function} callback
- */
-const getList = (filters: FiltersInterface, callback?: Function) => {
-  requestGraphQL(props.routes.user.api, listQuery(filters))
-    .then(response => {
-      list.value = response.data.data.users;
-      typeof callback === 'function' && callback(filters)
-    })
-}
-/*
- * Variables
- */
+
+
 // Data-table items list
 let list = ref([]);
+
 // Modal for the coach remove
-const removeCoachModal = ref(null)
+const removeCoachModal = ref(null);
+
 // Decoded URI query
-const query = decodeUriQuery(window.location.search)
+const query = decodeUriQuery(window.location.search);
+
 // Page filters list
-let filters = reactive(getFilters(query))
+let filters = reactive(getFilters(query));
+
 // Load coaches
 getList(filters)
 </script>

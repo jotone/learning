@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SettingSmtpRequest;
+use App\Http\Requests\Settings\SmtpUpdateRequest;
 use App\Mail\TestSMTP;
 use App\Models\Settings;
-use Illuminate\Support\Facades\{Config, Mail};
 use Illuminate\Http\{JsonResponse, Request};
+use Illuminate\Support\Facades\{Config, Mail};
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
 
 class SettingsController extends Controller
 {
@@ -41,10 +43,10 @@ class SettingsController extends Controller
     /**
      * Save smtp settings and send a test letter
      *
-     * @param SettingSmtpRequest $request
+     * @param SmtpUpdateRequest $request
      * @return JsonResponse
      */
-    public function smtp(SettingSmtpRequest $request): JsonResponse
+    public function smtp(SmtpUpdateRequest $request): JsonResponse
     {
         $args = $request->validated();
 
@@ -78,7 +80,7 @@ class SettingsController extends Controller
      */
     public function update(Request $request): JsonResponse
     {
-        $input = $request->only(flattenArray($this->fields));
+        $input = $request->only($this->flattenArray($this->fields));
 
         $result = [];
         foreach ($input as $key => $val) {
@@ -90,5 +92,25 @@ class SettingsController extends Controller
         }
 
         return response()->json($result);
+    }
+
+    /**
+     * Flatten a multidimensional array.
+     *
+     * @param array $array
+     * @param array $result
+     * @return array
+     */
+    protected function flattenArray(array $array, array $result = []): array
+    {
+        // Create a RecursiveIteratorIterator to iterate through the multidimensional array.
+        $values = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
+        // Append the value to the result array.
+        foreach ($values as $val) {
+            $result[] = $val;
+        }
+        // Return the flattened array.
+        return $result;
+
     }
 }

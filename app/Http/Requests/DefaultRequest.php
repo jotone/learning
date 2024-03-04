@@ -21,6 +21,17 @@ class DefaultRequest extends FormRequest
     }
 
     /**
+     * Converts a value to a boolean representation.
+     *
+     * @param mixed $value
+     * @return bool
+     */
+    protected function toBool(mixed $value): bool
+    {
+        return in_array($value === 0 ? false : $value, [1, '1', true, 'true', 'on']);
+    }
+
+    /**
      * Handle a failed validation attempt.
      * @param Validator $validator
      * @return void
@@ -33,5 +44,20 @@ class DefaultRequest extends FormRequest
         throw new HttpResponseException(
             response()->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY)
         );
+    }
+
+    /**
+     * Default rules for the sort request
+     *
+     * @param string $table
+     * @return array[]
+     */
+    protected function sortRequestRules(string $table): array
+    {
+        return [
+            'list' => ['required', 'array'],
+            'list.*.id' => ['required', 'exists:' . $table . ',id'],
+            'list.*.position' => ['required', 'numeric']
+        ];
     }
 }

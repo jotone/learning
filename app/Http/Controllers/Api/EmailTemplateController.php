@@ -41,7 +41,7 @@ class EmailTemplateController extends BaseApiController
      */
     public function update(EmailTemplate $template, UpdateRequest $request): JsonResponse
     {
-        return $this->updateSimpleModel($template, $request);
+        return $this->simpleUpdateRequest($template, $request);
     }
 
     /**

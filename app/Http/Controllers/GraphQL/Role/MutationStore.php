@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GraphQL\Role;
 
+use App\Classes\Str;
 use App\Models\Role;
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\Type;
@@ -58,7 +59,7 @@ class MutationStore extends RoleMutation
             return new Error(self::ACCESS_FORBIDDEN_MESSAGE);
         }
 
-        $input['slug'] = generateUrl(empty($input['slug']) ? $input['name'] : $input['slug']);
+        $input['slug'] = Str::generateUrl(empty($input['slug']) ? $input['name'] : $input['slug']);
 
         DB::beginTransaction();
 

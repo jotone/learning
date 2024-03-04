@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Settings;
 
+use App\Http\Requests\DefaultRequest;
 use Illuminate\Validation\Rule;
 
-class SettingSmtpRequest extends DefaultRequest
+class SmtpUpdateRequest extends DefaultRequest
 {
     /**
      * Get the validation rules that apply to the request.

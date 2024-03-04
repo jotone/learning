@@ -95,12 +95,25 @@ const props = defineProps({
   }
 });
 
+/*
+ * Variables
+ */
+// Mark the custom domain is enable
 let enableCustomDomain = ref(!!props.settings.site_custom_url.length)
+/**
+ * TODO: make it work
+ * @param value
+ */
 const toggleCustomDomain = value => {
   enableCustomDomain.value = value;
 }
-
-// Map each timezone to its offset
+/*
+ * Methods
+ */
+/**
+ * Map each timezone to its offset
+ * @type {object}
+ */
 const timezones = momentTimezone.tz.names().reduce((acc, timezone) => {
   const time = momentTimezone.tz(timezone).format('Z');
   if (!acc[time]) {
@@ -110,6 +123,10 @@ const timezones = momentTimezone.tz.names().reduce((acc, timezone) => {
   return acc;
 }, {});
 
+/**
+ * Set custom url
+ * @param e
+ */
 const setCustomUrl = e => {
   const value = e.target.value.trim();
   props.settings.site_custom_url = value === props.settings.site_url ? '' : value;

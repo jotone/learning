@@ -41,6 +41,7 @@ const page = usePage();
  * Generates an url to coach edit page
  */
 const editUrl = computed(() => page.props.routes.user.edit.replace(/:id/, props.user.id))
+
 /**
  * Emit action click event
  * @param {event} e

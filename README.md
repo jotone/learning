@@ -80,9 +80,10 @@ npm i && npm run prod
 - Courses
   - Page
     - Course list
-      - Column editor
-        - ~~List~~
-        - Update
+      - ~~Column editor~~
+      - Output
+      - Bulk Actions
+      - Filters
     - Category create
     - Category edit
     - Course columns
