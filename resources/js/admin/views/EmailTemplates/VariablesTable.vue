@@ -121,5 +121,6 @@ const variableRemove = (name: string) => {
  * Variables
  */
 const variablesList = reactive(Object.keys(props.variables).length ? props.variables: {});
+
 const variableModal = ref(null);
 </script>

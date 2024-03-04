@@ -44,7 +44,7 @@ class SocialMediaController extends BaseApiController
      */
     public function update(SocialMedia $social, UpdateRequest $request): JsonResponse
     {
-        return $this->updateSimpleModel($social, $request);
+        return $this->simpleUpdateRequest($social, $request);
     }
 
     /**
@@ -55,15 +55,7 @@ class SocialMediaController extends BaseApiController
      */
     public function sort(SortRequest $request): JsonResponse
     {
-        $input = $request->validated();
-
-        foreach ($input['list'] as $item) {
-            $social = SocialMedia::findOrFail($item['id']);
-            $social->position = $item['position'];
-            $social->save();
-        }
-
-        return response()->json($input['list']);
+        return $this->simpleSortRequest(SocialMedia::class, $request);
     }
 
     /**

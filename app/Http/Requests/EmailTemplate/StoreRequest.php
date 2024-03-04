@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\EmailTemplate;
 
+use App\Classes\Str;
 use App\Http\Requests\DefaultRequest;
 use App\Models\EmailTemplate;
 
@@ -31,7 +32,7 @@ class StoreRequest extends DefaultRequest
     protected function prepareForValidation(): void
     {
         if (!$this->request->has('slug')) {
-            $slug = generateUrl($this->request->get('title'));
+            $slug = Str::generateUrl($this->request->get('title'));
             if (EmailTemplate::where('slug', $slug)->count()) {
                 $slug .= '-' . uniqid();
             }

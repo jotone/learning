@@ -168,6 +168,11 @@ const changePage = (filters: FiltersInterface) => getList(filters, (filters: Fil
   window.history.pushState(window.location.origin + window.location.pathname, "", '?' + encodeUriQuery(state))
 })
 
+/**
+ * View row actions in a tooltip panel
+ * @param e
+ * @param role
+ */
 const showRowActions = (e, role: RoleInterface) => {
   const row = e.target.closest('tr');
   const blockOffset = row.getBoundingClientRect();
@@ -177,7 +182,21 @@ const showRowActions = (e, role: RoleInterface) => {
   selectedRow.show = true;
 }
 
+/**
+ * Send request to get a role list
+ * @param {FiltersInterface} filters
+ * @param {null|function} callback
+ */
+const getList = (filters: FiltersInterface, callback?: Function) =>
+  requestGraphQL(page.props.routes.api, listQuery(filters))
+    .then(response => {
+      list.value = response.data.data.roles;
+      typeof callback === 'function' && callback(filters)
+    })
 
+/*
+ * Variables
+ */
 // Selected row model ID
 let selectedRow = reactive({
   model: {},
@@ -224,29 +243,17 @@ const rowActions = [
   }
 ]
 
-/**
- * Send request to get a role list
- * @param {FiltersInterface} filters
- * @param {null|function} callback
- */
-const getList = (filters: FiltersInterface, callback?: Function) =>
-  requestGraphQL(page.props.routes.api, listQuery(filters))
-    .then(response => {
-      list.value = response.data.data.roles;
-      typeof callback === 'function' && callback(filters)
-    })
-
-/*
- * Variables
- */
 // Data-table items list
 let list = ref([]);
+
 // Modal for the role remove
-const removeRoleModal = ref(null)
+const removeRoleModal = ref(null);
+
 // Decoded URI query
-const query = decodeUriQuery(window.location.search)
+const query = decodeUriQuery(window.location.search);
+
 // Page filters list
-let filters = reactive(getFilters(query))
+let filters = reactive(getFilters(query));
 
 // Load roles
 getList(filters)

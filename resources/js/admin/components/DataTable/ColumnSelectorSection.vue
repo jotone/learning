@@ -13,17 +13,23 @@
 
     <ul class="section-field-list" :class="{active: showFields}">
       <li v-for="column in section.columns">
-        <SliderCheckbox :name="column.field" :text="column.name" :checked="column.enable"/>
+        <SliderCheckbox
+          :checked="column.enable"
+          :name="column.field"
+          :text="column.name"
+          @change="toggleColumn"
+        />
       </li>
     </ul>
   </li>
 </template>
 
 <script setup lang="ts">
-
+import {ref} from 'vue';
 import {SliderCheckbox} from '../Form/index.js';
 import {ColumnSectionInterface} from '../../../contracts/ColumnSectionInterface.js';
-import {ref} from 'vue';
+
+const emit = defineEmits(['changeColumnStatus'])
 
 const props = defineProps({
   section: {
@@ -32,6 +38,16 @@ const props = defineProps({
   }
 })
 
+/**
+ * Check the page column changed its status and pass the execution results to the parent component
+ * @param value
+ * @param name
+ */
+const toggleColumn = (value: boolean, name: string) => emit('changeColumnStatus', props.section.slug, name, value)
+
+/**
+ * Expand or collapse the section
+ */
 const toggleSection = () => {
   showFields.value = !showFields.value
 }

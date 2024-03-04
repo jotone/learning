@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Types;
 
+use App\Classes\Str;
 use App\Models\Category;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -25,7 +26,7 @@ class CategoryType extends GraphQLType
             'name' => ['type' => Type::string()],
             'url' => [
                 'type' => Type::string(),
-                'resolve' => fn($category, $input) => generateUrl(empty($category->url) ? $input['name'] : $category->url)
+                'resolve' => fn($category, $input) => Str::generateUrl(empty($category->url) ? $input['name'] : $category->url)
             ],
             'img_url' => ['type' => GraphQL::type('StringOrListOfStrings')],
             'description' => ['type' => Type::string()],

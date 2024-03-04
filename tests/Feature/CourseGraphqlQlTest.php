@@ -1,7 +1,8 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
+use App\Classes\Str;
 use App\Enums\CourseStatus;
 use App\Models\{Course, Settings};
 use Illuminate\Http\UploadedFile;
@@ -84,7 +85,7 @@ class CourseGraphqlQlTest extends GraphQlTestCase
             response_fields: 'id name url description lang status',
             callback: fn() => $this->assertDatabaseHas('courses', [
                 'name' => $course->name,
-                'url' => generateUrl($course->url),
+                'url' => Str::generateUrl($course->url),
                 'description' => $course->description,
                 'lang' => $lang,
                 'status' => CourseStatus::fromName('draft')

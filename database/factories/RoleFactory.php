@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Classes\Str;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +21,7 @@ class RoleFactory extends Factory
     {
         $name = fake()->jobTitle . ' in ' . fake()->company;
         // Generate unique slug
-        $slug = generateUrl($name);
+        $slug = Str::generateUrl($name);
         if ($this->model::where('slug', $slug)->count()) {
             $slug .= '-' . uniqid();
         }

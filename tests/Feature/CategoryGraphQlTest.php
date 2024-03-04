@@ -1,7 +1,8 @@
 <?php
 
-namespace Feature;
+namespace Tests\Feature;
 
+use App\Classes\Str;
 use App\Models\Category;
 use App\Models\Course;
 use Illuminate\Http\UploadedFile;
@@ -82,7 +83,7 @@ class CategoryGraphQlTest extends GraphQlTestCase
             response_fields: 'id name url description type',
             callback: fn() => $this->assertDatabaseHas('categories', [
                 'name' => $category->name,
-                'url' => generateUrl($category->url),
+                'url' => Str::generateUrl($category->url),
                 'description' => $category->description,
                 'type' => Course::class
             ])

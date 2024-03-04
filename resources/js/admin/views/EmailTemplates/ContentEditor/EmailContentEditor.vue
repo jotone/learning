@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const emit = defineEmits(['showSidebar'])
 
 // Components
@@ -54,12 +54,12 @@ const addRow = () => {
  * Edit a row of the email content list
  * @param {number} i
  */
-const editRow = (i: number) => emit('showSidebar', i)
+const editRow = i => emit('showSidebar', i)
 /**
  * Remove a row from the email content list
  * @param {number} i
  */
-const removeRow = (i: number) => {
+const removeRow = i => {
   let res = props.items[i].text.length ? confirm('Do you really want to remove this row?') : true;
   res && props.items.splice(i, 1);
 }

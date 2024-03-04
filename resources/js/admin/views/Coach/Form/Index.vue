@@ -90,8 +90,9 @@ import {usePage} from '@inertiajs/vue3';
 // Other Libs
 import {Notification} from '../../../libs/Notification';
 // Components
-import Layout from '../../../shared/Layout.vue';
 import Notifications from '../../../components/Default/Notifications.vue';
+// Layout
+import Layout from '../../../shared/Layout.vue';
 
 defineOptions({layout: Layout})
 

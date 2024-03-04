@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GraphQL\Course;
 
+use App\Classes\Str;
 use App\Models\{Course, Settings};
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\Type;
@@ -46,7 +47,7 @@ class MutationStore extends CourseMutation
             $course->update(['position' => $i]);
         }
         // Form the course url value
-        $input['url'] = generateUrl(empty($input['url']) ? $input['name'] : $input['url']);
+        $input['url'] = Str::generateUrl(empty($input['url']) ? $input['name'] : $input['url']);
         // Check if a such url already exists and modify it
         if (Course::where('url', $input['url'])->count()) {
             $input['url'] .= '-' . uniqid();

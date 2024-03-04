@@ -285,6 +285,7 @@ const socialMediaEdit = social => {
     }
   })
 }
+
 /**
  * Remove a social media record identified by its 'id'.
  * @param {int} id
@@ -314,24 +315,21 @@ const socialMediaRemove = id => {
     })
   }
 }
+
 /**
  * Sorting list handler
  */
-const socialMediaSort = () => {
-  let result = []
-  for (let i = 0, n = props.socials.current.length; i < n; i++) {
-    result.push({
-      id: props.socials.current[i].id,
-      position: i
-    });
+const socialMediaSort = () => request({
+  url: page.props.routes.socials.sort,
+  method: 'patch',
+  data: {
+    list: props.socials.current.map((social, index) => ({
+      id: social.id,
+      position: index
+    }))
   }
+})
 
-  request({
-    url: page.props.routes.socials.sort,
-    method: 'patch',
-    data: {list: result}
-  })
-}
 /**
  * Generate a link to the email-template edit page
  * @param id

@@ -89,9 +89,16 @@ const page = usePage()
 /*
  * Methods
  */
+/**
+ * Force an EmailRowEditor to rerender
+ */
 const forceRerender = () => {
   rowEditorCounter.value += 1;
 };
+
+/**
+ * Submit the email template form
+ */
 const submit = () => {
   request({
     url: page.props.routes.save,
@@ -113,6 +120,10 @@ const submit = () => {
   })
 }
 
+/**
+ * Show the sidebar
+ * @param i
+ */
 const toggleSidebar = i => {
   emailRow = form.body[i];
   sidebar.value.toggleShow(true);
@@ -124,10 +135,13 @@ const toggleSidebar = i => {
  */
 // Sidebar element reference
 let sidebar = ref(null);
+
 // Editable email row
 let emailRow = reactive({});
+
 // EmailRowEditor Component re-render helper
 const rowEditorCounter = ref(0);
+
 // Page form variables
 let form = reactive({
   title: page.props?.model?.title || '',
@@ -135,7 +149,7 @@ let form = reactive({
   subject: page.props?.model?.subject || '',
   variables: page.props?.model?.variables || {},
   body: page.props?.model?.body || []
-})
+});
 
 const entities = {
   encryption: {

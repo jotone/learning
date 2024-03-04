@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\CourseTracking;
+use App\Classes\Str;
 use App\Models\Course;
 use App\Traits\FakerFactoryTrait;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -35,7 +35,7 @@ class CourseFactory extends Factory
 
         return [
             'name' => $name,
-            'url' => generateUrl($name),
+            'url' => Str::generateUrl($name),
             'description' => fake()->text(mt_rand(40, 150)),
             'img_url' => $this->imageUrl(),
             'invitation_email' => 0,

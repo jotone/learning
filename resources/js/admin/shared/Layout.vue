@@ -58,12 +58,14 @@
 </template>
 
 <script setup>
+// Vue libs
 import {ref, provide} from "vue";
 import {usePage} from "@inertiajs/vue3";
-import {Notification} from "../libs/Notification.js";
+// Other Libs
 import axios from "axios";
 import moment from "moment";
-
+import {Notification} from "../libs/Notification.js";
+// Components
 import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
 import UserInfo from '../components/Default/UserInfo.vue';
 
