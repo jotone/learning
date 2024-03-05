@@ -42,7 +42,7 @@
     {
       "name": "Help Center",
       "route": "dashboard.help-center.index",
-      "img": "info-icon"
+      "img": "question-icon"
     },
     {
       "name": "Testimonials",

@@ -28,7 +28,7 @@ class DefaultRequest extends FormRequest
      */
     protected function toBool(mixed $value): bool
     {
-        return in_array($value === 0 ? false : $value, [1, '1', true, 'true', 'on']);
+        return in_array($value === 0 ? false : $value, [1, '1', true, 'true', 'on'], true);
     }
 
     /**

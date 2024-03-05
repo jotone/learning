@@ -1,5 +1,5 @@
 export interface SideMenuItemInterface {
-  name: String,
-  img: String,
-  route: String
+  name: string,
+  img: string,
+  route: string
 }

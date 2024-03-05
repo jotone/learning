@@ -1,6 +1,6 @@
 export interface RoleInterface {
-  id: Number,
-  name: String,
-  level: Number,
-  created_at: String
+  id: number,
+  name: string,
+  level: number,
+  created_at: string
 }

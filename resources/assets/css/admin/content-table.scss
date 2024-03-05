@@ -26,11 +26,35 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        gap: 15px;
+        gap: 10px;
         cursor: pointer;
         font-size: 16px;
+        margin: 0 15px;
         padding: 8px;
         position: relative;
+
+        .info-icon-wrap, .plus-icon-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          height: 18px;
+          width: 18px;
+
+          .icon {height: 14px;width: 14px}
+        }
+
+        .info-icon-wrap .icon {background-color: #909bbf}
+
+        .plus-icon-wrap {background-color: #e6efff;
+
+          .icon {background-color: #005aff}
+        }
+
+        .plus-icon-wrap:hover {background-color: #005aff;
+
+          .icon {background-color: white}
+        }
       }
 
       td > a, td > span, .static-fields > a {
@@ -42,6 +66,7 @@
         line-height: 18px;
         min-height: 70px;
         padding: 0 8px;
+        margin-left: 15px;
         text-decoration: none;
         width: 100%;
 
@@ -83,7 +108,7 @@
         left: 15px;
         top: 60%;
 
-        i {
+        .icon {
           background-color: #909bbf;
           height: 24px;
           width: 24px;
@@ -117,7 +142,7 @@
     th, td {
       .bulk-select {text-align: center; padding: 5px}
 
-      .static {
+      &.static {
         background-color: white;
         position: sticky;
         left: 0;
@@ -128,6 +153,34 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
+      }
+
+      .image-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        max-height: 80px;
+        width: 80px;
+        margin: 5px 20px;
+        overflow: hidden;
+        border-radius: 6px;
+
+        img {
+          max-width: 100%;
+          object-fit: contain;
+        }
+      }
+
+      .bool-value-wrap {
+        .icon {
+          height: 20px;
+          width: 20px;
+        }
+
+        .false-value {background-color: #ff2947}
+
+        .true-value {background-color: #36b368}
       }
     }
 

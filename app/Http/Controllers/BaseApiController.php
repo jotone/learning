@@ -53,14 +53,14 @@ class BaseApiController extends Controller
 
         try {
             foreach ($args as $key => $val) {
-                $model->{$key} = $val;
+                $model->$key = $val;
             }
 
             // Update entity
             $model->isDirty() && $model->save();
 
             DB::commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             return $this->serverError($e);
         }

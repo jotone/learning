@@ -81,7 +81,8 @@ npm i && npm run prod
   - Page
     - Course list
       - ~~Column editor~~
-      - Output
+      - ~~Output~~
+      - Status tooltip
       - Bulk Actions
       - Filters
     - Category create

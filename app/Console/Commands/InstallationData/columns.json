@@ -36,7 +36,7 @@
           "enable":0
         },
         {
-          "name":"Course status",
+          "name":"Status",
           "field":"status",
           "enable":1
         },
@@ -53,6 +53,11 @@
         {
           "name":"Last updated",
           "field":"updated_at",
+          "enable":1
+        },
+        {
+          "name":"Position",
+          "field":"position",
           "enable":1
         }
       ]

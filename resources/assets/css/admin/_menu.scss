@@ -100,8 +100,8 @@
           mask-image: url("../../images/icons/events-solid.svg");
         }
 
-        &.info-icon {
-          mask-image: url("../../images/icons/info-solid.svg");
+        &.question-icon {
+          mask-image: url("../../images/icons/question-solid.svg");
         }
 
         &.hand-icon {
@@ -169,8 +169,8 @@
       mask-image: url("../../images/icons/events.svg");
     }
 
-    &.info-icon {
-      mask-image: url("../../images/icons/info.svg");
+    &.question-icon {
+      mask-image: url("../../images/icons/question.svg");
     }
 
     &.hand-icon {
@@ -217,8 +217,8 @@ body::after {
     url("../../images/icons/dashboard-solid.svg")
     url("../../images/icons/events.svg")
     url("../../images/icons/events-solid.svg")
-    url("../../images/icons/info.svg")
-    url("../../images/icons/info-solid.svg")
+    url("../../images/icons/question.svg")
+    url("../../images/icons/question-solid.svg")
     url("../../images/icons/hand.svg")
     url("../../images/icons/hand-solid.svg")
     url("../../images/icons/logout.svg")
