@@ -6,6 +6,10 @@
       <i class="icon plus-icon"></i>
     </div>
 
+    <div v-if="showInfoIcon" class="info-icon-wrap">
+      <i class="icon info-icon"></i>
+    </div>
+
     <div
       v-if="null !== field"
       class="order"
@@ -32,6 +36,10 @@ const props = defineProps({
   name: {
     type: String,
     required: true
+  },
+  showInfoIcon: {
+    type: Boolean,
+    default: false
   },
   showPlusIcon: {
     type: Boolean,

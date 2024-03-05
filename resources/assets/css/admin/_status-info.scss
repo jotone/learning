@@ -1,0 +1,26 @@
+.status-info-wrap {
+  min-width: 135px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 30px;
+  border-radius: 15px;
+  text-align: center;
+  display: inline-block;
+  background-color: #e2e5f0;
+  color: #858a9d;
+
+  &.danger {
+    background-color: #ffe5e9;
+    color: #ff2947;
+  }
+
+  &.success {
+    background-color: #e5f5e2;
+    color: #36b368;
+  }
+
+  &.warning {
+    background-color: #fdf2e0;
+    color: #ef9400;
+  }
+}

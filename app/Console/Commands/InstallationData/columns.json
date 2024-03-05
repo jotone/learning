@@ -54,6 +54,11 @@
           "name":"Last updated",
           "field":"updated_at",
           "enable":1
+        },
+        {
+          "name":"Position",
+          "field":"position",
+          "enable":1
         }
       ]
     },

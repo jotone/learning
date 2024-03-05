@@ -55,7 +55,13 @@
               </template>
 
               <template v-else-if="column.field === 'status'">
-
+                <TableHeadCol
+                  :field="column.field"
+                  :filters="filters"
+                  :name="column.name"
+                  :showInfoIcon="true"
+                  @changeDirection="changeDirection"
+                />
               </template>
 
               <template v-else>
@@ -69,6 +75,11 @@
             </th>
           </tr>
           </thead>
+          <tbody>
+            <template v-for="course in list.data">
+              <TableRow :course="course" :columns="columns"/>
+            </template>
+          </tbody>
         </table>
       </div>
 
@@ -106,6 +117,7 @@ import {FiltersInterface} from '../../../../contracts/FiltersInterface';
 import {getFilters, Pagination, PerPage, SearchForm, TableHeadCol} from '../../../components/DataTable/index.js';
 import ColumnSelector from '../../../components/DataTable/ColumnSelector.vue';
 import Sidebar from '../../../components/Default/Sidebar.vue';
+import TableRow from './TableRow.vue';
 // Layout
 import Layout from '../../../shared/Layout.vue';
 
@@ -134,7 +146,7 @@ const listQuery = (filters: FiltersInterface): string => `{courses(
   search:"${filters.search}"
 ) {
   total per_page last_page has_more_pages current_page data {
-    id name url img_url category_id instructor_id lang status optional_duration users_count created_at updated_at category {id name} instructor {id email}
+    id name url img_url category_id category_name instructor_id instructor_email lang status optional_duration position certificate_enable users_count created_at updated_at
   }
 }}`
 
@@ -259,8 +271,13 @@ let sidebar = ref(null);
 let list = ref([]);
 // Decoded URI query
 const query = decodeUriQuery(window.location.search)
+query.order = {
+  by: 'position',
+  dir: 'asc'
+}
 // Page filters list
 let filters = reactive(getFilters(query))
+
 // List of active columns
 let columns = ref(activeColumns(page.props.sections))
 // Load roles
