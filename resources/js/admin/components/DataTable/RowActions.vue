@@ -57,12 +57,11 @@ const props = defineProps({
  */
 const buildUrl = (link: string) => link.replace(/:id/, props.model.id);
 
-const closeRowActions = async (e) => {
-  await nextTick()
+const closeRowActions = async e => await nextTick(() => {
   if (active.value && null === e.target.closest('.row-actions')) {
     active.value = false
   }
-}
+})
 
 /*
  * Watchers

@@ -82,7 +82,7 @@ npm i && npm run prod
     - Course list
       - ~~Column editor~~
       - ~~Output~~
-      - Status tooltip
+      - ~~Status tooltip~~
       - Bulk Actions
       - Filters
     - Category create
