@@ -61,6 +61,7 @@
                   :name="column.name"
                   :showInfoIcon="true"
                   @changeDirection="changeDirection"
+                  @hover="showStatusTooltip"
                 />
               </template>
 
@@ -101,6 +102,20 @@
   <Sidebar ref="sidebar" caption="Choose Visible Columns">
     <ColumnSelector :sections="$attrs.sections" :columns="columns" @changeColumnStatus="toggleColumn"/>
   </Sidebar>
+
+  <Teleport to="body">
+    <StatusTooltip ref="statusTooltip">
+      <div class="status-tooltip-row">
+        <b>Active:</b><span>Fully accessible, complete courses available now.</span>
+      </div>
+      <div class="status-tooltip-row">
+        <b>Coming Soon:</b><span>New courses launching soon.</span>
+      </div>
+      <div class="status-tooltip-row">
+        <b>Draft:</b><span>Courses in development, not yet available.</span>
+      </div>
+    </StatusTooltip>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -120,6 +135,7 @@ import Sidebar from '../../../components/Default/Sidebar.vue';
 import TableRow from './TableRow.vue';
 // Layout
 import Layout from '../../../shared/Layout.vue';
+import {StatusTooltip} from '../../../components/DataTable';
 
 defineOptions({layout: Layout})
 
@@ -202,6 +218,14 @@ const getList = (filters: FiltersInterface, callback?: Function) =>
       typeof callback === 'function' && callback(filters)
     })
 
+const showStatusTooltip = (status, e) => {
+  const borders = e.target.closest('.info-icon-wrap').getBoundingClientRect();
+  statusTooltip.value.toggleShow(status, {
+    left: borders.left + 30,
+    top: window.innerWidth > 1200 ? -18 : 25
+  })
+}
+
 /**
  * Check the page column changed its status
  * @param section
@@ -240,9 +264,7 @@ const toggleColumn = (section: string, field: string, value: boolean) => {
 const toggleSidebar = (status: boolean = true) => {
   sidebar.value.toggleShow(status);
 }
-/*
- * Methods
- */
+
 /**
  * Get enabled columns list
  * @param sections
@@ -267,6 +289,8 @@ let activeColumns = (sections: Array<ColumnSectionInterface>) => Object.values( 
  */
 // Sidebar element reference
 let sidebar = ref(null);
+// StatusTooltip element reference
+let statusTooltip = ref(null);
 // Data-table items list
 let list = ref([]);
 // Decoded URI query

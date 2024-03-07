@@ -6,7 +6,7 @@
       <i class="icon plus-icon"></i>
     </div>
 
-    <div v-if="showInfoIcon" class="info-icon-wrap">
+    <div v-if="showInfoIcon" class="info-icon-wrap" @mouseover="showTooltip">
       <i class="icon info-icon"></i>
     </div>
 
@@ -19,10 +19,12 @@
 </template>
 
 <script setup lang="ts">
+// Vue libs
 import {PropType} from "vue";
+// Interfaces
 import {FiltersInterface} from "../../../contracts/FiltersInterface";
 
-const emit = defineEmits(['changeDirection'])
+const emit = defineEmits(['changeDirection', 'hover'])
 
 const props = defineProps({
   field: {
@@ -78,4 +80,6 @@ const changeOrder = () => {
     emit('changeDirection', order)
   }
 }
+
+const showTooltip = e => emit('hover', true, e)
 </script>
