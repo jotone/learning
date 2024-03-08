@@ -1,5 +1,6 @@
 import {createApp, h} from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
+import vSelect from 'vue-select';
 
 const clickOutside = {
   beforeMount: (el, binding) => {
@@ -35,6 +36,7 @@ createInertiaApp({
   },
   setup({el, App, props, plugin}) {
     createApp({render: () => h(App, props)})
+      .component('v-select', vSelect)
       .directive("click-outside", clickOutside)
       .use(plugin)
       .mount(el)

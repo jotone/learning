@@ -81,5 +81,5 @@ const changeOrder = () => {
   }
 }
 
-const showTooltip = e => emit('hover', true, e)
+const showTooltip = e => emit('hover', e, true)
 </script>
