@@ -40,6 +40,11 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
     color: white;
   }
 
+  &.blue--inverse {
+    border-color: #005aff;
+    color: #005aff;
+  }
+
   &.danger {
     background-color: #ff2947;
     border-color: #ff2947;

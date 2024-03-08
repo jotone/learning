@@ -33,13 +33,24 @@
         </div>
       </div>
 
+      <BulkActions
+        :ref="bulkActionsRef"
+        :total="list.total"
+        :selected="bulkActions.selected"
+        :options="bulkActions.options"
+        :counter="bulkActions.checkedNum"
+        @clear="bulkCheckBoxToggleAll"
+      />
+
       <div class="table-container">
         <table>
           <thead>
           <tr>
             <th class="static">
               <div class="static-fields">
-                <div class="bulk-select"><input type="checkbox" name="checkAll"></div>
+                <div class="bulk-select">
+                  <input type="checkbox" name="checkAll" @change="bulkCheckBoxToggleAll">
+                </div>
                 <TableHeadCol name="Thumbnail"/>
               </div>
             </th>
@@ -77,9 +88,13 @@
           </tr>
           </thead>
           <tbody>
-            <template v-for="course in list.data">
-              <TableRow :course="course" :columns="columns"/>
-            </template>
+          <template v-for="course in list.data">
+            <TableRow
+              :course="course"
+              :columns="columns"
+              @changeBulkCheckbox="bulkCheckBoxToggleSingle"
+            />
+          </template>
           </tbody>
         </table>
       </div>
@@ -129,7 +144,14 @@ import Notifications from '../../../components/Default/Notifications.vue';
 import {ColumnSectionInterface} from '../../../../contracts/ColumnSectionInterface';
 import {FiltersInterface} from '../../../../contracts/FiltersInterface';
 // Components
-import {getFilters, Pagination, PerPage, SearchForm, TableHeadCol} from '../../../components/DataTable/index.js';
+import {
+  BulkActions,
+  getFilters,
+  Pagination,
+  PerPage,
+  SearchForm,
+  TableHeadCol
+} from '../../../components/DataTable/index.js';
 import ColumnSelector from '../../../components/DataTable/ColumnSelector.vue';
 import Sidebar from '../../../components/Default/Sidebar.vue';
 import TableRow from './TableRow.vue';
@@ -203,7 +225,7 @@ const changePage = (filters: FiltersInterface) => getList(filters, (filters: Fil
     state.search = filters.search
   }
   // Change uri state
-  window.history.pushState(window.location.origin + window.location.pathname, "", '?' + encodeUriQuery(state))
+  window.history.pushState(window.location.origin + window.location.pathname, '', '?' + encodeUriQuery(state))
 })
 
 /**
@@ -218,12 +240,54 @@ const getList = (filters: FiltersInterface, callback?: Function) =>
       typeof callback === 'function' && callback(filters)
     })
 
-const showStatusTooltip = (status, e) => {
+/**
+ * View Course status tooltip
+ * @param e
+ * @param status
+ */
+const showStatusTooltip = (e: Event, status) => {
   const borders = e.target.closest('.info-icon-wrap').getBoundingClientRect();
   statusTooltip.value.toggleShow(status, {
     left: borders.left + 30,
-    top: window.innerWidth > 1200 ? -18 : 25
+    top: window.innerWidth > 1200 ? -18 : 47
   })
+}
+
+/**
+ * Select or unselect all bulk action checkboxes
+ * @param e
+ * @param state
+ */
+const bulkCheckBoxToggleAll = (e, state = null) => {
+  // Set checkbox status. If a state is null then depend on checkbox status, else - force a status
+  const status = null === state ? e.target.checked : state;
+  // Get element parent table
+  const parent = (e?.constructor?.name === 'Event' ? e.target : e).closest('table');
+  // Get checkboxes nodes
+  const nodes = parent.querySelectorAll('input[name="checkEl"]');
+  // Set a number of the selected elements
+  bulkActions.checkedNum = status ? nodes.length : 0;
+  // Set status to the checkboxes
+  for (let i = 0, n = nodes.length; i < n; i++) {
+    nodes[i].checked = status;
+  }
+  // If status is force stated, change the main checkbox value
+  if (null !== state) {
+    parent.querySelector('input[name="checkAll"]').checked = state
+  }
+}
+
+/**
+ * Select or unselect the main bulk action checkbox
+ * @param e
+ */
+const bulkCheckBoxToggleSingle = (e: Event) => {
+  const parent = e.target.closest('tbody');
+  bulkActions.checkedNum = parent.querySelectorAll('input[name="checkEl"]:checked').length;
+  parent.closest('table').querySelector('input[name="checkAll"]').checked = (
+    0 !== bulkActions.checkedNum
+    && parent.querySelectorAll('input[name="checkEl"]').length === bulkActions.checkedNum
+  );
 }
 
 /**
@@ -287,6 +351,37 @@ let activeColumns = (sections: Array<ColumnSectionInterface>) => Object.values( 
 /*
  * Variables
  */
+const bulkActionsRef = ref(null);
+// Show bulk actions marker
+let bulkActions = reactive({
+  checkedNum: 0,
+  selected: 'Bulk Actions',
+  options: [
+    {
+      value: null,
+      disabled: true,
+      label: 'Bulk Actions'
+    }, {
+      value: 'delete',
+      label: 'Delete',
+      callback: () => {
+        console.log(111)
+      }
+    }, {
+      value: 'export',
+      label: 'Export to CSV'
+    }, {
+      value: 'addToCat',
+      label: 'Add to Category'
+    }, {
+      value: 'renameFromCat',
+      label: 'Remove from Category'
+    }, {
+      value: 'activate',
+      label: 'Set to Active'
+    }
+  ]
+})
 // Sidebar element reference
 let sidebar = ref(null);
 // StatusTooltip element reference

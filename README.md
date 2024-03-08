@@ -84,6 +84,11 @@ npm i && npm run prod
       - ~~Output~~
       - ~~Status tooltip~~
       - Bulk Actions
+        - Delete
+        - Export to CSV
+        - Add to Category
+        - Remove From Category
+        - Set to Active
       - Filters
     - Category create
     - Category edit

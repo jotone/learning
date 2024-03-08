@@ -2,7 +2,9 @@
   <tr>
     <td class="static">
       <div class="static-fields">
-        <div class="bulk-select"><input type="checkbox" name="checkAll"></div>
+        <div class="bulk-select">
+          <input type="checkbox" name="checkEl" @change="bulkActionCheckboxChange">
+        </div>
         <a class="image-container">
           <img :src="courseImage" v-if="Object.keys(props.course.img_url).length" alt="">
         </a>
@@ -40,6 +42,8 @@ import StatusInfo from '../../../components/Default/StatusInfo.vue';
 // Implement function to convert dates into the proper view
 const convertDate = inject('convertDate');
 
+const emit = defineEmits(['changeBulkCheckbox']);
+
 // Use data passed to the page
 const page = usePage();
 
@@ -48,6 +52,9 @@ const props = defineProps({
   columns: Array<ColumnInterface>
 });
 
+/*
+ * Computed
+ */
 /**
  * Get course image. First the smallest one
  * @return {string}
@@ -90,4 +97,12 @@ const statusValue = computed(() => {
       throw new RangeError('Unknown course status.')
   }
 });
+
+/*
+ * Methods
+ */
+/**
+ * Bulk actions checkbox change event
+ */
+const bulkActionCheckboxChange = e => emit('changeBulkCheckbox', e)
 </script>

@@ -8,7 +8,7 @@
 const props = defineProps({
   type: {
     type: String,
-    required: true
+    default: null
   },
   caption: {
     type: String,
