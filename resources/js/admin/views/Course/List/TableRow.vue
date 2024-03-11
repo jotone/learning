@@ -68,7 +68,7 @@ const courseImage = computed(() => Object.keys(props.course.img_url).length
  * Link for the role edit page
  * @return {string}
  */
-const editUrl = computed((): string => page.props.routes.edit.replace(/:id/, props.course.id))
+const editUrl = computed((): string => page.props.routes.course.edit.replace(/:id/, props.course.id))
 
 /**
  * Get the status options by the course status value

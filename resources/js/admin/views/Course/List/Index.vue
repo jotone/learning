@@ -3,7 +3,7 @@
     <div class="page-name-wrap">
       <h1>Courses</h1>
 
-      <a class="btn" :href="$attrs.routes.create">
+      <a class="btn" :href="$attrs.routes.course.create">
         <i class="icon book-plus-icon"></i>
         <span>Create Course</span>
       </a>
@@ -62,6 +62,7 @@
                   :name="column.name"
                   :showPlusIcon="true"
                   @changeDirection="changeDirection"
+                  @plusClick="categoryModalShow"
                 />
               </template>
 
@@ -130,6 +131,8 @@
         <b>Draft:</b><span>Courses in development, not yet available.</span>
       </div>
     </StatusTooltip>
+
+    <CategoryModal ref="categoryModal"/>
   </Teleport>
 </template>
 
@@ -150,14 +153,15 @@ import {
   Pagination,
   PerPage,
   SearchForm,
+  StatusTooltip,
   TableHeadCol
 } from '../../../components/DataTable/index.js';
+import CategoryModal from './Modals/CategoryModal.vue';
 import ColumnSelector from '../../../components/DataTable/ColumnSelector.vue';
 import Sidebar from '../../../components/Default/Sidebar.vue';
 import TableRow from './TableRow.vue';
 // Layout
 import Layout from '../../../shared/Layout.vue';
-import {StatusTooltip} from '../../../components/DataTable';
 
 defineOptions({layout: Layout})
 
@@ -234,24 +238,30 @@ const changePage = (filters: FiltersInterface) => getList(filters, (filters: Fil
  * @param {null|function} callback
  */
 const getList = (filters: FiltersInterface, callback?: Function) =>
-  requestGraphQL(page.props.routes.api, listQuery(filters))
+  requestGraphQL(page.props.routes.course.api, listQuery(filters))
     .then(response => {
       list.value = response.data.data.courses;
       typeof callback === 'function' && callback(filters)
     })
 
 /**
- * View Course status tooltip
- * @param e
- * @param status
+ * Get enabled columns list
+ * @param sections
  */
-const showStatusTooltip = (e: Event, status) => {
-  const borders = e.target.closest('.info-icon-wrap').getBoundingClientRect();
-  statusTooltip.value.toggleShow(status, {
-    left: borders.left + 30,
-    top: window.innerWidth > 1200 ? -18 : 47
-  })
-}
+let activeColumns = (sections: Array<ColumnSectionInterface>) => Object.values( // Reset the result array indexes
+  // Go through every section
+  sections.reduce((result, section) => {
+    // Go through every enabled column in the section
+    section.columns.filter(col => col.enable)
+      // Fill the result array with column values
+      .reduce((sum, col) => result[col.table_position] = {
+        id: col.id,
+        field: col.field,
+        name: col.name
+      }, {})
+    return result;
+  }, {})
+);
 
 /**
  * Select or unselect all bulk action checkboxes
@@ -288,6 +298,25 @@ const bulkCheckBoxToggleSingle = (e: Event) => {
     0 !== bulkActions.checkedNum
     && parent.querySelectorAll('input[name="checkEl"]').length === bulkActions.checkedNum
   );
+}
+
+const categoryModalShow = () => {
+  categoryModal.value.open().then(res => {
+    console.log(res)
+  })
+}
+
+/**
+ * View Course status tooltip
+ * @param e
+ * @param status
+ */
+const showStatusTooltip = (e: Event, status) => {
+  const borders = e.target.closest('.info-icon-wrap').getBoundingClientRect();
+  statusTooltip.value.toggleShow(status, {
+    left: borders.left + 30,
+    top: window.innerWidth > 1200 ? -18 : 47
+  })
 }
 
 /**
@@ -329,25 +358,6 @@ const toggleSidebar = (status: boolean = true) => {
   sidebar.value.toggleShow(status);
 }
 
-/**
- * Get enabled columns list
- * @param sections
- */
-let activeColumns = (sections: Array<ColumnSectionInterface>) => Object.values( // Reset the result array indexes
-  // Go through every section
-  sections.reduce((result, section) => {
-    // Go through every enabled column in the section
-    section.columns.filter(col => col.enable)
-      // Fill the result array with column values
-      .reduce((sum, col) => result[col.table_position] = {
-        id: col.id,
-        field: col.field,
-        name: col.name
-      }, {})
-    return result;
-  }, {})
-);
-
 /*
  * Variables
  */
@@ -382,6 +392,8 @@ let bulkActions = reactive({
     }
   ]
 })
+// Category modal reference
+let categoryModal = ref(null);
 // Sidebar element reference
 let sidebar = ref(null);
 // StatusTooltip element reference
@@ -401,4 +413,5 @@ let filters = reactive(getFilters(query))
 let columns = ref(activeColumns(page.props.sections))
 // Load roles
 getList(filters)
+
 </script>

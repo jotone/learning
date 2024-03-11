@@ -7,7 +7,7 @@
     </ul>
   </div>
 
-  <div class="column-selector-reposition-wrap">
+  <div class="column-selector-reposition-wrap sortable-list">
     <div class="column-selector-reposition-caption">
       Column Reposition
     </div>

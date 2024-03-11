@@ -5,7 +5,7 @@
         <i class="icon sort hellip-double-icon"></i>
         <span class="sortable-list-name">{{ element.name }}</span>
         <div class="sortable-list-controls">
-          <i class="icon close-icon"></i>
+          <i class="icon hellip-icon"></i>
         </div>
       </li>
     </template>

@@ -79,23 +79,24 @@ npm i && npm run prod
 - ~~Courses API~~
 - Courses
   - Page
-    - Course list
+    - ~~Course list~~
       - ~~Column editor~~
       - ~~Output~~
       - ~~Status tooltip~~
-      - Bulk Actions
-        - Delete
-        - Export to CSV
-        - Add to Category
-        - Remove From Category
-        - Set to Active
-      - Filters
-    - Category create
+      - ~~Bulk Actions~~
+    - ~~Category create~~
+    - Category sort
     - Category edit
-    - Course columns
+    - Category remove
+    - ~~Course columns~~
     - Course Create
     - Course edit
     - Course bulk actions
+      - Delete
+      - Export to CSV
+      - Add to Category
+      - Remove From Category
+      - Set to Active
     - Course filters
 - Settings Emails
 - User Courses

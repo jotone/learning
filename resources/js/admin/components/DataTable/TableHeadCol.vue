@@ -1,8 +1,8 @@
 <template>
-  <div class="col-name" @click="changeOrder">
+  <div class="col-name">
     <span>{{ name }}</span>
 
-    <div v-if="showPlusIcon" class="plus-icon-wrap">
+    <div v-if="showPlusIcon" class="plus-icon-wrap" @click="plusClick">
       <i class="icon plus-icon"></i>
     </div>
 
@@ -14,6 +14,7 @@
       v-if="null !== field"
       class="order"
       :class="{active: colIsActive(field), desc: colDirectDesc(field)}"
+      @click="changeOrder"
     ></div>
   </div>
 </template>
@@ -24,7 +25,7 @@ import {PropType} from "vue";
 // Interfaces
 import {FiltersInterface} from "../../../contracts/FiltersInterface";
 
-const emit = defineEmits(['changeDirection', 'hover'])
+const emit = defineEmits(['changeDirection', 'hover', 'plusClick'])
 
 const props = defineProps({
   field: {
@@ -81,5 +82,15 @@ const changeOrder = () => {
   }
 }
 
+/**
+ * Click the plus button
+ * @param e
+ */
+const plusClick = e => emit('plusClick', e)
+
+/**
+ * Hover status icon
+ * @param e
+ */
 const showTooltip = e => emit('hover', e, true)
 </script>
