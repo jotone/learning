@@ -35,7 +35,7 @@
   }
 
   .popup-title-wrap, .popup-body-wrap {
-    padding: 25px;
+    padding: 25px 30px;
   }
 
   .popup-title-wrap {
@@ -178,6 +178,36 @@
       a, span {color: #00145e}
     }
   }
+}
+
+.category-popup {
+  .add-category-wrap {
+    .add-category-text {
+      color: #00145e;
+      font-size: 16px;
+      line-height: 18px;
+      margin: 15px 0;
+    }
+
+    .add-category-controls {
+      display: flex;
+      align-content: center;
+
+      .add-category-input {width: 100%}
+
+      .form-input {padding-right: 40px}
+
+      .circle-progress-wrap {right: 30px}
+
+      .btn {margin-top: 5px}
+    }
+  }
+
+  .sortable-list {margin: 20px 0}
+
+  .popup-text-row {margin-top: 20px}
+
+  .slider-checkbox-wrap .slider-checkbox-text {font-weight: 400}
 }
 
 @media screen and (max-width: 720px) {

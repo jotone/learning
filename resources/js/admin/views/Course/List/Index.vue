@@ -156,7 +156,7 @@ import {
   StatusTooltip,
   TableHeadCol
 } from '../../../components/DataTable/index.js';
-import CategoryModal from './CategoryModal.vue';
+import CategoryModal from './Modals/CategoryModal.vue';
 import ColumnSelector from '../../../components/DataTable/ColumnSelector.vue';
 import Sidebar from '../../../components/Default/Sidebar.vue';
 import TableRow from './TableRow.vue';
@@ -413,4 +413,5 @@ let filters = reactive(getFilters(query))
 let columns = ref(activeColumns(page.props.sections))
 // Load roles
 getList(filters)
+
 </script>

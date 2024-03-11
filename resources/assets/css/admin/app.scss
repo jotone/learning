@@ -151,6 +151,47 @@ fieldset {
   width: calc(100% - 400px)
 }
 
+.sortable-list li {
+  align-items: center;
+  background-color: #f2f7ff;
+  color: #00145e;
+  display: flex;
+  font-size: 14px;
+  margin: 10px 0;
+  padding: 15px 15px 15px 40px;
+  position: relative;
+
+  .sort {
+    background-color: #909bbf;
+    cursor: grab;
+    left: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .sortable-list-name {padding-right: 20px}
+
+  .sortable-list-controls {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 2px;
+    right: 18px;
+
+    .icon {
+      background-color: #909bbf;
+      cursor: pointer;
+      height: 20px;
+      margin-left: auto;
+      width: 20px;
+    }
+
+    &:hover .icon{background-color: #00145e}
+  }
+}
+
 @media screen and (max-width: 1440px) {
   .site-content-wrap main {padding: 40px 45px}
 }
