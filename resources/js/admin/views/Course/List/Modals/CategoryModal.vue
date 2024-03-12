@@ -22,10 +22,15 @@
         </div>
 
         <div class="sortable-list">
-          <CategoriesList :list="list.data"/>
+          <CategoriesList :list="list.data" @change="categorySort"/>
         </div>
 
-        <SliderCheckbox name="cats_inst_courses" text="Use Categories on User Dashboard"/>
+        <SliderCheckbox
+          name="cats_inst_courses"
+          text="Use Categories on User Dashboard"
+          :checked="categoriesInsteadOfCourses"
+          @change="categoriesInsteadOfCoursesChange"
+        />
 
         <p class="popup-text-row">
           Note: All courses should belong to a category in order to<br>be able to select this view.
@@ -45,6 +50,7 @@ export default {
   mixins: [DefaultPopupMixin],
   data() {
     return {
+      categoriesInsteadOfCourses: Boolean(+this.$page.props.settings.cats_inst_courses),
       form: {
         name: ''
       },
@@ -60,6 +66,16 @@ export default {
     }
   },
   methods: {
+    categoriesInsteadOfCoursesChange(val) {
+      this.categoriesInsteadOfCourses = val;
+      this.request({
+        url: this.$page.props.routes.settings,
+        method: 'patch',
+        data: {
+          cats_inst_courses: val
+        }
+      })
+    },
     /**
      * Send a request to create a category
      */
@@ -67,6 +83,18 @@ export default {
       const query = `mutation {create (name: "${this.form.name}", type: "course") {id name position}}`
       this.requestGraphQL(this.$page.props.routes.category.api, query)
         .then(response => null !== response?.data?.data?.create && this.list.data.push(response.data.data.create))
+    },
+    /**
+     * Send the categories sorting request
+     */
+    categorySort() {
+      let ids = this.list.data.map((item, index) => {
+        item.position = index;
+        return item.id;
+      });
+      let query = `mutation {sort (list: [${ids.join(',')}]) {id}}`
+
+      this.requestGraphQL(this.$page.props.routes.category.api, query)
     },
     /**
      * Open the modal window
@@ -91,10 +119,9 @@ export default {
     }}`
     this.requestGraphQL(this.$page.props.routes.category.api, query)
       .then(response => {
-        console.log(response.data.data.categories)
         this.list = response.data.data.categories;
       })
   },
-  inject: ['requestGraphQL'],
+  inject: ['request', 'requestGraphQL'],
 }
 </script>
