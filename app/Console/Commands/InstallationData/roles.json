@@ -11,7 +11,7 @@
     "name": "Coach",
     "level": 127,
     "permissions": {
-      "App\\GraphQL\\Schemas\\CategorySchema": ["query", "create", "update", "destroy"],
+      "App\\GraphQL\\Schemas\\CategorySchema": ["query", "create", "sort", "update", "destroy"],
       "App\\GraphQL\\Schemas\\CourseSchema": ["query", "create", "update", "destroy"],
       "App\\GraphQL\\Schemas\\UserSchema": ["query", "create", "update", "destroy"],
       "App\\Http\\Controllers\\Api\\SettingsController": ["smtp", "update"],
@@ -34,7 +34,7 @@
     "name": "Administrator",
     "level": 63,
     "permissions": {
-      "App\\GraphQL\\Schemas\\CategorySchema": ["query", "create", "update", "destroy"],
+      "App\\GraphQL\\Schemas\\CategorySchema": ["query", "create", "sort", "update", "destroy"],
       "App\\GraphQL\\Schemas\\CourseSchema": ["query", "create", "update", "destroy"],
       "App\\GraphQL\\Schemas\\RoleSchema": ["query", "create", "update", "destroy"],
       "App\\GraphQL\\Schemas\\UserSchema": ["query", "create", "update", "destroy"],

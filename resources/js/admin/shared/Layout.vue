@@ -132,35 +132,33 @@ const request = props => {
  * GraphQL request
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-const requestGraphQL = (url, query) => new Promise((resolve, reject) => {
-  axios.post(url, {'query': query}, {
-    headers: {
-      accept: "application/json",
-      Authorization: "Bearer " + page.props.auth.apiToken
-    }
-  }).then(response => {
-    if (200 === response.status) {
-      if ('errors' in response.data) {
-        for (let i = 0, n = response.data.errors.length; i < n; i++) {
-          const error = response.data.errors[i];
-          if (error.extensions.hasOwnProperty('validation')) {
-            for (let field in error.extensions.validation) {
-              const errorMessages = error.extensions.validation[field]
-              for (let j = 0, m = errorMessages.length; j < m; j++) {
-                Notification.danger(errorMessages[j]);
-              }
+const requestGraphQL = (url, query) => new Promise((resolve, reject) => axios.post(url, {'query': query}, {
+  headers: {
+    accept: "application/json",
+    Authorization: "Bearer " + page.props.auth.apiToken
+  }
+}).then(response => {
+  if (200 === response.status) {
+    if ('errors' in response.data) {
+      for (let i = 0, n = response.data.errors.length; i < n; i++) {
+        const error = response.data.errors[i];
+        if (error.extensions.hasOwnProperty('validation')) {
+          for (let field in error.extensions.validation) {
+            const errorMessages = error.extensions.validation[field]
+            for (let j = 0, m = errorMessages.length; j < m; j++) {
+              Notification.danger(errorMessages[j]);
             }
-          } else {
-            Notification.danger(response.data.errors[i].message);
           }
+        } else {
+          Notification.danger(response.data.errors[i].message);
         }
-        reject(response.data.errors)
-      } else {
-        resolve(response)
       }
+      reject(response.data.errors)
+    } else {
+      resolve(response)
     }
-  })
-})
+  }
+}))
 
 // Provide the "convertDate", "request", "requestGraphQL" functions on over the all projects
 provide('convertDate', convertDate)

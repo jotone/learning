@@ -15,6 +15,7 @@ class SettingsController extends Controller
 {
     protected array $fields = [
         'common' => [
+            'cats_inst_courses',
             'curriculum_menu',
             'custom_question_1',
             'custom_question_2',

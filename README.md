@@ -85,7 +85,7 @@ npm i && npm run prod
       - ~~Status tooltip~~
       - ~~Bulk Actions~~
     - ~~Category create~~
-    - Category sort
+    - ~~Category sort~~
     - Category edit
     - Category remove
     - ~~Course columns~~

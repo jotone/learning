@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\BaseDashboardController;
+use App\Models\Settings;
 use Inertia\Response;
 
 class CourseController extends BaseDashboardController
@@ -29,8 +30,10 @@ class CourseController extends BaseDashboardController
                         'api' => route('graphql.course'),
                         'create' => route('dashboard.courses.create'),
                         'edit' => route('dashboard.courses.edit', ':id')
-                    ]
+                    ],
+                    'settings' => route('api.settings.update')
                 ],
+                'settings' => Settings::where('key', 'cats_inst_courses')->pluck('value', 'key')->toArray()
             ],
             scripts: [
                 'css' => ['resources/assets/css/admin/content-table.scss']
