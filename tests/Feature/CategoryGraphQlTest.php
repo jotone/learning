@@ -91,6 +91,38 @@ class CategoryGraphQlTest extends GraphQlTestCase
     }
 
     /**
+     * Tests the sorting functionality for categories.
+     *
+     * This test ensures that categories can be sorted as expected by verifying
+     * the 'position' attribute in the database matches the expected order.
+     * It retrieves a list of category IDs in a random order, performs a mutation
+     * test to sort them, and then asserts that each category's 'position' in the
+     * database reflects the sorted order.
+     *
+     * @return void
+     */
+    public function testSorting(): void
+    {
+        $categories = Category::inRandomOrder()->pluck('id')->toArray();
+
+        $this->runMutationTest(
+            type: 'sort',
+            route: route('graphql.category'),
+            query: 'list: [%s]',
+            params: [implode(',', $categories)],
+            response_fields: 'id',
+            callback: function () use ($categories) {
+                foreach ($categories as $pos => $id) {
+                    $this->assertDatabaseHas('categories', [
+                        'id' => $id,
+                        'position' => $pos
+                    ]);
+                }
+            }
+        );
+    }
+
+    /**
      * Tests the update functionality for a Category model.
      *
      * This test ensures that an existing category can be updated with new information
