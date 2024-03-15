@@ -83,7 +83,7 @@ class Query extends GraphQlPaginatedQuery
 
         $where = function ($query) use ($input, &$fields) {
             foreach ($this->fields as $field) {
-                if ($field === 'type') {
+                if ($field === 'type' && isset($input[$field])) {
                     switch($input[$field]) {
                         case 'course':
                         case 'courses':
