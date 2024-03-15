@@ -6,6 +6,11 @@ export { default as SearchForm } from './SearchForm.vue';
 export { default as StatusTooltip } from './StatusTooltip.vue';
 export { default as TableHeadCol } from './TableHeadCol.vue';
 
+/**
+ * Build filters object
+ * @param query
+ * @returns {{per_page: (any|number), search: string, page: number, order: {by: (any|string), dir: (*|string)}}}
+ */
 export function getFilters(query) {
   return {
     page: query.page || 1,

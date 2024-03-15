@@ -8,11 +8,15 @@
 </template>
 
 <script setup lang="ts">
+// Vue libs
 import {computed, PropType} from 'vue'
+// Interfaces
 import {SideMenuItemInterface} from "../../../contracts/SideMenuItemInterface";
 
 // Component properties
-const props = defineProps({item: Object as PropType<SideMenuItemInterface>})
+const props = defineProps({
+  item: Object as PropType<SideMenuItemInterface>
+})
 
 /**
  * Check the menu item is active

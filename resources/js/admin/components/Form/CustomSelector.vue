@@ -19,10 +19,13 @@
 </template>
 
 <script setup>
+// Vue libs
 import {reactive, ref} from "vue";
 
+// Assign the function to emit
 const emit = defineEmits(['change'])
 
+// Get component properties
 const props = defineProps({
   valueField: {
     type: String,
@@ -52,17 +55,23 @@ const props = defineProps({
 /*
  * Methods
  */
+/**
+ * Set new selector values on change event
+ * @param option
+ */
 const changeValue = option => {
   selected.value = option.value;
   selected.text = option.text;
   emit('change', selected.value)
 }
+
 /**
  * Gets the text to be displayed for a given option
  * @param {object|string} option
  * @return {string}
  */
 const optionText = option => null === props.valueField ? option : option[props.valueField];
+
 /**
  * Generates the HTML for a row in the dropdown
  * @param {object|string} option
@@ -71,6 +80,7 @@ const optionText = option => null === props.valueField ? option : option[props.v
 const row = option => null === props.optionRow
   ? `<span>${optionText(option)}</span>`
   : props.optionRow(option)
+
 /**
  * Toggles the visibility of the dropdown
  */

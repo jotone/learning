@@ -92,6 +92,12 @@ const viewSideMenu = () => {
  */
 const convertDate = (date, format = 'DD MMM YYYY') => moment(date).format(format);
 /**
+ * Get element index related to the parent node
+ * @param el
+ * @returns {number|null}
+ */
+const index = el => Array.from(el.parentNode.querySelectorAll(el.nodeName.toLowerCase())).indexOf(el);
+/**
  * Make HTTP requests using Axios
  * @param {object} props
  * @return {Promise}
@@ -132,36 +138,42 @@ const request = props => {
  * GraphQL request
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-const requestGraphQL = (url, query) => new Promise((resolve, reject) => axios.post(url, {'query': query}, {
-  headers: {
-    accept: "application/json",
-    Authorization: "Bearer " + page.props.auth.apiToken
-  }
-}).then(response => {
-  if (200 === response.status) {
-    if ('errors' in response.data) {
-      for (let i = 0, n = response.data.errors.length; i < n; i++) {
-        const error = response.data.errors[i];
-        if (error.extensions.hasOwnProperty('validation')) {
-          for (let field in error.extensions.validation) {
-            const errorMessages = error.extensions.validation[field]
-            for (let j = 0, m = errorMessages.length; j < m; j++) {
-              Notification.danger(errorMessages[j]);
-            }
-          }
-        } else {
-          Notification.danger(response.data.errors[i].message);
-        }
-      }
-      reject(response.data.errors)
-    } else {
-      resolve(response)
+const requestGraphQL = (url, query, headers = {}) => new Promise((resolve, reject) => axios
+  .post(
+    url,
+    typeof query === 'string' ? {'query': query} : query,
+    {
+      headers: Object.assign({
+        accept: "application/json",
+        Authorization: "Bearer " + page.props.auth.apiToken
+      }, headers)
     }
-  }
-}))
+  ).then(response => {
+    if (200 === response.status) {
+      if ('errors' in response.data) {
+        for (let i = 0, n = response.data.errors.length; i < n; i++) {
+          const error = response.data.errors[i];
+          if (error.extensions.hasOwnProperty('validation')) {
+            for (let field in error.extensions.validation) {
+              const errorMessages = error.extensions.validation[field]
+              for (let j = 0, m = errorMessages.length; j < m; j++) {
+                Notification.danger(errorMessages[j]);
+              }
+            }
+          } else {
+            Notification.danger(response.data.errors[i].message);
+          }
+        }
+        reject(response.data.errors)
+      } else {
+        resolve(response)
+      }
+    }
+  }))
 
 // Provide the "convertDate", "request", "requestGraphQL" functions on over the all projects
 provide('convertDate', convertDate)
+provide('index', index)
 provide('request', request)
 provide('requestGraphQL', requestGraphQL)
 </script>

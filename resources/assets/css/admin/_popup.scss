@@ -26,38 +26,33 @@
     position: absolute;
 
     .icon {
-      background-color: #909bbf;
+      background-color: $secondary;
       height: 24px;
       width: 24px;
     }
 
-    &:hover .icon {background-color: #00145e}
+    &:hover .icon {background-color: $text}
   }
 
-  .popup-title-wrap, .popup-body-wrap {
-    padding: 25px 30px;
-  }
+  .popup-title-wrap, .popup-body-wrap {padding: 25px 30px}
 
   .popup-title-wrap {
-    border-bottom: 1px solid #d6e0ff;
+    border-bottom: 1px solid $border;
     font-size: 24px;
     font-weight: 600;
     line-height: 36px;
   }
 
   .popup-text-row {
-    color: #00145e;
+    color: $link;
     font-size: 16px;
     line-height: 24px;
 
-    &.big-text {
-      font-size: 20px;
-      line-height: 30px;
-    }
+    &.big-text {font-size: 20px; line-height: 30px}
   }
 
   .popup-items-list-wrap {
-    background-color: #f2f7ff;
+    background-color: $bg;
     border-radius: 20px;
     margin: 10px 0;
     padding: 15px 25px;
@@ -84,14 +79,14 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          background-color: #e6efff;
+          background-color: $separator;
           border-radius: 50%;
           height: 20px;
           width: 20px;
         }
 
         .icon {
-          background-color: #005aff;
+          background-color: $link;
           height: 12px;
           width: 12px;
         }
@@ -106,8 +101,8 @@
       position: relative;
 
       .form-input {
-        border-color: #ff2947;
-        color: #ff2947;
+        border-color: $danger;
+        color: $danger;
         width: 50%;
       }
 
@@ -115,9 +110,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid #ff2947;
+        border: 1px solid $danger;
         border-radius: 50%;
-        color: #ff2947;
+        color: $danger;
         position: absolute;
         left: calc(50% - 30px);
         top: 50%;
@@ -128,7 +123,7 @@
 
       .hint-message {
         bottom: -20px;
-        color: #ff2947;
+        color: $danger;
         font-size: 14px;
         left: 5px;
         position: absolute;
@@ -145,7 +140,7 @@
 .row-actions-popup {
   display: none;
   background-color: white;
-  border: 1px solid #d6e0ff;
+  border: 1px solid $border;
   border-radius: 6px;
   box-shadow: 0 2px 8px 0 rgba(29, 33, 91, .2);
   min-width: 150px;
@@ -157,7 +152,7 @@
 
   &.active {display: block}
 
-  li, li a {
+  li span, li a {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -168,14 +163,14 @@
   li {
     margin: 12px 0;
 
-    .icon {background-color: #909bbf; height: 14px; width: 14px}
+    .icon {background-color: $secondary; height: 14px; width: 14px}
 
-    a, span {color: #909bbf}
+    a, span {color: $secondary}
 
     &:hover {
-      .icon {background-color: #00145e}
+      .icon {background-color: $text}
 
-      a, span {color: #00145e}
+      a, span {color: $text}
     }
   }
 }
@@ -183,7 +178,7 @@
 .category-popup {
   .add-category-wrap {
     .add-category-text {
-      color: #00145e;
+      color: $text;
       font-size: 16px;
       line-height: 18px;
       margin: 15px 0;
@@ -210,9 +205,16 @@
   .slider-checkbox-wrap .slider-checkbox-text {font-weight: 400}
 }
 
-@media screen and (max-width: 720px) {
-  .default-popup-wrap {
-    width: calc(100% - 20px);
-    margin: 0 auto;
+.image-upload-popup {
+  .popup-body-wrap {padding-top: 50px}
+
+  .popup-confirmation-button {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px
   }
+}
+
+@media screen and (max-width: 720px) {
+  .default-popup-wrap {width: calc(100% - 20px); margin: 0 auto}
 }

@@ -16,10 +16,13 @@
 </template>
 
 <script setup>
+// Vue lib
 import {ref} from "vue";
 
+// Assign the function to emit
 const emit = defineEmits(['runSearch'])
 
+// Get component properties
 const props = defineProps({
   name: {
     type: String,

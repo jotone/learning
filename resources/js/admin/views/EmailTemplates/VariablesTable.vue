@@ -69,7 +69,7 @@ import {reactive, ref} from 'vue';
 // Components
 import {TableHeadCol} from "../../components/DataTable/index.js";
 import VariablePopup from "./Modals/VariablePopup.vue";
-
+// Get component properties
 const props = defineProps({
   entities: {
     type: Object,
@@ -104,7 +104,6 @@ const variablePopupAdd = () => variableModal.value.open().then(res => {
         field: res.field
       }
     }
-    console.log(variablesList)
   }
 })
 /**

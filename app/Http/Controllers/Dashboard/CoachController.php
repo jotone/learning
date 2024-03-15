@@ -23,9 +23,7 @@ class CoachController extends BaseDashboardController
             ],
             'role_id' => Role::where('slug', 'coach')->value('id'),
             'routes' => [
-                'users' => [
-                    'api' => route('graphql.user')
-                ]
+                'api' => route('graphql.user')
             ]
         ]);
     }

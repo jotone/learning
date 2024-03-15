@@ -10,13 +10,16 @@
 </template>
 
 <script setup>
+// Vue lib
 import {ref} from 'vue';
+// Notifications lib
 import {Notification} from '../../libs/Notification.js';
+
 // Notification delay time, ms
 const notificationDelay = 3000;
 // Listen to the custom event (if you choose to use event dispatching)
 let notificationList = ref([]);
-//
+
 /**
  * Listen if the localStorage.setItem function was called
  */

@@ -13,8 +13,9 @@
 </template>
 
 <script setup>
+// Vue libs
 import {ref, watch} from "vue";
-
+// Get component properties
 const props = defineProps({
   current: {
     type: [Number, String],

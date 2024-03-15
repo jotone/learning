@@ -35,18 +35,21 @@
 // Vue libs
 import {computed, inject} from 'vue';
 import {usePage} from '@inertiajs/vue3';
-// Components
+// Interface
 import {ColumnInterface} from '../../../../contracts/ColumnInterface';
+// Components
 import StatusInfo from '../../../components/Default/StatusInfo.vue';
 
 // Implement function to convert dates into the proper view
 const convertDate = inject('convertDate');
 
+// Assign the function to emit
 const emit = defineEmits(['changeBulkCheckbox']);
 
 // Use data passed to the page
 const page = usePage();
 
+// Get component properties
 const props = defineProps({
   course: Object,
   columns: Array<ColumnInterface>

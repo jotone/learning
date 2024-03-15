@@ -1,8 +1,8 @@
 .status-tooltip-wrap {
   position: absolute;
-  background-color: #858a9d;
+  background-color: $draft;
   border-radius: 20px;
-  color: #fff;
+  color: white;
   padding: 20px 35px;
   top: 0;
   transform: translateY(50%);
@@ -12,7 +12,7 @@
 
   &:before {
     border-bottom: 1.5rem solid transparent;
-    border-right: 1.5rem solid #858a9d;
+    border-right: 1.5rem solid $draft;
     border-top: 1.5rem solid transparent;
     content: "";
     height: 0;

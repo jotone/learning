@@ -128,18 +128,22 @@
 </template>
 
 <script setup lang="ts">
+// Vue libs
 import {computed, reactive, ref, watch} from 'vue';
+// Components
 import {ColorPicker, SliderCheckbox} from '../../../components/Form/';
 import EditRowButton from './EditRowButton.vue';
 
+// Assign the function to emit
+const emit = defineEmits(['changeContent'])
+
+// Get component properties
 const props = defineProps({
   item: {
     type: Object,
     default: {}
   }
 })
-
-const emit = defineEmits(['changeContent'])
 
 /*
  * Computed

@@ -1,16 +1,10 @@
-@import "../font-popins.scss", "icons", "breadcrumbs", "circle-progress", "forms", "menu", "notification", "popup", "sidebar", "status-info", "user-avatar";
+@import "../font-popins.scss", "vars", "icons", "breadcrumbs", "circle-progress", "forms", "image-upload", "menu", "notification", "popup", "sidebar", "status-info", "user-avatar";
 
-.col-1-2 {
-  width: 50%;
-}
+.col-1-2 {width: 50%}
 
-.col-1-5 {
-  width: 20%;
-}
+.col-1-5 {width: 20%}
 
-.col-4-5 {
-  width: 80%;
-}
+.col-4-5 {width: 80%}
 
 .f-c-c {
   display: flex;
@@ -18,10 +12,7 @@
   justify-content: center;
 }
 
-a {
-  color: #005aff;
-  text-decoration: none;
-}
+a {color: $link; text-decoration: none}
 
 .site-content-wrap {
   display: flex;
@@ -31,7 +22,7 @@ a {
   position: relative;
 
   > nav {
-    background-color: #000e42;
+    background-color: $menuBg;
     border-bottom-right-radius: 30px;
     border-top-right-radius: 30px;
     position: fixed;
@@ -54,7 +45,7 @@ a {
       transform: translateY(-50%);
 
       .icon {
-        background-color: #ffffff;
+        background-color: white;
         height: 30px;
         width: 30px;
       }
@@ -68,12 +59,12 @@ a {
     }
 
     .account-type-wrap {
-      background: linear-gradient(135deg, #005aff 0%, #5691ff 100%);
+      background: linear-gradient(135deg, $link 0%, $gradient 100%);
       border-radius: 15px;
       padding: 30px;
 
       p {
-        color: #ffffff;
+        color: white;
         font-size: 16px;
         font-weight: 600;
         line-height: 24px;
@@ -83,7 +74,7 @@ a {
 
       a {
         display: block;
-        background-color: #ffffff;
+        background-color: white;
         border-radius: 30px;
         font-size: 16px;
         line-height: 24px;
@@ -104,10 +95,7 @@ a {
   }
 }
 
-.card {
-  border: 1px solid #d6e0ff;
-  border-radius: 20px;
-}
+.card {border: 1px solid $border; border-radius: 20px}
 
 fieldset {
   position: relative;
@@ -116,7 +104,7 @@ fieldset {
   legend {
     position: absolute;
     top: -55px;
-    color: #00145e;
+    color: $text;
     font-size: 30px;
     line-height: 45px;
   }
@@ -124,16 +112,20 @@ fieldset {
 
 .row {display: flex}
 
-.row.padding {padding: 20px 25px}
+.form-row {padding: 20px 0}
 
-.underline {border-bottom: 1px solid #e6efff}
+.row, .form-row {
+  &.padding {padding: 20px 25px}
+}
+
+.underline {border-bottom: 1px solid $separator}
 
 .scrollbar {
   &::-webkit-scrollbar {width: 8px}
 
-  &::-webkit-scrollbar-thumb {background-color: #005aff; border-radius: 10px}
+  &::-webkit-scrollbar-thumb {background-color: $link; border-radius: 10px}
 
-  &::-webkit-scrollbar-track {background-color: #e6efff}
+  &::-webkit-scrollbar-track {background-color: $separator}
 
   &::-webkit-scrollbar-button {display: none}
 }
@@ -147,14 +139,12 @@ fieldset {
   h1 {font-size: 50px; font-weight: 600}
 }
 
-.content-container {
-  width: calc(100% - 400px)
-}
+.content-container {width: calc(100% - 400px)}
 
-.sortable-list li {
+.sortable-list > ul > li {
   align-items: center;
-  background-color: #f2f7ff;
-  color: #00145e;
+  background-color: $bg;
+  color: $text;
   display: flex;
   font-size: 14px;
   margin: 10px 0;
@@ -162,7 +152,7 @@ fieldset {
   position: relative;
 
   .sort {
-    background-color: #909bbf;
+    background-color: $secondary;
     cursor: grab;
     left: 10px;
     position: absolute;
@@ -181,14 +171,14 @@ fieldset {
     right: 18px;
 
     .icon {
-      background-color: #909bbf;
+      background-color: $secondary;
       cursor: pointer;
       height: 20px;
       margin-left: auto;
       width: 20px;
     }
 
-    &:hover .icon{background-color: #00145e}
+    &:hover .icon{background-color: $text}
   }
 }
 
@@ -245,7 +235,7 @@ fieldset {
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-    color: #00145e;
+    color: $text;
     width: 70%;
     overflow: hidden;
     position: absolute;
@@ -260,9 +250,7 @@ fieldset {
   .col-1-2, .col-1-5, .col-4-5 {width: 100%}
 
   .site-content-wrap {
-    main {
-      padding: 105px 20px;
-    }
+    main {padding: 105px 20px}
 
     > nav {
       min-width: auto;

@@ -1,7 +1,7 @@
-@import "icons-editor", "color-picker";
+@import "vars", "icons-editor", "color-picker";
 
 .email-editor-wrap {
-  background-color: #f4f6fb;
+  background-color: $bg;
   border-radius: 20px;
   padding: 35px;
 
@@ -13,7 +13,7 @@
 
     tr:not(.add-row-wrap) {
       .table-element-wrap {
-        border: 1px solid #f4f6fb;
+        border: 1px solid $bg;
         border-radius: 6px;
         overflow: hidden;
         margin-top: -1px;
@@ -29,14 +29,14 @@
         position: absolute;
         right: 0;
         top: 0;
-        background-color: #005aff;
+        background-color: $link;
 
         .table-element-controls-edit, .table-element-controls-remove {
           cursor: pointer;
           padding: 2px 4px;
 
           &:hover .icon {
-            background-color: #00145e;
+            background-color: $text;
           }
         }
 
@@ -44,11 +44,9 @@
       }
 
       &:hover {
-        .table-element-wrap {border: 1px solid #005aff; z-index: 2}
+        .table-element-wrap {border: 1px solid $link; z-index: 2}
 
-        .table-element-controls {
-          display: flex;
-        }
+        .table-element-controls {display: flex}
       }
     }
 
@@ -57,21 +55,21 @@
     .btn {display: inline-block}
 
     .add-row-btn {
-      border: 2px solid #909bbf;
+      border: 2px solid $secondary;
       cursor: pointer;
       padding: 5px;
       margin-top: 15px;
 
       .icon {
-        background-color: #909bbf;
+        background-color: $secondary;
         height: 40px;
         width: 40px;
       }
 
       &:hover {
-        border-color: #005aff;
+        border-color: $link;
 
-        .icon {background-color: #005aff}
+        .icon {background-color: $link}
       }
     }
   }
@@ -84,17 +82,15 @@
     padding: 20px;
 
     li {
-      background-color: #f4f6fb;
-      color: #00145e;
+      background-color: $bg;
+      color: $text;
       cursor: pointer;
       min-height: 24px;
       line-height: 24px;
       margin: 10px 0;
       width: 100%;
 
-      &:hover, &.active {
-        background-color: white;
-      }
+      &:hover, &.active {background-color: white}
     }
   }
 
@@ -117,19 +113,19 @@
     }
 
     .editor-button {
-      background-color: #f2f7ff;
-      border-color: #909bbf;
+      background-color: $bg;
+      border-color: $secondary;
       border-radius: 50%;
       height: 44px;
       min-width: auto;
       width: 44px;
       padding: 10px;
 
-      .icon {background-color: #909bbf}
+      .icon {background-color: $secondary}
 
       &.active {
-        background-color: #005aff;
-        border-color: #005aff;
+        background-color: $link;
+        border-color: $link;
 
         .icon {background-color: white}
       }

@@ -25,12 +25,16 @@
 </template>
 
 <script setup lang="ts">
+// Vue libs
 import {ref} from 'vue';
+// Components
 import {SliderCheckbox} from '../Form/index.js';
 import {ColumnSectionInterface} from '../../../contracts/ColumnSectionInterface.js';
 
+// Assign the function to emit
 const emit = defineEmits(['changeColumnStatus'])
 
+// Get component properties
 const props = defineProps({
   section: {
     type: Object<ColumnSectionInterface>,
@@ -38,6 +42,9 @@ const props = defineProps({
   }
 })
 
+/*
+ * Methods
+ */
 /**
  * Check the page column changed its status and pass the execution results to the parent component
  * @param value
@@ -52,5 +59,8 @@ const toggleSection = () => {
   showFields.value = !showFields.value
 }
 
+/*
+ * Variables
+ */
 const showFields = ref(false)
 </script>

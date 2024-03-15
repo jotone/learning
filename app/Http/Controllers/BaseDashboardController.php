@@ -67,6 +67,11 @@ class BaseDashboardController extends Controller
                 'dashboard' => [
                     'index' => route('dashboard.index'),
                 ],
+                'resource' => [
+                    'image' => [
+                        'destroy' => route('api.image.destroy')
+                    ]
+                ],
                 'auth' => [
                     'logout' => route('auth.logout')
                 ]

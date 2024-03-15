@@ -122,7 +122,7 @@ const submit = e => {
     query += `,password:"${form.password}",confirmation:"${form.confirmation}",role_id:${page.props.role_id}`;
   }
 
-  requestGraphQL(page.props.routes.users.api, `mutation {${mutationType} (${query}) {id,first_name,last_name,email}}`)
+  requestGraphQL(page.props.routes.api, `mutation {${mutationType} (${query}) {id,first_name,last_name,email}}`)
     .then(response => {
       if (response.data.hasOwnProperty('data')) {
         // Show notification

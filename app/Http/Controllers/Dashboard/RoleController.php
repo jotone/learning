@@ -108,6 +108,7 @@ class RoleController extends BaseDashboardController
 
     /**
      * Generate a list of permissions for GraphQL controllers
+     *
      * @return array
      */
     protected function graphQlList(): array
@@ -130,6 +131,7 @@ class RoleController extends BaseDashboardController
 
     /**
      * Get a list of permissions for Dashboard controllers
+     *
      * @param string $folder
      * @return array
      * @throws \ReflectionException

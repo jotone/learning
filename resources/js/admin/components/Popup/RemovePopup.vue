@@ -53,6 +53,7 @@
 </template>
 
 <script>
+// Mixin
 import {DefaultPopupMixin} from "../../../mixins/default-popup-mixin.js";
 
 export default {

@@ -11,12 +11,16 @@
 </template>
 
 <script setup>
+// Vue lib
 import {ref} from "vue";
+// Color picker libs
 import 'vue-color-kit/dist/vue-color-kit.css';
 import {ColorPicker} from 'vue-color-kit';
 
+// Assign the function to emit
 const emit = defineEmits(['change'])
 
+// Get component properties
 const props = defineProps({
   value: {
     type: String,

@@ -30,9 +30,9 @@
 </template>
 
 <script setup>
+// Assign the function to emit
 const emit = defineEmits(['showSidebar'])
-
-// Components
+// Get component properties
 const props = defineProps({
   items: {
     type: Array,

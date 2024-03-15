@@ -1,3 +1,5 @@
+@import "vars";
+
 .characteristics-table {
   border-radius: 20px;
   overflow: hidden;
@@ -6,27 +8,24 @@
   th, td {padding: 15px}
 
   thead {
-    background-color: #00145e;
-    color: #e6efff;
+    background-color: $text;
+    color: $separator;
 
-    tr {border: 1px solid #e6efff}
+    tr {border: 1px solid $separator}
 
     th {
       text-align: center;
 
-      &:first-child {
-        min-width: 320px;
-        width: 30%;
-      }
+      &:first-child {min-width: 320px; width: 30%}
     }
   }
 
   td.solid-col {
-    color: #e6efff;
+    color: $separator;
     line-height: 20px;
     text-align: right;
-    background-color: #00145e;
-    border: 1px solid #e6efff;
+    background-color: $text;
+    border: 1px solid $separator;
   }
 
   td.list-col {
@@ -35,15 +34,12 @@
     gap: 20px;
 
     label {
-      border: 1px solid #00145e;
+      border: 1px solid $text;
       border-radius: 6px;
       min-width: 110px;
       padding: 6px 12px;
 
-      > span {
-        text-transform: capitalize;
-        user-select: none;
-      }
+      > span {text-transform: capitalize; user-select: none}
     }
   }
 }

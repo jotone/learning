@@ -24,11 +24,11 @@ class CourseController extends BaseDashboardController
                 ],
                 'routes' => [
                     'category' => [
-                        'api' => route('graphql.category')
+                        'api' => route('graphql.category'),
+                        'edit' => route('dashboard.category.edit', ':id')
                     ],
                     'course' => [
                         'api' => route('graphql.course'),
-                        'create' => route('dashboard.courses.create'),
                         'edit' => route('dashboard.courses.edit', ':id')
                     ],
                     'settings' => route('api.settings.update')

@@ -1,6 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\{EmailTemplateController, PageColumnController, SettingsController, SocialMediaController};
+use App\Http\Controllers\Api\{
+    EmailTemplateController,
+    ImageController,
+    PageColumnController,
+    SettingsController,
+    SocialMediaController
+};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,12 +26,14 @@ Route::group(['middleware' => ['auth:sanctum', 'admin']], function () {
         Route::patch('/sort', [PageColumnController::class, 'sort'])->name('sort');
         Route::match(['patch', 'put'], '/{column}', [PageColumnController::class, 'update'])->name('update');
     });
-    // Email Templates API
-    Route::apiResource('/templates', EmailTemplateController::class)->only(['store', 'update', 'destroy']);
+    // Remove resources
+    Route::delete('/images', [ImageController::class, 'destroy'])->name('image.destroy');
     // Update settings API
     Route::post('/settings', [SettingsController::class, 'smtp'])->name('settings.smtp');
     Route::match(['patch', 'put'], '/settings', [SettingsController::class, 'update'])->name('settings.update');
     // Social Media API
     Route::patch('/socials', [SocialMediaController::class, 'sort'])->name('socials.sort');
     Route::apiResource('/socials', SocialMediaController::class)->only(['store', 'update', 'destroy']);
+    // Email Templates API
+    Route::apiResource('/templates', EmailTemplateController::class)->only(['store', 'update', 'destroy']);
 });

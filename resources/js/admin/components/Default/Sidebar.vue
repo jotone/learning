@@ -10,9 +10,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+// Vue lib
 import {ref} from 'vue';
-
+// Get component properties
 const props = defineProps({
   caption: {
     type: String,
@@ -23,7 +24,12 @@ const props = defineProps({
 /*
  * Methods
  */
-const toggleShow = (state) => {
+
+/**
+ * Show or hide sidebar depends on state value
+ * @param {boolean} state
+ */
+const toggleShow = (state: boolean) => {
   show.value = state;
 }
 /*

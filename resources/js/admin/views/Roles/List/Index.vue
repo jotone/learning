@@ -3,10 +3,10 @@
     <div class="page-name-wrap">
       <h1>Roles</h1>
 
-        <a class="btn" :href="$attrs.routes.create">
-          <i class="icon plus-icon"></i>
-          <span>Create Role</span>
-        </a>
+      <a class="btn" :href="$attrs.routes.create">
+        <i class="icon plus-icon"></i>
+        <span>Create Role</span>
+      </a>
     </div>
   </header>
 
@@ -102,10 +102,10 @@ import Layout from "../../../shared/Layout.vue";
 
 defineOptions({layout: Layout})
 
-// Get content roles function
+// Assign the GraphQl request function
 const requestGraphQL = inject('requestGraphQL')
 
-// Page variables
+// Page variable
 const page = usePage()
 
 /*
@@ -175,9 +175,9 @@ const changePage = (filters: FiltersInterface) => getList(filters, (filters: Fil
  */
 const showRowActions = (e, role: RoleInterface) => {
   const row = e.target.closest('tr');
-  const blockOffset = row.getBoundingClientRect();
+  const blockOffset = row.querySelector('td:last-child').getBoundingClientRect();
   selectedRow.model = role;
-  selectedRow.right = 10;
+  selectedRow.right = blockOffset.width - 160;
   selectedRow.top = blockOffset.height * (row.rowIndex + 1);
   selectedRow.show = true;
 }

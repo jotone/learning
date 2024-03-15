@@ -11,10 +11,11 @@
 </template>
 
 <script setup>
+// Vue lib
 import {ref} from "vue";
-
+// Assign the function to emit
 const emit = defineEmits(['change'])
-
+// Get component properties
 const props = defineProps({
   checked: {
     type: Boolean,

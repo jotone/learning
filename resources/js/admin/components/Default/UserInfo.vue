@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 // Vue libs
-import {PropType, h} from 'vue';
+import {PropType} from 'vue';
 // Interfaces
 import {UserDataInterface} from '../../../contracts/UserDataInterface';
 // Components

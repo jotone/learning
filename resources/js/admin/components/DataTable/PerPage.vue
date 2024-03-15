@@ -9,8 +9,10 @@
 </template>
 
 <script setup>
+// Vue libs
 import {ref} from "vue";
 
+// Get component properties
 const props = defineProps({
   value: {
     type: Number,

@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
-use App\Models\Course;
+use App\Models\{Category, Course};
 use Illuminate\Database\Seeder;
 
 class CourseSeeder extends Seeder
@@ -16,9 +15,7 @@ class CourseSeeder extends Seeder
         $courses_count = mt_rand(3, 7);
         Course::factory($courses_count)->create();
 
-        $categories = Category::factory(mt_rand(1, 2))->create();
-
-        foreach ($categories as $category) {
+        foreach (Category::inRandomOrder()->get() as $category) {
             if ($courses_count > 0) {
                 $courses = Course::whereNull('category_id')->inRandomOrder()->take(mt_rand(0, $courses_count - 1))->get();
 

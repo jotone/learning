@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\{
     AppearanceController,
+    CategoryController,
     CoachController,
     CommentController,
     CommunityController,
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [DashboardController::class, 'index'])->name('index');
 
 Route::get('/appearance', [AppearanceController::class, 'index'])->name('appearance.index');
+
+Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
 
 Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
 
