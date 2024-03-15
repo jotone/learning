@@ -1,10 +1,10 @@
 @import "vars";
 
 .circle-progress-wrap {
-  height: 24px;
-  width: 24px;
+  height: 32px;
+  width: 32px;
   position: absolute;
-  bottom: 5px;
+  bottom: 1px;
   right: 5px;
   background-color: $menuText;
   border-radius: 50%;
@@ -15,8 +15,15 @@
   .inner-circle {
     background-color: white;
     border-radius: 50%;
-    height: 20px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    width: 20px;
+    width: 26px;
+
+    > span {
+      font-size: 12px;
+    }
   }
 }

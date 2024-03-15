@@ -13,7 +13,7 @@
 
   <form class="content-container" id="templateForm" @submit.prevent="submit">
     <fieldset class="card">
-      <legend>{{ form.title }}</legend>
+      <legend :title="form.title">{{ form.title }}</legend>
 
       <div class="row padding">
         <label class="caption col-1-2">
@@ -43,13 +43,13 @@
     </fieldset>
 
     <fieldset>
-      <legend>Email Edit</legend>
+      <legend title="Email Edit">Email Edit</legend>
 
       <EmailContentEditor :items="form.body" @showSidebar="toggleSidebar"/>
     </fieldset>
 
     <fieldset class="card">
-      <legend>Variables</legend>
+      <legend title="Variables">Variables</legend>
       <div class="simple-table-wrap">
         <div class="table-container">
           <VariablesTable :entities="entities" :variables="form.variables"/>

@@ -87,6 +87,13 @@ class SettingsController extends Controller
         foreach ($input as $key => $val) {
             if (in_array($key, $this->fields['common'])) {
                 $result[$key] = Settings::firstWhere('key', $key);
+                switch ($key) {
+                    case 'custom_question_1':
+                    case 'custom_question_2':
+                    case 'custom_question_3':
+                        $val = mb_substr($val, 0, 200);
+                        break;
+                }
                 $result[$key]->value = $val;
                 $result[$key]->save();
             }

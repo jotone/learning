@@ -13,7 +13,7 @@
           <form class="add-category-controls" @submit.prevent="categoryStore">
             <label class="add-category-input">
               <input class="form-input" maxlength="60" v-model.trim="form.name" required>
-              <CircleProgress :current="form.name?.length || 0" max="60"/>
+              <CircleProgress :current="form.name?.length || 0" max="60" :showRemnant="true"/>
             </label>
             <button class="btn blue">
               <span>Add</span>
@@ -21,7 +21,7 @@
           </form>
         </div>
 
-        <div class="sortable-list">
+        <div class="sortable-list scrollbar">
           <CategoriesList :list="list.data" @change="categorySort" @showControls="showRowActions"/>
         </div>
 

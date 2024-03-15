@@ -96,6 +96,9 @@ class MutationUpdate extends Mutation
 
         try {
             foreach ($input as $key => $val) {
+                if ('name' === $key) {
+                    $val = mb_substr($val, 0, 60);
+                }
                 $category->$key = $val;
             }
             // Save category if it was changed

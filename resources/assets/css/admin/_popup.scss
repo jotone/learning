@@ -43,6 +43,10 @@
     line-height: 36px;
   }
 
+  .popup-body-wrap {
+    .form-input, .form-select, .form-text {width: 100%}
+  }
+
   .popup-text-row {
     color: $link;
     font-size: 16px;
@@ -187,18 +191,21 @@
     .add-category-controls {
       display: flex;
       align-content: center;
+      gap: 20px;
 
       .add-category-input {width: 100%}
 
       .form-input {padding-right: 40px}
 
-      .circle-progress-wrap {right: 30px}
-
       .btn {margin-top: 5px}
     }
   }
 
-  .sortable-list {margin: 20px 0}
+  .sortable-list {
+    margin: 20px 0;
+    max-height: 500px;
+    overflow: auto;
+  }
 
   .popup-text-row {margin-top: 20px}
 

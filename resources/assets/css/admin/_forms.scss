@@ -1,5 +1,7 @@
+@import "vars";
+
 input, textarea {
-  &::placeholder {color: #cbd6e5}
+  &::placeholder {color: $menuText}
 }
 
 /* clears the ‘X’ from Internet Explorer */
@@ -18,10 +20,10 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
   justify-content: center;
   flex-shrink: 0;
   gap: 12px;
-  background: #ffffff;
-  border: 1px solid #d6e0ff;
+  background: white;
+  border: 1px solid $border;
   border-radius: 30px;
-  color: #00145e;
+  color: $text;
   cursor: pointer;
   height: 40px;
   min-width: 100px;
@@ -29,33 +31,37 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
   text-decoration: none;
 
   .icon {
-    background-color: #005aff;
+    background-color: $link;
     height: 20px;
     width: 20px;
   }
 
   &.blue {
-    background-color: #005aff;
-    border-color: #005aff;
+    background-color: $link;
+    border-color: $link;
     color: white;
+
+    &[disabled] {background-color: $linkBg; border-color: $linkBg}
   }
 
   &.blue--inverse {
-    border-color: #005aff;
-    color: #005aff;
+    border-color: $link;
+    color: $link;
+
+    &[disabled] {color: $linkBg; border-color: $linkBg}
   }
 
   &.danger {
-    background-color: #ff2947;
-    border-color: #ff2947;
+    background-color: $danger;
+    border-color: $danger;
     color: white;
 
-    &[disabled] {background-color: #ffbfc8; border-color: #ffbfc8}
+    &[disabled] {background-color: $dangerBg; border-color: $dangerBg}
   }
 }
 
 .form-input, .form-select, .form-text {
-  border: 1px solid #d6e0ff;
+  border: 1px solid $border;
   border-radius: 30px;
   outline: none;
   font-size: 16px;
@@ -63,20 +69,20 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
 }
 
 .form-input {
-  color: #00145e;
+  color: $text;
   padding: 12px 20px;
 }
 
 .form-input.readonly {
-  background-color: #f2f7ff;
-  color: #005aff;
+  background-color: $bg;
+  color: $link;
   user-select: none;
   pointer-events:none;
 }
 
 .form-select {
   appearance: none;
-  background: #ffffff url("../../images/icons/angle-down.svg") no-repeat 99% center / 24px;
+  background: white url("../../images/icons/angle-down.svg") no-repeat 99% center / 24px;
   cursor: pointer;
   font-style: normal;
   padding: 12px 14px;
@@ -96,7 +102,7 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
   gap: 20px;
 
   .slider-checkbox-container {
-    background-color: #dee4ed;
+    background-color: $separator;
     border-radius: 12px;
     position: relative;
     height: 24px;
@@ -104,7 +110,7 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
     cursor: pointer;
 
     .slider-checkbox-circle {
-      background-color: #909bbf;
+      background-color: $secondary;
       border-radius: 50%;
       height: 16px;
       width: 16px;
@@ -115,10 +121,10 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
     }
 
     &.checked {
-      background-color: #ccdeff;
+      background-color: $linkBg;
 
       .slider-checkbox-circle {
-        background-color: #005aff;
+        background-color: $link;
         left: auto;
         right: 4px;
       }
@@ -126,7 +132,7 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
   }
 
   .slider-checkbox-text {
-    color: #00145e;
+    color: $text;
     font-size: 16px;
     line-height: 18px;
   }
@@ -149,7 +155,7 @@ label {
   }
 
   > span {
-    color: #909bbf;
+    color: $secondary;
     display: block;
     font-size: 14px;
     font-weight: 500;

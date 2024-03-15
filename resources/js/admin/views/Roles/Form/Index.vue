@@ -14,7 +14,7 @@
   <form id="roleForm" @submit.prevent="submit" class="f-st-fs">
     <div class="col-4-5">
       <fieldset class="card">
-        <legend>Role data</legend>
+        <legend title="Role data">Role data</legend>
 
         <div class="row padding">
           <div class="col-1-2">
@@ -59,7 +59,7 @@
       </fieldset>
 
       <fieldset>
-        <legend>List of permissions</legend>
+        <legend title="List of permissions">List of permissions</legend>
 
         <table class="characteristics-table">
           <thead>

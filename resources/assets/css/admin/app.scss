@@ -107,6 +107,11 @@ fieldset {
     color: $text;
     font-size: 30px;
     line-height: 45px;
+    max-height: 45px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
   }
 }
 

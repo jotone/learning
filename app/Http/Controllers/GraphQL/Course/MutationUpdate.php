@@ -51,6 +51,13 @@ class MutationUpdate extends CourseMutation
 
         try {
             foreach ($input as $key => $val) {
+                if ('name' === $key) {
+                    $val = mb_substr($val, 0, 90);
+                }
+
+                if ('description' === $key) {
+                    $val = mb_substr($key, 0, 300);
+                }
                 $course->$key = $val;
             }
             // Save course if it was changed

@@ -98,7 +98,17 @@
           font-weight: 400;
         }
 
-        .circle-progress-wrap {right: 23px}
+        .circle-progress-wrap {
+          bottom: 5px;
+          right: 40px;
+          height: 24px;
+          width: 24px;
+
+          .inner-circle {
+            height: 20px;
+            width: 20px;
+          }
+        }
       }
 
       .form-input, .form-select {margin-top: 5px; width: 100%}

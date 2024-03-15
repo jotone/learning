@@ -3,7 +3,7 @@
     <div class="page-name-wrap">
       <h1>Courses</h1>
 
-      <a class="btn" href="#">
+      <a class="btn" href="#" @click.prevent="courseModalShow">
         <i class="icon book-plus-icon"></i>
         <span>Create Course</span>
       </a>
@@ -133,6 +133,8 @@
     </StatusTooltip>
 
     <CategoryModal ref="categoryModal"/>
+
+    <CourseModal ref="courseModal" :statuses="$attrs.statuses"/>
   </Teleport>
 </template>
 
@@ -157,6 +159,7 @@ import {
   TableHeadCol
 } from '../../../components/DataTable/index.js';
 import CategoryModal from './Modals/CategoryModal.vue';
+import CourseModal from "./Modals/CourseModal.vue";
 import ColumnSelector from '../../../components/DataTable/ColumnSelector.vue';
 import Sidebar from '../../../components/Default/Sidebar.vue';
 import TableRow from './TableRow.vue';
@@ -301,11 +304,14 @@ const bulkCheckBoxToggleSingle = (e: Event) => {
   );
 }
 
-const categoryModalShow = () => {
-  categoryModal.value.open().then(res => {
-    console.log(res)
-  })
-}
+/**
+ * Open the category modal window
+ */
+const categoryModalShow = () => categoryModal.value.open()
+
+const courseModalShow = () => courseModal.value.open().then(result => {
+  console.log(result)
+})
 
 /**
  * View Course status tooltip
@@ -395,6 +401,8 @@ let bulkActions = reactive({
 })
 // Category modal reference
 let categoryModal = ref(null);
+// Course modal reference
+let courseModal = ref(null);
 // Sidebar element reference
 let sidebar = ref(null);
 // StatusTooltip element reference
