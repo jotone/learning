@@ -30,7 +30,7 @@ import UserInfo from '../../../components/Default/UserInfo.vue';
 
 // Implement function to convert dates into the proper view
 const convertDate = inject('convertDate');
-
+// Assign the function to emit
 const emit = defineEmits(['action']);
 
 const props = defineProps({user: Object as PropType<UserDataInterface>});

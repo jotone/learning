@@ -53,6 +53,7 @@
 </template>
 
 <script>
+// Mixin
 import {DefaultPopupMixin} from "../../../../mixins/default-popup-mixin.js";
 
 export default {
@@ -85,6 +86,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Entity change handler
+     */
     entityChanged() {
       this.items.field = Object.keys(this.entities.list[this.items.type].fields)[0];
     },

@@ -18,8 +18,9 @@
 </template>
 
 <script setup>
+// Assign the function to emit
 const emit = defineEmits(['updateForm'])
-
+// Get component properties
 const props = defineProps({
   controller: {
     type: String,

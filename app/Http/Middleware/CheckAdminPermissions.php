@@ -55,7 +55,13 @@ class CheckAdminPermissions
             // Initialize the method variable
             $method = '';
             // Normalize the query/operations string.
-            $query = preg_replace('/(\s+|\n)/', '', $request->has('query') ? $request->get('query') : $request->get('operations'));
+            if ($request->has('operations')) {
+                $operations = $request->get('operations');
+                $query = is_array($operations) ? $operations['query'] : $operations;
+            } else {
+                $query = $request->get('query');
+            }
+            $query = preg_replace('/(\s+|\n)/', '', $query);
 
             // Determine if the query is a read operation based on its structure.
             if (str_starts_with($query, '{' . Str::plural($schema_name)) || str_starts_with($query, '{__typename' . Str::plural($schema_name))) {

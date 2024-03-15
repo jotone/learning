@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  background-color: #f2f7ff;
+  background-color: $bg;
   border-bottom-left-radius: 30px;
   border-top-left-radius: 30px;
   height: 100vh;
@@ -11,8 +11,8 @@
   overflow: auto;
 
   .sidebar-caption {
-    border-bottom: 1px solid #ccdeff;
-    color: #00145e;
+    border-bottom: 1px solid $menuText;
+    color: $text;
     font-size: 25px;
     font-weight: 600;
     line-height: 40px;
@@ -27,20 +27,15 @@
     cursor: pointer;
 
     .icon {
-      background-color: #00145e;
+      background-color: $text;
       height: 32px;
       width: 32px;
     }
   }
 
-  .sidebar-body {
-    padding: 45px;
-  }
+  .sidebar-body {padding: 45px}
 }
 
 @media screen and (max-width: 1200px) {
-  .sidebar-wrap {
-    top: 65px;
-    height: calc(100vh - 65px);
-  }
+  .sidebar-wrap {top: 65px; height: calc(100vh - 65px)}
 }

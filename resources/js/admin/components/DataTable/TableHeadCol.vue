@@ -25,8 +25,10 @@ import {PropType} from "vue";
 // Interfaces
 import {FiltersInterface} from "../../../contracts/FiltersInterface";
 
+// Assign the function to emit
 const emit = defineEmits(['changeDirection', 'hover', 'plusClick'])
 
+// Get component properties
 const props = defineProps({
   field: {
     type: String,

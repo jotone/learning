@@ -33,11 +33,13 @@
 </template>
 
 <script setup>
-
+// Vue libs
 import {ref, watch} from 'vue';
 
-const emit = defineEmits(['clear'])
+// Assign the function to emit
+const emit = defineEmits(['clear']);
 
+// Get component properties
 const props = defineProps({
   counter: {
     type: Number,

@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-
+// Get component properties
 const props = defineProps({
   icon: {
     type: String,

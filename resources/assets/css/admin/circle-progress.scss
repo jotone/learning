@@ -1,17 +1,19 @@
+@import "vars";
+
 .circle-progress-wrap {
   height: 24px;
   width: 24px;
   position: absolute;
   bottom: 5px;
   right: 5px;
-  background-color: #ccdeff;
+  background-color: $menuText;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 
   .inner-circle {
-    background-color: #fff;
+    background-color: white;
     border-radius: 50%;
     height: 20px;
     position: absolute;

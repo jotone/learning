@@ -7,10 +7,10 @@ ul.notification-list {
     font-weight: 500;
     line-height: 18px;
 
-    &.success {color: #36b368}
+    &.success {color: $success}
 
-    &.warning {color: #ef9400}
+    &.warning {color: $warning}
 
-    &.danger {color: #ff2947}
+    &.danger {color: $danger}
   }
 }

@@ -60,12 +60,17 @@
 </template>
 
 <script setup lang="ts">
+// Vue libs
 import {PropType, ref} from "vue";
+// Other libs
 import {decodeUriQuery, encodeUriQuery} from "../../libs/RequestHelper";
+// Interfaces
 import {FiltersInterface} from "../../../contracts/FiltersInterface";
 
+// Assign the function to emit
 const emit = defineEmits(['changePage'])
 
+// Get component properties
 const props = defineProps({
   current: {
     type: Number,
@@ -92,7 +97,6 @@ const props = defineProps({
 /*
  * Methods
  */
-
 /**
  * Modify parameter of the URI query
  * @param {object} obj
@@ -109,11 +113,11 @@ const changePage = (page: number) => emit('changePage', Object.assign({}, props.
 /*
  * Variables
  */
-
 // Page absolute path
 const path = ref(window.location.origin + window.location.pathname)
 // Build a pagination query
 let query = decodeUriQuery(window.location.search)
-if (!query.hasOwnProperty('page')) {query.page = props.filters.page}
-
+if (!query.hasOwnProperty('page')) {
+  query.page = props.filters.page
+}
 </script>

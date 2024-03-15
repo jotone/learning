@@ -35,8 +35,9 @@ const toggleShow = (status: boolean, coordinates) => {
 /*
  * Variables
  */
+// Show / hide the tooltip
 const show = ref(false)
-
+// Left and top shit values
 let options = reactive({
   left: 0,
   top: 0

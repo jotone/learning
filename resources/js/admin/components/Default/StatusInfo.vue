@@ -5,6 +5,7 @@
 </template>
 
 <script setup>
+// Get component properties
 const props = defineProps({
   type: {
     type: String,

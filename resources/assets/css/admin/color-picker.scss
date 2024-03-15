@@ -6,24 +6,20 @@
 
   .color-picker-preview {
     border-radius: 50%;
-    border: 1px solid #00145e;
+    border: 1px solid $text;
     display: block;
     width: 43px;
     height: 43px;
     margin-top: 5px;
   }
 
-  .form-input {
-    width: calc(100% - 79px);
-  }
+  .form-input {width: calc(100% - 79px)}
 
   .color-picker-menu {
     position: absolute;
     left: 0;
     bottom: 55px;
 
-    .hu-color-picker {
-      width: 100% !important;
-    }
+    .hu-color-picker {width: 100% !important}
   }
 }

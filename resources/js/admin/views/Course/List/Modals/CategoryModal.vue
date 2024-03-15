@@ -22,7 +22,7 @@
         </div>
 
         <div class="sortable-list">
-          <CategoriesList :list="list.data" @change="categorySort"/>
+          <CategoriesList :list="list.data" @change="categorySort" @showControls="showRowActions"/>
         </div>
 
         <SliderCheckbox
@@ -35,21 +35,39 @@
         <p class="popup-text-row">
           Note: All courses should belong to a category in order to<br>be able to select this view.
         </p>
+
+        <RowActions
+          :actions="actions"
+          :model="selectedCategory.model"
+          :show="selectedCategory.show"
+          :right="selectedCategory.right"
+          :top="selectedCategory.top"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+// Mixin
 import {DefaultPopupMixin} from '../../../../../mixins/default-popup-mixin.js';
-import {CircleProgress, SliderCheckbox} from "../../../../components/Form/index.js";
+// Components
 import CategoriesList from "./CategoriesList.vue";
+import {CircleProgress, SliderCheckbox} from "../../../../components/Form/index.js";
+import {RowActions} from "../../../../components/DataTable/index.js";
 
 export default {
-  components: {SliderCheckbox, CategoriesList, CircleProgress},
+  components: {CategoriesList, CircleProgress, RowActions, SliderCheckbox},
   mixins: [DefaultPopupMixin],
   data() {
     return {
+      actions: [
+        {
+          name: 'Edit',
+          icon: 'edit-icon',
+          link: this.$page.props.routes.category.edit
+        }
+      ],
       categoriesInsteadOfCourses: Boolean(+this.$page.props.settings.cats_inst_courses),
       form: {
         name: ''
@@ -62,10 +80,20 @@ export default {
           dir: 'asc'
         }
       },
-      list: []
+      list: [],
+      selectedCategory: {
+        model: {},
+        right: 0,
+        top: 0,
+        show: false
+      }
     }
   },
   methods: {
+    /**
+     * Send request to enable or disable the option "show categories instead of courses on the main page"
+     * @param {boolean} val
+     */
     categoriesInsteadOfCoursesChange(val) {
       this.categoriesInsteadOfCourses = val;
       this.request({
@@ -106,6 +134,21 @@ export default {
       return new Promise(resolve => {
         this.resolver = resolve
       })
+    },
+    /**
+     * Show category actions
+     * @param {Event} e
+     * @param {int} i
+     */
+    showRowActions(e, i) {
+      const row = e.target.closest('li');
+      const popupOffset = e.target.closest('.category-popup').getBoundingClientRect() //+ e.target.getBoundingClientRect().height;
+      const blockOffset = row.getBoundingClientRect();
+
+      this.selectedCategory.model = this.list.data[i];
+      this.selectedCategory.right = 20;
+      this.selectedCategory.top = blockOffset.height * i + popupOffset.top + (10 * i);
+      this.selectedCategory.show = true;
     }
   },
   beforeMount() {

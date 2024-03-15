@@ -22,16 +22,20 @@ import {inject} from 'vue';
 import {usePage} from '@inertiajs/vue3';
 // Interfaces
 import {ColumnSectionInterface} from '../../../contracts/ColumnSectionInterface.js';
+// Components
 import ColumnSelectorSection from './ColumnSelectorSection.vue';
 import ColumnSelectorReposition from './ColumnSelectorReposition.vue';
 
 // Assign the function to emit
 const emit = defineEmits(['changeColumnStatus'])
+
 // Assign the http request function
 const request = inject('request');
-// Page variables
-const page = usePage()
 
+// Page variables
+const page = usePage();
+
+// Get component properties
 const props = defineProps({
   columns: {
     type: Array,

@@ -1,4 +1,4 @@
-@import "bulk-selector", "column-selector", "status-tooltip";
+@import "vars", "bulk-selector", "column-selector", "status-tooltip";
 
 .simple-table-wrap, .content-table-wrap {
   position: relative;
@@ -17,10 +17,7 @@
       white-space: nowrap;
       width: 100%;
 
-      th, td {
-        text-align: left;
-        vertical-align: middle;
-      }
+      th, td {text-align: left; vertical-align: middle}
 
       th .col-name {
         display: flex;
@@ -44,14 +41,16 @@
           .icon {height: 14px;width: 14px}
         }
 
-        .info-icon-wrap .icon {background-color: #909bbf}
+        .info-icon-wrap .icon {background-color: $secondary}
 
-        .plus-icon-wrap {background-color: #e6efff;
+        .plus-icon-wrap {
+          background-color: $separator;
 
-          .icon {background-color: #005aff}
+          .icon {background-color: $link}
         }
 
-        .plus-icon-wrap:hover {background-color: #005aff;
+        .plus-icon-wrap:hover {
+          background-color: $link;
 
           .icon {background-color: white}
         }
@@ -60,7 +59,7 @@
       td > a, td > span, .static-fields > a {
         display: flex;
         align-items: center;
-        color: #909bbf;
+        color: $secondary;
         cursor: pointer;
         font-size: 14px;
         line-height: 18px;
@@ -74,7 +73,7 @@
           cursor: pointer;
           padding: 12px;
 
-          .icon {background-color: #909bbf}
+          .icon {background-color: $secondary}
         }
       }
     }
@@ -109,21 +108,21 @@
         top: 60%;
 
         .icon {
-          background-color: #909bbf;
+          background-color: $secondary;
           height: 24px;
           width: 24px;
         }
       }
 
       span {
-        color: #005aff;
+        color: $link;
         display: block;
         right: 30px;
         top: 50%;
       }
 
       .search-field {
-        border: 1px solid #d6e0ff;
+        border: 1px solid $border;
         border-radius: 20px;
         padding: 10px 140px 10px 45px;
         width: 100%;
@@ -131,7 +130,7 @@
     }
 
     .column-selector-button-wrap .icon {
-      background-color: #005aff;
+      background-color: $link;
       cursor: pointer;
       height: 28px;
       width: 28px;
@@ -166,27 +165,21 @@
         overflow: hidden;
         border-radius: 6px;
 
-        img {
-          max-width: 100%;
-          object-fit: contain;
-        }
+        img {max-width: 100%; object-fit: contain}
       }
 
       .bool-value-wrap {
-        .icon {
-          height: 20px;
-          width: 20px;
-        }
+        .icon {height: 20px; width: 20px}
 
-        .false-value {background-color: #ff2947}
+        .false-value {background-color: $danger}
 
-        .true-value {background-color: #36b368}
+        .true-value {background-color: $success}
       }
     }
 
     th {
       .extra-icon .icon {
-        background-color: #909bbf;
+        background-color: $secondary;
         cursor: pointer;
         height: 16px;
         width: 16px;
@@ -202,21 +195,21 @@
 
         &.desc {transform: rotate(180deg); top: 25%}
 
-        &.active {background-color: #909bbf}
+        &.active {background-color: $secondary}
       }
 
-      &:hover .order {background-color: #909bbf}
+      &:hover .order {background-color: $secondary}
     }
 
     td:not(.static) {margin: 0 10px}
 
     tr:hover, tr.active {
       td {
-        background-color: #d6e0ff;
+        background-color: $border;
 
-        a {color: #00145e}
+        a {color: $text}
 
-        .row-actions .icon {background-color: #00145e}
+        .row-actions .icon {background-color: $text}
       }
     }
   }
@@ -231,14 +224,14 @@
     .per-page-wrap {
       display: flex;
       align-items: center;
-      color: #000e42;
+      color: $menuBg;
       font-size: 14px;
       font-weight: 500;
       gap: 10px;
       justify-items: center;
 
       .form-select {
-        border-color: #005aff;
+        border-color: $link;
         padding: 5px 20px 5px 10px;
         width: auto;
       }
@@ -258,29 +251,29 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid #005aff;
+        border: 1px solid $link;
         border-radius: 50%;
         padding: 5px;
         cursor: pointer;
-        color: #005aff;
+        color: $link;
         font-size: 14px;
         text-decoration: none;
         height: 30px;
         width: 30px;
 
         &.active {
-          border-color: #000e42;
-          color: #000e42;
+          border-color: $menuBg;
+          color: $menuBg;
           font-weight: 600;
         }
       }
 
-      span {border-color: #909bbf}
+      span {border-color: $secondary}
 
-      span .icon {background-color: #909bbf}
+      span .icon {background-color: $secondary}
 
       .icon {
-        background-color: #005aff;
+        background-color: $link;
         height: 10px;
         width: 10px;
       }

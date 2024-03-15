@@ -44,7 +44,9 @@
 </template>
 
 <script>
+// Mixin
 import {DefaultPopupMixin} from "../../../../mixins/default-popup-mixin.js";
+// Components
 import CustomSelector from "../../../components/Form/CustomSelector.vue";
 
 export default {
@@ -110,9 +112,18 @@ export default {
         this.resolver = resolve
       })
     },
+    /**
+     * Custom selector row
+     * @param option
+     * @returns {string}
+     */
     selectorRow(option) {
       return `<i class="icon ${option.icon}"></i><span>${option.text}</span>`
     },
+    /**
+     * Submit form handler
+     * @param e
+     */
     submit(e) {
       this.request({
         url: e.target.getAttribute('action'),

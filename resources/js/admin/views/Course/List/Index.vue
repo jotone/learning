@@ -3,7 +3,7 @@
     <div class="page-name-wrap">
       <h1>Courses</h1>
 
-      <a class="btn" :href="$attrs.routes.course.create">
+      <a class="btn" href="#">
         <i class="icon book-plus-icon"></i>
         <span>Create Course</span>
       </a>
@@ -165,8 +165,9 @@ import Layout from '../../../shared/Layout.vue';
 
 defineOptions({layout: Layout})
 
-// Get content roles function
+// Assign the http request function
 const request = inject('request');
+// Assign the GraphQl request function
 const requestGraphQL = inject('requestGraphQL');
 
 // Page variables

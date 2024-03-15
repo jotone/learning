@@ -86,7 +86,7 @@ npm i && npm run prod
       - ~~Bulk Actions~~
     - ~~Category create~~
     - ~~Category sort~~
-    - Category edit
+    - ~~Category edit~~
     - Category remove
     - ~~Course columns~~
     - Course Create

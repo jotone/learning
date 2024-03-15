@@ -34,7 +34,9 @@ const page = usePage();
 
 const emit = defineEmits(['action']);
 
-const props = defineProps({role: Object as PropType<RoleInterface>});
+const props = defineProps({
+  role: Object as PropType<RoleInterface>
+});
 
 /**
  * Link for the role edit page

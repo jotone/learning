@@ -1,7 +1,8 @@
 <template>
   <div
     class="row-actions-popup"
-    :class="{active: active}" :style="{right: right + 'px', top: top + 'px'}"
+    :class="{active: active}"
+    :style="{right: right + 'px', top: top + 'px'}"
     v-click-outside="closeRowActions"
   >
     <ul>
@@ -14,8 +15,10 @@
         </template>
 
         <template v-else>
-          <i class="icon" :class="action.icon"></i>
-          <span>{{ action.name }}</span>
+          <span>
+            <i class="icon" :class="action.icon"></i>
+            {{ action.name }}
+          </span>
         </template>
       </li>
     </ul>
@@ -23,8 +26,10 @@
 </template>
 
 <script setup lang="ts">
+// Vue libs
 import {nextTick, ref, watch} from "vue";
 
+// Get component properties
 const props = defineProps({
   actions: {
     type: Array,
@@ -57,19 +62,23 @@ const props = defineProps({
  */
 const buildUrl = (link: string) => link.replace(/:id/, props.model.id);
 
+/**
+ * Hide row actions when click is out of the box
+ * @param e
+ */
 const closeRowActions = async e => await nextTick(() => {
-  if (active.value && null === e.target.closest('.row-actions')) {
+  if (active.value && null === e.target.closest('.row-actions') && null === e.target.closest('.sortable-list-controls')) {
     active.value = false
   }
 })
 
 /*
+ * Variables
+ */
+let active = ref(props.show);
+
+/*
  * Watchers
  */
 watch(props, val => {active.value = val.show});
-
-/*
- * Variables
- */
-let active = ref(props.show)
 </script>

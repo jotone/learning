@@ -6,21 +6,21 @@
   border-radius: 15px;
   text-align: center;
   display: inline-block;
-  background-color: #e2e5f0;
-  color: #858a9d;
+  background-color: $separator;
+  color: $draft;
 
   &.danger {
-    background-color: #ffe5e9;
-    color: #ff2947;
+    background-color: $dangerBg;
+    color: $danger;
   }
 
   &.success {
-    background-color: #e5f5e2;
-    color: #36b368;
+    background-color: $successBg;
+    color: $success;
   }
 
   &.warning {
-    background-color: #fdf2e0;
-    color: #ef9400;
+    background-color: $warningBg;
+    color: $warning;
   }
 }

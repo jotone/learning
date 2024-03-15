@@ -10,9 +10,11 @@
 </template>
 
 <script setup lang="ts">
+// Vue lib
 import {PropType} from "vue";
+// Interface
 import {UserDataInterface} from "../../../contracts/UserDataInterface";
-
+// Get component properties
 const props = defineProps({
   user: Object as PropType<UserDataInterface>
 })
