@@ -78,6 +78,11 @@ class Category extends Model
             FileHelper::recursiveRemove(public_path('images/categories/' . $model->id));
             // Detach category courses
             $model->courses()->each(fn($ent) => $ent->update(['category_id' => null]));
+            // Reset categories position
+            $categories = Category::where('type', $model->type)->orderBy('position')->get();
+            foreach ($categories as $i => $category) {
+                $category->update(['position' => $i]);
+            }
         });
     }
 }

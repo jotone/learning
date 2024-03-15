@@ -35,7 +35,8 @@
               <TableHeadCol field="level" :filters="filters" name="Level" @changeDirection="changeDirection"/>
             </th>
             <th>
-              <TableHeadCol field="created_at" :filters="filters" name="Creation Date" @changeDirection="changeDirection"/>
+              <TableHeadCol field="created_at" :filters="filters" name="Creation Date"
+                            @changeDirection="changeDirection"/>
             </th>
             <th>
               <TableHeadCol name="Actions"/>
@@ -223,10 +224,12 @@ const rowActions = [
           if (false !== result && typeof result === 'object') {
             const requests = [];
             for (let i = 0, n = result.length; i < n; i++) {
-              requests.push(requestGraphQL(
-                page.props.routes.api,
-                `mutation {destroy(id:${result[i].id}){id}}`
-              ));
+              requests.push(
+                requestGraphQL(
+                  page.props.routes.api,
+                  `mutation {destroy(id:${result[i].id}){id}}`
+                )
+              );
             }
             Promise.all(requests).then(() => {
               getList(filters)

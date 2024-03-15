@@ -4,6 +4,7 @@ namespace App\Http\Controllers\GraphQL\Category;
 
 use App\Http\Controllers\GraphQL\GraphQlPaginatedQuery;
 use App\Models\Category;
+use App\Models\Course;
 use Closure;
 use GraphQL\Type\Definition\{ResolveInfo, Type};
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -79,8 +80,17 @@ class Query extends GraphQlPaginatedQuery
     {
         $this->buildFilters($input);
 
+
         $where = function ($query) use ($input, &$fields) {
             foreach ($this->fields as $field) {
+                if ($field === 'type') {
+                    switch($input[$field]) {
+                        case 'course':
+                        case 'courses':
+                            $input[$field] = Course::class;
+                            break;
+                    }
+                }
                 if (isset($input[$field])) {
                     $query->where($field, $input[$field]);
                 }

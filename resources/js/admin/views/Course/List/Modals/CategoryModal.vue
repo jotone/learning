@@ -46,6 +46,16 @@
       </div>
     </div>
   </div>
+
+  <teleport to="body">
+    <RemovePopup
+      title="Are you sure you want to delete this category?"
+      ref="removeCategoryModal"
+      :listMessages="{
+      bottom: ['This will delete all content irrevocably.', 'Type <b>Delete</b> to confirm.']
+    }"
+    />
+  </teleport>
 </template>
 
 <script>
@@ -55,9 +65,11 @@ import {DefaultPopupMixin} from '../../../../../mixins/default-popup-mixin.js';
 import CategoriesList from "./CategoriesList.vue";
 import {CircleProgress, SliderCheckbox} from "../../../../components/Form/index.js";
 import {RowActions} from "../../../../components/DataTable/index.js";
+import RemovePopup from "../../../../components/Popup/RemovePopup.vue";
+import {Notification} from "../../../../libs/Notification.js";
 
 export default {
-  components: {CategoriesList, CircleProgress, RowActions, SliderCheckbox},
+  components: {RemovePopup, CategoriesList, CircleProgress, RowActions, SliderCheckbox},
   mixins: [DefaultPopupMixin],
   data() {
     return {
@@ -66,6 +78,29 @@ export default {
           name: 'Edit',
           icon: 'edit-icon',
           link: this.$page.props.routes.category.edit
+        }, {
+          name: 'Remove',
+          icon: 'trash-icon',
+          callback: () => {
+            const items = [{text: this.selectedCategory.model.name, id: this.selectedCategory.model.id}];
+            this.$refs.removeCategoryModal.open(items).then(result => {
+              if (false !== result && typeof result === 'object') {
+                const requests = [];
+                for (let i = 0, n = result.length; i < n; i++) {
+                  requests.push(
+                    this.requestGraphQL(
+                      this.$page.props.routes.category.api,
+                      `mutation {destroy(id:${result[i].id}){id}}`
+                    )
+                  )
+                }
+                Promise.all(requests).then(() => {
+                  this.getCategories();
+                  Notification.warning(`Category "${items[0].text}" was successfully removed.`);
+                })
+              }
+            });
+          }
         }
       ],
       categoriesInsteadOfCourses: Boolean(+this.$page.props.settings.cats_inst_courses),
@@ -125,6 +160,27 @@ export default {
       this.requestGraphQL(this.$page.props.routes.category.api, query)
     },
     /**
+     * Get the list of the categories
+     */
+    getCategories() {
+      // Get list of categories
+      const query = `{categories(
+         per_page:${this.filters.per_page},
+         order_by:"${this.filters.order.by}",
+         order_dir:"${this.filters.order.dir}",
+         page:${this.filters.page},
+         type:"courses"
+       ) {
+        total per_page last_page has_more_pages current_page data {
+          id name position
+        }
+      }}`
+      this.requestGraphQL(this.$page.props.routes.category.api, query)
+        .then(response => {
+          this.list = response.data.data.categories;
+        })
+    },
+    /**
      * Open the modal window
      * @returns {Promise<unknown>}
      */
@@ -147,23 +203,12 @@ export default {
 
       this.selectedCategory.model = this.list.data[i];
       this.selectedCategory.right = 20;
-      this.selectedCategory.top = blockOffset.height * i + popupOffset.top + (10 * i);
+      this.selectedCategory.top = (10 + blockOffset.height * (i + 1)) + popupOffset.top + 100;
       this.selectedCategory.show = true;
     }
   },
   beforeMount() {
-    // Get list of categories
-    const query = `{categories(
-       per_page:${this.filters.per_page}, order_by:"${this.filters.order.by}", order_dir:"${this.filters.order.dir}", page:${this.filters.page}
-     ) {
-      total per_page last_page has_more_pages current_page data {
-        id name position
-      }
-    }}`
-    this.requestGraphQL(this.$page.props.routes.category.api, query)
-      .then(response => {
-        this.list = response.data.data.categories;
-      })
+    this.getCategories()
   },
   inject: ['request', 'requestGraphQL'],
 }
