@@ -310,7 +310,9 @@ const bulkCheckBoxToggleSingle = (e: Event) => {
 const categoryModalShow = () => categoryModal.value.open()
 
 const courseModalShow = () => courseModal.value.open().then(result => {
-  console.log(result)
+  if (result) {
+    getList(filters)
+  }
 })
 
 /**
@@ -413,7 +415,7 @@ let list = ref([]);
 const query = decodeUriQuery(window.location.search)
 query.order = {
   by: 'position',
-  dir: 'asc'
+  dir: 'desc'
 }
 // Page filters list
 let filters = reactive(getFilters(query))

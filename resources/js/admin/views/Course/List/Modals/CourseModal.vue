@@ -5,7 +5,7 @@
 
       <div class="popup-title-wrap">Create Course</div>
 
-      <div class="popup-body-wrap">
+      <form class="popup-body-wrap" @submit.prevent="submit">
         <label class="caption">
           <span>Name of the Course</span>
 
@@ -48,7 +48,7 @@
           <span>Status</span>
 
           <select class="form-select" v-model="form.status">
-            <option v-for="(status, i) in statuses" :value="i">
+            <option v-for="status in statuses" :value="status">
               {{ status }}
             </option>
           </select>
@@ -59,7 +59,7 @@
             Create Course
           </button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>
@@ -78,7 +78,7 @@ export default {
       form: {
         name: '',
         description: '',
-        status: 0
+        status: 'active'
       },
     }
   },
@@ -106,8 +106,16 @@ export default {
       })
     },
     submit() {
-
+      const query = `mutation {create (name: "${this.form.name}", description: "${this.form.description}", status: "${this.form.status}") {id}}`
+      this.requestGraphQL(this.$page.props.routes.course.api, query)
+        .then(response => {
+          if (null !== response?.data?.data?.create) {
+            this.active = false
+            this.resolver(true)
+          }
+        })
     }
-  }
+  },
+  inject: ['requestGraphQL']
 }
 </script>
