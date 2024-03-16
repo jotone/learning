@@ -14,7 +14,7 @@
   <form id="coachForm" @submit.prevent="submit">
     <div class="col-1-2">
       <fieldset class="card">
-        <legend>Coach Details</legend>
+        <legend title="Coach Details">Coach Details</legend>
 
         <div class="form-row" style="padding: 20px 25px">
           <label class="caption" style="width: 100%">

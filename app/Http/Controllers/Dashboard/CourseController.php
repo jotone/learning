@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\CourseStatus;
 use App\Http\Controllers\BaseDashboardController;
 use App\Models\Settings;
 use Inertia\Response;
@@ -22,6 +23,7 @@ class CourseController extends BaseDashboardController
                 'breadcrumbs' => [
                     ['name' => 'Courses']
                 ],
+                'statuses' => CourseStatus::forSelect(),
                 'routes' => [
                     'category' => [
                         'api' => route('graphql.category'),

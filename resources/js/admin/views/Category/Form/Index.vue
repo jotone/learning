@@ -13,7 +13,7 @@
 
   <form id="coachForm" @submit.prevent="submit">
     <fieldset class="card">
-      <legend>Category Details</legend>
+      <legend title="Category Details">Category Details</legend>
 
       <div class="row padding">
         <label class="caption col-1-2">

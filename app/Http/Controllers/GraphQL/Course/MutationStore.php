@@ -62,9 +62,9 @@ class MutationStore extends CourseMutation
         try {
             // Create course
             $course = Course::create([
-                'name' => $input['name'],
+                'name' => mb_substr($input['name'], 0, 90),
                 'url' => $input['url'],
-                'description' => $input['description'] ?? null,
+                'description' => empty($input['description']) ? null : mb_substr($input['description'], 0, 300),
                 'img_url' => $input['img_url'] ?? null,
                 'lang' => $input['lang'] ?? Settings::where('key', 'main_language')->value('value'),
                 'sale_page_url' => $input['sale_page_url'] ?? null,

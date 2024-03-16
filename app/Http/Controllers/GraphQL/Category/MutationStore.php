@@ -99,6 +99,9 @@ class MutationStore extends Mutation
         }
 
         try {
+            if (isset($input['name'])) {
+                $input['name'] = mb_substr($input['name'], 0, 60);
+            }
             // Create category
             $category = Category::create($input);
 

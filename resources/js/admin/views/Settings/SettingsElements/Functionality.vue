@@ -59,39 +59,51 @@
             <label class="caption" style="margin: 20px 0">
               <span>Custom Question 1</span>
               <textarea
-                class="form-text"
+                class="form-text scrollbar"
                 name="custom_question_1"
                 placeholder="Type your question here"
                 v-model="settings.custom_question_1"
               >{{ settings.custom_question_1 }}</textarea>
 
-              <CircleProgress :current="settings.custom_question_1?.length || 0" max="200"/>
+              <CircleProgress
+                :showRemnant="true"
+                :current="settings.custom_question_1?.length || 0"
+                max="200"
+              />
             </label>
           </li>
           <li>
             <label class="caption" style="margin: 20px 0">
               <span>Custom Question 2</span>
               <textarea
-                class="form-text"
+                class="form-text scrollbar"
                 name="custom_question_2"
                 placeholder="Type your question here"
                 v-model="settings.custom_question_2"
               >{{ settings.custom_question_2 }}</textarea>
 
-              <CircleProgress :current="settings.custom_question_2?.length || 0" max="200"/>
+              <CircleProgress
+                :showRemnant="true"
+                :current="settings.custom_question_2?.length || 0"
+                max="200"
+              />
             </label>
           </li>
           <li>
             <label class="caption" style="margin: 20px 0">
               <span>Custom Question 3</span>
               <textarea
-                class="form-text"
+                class="form-text scrollbar"
                 name="custom_question_3"
                 placeholder="Type your question here"
                 v-model="settings.custom_question_3"
               >{{ settings.custom_question_3 }}</textarea>
 
-              <CircleProgress :current="settings.custom_question_3?.length || 0" max="200"/>
+              <CircleProgress
+                :showRemnant="true"
+                :current="settings.custom_question_3?.length || 0"
+                max="200"
+              />
             </label>
           </li>
         </ul>
