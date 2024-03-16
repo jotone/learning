@@ -56,7 +56,7 @@ class MutationUpdate extends CourseMutation
                 }
 
                 if ('description' === $key) {
-                    $val = mb_substr($key, 0, 300);
+                    $val = mb_substr($val, 0, 300);
                 }
                 $course->$key = $val;
             }
