@@ -4,6 +4,18 @@
       <img :src="previewImage.src" alt="">
     </div>
 
+    <div class="image-placeholder-wrap" v-if="viewPlaceholder && !previewImage.src.length">
+      <div class="image-placeholder">
+        <img src="/resources/assets/images/upload.png" alt="">
+      </div>
+
+      <div class="image-placeholder-text" v-if="placeholderText.length" v-html="placeholderText"></div>
+
+      <div class="image-placeholder-helper">
+        Upload an image by <a href="javascript:void(0)">clicking here</a> or drag and drop the file.
+      </div>
+    </div>
+
     <div class="image-upload-controls-wrap">
       <i class="icon file-upload-icon" title="Upload Image" @click="fileInput.click()"></i>
       <i class="icon trash-icon" title="Remove Image" @click="removeImage"></i>
@@ -36,6 +48,14 @@ const page = usePage();
 
 // Get component properties
 const props = defineProps({
+  placeholderText: {
+    type: Text,
+    default: ''
+  },
+  viewPlaceholder: {
+    type: Boolean,
+    default: true
+  },
   value: {
     type: [Array, Object, String],
     default: null

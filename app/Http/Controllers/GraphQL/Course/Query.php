@@ -90,10 +90,7 @@ class Query extends GraphQlPaginatedQuery
         $where = function ($query) use ($input, &$fields) {
             foreach ($this->fields as $field) {
                 if (isset($input[$field])) {
-                    if ($field === 'category_id') {
-                        // Filter users based on multiple category IDs
-                        $query->whereIn('category_id', $input['category_id']);
-                    } elseif ($field === 'instructor_id') {
+                    if ($field === 'instructor_id') {
                         // Filter users based on multiple instructor IDs
                         $query->whereIn('instructor_id', $input['instructor_id']);
                     } else {
@@ -120,13 +117,6 @@ class Query extends GraphQlPaginatedQuery
             unset($fields[array_search('courses.users_count', $fields)]);
             $fields = array_values($fields);
             $query['count'] = ['users'];
-        }
-        // Get "category_name" property
-        if (in_array('courses.category_name', $fields)) {
-            unset($fields[array_search('courses.category_name', $fields)]);
-
-            $query['select'][] = 'categories.name as category_name';
-            $query['custom'][] = fn($q) => $q->leftJoin('categories', 'courses.category_id', '=', 'categories.id');
         }
         // Get "instructor_email" property
         if (in_array('courses.instructor_email', $fields)) {

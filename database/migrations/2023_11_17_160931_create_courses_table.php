@@ -29,7 +29,6 @@ return new class extends Migration
             $table->unsignedTinyInteger('optional_duration')->nullable();
             $table->string('optional_expire_page')->nullable();
 
-            $table->unsignedInteger('category_id')->nullable();
             $table->unsignedInteger('instructor_id')->nullable();
 
             $table->boolean('invitation_email')->unsigned()->default(1);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GraphQL\Course;
 
+use App\Models\Course;
 use App\Enums\{CourseStatus, CourseTracking};
 use GraphQL\Type\Definition\Type;
 use Illuminate\Validation\Rule;
@@ -73,10 +74,10 @@ class CourseMutation extends Mutation
                 'type' => Type::string(),
                 'rules' => ['nullable', 'string']
             ],
-            'category_id' => [
-                'name' => 'category_id',
-                'type' => Type::int(),
-                'rules' => ['nullable', 'exists:categories,id']
+            'categories' => [
+                'name' => 'categories',
+                'type' => Type::listOf(Type::int()),
+                'rules' => ['nullable', 'array']
             ],
             'instructor_id' => [
                 'name' => 'instructor_id',
@@ -152,5 +153,21 @@ class CourseMutation extends Mutation
     public function type(): Type
     {
         return GraphQL::type('Course');
+    }
+
+    /**
+     * Remove
+     *
+     * @param Course $course
+     * @param array $categories
+     * @return void
+     */
+    protected function setCategories(Course $course, array $categories): void
+    {
+        if (empty($categories)) {
+            $course->categories()->detach();
+        } else {
+            $course->categories()->sync($categories);
+        }
     }
 }

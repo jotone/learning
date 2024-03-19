@@ -11,7 +11,7 @@
         },
         {
           "name":"Categories",
-          "field":"category_name",
+          "field":"categories",
           "enable":1
         },
         {

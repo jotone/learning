@@ -16,8 +16,8 @@
       <fieldset class="card">
         <legend title="Coach Details">Coach Details</legend>
 
-        <div class="form-row" style="padding: 20px 25px">
-          <label class="caption" style="width: 100%">
+        <div class="form-row padding">
+          <label class="caption col">
             <span>First Name</span>
             <input
               autocomplete="off"
@@ -29,7 +29,7 @@
             >
           </label>
 
-          <label class="caption" style="width: 100%">
+          <label class="caption col">
             <span>Last Name</span>
             <input
               autocomplete="off"
@@ -41,7 +41,7 @@
             >
           </label>
 
-          <label class="caption" style="width: 100%">
+          <label class="caption col">
             <span>Email</span>
             <input
               autocomplete="off"
@@ -54,7 +54,7 @@
             >
           </label>
 
-          <label class="caption" style="width: 100%">
+          <label class="caption col">
             <span>Password</span>
             <input
               autocomplete="off"
@@ -66,7 +66,7 @@
             >
           </label>
 
-          <label class="caption" style="width: 100%">
+          <label class="caption col">
             <span>Confirm Password</span>
             <input
               autocomplete="off"

@@ -64,11 +64,17 @@ class CategoriesModelTest extends ModelTestCase
      */
     public function testRelatedCourses(): void
     {
+        // Creating a new Course instance
+        $course = Course::factory()->create();
         // Creating a new Category instance
         $category = Category::factory()->create();
-        // Creating a new Course instance
-        $course = Course::factory()->create([
-            'category_id' => $category->id
+        // Attach the course to the category
+        $category->courses()->attach($course);
+        // Check the relation exists on the database
+        $this->assertDatabaseHas('category_relation', [
+            'category_id' => $category->id,
+            'entity_type' => $course::class,
+            'entity_id' => $course->id
         ]);
 
         $this->assertTrue(in_array($course->url, $category->courses()->pluck('url')->toArray()));
@@ -85,7 +91,7 @@ class CategoriesModelTest extends ModelTestCase
             self::$class::count() ? self::$class::inRandomOrder()->first() : self::$class::factory()->create(),
             fn($category) => $this
                 // Assert the related courses were removed
-                ->assertDatabaseMissing('courses', ['category_id' => $category->id])
+                ->assertDatabaseMissing('category_relation', ['category_id' => $category->id])
         );
     }
 }

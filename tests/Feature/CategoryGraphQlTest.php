@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Classes\Str;
+use App\Services\Str;
 use App\Models\Category;
 use App\Models\Course;
 use Illuminate\Http\UploadedFile;

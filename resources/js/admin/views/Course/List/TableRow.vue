@@ -15,15 +15,24 @@
       <td v-if="column.field === 'status'">
         <StatusInfo :caption="statusValue.text" :type="statusValue.type"/>
       </td>
+
       <td v-else-if="column.field === 'certificate_enable'">
         <span class="bool-value-wrap">
           <i v-if="!course[column.field]" class="icon false-value close-icon"></i>
           <i v-if="course[column.field]" class="icon true-value ok-icon"></i>
         </span>
       </td>
+
       <td v-else-if="['published_at', 'created_at', 'updated_at'].indexOf(column.field) >= 0">
         <span>{{ convertDate(course[column.field]) }}</span>
       </td>
+
+      <td v-else-if="column.field === 'categories'">
+        <p v-for="category in course[column.field]">
+          {{ category.name }}
+        </p>
+      </td>
+
       <td v-else>
         <a :href="editUrl">{{ course[column.field] }}</a>
       </td>
@@ -71,7 +80,7 @@ const courseImage = computed(() => Object.keys(props.course.img_url).length
  * Link for the role edit page
  * @return {string}
  */
-const editUrl = computed((): string => page.props.routes.course.edit.replace(/:id/, props.course.id))
+const editUrl = computed((): string => page.props.routes.course.settings.replace(/:id/, props.course.id))
 
 /**
  * Get the status options by the course status value

@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Classes\FileHelper;
+use App\Services\FileHelper;
 use App\Enums\{CourseStatus, CourseTracking};
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasMany};
+use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasMany, MorphToMany};
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
@@ -54,7 +54,6 @@ class Course extends Model
 
         'optional_duration',
         'optional_expire_page',
-        'category_id',
         'instructor_id',
         'published_at',
         'terms_conditions_enable',
@@ -146,13 +145,13 @@ class Course extends Model
     }
 
     /**
-     * Related category
+     * Get the categories that are assigned to this course.
      *
-     * @return BelongsTo
+     * @return MorphToMany
      */
-    public function category(): BelongsTo
+    public function categories(): MorphToMany
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->morphToMany(Category::class, 'entity', 'category_relation', 'entity_id', 'category_id');
     }
 
     /**
@@ -213,6 +212,8 @@ class Course extends Model
         parent::boot();
 
         static::deleting(function ($model) {
+            // Remove the course to the categories relation
+            $model->categories()->detach();
             // Remove course to user relations
             $model->users()->detach();
             // Remove related products

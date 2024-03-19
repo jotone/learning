@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Classes\Str;
+use App\Services\Str;
 use App\Enums\CourseStatus;
-use App\Models\{Course, Settings};
+use App\Models\{Category, Course, Settings};
 use Illuminate\Http\UploadedFile;
 use Tests\GraphQlTestCase;
 
@@ -72,24 +72,53 @@ class CourseGraphqlQlTest extends GraphQlTestCase
     public function testStore(): void
     {
         $lang = Settings::where('key', 'main_language')->value('value');
+
         $course = Course::factory()->make();
+
+        $query = 'name: "%s", url: "%s", description: "%s"';
+
+        $params = [
+            $course->name,
+            $course->url,
+            $course->description,
+        ];
+
+        if (mt_rand(0, 1)) {
+            $categories = Category::factory(2)->create([
+                'type' => Course::class
+            ]);
+
+            $query .= ', categories: [%s]';
+            $params[] = $categories->pluck('id')->implode(', ');
+        } else {
+            $categories = [];
+        }
+
         $this->runMutationTest(
             type: 'create',
             route: route('graphql.course'),
-            query: 'name: "%s", url: "%s", description: "%s"',
-            params: [
-                $course->name,
-                $course->url,
-                $course->description
-            ],
+            query: $query,
+            params: $params,
             response_fields: 'id name url description lang status',
-            callback: fn() => $this->assertDatabaseHas('courses', [
-                'name' => $course->name,
-                'url' => Str::generateUrl($course->url),
-                'description' => $course->description,
-                'lang' => $lang,
-                'status' => CourseStatus::fromName('draft')
-            ])
+            callback: function ($response) use ($course, $lang, $categories) {
+                $content = json_decode($response->content());
+                // Assert the course exists on the database
+                $this->assertDatabaseHas('courses', [
+                    'name' => $course->name,
+                    'url' => Str::generateUrl($course->url),
+                    'description' => $course->description,
+                    'lang' => $lang,
+                    'status' => CourseStatus::fromName('draft')
+                ]);
+                // Assert the category to the course relation exists on the database
+                foreach ($categories as $category) {
+                    $this->assertDatabaseHas('category_relation', [
+                        'category_id' => $category->id,
+                        'entity_type' => $course::class,
+                        'entity_id' => $content->data->create->id
+                    ]);
+                }
+            }
         );
     }
 
@@ -106,7 +135,12 @@ class CourseGraphqlQlTest extends GraphQlTestCase
      */
     public function testUpdate(): void
     {
+        $categories = Category::inRandomOrder()->where('type', Course::class)->take(mt_rand(1, 3))->pluck('id');
         $course = Course::factory()->create();
+        // Set categories to the course
+        foreach ($categories as $category_id) {
+            $course->categories()->attach($category_id);
+        }
 
         $new_data = Course::factory()->make();
 
@@ -120,17 +154,23 @@ class CourseGraphqlQlTest extends GraphQlTestCase
         $this->runMutationTest(
             type: 'update',
             route: route('graphql.course'),
-            query: 'id: %s, name: "%s", url: "%s", description: "%s"',
+            query: 'id: %s, name: "%s", url: "%s", description: "%s", categories: []',
             params: array_values($data),
             response_fields: 'id name url',
-            callback: fn() => $this
-                ->assertDatabaseMissing('courses', [
-                    'id' => $course->id,
-                    'name' => $course->name,
-                    'url' => $course->url,
-                    'description' => $course->description,
-                ])
-                ->assertDatabaseHas('courses', $data)
+            callback: function () use ($course, $data) {
+                $this
+                    ->assertDatabaseMissing('courses', [
+                        'id' => $course->id,
+                        'name' => $course->name,
+                        'url' => $course->url,
+                        'description' => $course->description,
+                    ])
+                    ->assertDatabaseMissing('category_relation', [
+                        'entity_type' => $course::class,
+                        'entity_id' => $course->id
+                    ])
+                    ->assertDatabaseHas('courses', $data);
+            }
         );
     }
 

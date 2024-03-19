@@ -2,7 +2,7 @@
 
 namespace App\GraphQL\Types;
 
-use App\Classes\Str;
+use App\Services\Str;
 use App\Models\Role;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;

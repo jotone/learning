@@ -47,6 +47,7 @@
             class="form-text"
             name="description"
             placeholder="Short Description"
+            style="min-height: 360px"
             v-model="form.description"
           >{{ form.description }}</textarea>
         </label>
@@ -56,7 +57,12 @@
             <span>Category Image</span>
           </label>
 
-          <ImageUpload ref="imageUpload" :value="form.img_url" @onRemove="clearImage"/>
+          <ImageUpload
+            ref="imageUpload"
+            placeholderText="Upload Category Image"
+            :value="form.img_url"
+            @onRemove="clearImage"
+          />
         </div>
       </div>
 

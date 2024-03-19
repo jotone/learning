@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Classes\Str;
+use App\Services\Str;
 use App\Models\Course;
 use App\Traits\FakerFactoryTrait;
 use Illuminate\Database\Eloquent\Factories\Factory;

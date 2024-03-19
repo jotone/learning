@@ -55,11 +55,12 @@
               </div>
             </th>
             <th v-for="column in columns">
-              <template v-if="column.field === 'category_name'">
+              <template v-if="column.field === 'categories'">
                 <TableHeadCol
                   :field="column.field"
                   :filters="filters"
                   :name="column.name"
+                  :showOrder="false"
                   :showPlusIcon="true"
                   @changeDirection="changeDirection"
                   @plusClick="categoryModalShow"
@@ -192,7 +193,7 @@ const listQuery = (filters: FiltersInterface): string => `{courses(
   search:"${filters.search}"
 ) {
   total per_page last_page has_more_pages current_page data {
-    id name url img_url category_id category_name instructor_id instructor_email lang status optional_duration position certificate_enable users_count created_at updated_at
+    id name url img_url instructor_id instructor_email lang status optional_duration position certificate_enable users_count created_at updated_at categories {id name}
   }
 }}`
 

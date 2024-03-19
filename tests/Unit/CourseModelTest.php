@@ -71,11 +71,18 @@ class CourseModelTest extends ModelTestCase
         // Create a new category instance.
         $category = Category::factory()->create();
         // Create a new course instance and associate it with the previously created category.
-        $course = Course::factory()->create([
-            'category_id' => $category->id
+        $course = Course::factory()->create();
+        // Attach the category to the course
+        $course->categories()->attach($category);
+        // Check the relation exists on the database
+        $this->assertDatabaseHas('category_relation', [
+            'category_id' => $category->id,
+            'entity_type' => $course::class,
+            'entity_id' => $course->id
         ]);
+
         // Assert the course's associated category URL matches the category's URL.
-        $this->assertTrue($course->category->url === $category->url);
+        $this->assertTrue(in_array($category->url, $course->categories()->pluck('url')->toArray()));
     }
 
     /**
@@ -124,6 +131,11 @@ class CourseModelTest extends ModelTestCase
         $this->modelRemovingTest(
             self::$class::count() ? self::$class::inRandomOrder()->first() : self::$class::factory()->create(),
             fn($course) => $this
+                // Assert there are courses on the category relations table
+                ->assertDatabaseMissing('category_relation', [
+                    'entity_type' => $course::class,
+                    'entity_id' => $course->id
+                ])
                 // Assert there are no related course products
                 ->assertDatabaseMissing('course_products', ['course_id' => $course->id])
                 // Assert there are no relation between courses

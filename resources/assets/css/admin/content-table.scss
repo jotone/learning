@@ -56,7 +56,7 @@
         }
       }
 
-      td > a, td > span, .static-fields > a {
+      td > a, td > span, td > p, .static-fields > a {
         display: flex;
         align-items: center;
         color: $secondary;
@@ -247,7 +247,7 @@
 
       strong {font-weight: 400}
 
-      a, span {
+      a, p, span {
         display: flex;
         align-items: center;
         justify-content: center;

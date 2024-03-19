@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\EmailTemplate;
 
-use App\Classes\Str;
+use App\Services\Str;
 use App\Http\Requests\DefaultRequest;
 use App\Models\EmailTemplate;
 

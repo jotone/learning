@@ -1,23 +1,57 @@
 .image-upload-wrap {
+  background-color: $bg;
   border: 1px solid $border;
   border-radius: 20px;
   display: block;
-  height: 150px;
+  min-height: 360px;
   margin-top: 10px;
   position: relative;
   overflow: hidden;
 
   .image-preview-wrap {
-    max-height: 150px;
+    height: 100%;
     display: flex;
     align-items: center;
+    max-height: 360px;
     justify-content: center;
-    padding: 5px;
+    padding: 10px;
+    width: 100%;
 
     img {
       max-width: 100%;
-      max-height: 150px;
+      max-height: 340px;
       object-fit: contain;
+    }
+  }
+
+  .image-placeholder-wrap {
+    border-radius: 20px;
+    height: 100%;
+    padding: 15px;
+
+    .image-placeholder {
+      text-align: center;
+      padding: 40px;
+
+      img {
+        object-fit: contain;
+        max-height: 105px;
+        max-width: 105px;
+      }
+    }
+
+    .image-placeholder-text, .image-placeholder-helper {
+      color: $text;
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .image-placeholder-text {font-size: 20px; font-weight: 500}
+
+    .image-placeholder-helper {
+      padding: 40px 70px;
+      text-align: center;
+      font-size: 18px;
     }
   }
 

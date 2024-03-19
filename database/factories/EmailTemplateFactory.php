@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Classes\Str;
+use App\Services\Str;
 use App\Models\EmailTemplate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

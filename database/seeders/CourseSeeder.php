@@ -12,20 +12,13 @@ class CourseSeeder extends Seeder
      */
     public function run(): void
     {
-        $courses_count = mt_rand(3, 7);
-        Course::factory($courses_count)->create();
+        $courses = Course::factory(mt_rand(3, 7))->create();
 
-        foreach (Category::inRandomOrder()->get() as $category) {
-            if ($courses_count > 0) {
-                $courses = Course::whereNull('category_id')->inRandomOrder()->take(mt_rand(0, $courses_count - 1))->get();
+        foreach ($courses as $course) {
+            $categories = Category::inRandomOrder()->take(mt_rand(0, 2))->get();
 
-                $courses_count -= $courses->count();
-
-                $courses->each(fn($course) => $course->update(['category_id' => $category->id]));
-
-                if ($courses_count < 1) {
-                    $courses_count = 0;
-                }
+            if ($categories->count()) {
+                $course->categories()->sync($categories->pluck('id')->toArray());
             }
         }
     }

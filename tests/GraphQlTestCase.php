@@ -170,7 +170,6 @@ class GraphQlTestCase extends TestCase
                     $type => explode(' ', $response_fields)
                 ]
             ]);
-
         is_callable($callback) && $callback($response);
     }
 

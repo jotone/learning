@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Classes\FileHelper;
+use App\Services\FileHelper;
 use App\Enums\CategoryType;
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
 
 class Category extends Model
@@ -59,14 +59,15 @@ class Category extends Model
         );
     }
 
+
     /**
-     * Get related courses
+     * Get the course entities that are assigned this category.
      *
-     * @return HasMany
+     * @return MorphToMany
      */
-    public function courses(): HasMany
+    public function courses(): MorphToMany
     {
-        return $this->hasMany(Course::class, 'category_id', 'id');
+        return $this->morphedByMany(Course::class, 'entity', 'category_relation', 'category_id', 'entity_id');
     }
 
     protected static function boot(): void
@@ -77,7 +78,7 @@ class Category extends Model
             // Remove category images
             FileHelper::recursiveRemove(public_path('images/categories/' . $model->id));
             // Detach category courses
-            $model->courses()->each(fn($ent) => $ent->update(['category_id' => null]));
+            $model->courses()->detach();
             // Reset categories position
             $categories = Category::where('type', $model->type)->orderBy('position')->get();
             foreach ($categories as $i => $category) {
