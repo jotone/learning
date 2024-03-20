@@ -49,7 +49,7 @@ const page = usePage();
 // Get component properties
 const props = defineProps({
   placeholderText: {
-    type: Text,
+    type: String,
     default: ''
   },
   viewPlaceholder: {

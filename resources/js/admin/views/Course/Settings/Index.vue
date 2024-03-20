@@ -19,107 +19,85 @@
         <div class="col-2-3">
           <div class="row padding">
             <div class="col-1-2">
-              <label class="caption">
-                <span>Title</span>
-                <input
-                  autocomplete="off"
-                  class="form-input"
-                  name="title"
+              <Label caption="Title">
+                <InputText
                   placeholder="Title..."
-                  required
-                  style="padding-right: 40px"
-                  v-model.trim="form.name"
-                >
-
-                <CircleProgress style="right: 25px" max="120" :current="form.name.length || 0"/>
-              </label>
+                  :enableProgress="true"
+                  :max="120"
+                  :required="true"
+                  :style="{'padding-right': '40px'}"
+                  v-model="form.name"
+                />
+              </Label>
             </div>
 
             <div class="col-1-2">
-              <label class="caption">
-                <span>Status</span>
+              <Label caption="Status">
                 <select class="form-select" v-model="form.status">
                   <option v-for="status in $attrs.statuses" :value="status">{{ status }}</option>
                 </select>
-              </label>
+              </Label>
             </div>
           </div>
 
           <div class="row padding">
             <div class="col-1-2">
-              <label class="caption" v-if="0 === page.props.auth.role.level">
-                <span>Course URL</span>
-                <input
-                  autocomplete="off"
-                  class="form-input"
-                  name="url"
-                  placeholder="Course URL..."
-                  v-model.trim="form.url"
-                >
-              </label>
+              <Label caption="Course URL" v-if="0 === page.props.auth.role.level">
+                <InputText placeholder="Course URL..." :required="true" v-model="form.url"/>
+              </Label>
             </div>
           </div>
 
           <div class="row padding">
             <div class="col-1-2">
-              <label class="caption">
-                <span>Sales Page URL</span>
-                <input
-                  autocomplete="off"
-                  class="form-input"
-                  name="sale_page_url"
-                  placeholder="Sales Page Url..."
-                  v-model.trim="form.sale_page_url"
-                >
-              </label>
+              <Label caption="Sales Page URL">
+                <InputText placeholder="Sales Page Url..." v-model.trim="form.sale_page_url"/>
+              </Label>
             </div>
 
             <div class="col-1-2">
-              <label class="caption">
-                <span>Expiry Link URL</span>
-                <input
-                  autocomplete="off"
-                  class="form-input"
-                  name="expire_url"
-                  placeholder="Expiry Link Url..."
-                  v-model.trim="form.expire_url"
-                >
-              </label>
+              <Label caption="Expiry Link URL">
+                <InputText placeholder="Expiry Link Url..." v-model.trim="form.expire_url"/>
+              </Label>
             </div>
           </div>
 
           <div class="row padding">
-            <label class="caption col">
-              <span>Description</span>
-              <textarea
-                class="form-text"
-                name="description"
-                placeholder="Short Description"
-                v-model.trim="form.description"
-              ></textarea>
-            </label>
+            <Label class="col" caption="Description">
+              <TextArea placeholder="Short Description..." v-model="form.description"/>
+            </Label>
           </div>
 
           <div class="row padding">
-            <label class="caption col-1-2">
-              <span>Category</span>
-              <select class="form-select" v-model="form.category_id">
-                <option :value="null">No category</option>
-                <option v-for="category in $attrs.categories" :value="category.id">
-                  {{ category.name }}
-                </option>
-              </select>
-            </label>
+            <Label caption="Category" class="col">
+              <MultipleSelector :options="$attrs.categories"/>
+            </Label>
+          </div>
+
+          <div class="form-row padding">
+            <SliderCheckbox
+              name="terms_conditions_enable"
+              text="Terms & Conditions"
+              :checked="form.terms_conditions_enable"
+            />
+
+            <Label class="col" caption="Terms & Conditions Description">
+              <TextArea placeholder="Terms & Conditions Description..." v-model="form.terms_conditions_text"/>
+            </Label>
           </div>
         </div>
 
-        <div class="col-1-3">
+        <div class="col-1-3 form-row padding">
           <ImageUpload
             ref="imageUpload"
             placeholderText="Upload Course Image"
             :value="form.img_url"
             @onRemove="clearImage"
           />
+
+          <button type="submit">
+            Save
+          </button>
         </div>
       </div>
     </fieldset>
@@ -128,16 +106,15 @@
 
 <script setup>
 // Vue libs
-import {inject, reactive, ref} from 'vue';
+import {inject, reactive} from 'vue';
 import {usePage} from '@inertiajs/vue3';
 // Components
-import Notifications from "../../../components/Default/Notifications.vue";
-import StatusInfo from "../../../components/Default/StatusInfo.vue";
+import {CircleProgress, ImageUpload, Label, MultipleSelector, SliderCheckbox, TextArea} from "../../../components/Form";
+import {Notifications, StatusInfo} from "../../../components/Default";
+import TopMenu from "../../../components/Menu/TopMenu.vue";
 // Layout
 import Layout from '../../../shared/Layout.vue';
-import TopMenu from "../../../components/Default/TopMenu.vue";
-import ImageUpload from "../../../components/Form/ImageUpload.vue";
-import {CircleProgress} from "../../../components/Form/index.js";
+import {InputText} from "../../../components/Form/index.js";
 
 defineOptions({layout: Layout})
 
@@ -154,7 +131,7 @@ const clearImage = () => {
 }
 
 const submit = () => {
-
+  console.log(form)
 }
 
 console.log(page.props)
@@ -165,7 +142,7 @@ let courseStatus = page.props.course.status === 'active'
   ? 'success'
   : page.props.course.status === 'coming_soon' ? 'warning' : null;
 
-const form = {
+let form = reactive({
   name: page.props.course?.name,
   url: page.props.course?.url,
   img_url: page.props.course?.img_url,
@@ -174,5 +151,7 @@ const form = {
   expire_url: page.props.course?.expire_url,
   description: page.props.course?.description,
   category_id: page.props.course?.category_id,
-}
+  terms_conditions_enable: page.props.course?.terms_conditions_enable || false,
+  terms_conditions_text: page.props.course?.terms_conditions_text,
+})
 </script>

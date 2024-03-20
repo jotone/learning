@@ -40,17 +40,14 @@
         </label>
       </div>
 
-      <div class="row padding">
-        <label class="caption col-1-2">
-          <span>Short Description</span>
-          <textarea
-            class="form-text"
-            name="description"
+      <div class="row padding f-s-s">
+        <Label class="col-1-2" caption="Short Description">
+          <TextArea
             placeholder="Short Description"
-            style="min-height: 360px"
+            :style="{'height': '93%'}"
             v-model="form.description"
-          >{{ form.description }}</textarea>
-        </label>
+          />
+        </Label>
 
         <div class="col-1-2">
           <label class="caption">
@@ -89,7 +86,7 @@ import {usePage} from '@inertiajs/vue3';
 // Other Libs
 import {Notification} from '../../../libs/Notification';
 // Components
-import ImageUpload from "../../../components/Form/ImageUpload.vue";
+import {ImageUpload, Label, TextArea} from "../../../components/Form/index.js";
 import Notifications from "../../../components/Default/Notifications.vue";
 // Layout
 import Layout from '../../../shared/Layout.vue';

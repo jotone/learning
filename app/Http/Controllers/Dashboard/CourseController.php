@@ -57,7 +57,10 @@ class CourseController extends BaseDashboardController
                         'name' => $course->name
                     ]
                 ],
-                'categories' => Category::select(['id', 'name'])->where('type', Course::class)->orderBy('position')->get(),
+                'categories' => Category::select(['id', 'name'])
+                    ->where('type', Course::class)
+                    ->orderBy('position')
+                    ->get(),
                 'course' => $course,
                 'statuses' => CourseStatus::forSelect(),
                 'top_menu' => $this->topMenu($request)

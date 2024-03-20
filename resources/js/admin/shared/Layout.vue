@@ -66,8 +66,8 @@ import axios from "axios";
 import moment from "moment";
 import {Notification} from "../libs/Notification.js";
 // Components
-import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
-import UserInfo from '../components/Default/UserInfo.vue';
+import SideMenuItem from "../components/Menu/SideMenuItem.vue";
+import UserInfo from '../components/User/Info.vue';
 
 const page = usePage();
 

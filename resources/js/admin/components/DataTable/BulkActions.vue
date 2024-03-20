@@ -35,6 +35,8 @@
 <script setup>
 // Vue libs
 import {ref, watch} from 'vue';
+// Vue select css
+import 'vue-select/dist/vue-select.css'
 
 // Assign the function to emit
 const emit = defineEmits(['clear']);

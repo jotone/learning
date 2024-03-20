@@ -35,8 +35,7 @@
               <TableHeadCol field="level" :filters="filters" name="Level" @changeDirection="changeDirection"/>
             </th>
             <th>
-              <TableHeadCol field="created_at" :filters="filters" name="Creation Date"
-                            @changeDirection="changeDirection"/>
+              <TableHeadCol field="created_at" :filters="filters" name="Creation Date" @changeDirection="changeDirection"/>
             </th>
             <th>
               <TableHeadCol name="Actions"/>

@@ -33,3 +33,37 @@
     }
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .top-menu-wrap ul {
+    gap: 15px;
+    li {
+      a {gap: 5px}
+
+      .icon {flex-shrink: 0; }
+
+      span {font-size: 14px}
+    }
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .top-menu-wrap ul {
+    justify-content: center;
+    li {
+      a, span {display: block; padding: 0; text-align: center}
+
+      span {font-size: 12px}
+
+      .icon {width: 24px; height: 24px}
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .top-menu-wrap ul {
+    gap: 20px;
+
+    li span {display: none}
+  }
+}

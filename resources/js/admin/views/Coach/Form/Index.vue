@@ -17,66 +17,25 @@
         <legend title="Coach Details">Coach Details</legend>
 
         <div class="form-row padding">
-          <label class="caption col">
-            <span>First Name</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="first_name"
-              placeholder="First Name..."
-              required
-              v-model.trim="form.first_name"
-            >
-          </label>
+          <Label caption="First Name" class="col">
+            <InputText placeholder="First Name..." :required="true" v-model="form.first_name"/>
+          </Label>
 
-          <label class="caption col">
-            <span>Last Name</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="last_name"
-              placeholder="Last Name..."
-              required
-              v-model.trim="form.last_name"
-            >
-          </label>
+          <Label caption="Last Name" class="col">
+            <InputText placeholder="Last Name..." :required="true" v-model="form.last_name"/>
+          </Label>
 
-          <label class="caption col">
-            <span>Email</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="email"
-              type="email"
-              placeholder="Email..."
-              required
-              v-model.trim="form.email"
-            >
-          </label>
+          <Label caption="Last Name" class="col">
+            <InputText placeholder="Email..." type="email" :required="true" v-model="form.email"/>
+          </Label>
 
-          <label class="caption col">
-            <span>Password</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="password"
-              type="password"
-              placeholder="Enter Password..."
-              v-model="form.password"
-            >
-          </label>
+          <Label caption="Enter Password" class="col">
+            <InputText placeholder="Enter Password..." type="password" v-model="form.password"/>
+          </Label>
 
-          <label class="caption col">
-            <span>Confirm Password</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="confirmation"
-              type="password"
-              placeholder="Confirm Password..."
-              v-model="form.confirmation"
-            >
-          </label>
+          <Label caption="Confirm Password" class="col">
+            <InputText placeholder="Confirm Password..." type="password" v-model="form.confirmation"/>
+          </Label>
         </div>
       </fieldset>
     </div>
@@ -93,6 +52,7 @@ import {Notification} from '../../../libs/Notification';
 import Notifications from '../../../components/Default/Notifications.vue';
 // Layout
 import Layout from '../../../shared/Layout.vue';
+import {InputText, Label} from "../../../components/Form/index.js";
 
 defineOptions({layout: Layout})
 

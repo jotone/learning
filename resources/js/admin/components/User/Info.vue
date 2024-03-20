@@ -15,7 +15,7 @@ import {PropType} from 'vue';
 // Interfaces
 import {UserDataInterface} from '../../../contracts/UserDataInterface';
 // Components
-import Avatar from '../User/Avatar.vue';
+import Avatar from './Avatar.vue';
 
 // Get component properties
 const props = defineProps({

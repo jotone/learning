@@ -61,13 +61,13 @@
 <script>
 // Mixin
 import {DefaultPopupMixin} from '../../../../../mixins/default-popup-mixin.js';
+// Other Libs
+import {Notification} from "../../../../libs/Notification.js";
 // Components
 import CategoriesList from "./CategoriesList.vue";
 import {CircleProgress, SliderCheckbox} from "../../../../components/Form/index.js";
 import {RowActions} from "../../../../components/DataTable/index.js";
 import RemovePopup from "../../../../components/Popup/RemovePopup.vue";
-import {Notification} from "../../../../libs/Notification.js";
-
 export default {
   components: {RemovePopup, CategoriesList, CircleProgress, RowActions, SliderCheckbox},
   mixins: [DefaultPopupMixin],

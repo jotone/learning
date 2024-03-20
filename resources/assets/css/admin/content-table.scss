@@ -294,5 +294,9 @@
 }
 
 @media screen and (max-width: 480px) {
-  .content-table-wrap {padding: 10px}
+  .content-table-wrap {
+    padding: 10px;
+
+    .content-table-controls, .table-container .bulk-select {display: none}
+  }
 }
