@@ -55,11 +55,12 @@
               </div>
             </th>
             <th v-for="column in columns">
-              <template v-if="column.field === 'category_name'">
+              <template v-if="column.field === 'categories'">
                 <TableHeadCol
                   :field="column.field"
                   :filters="filters"
                   :name="column.name"
+                  :showOrder="false"
                   :showPlusIcon="true"
                   @changeDirection="changeDirection"
                   @plusClick="categoryModalShow"
@@ -144,24 +145,14 @@ import {inject, reactive, ref} from 'vue';
 import {usePage} from '@inertiajs/vue3';
 // Other Libs
 import {decodeUriQuery, encodeUriQuery} from '../../../libs/RequestHelper';
-import Notifications from '../../../components/Default/Notifications.vue';
 // Interfaces
 import {ColumnSectionInterface} from '../../../../contracts/ColumnSectionInterface';
 import {FiltersInterface} from '../../../../contracts/FiltersInterface';
 // Components
-import {
-  BulkActions,
-  getFilters,
-  Pagination,
-  PerPage,
-  SearchForm,
-  StatusTooltip,
-  TableHeadCol
-} from '../../../components/DataTable/index.js';
+import {BulkActions, ColumnSelector, getFilters, Pagination, PerPage, SearchForm, StatusTooltip, TableHeadCol} from '../../../components/DataTable';
+import {Notifications, Sidebar} from '../../../components/Default';
 import CategoryModal from './Modals/CategoryModal.vue';
 import CourseModal from "./Modals/CourseModal.vue";
-import ColumnSelector from '../../../components/DataTable/ColumnSelector.vue';
-import Sidebar from '../../../components/Default/Sidebar.vue';
 import TableRow from './TableRow.vue';
 // Layout
 import Layout from '../../../shared/Layout.vue';
@@ -192,7 +183,7 @@ const listQuery = (filters: FiltersInterface): string => `{courses(
   search:"${filters.search}"
 ) {
   total per_page last_page has_more_pages current_page data {
-    id name url img_url category_id category_name instructor_id instructor_email lang status optional_duration position certificate_enable users_count created_at updated_at
+    id name url img_url instructor_id instructor_email lang status optional_duration position certificate_enable users_count created_at updated_at categories {id name}
   }
 }}`
 

@@ -61,13 +61,13 @@
 <script>
 // Mixin
 import {DefaultPopupMixin} from '../../../../../mixins/default-popup-mixin.js';
+// Other Libs
+import {Notification} from "../../../../libs/Notification.js";
 // Components
 import CategoriesList from "./CategoriesList.vue";
 import {CircleProgress, SliderCheckbox} from "../../../../components/Form/index.js";
 import {RowActions} from "../../../../components/DataTable/index.js";
 import RemovePopup from "../../../../components/Popup/RemovePopup.vue";
-import {Notification} from "../../../../libs/Notification.js";
-
 export default {
   components: {RemovePopup, CategoriesList, CircleProgress, RowActions, SliderCheckbox},
   mixins: [DefaultPopupMixin],
@@ -198,12 +198,11 @@ export default {
      */
     showRowActions(e, i) {
       const row = e.target.closest('li');
-      const popupOffset = e.target.closest('.category-popup').getBoundingClientRect() //+ e.target.getBoundingClientRect().height;
       const blockOffset = row.getBoundingClientRect();
 
       this.selectedCategory.model = this.list.data[i];
       this.selectedCategory.right = 20;
-      this.selectedCategory.top = (10 + blockOffset.height * (i + 1)) + popupOffset.top + 100;
+      this.selectedCategory.top = 205 + (blockOffset.height + 5) * (i + 1);
       this.selectedCategory.show = true;
     }
   },

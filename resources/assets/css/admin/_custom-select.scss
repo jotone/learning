@@ -2,8 +2,8 @@
   position: relative;
 
   .custom-selector-input {
-    border: 1px solid $border;
-    border-radius: 30px;
+    border: $b-type;
+    border-radius: $b-rad-big;
     background: white url("../../images/icons/angle-down.svg") no-repeat 99% center / 24px;
     cursor: pointer;
     color: $text;

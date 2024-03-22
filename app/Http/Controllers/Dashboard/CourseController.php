@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Enums\CourseStatus;
 use App\Http\Controllers\BaseDashboardController;
-use App\Models\Settings;
+use App\Models\{Category, Course, Settings};
+use Illuminate\Http\Request;
 use Inertia\Response;
 
 class CourseController extends BaseDashboardController
@@ -31,7 +32,7 @@ class CourseController extends BaseDashboardController
                     ],
                     'course' => [
                         'api' => route('graphql.course'),
-                        'edit' => route('dashboard.courses.edit', ':id')
+                        'settings' => route('dashboard.courses.settings', ':id')
                     ],
                     'settings' => route('api.settings.update')
                 ],
@@ -40,5 +41,36 @@ class CourseController extends BaseDashboardController
             scripts: [
                 'css' => ['resources/assets/css/admin/content-table.scss']
             ]);
+    }
+
+    public function settings(Course $course, Request $request): Response
+    {
+        return $this->view(
+            view: 'Course/Settings/Index',
+            shared: [
+                'breadcrumbs' => [
+                    [
+                        'name' => 'Courses',
+                        'url' => route('dashboard.courses.index')
+                    ],
+                    [
+                        'name' => $course->name
+                    ]
+                ],
+                'categories' => Category::select(['id', 'name'])
+                    ->where('type', Course::class)
+                    ->orderBy('position')
+                    ->get(),
+                'course' => $course->load([
+                    'categories' => fn($q) => $q->select('categories.name as category_name')
+                ]),
+                'routes' => [
+                    'api' => route('graphql.course'),
+                    'img' => route('api.image.destroy')
+                ],
+                'statuses' => CourseStatus::forSelect(),
+                'top_menu' => $this->topMenu($request)
+            ]
+        );
     }
 }

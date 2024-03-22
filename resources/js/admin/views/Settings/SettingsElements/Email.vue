@@ -109,8 +109,9 @@
               <span>Terms of Service Link</span>
               <input class="form-input"
                 name="terms_of_service"
-                placeholder="Set the Terms of Service Link"
-                v-model="settings.terms_of_service">
+                placeholder="Set the Terms of Service Link..."
+                v-model="settings.terms_of_service"
+              >
             </label>
           </li>
           <li>
@@ -118,8 +119,9 @@
               <span>Privacy Policy Link</span>
               <input class="form-input"
                 name="privacy_policy"
-                placeholder="Set the Privacy Policy Link"
-                v-model="settings.privacy_policy">
+                placeholder="Set the Privacy Policy Link..."
+                v-model="settings.privacy_policy"
+              >
             </label>
           </li>
           <li>
@@ -127,8 +129,9 @@
               <span>Address</span>
               <input class="form-input"
                 name="legal_address"
-                placeholder="Set a legal address"
-                v-model="settings.legal_address">
+                placeholder="Set a legal address..."
+                v-model="settings.legal_address"
+              >
             </label>
           </li>
         </ul>
@@ -161,7 +164,7 @@
                   class="form-input"
                   :class="{'has-controls': isAdmin}"
                   :name="`socials[${element.id}]`"
-                  :placeholder="`Link to ${element.caption} page`"
+                  :placeholder="`Link to ${element.caption} page...`"
                   v-model="element.link"
                 >
               </label>

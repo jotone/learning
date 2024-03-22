@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GraphQL\Course;
 
-use App\Classes\Str;
+use App\Services\Str;
 use App\Models\{Course, Settings};
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\Type;
@@ -58,7 +58,6 @@ class MutationStore extends CourseMutation
         }
 
         $status = $input['status'] ?? 'draft';
-
         try {
             // Create course
             $course = Course::create([
@@ -72,9 +71,8 @@ class MutationStore extends CourseMutation
                 'status' => $status,
                 'tracking_type' => $input['tracking_type'] ?? 'enable_auto_approve',
                 'tracking_status' => $input['tracking_status'] ?? 0,
-                'optional_duration' => $input['optional_duration'] ?? null,
+                'optional_duration' => $input['optional_duration'] ?? 0,
                 'optional_expire_page' => $input['optional_expire_page'] ?? null,
-                'category_id' => $input['category_id'] ?? null,
                 'instructor_id' => $input['instructor_id'] ?? null,
                 'invitation_email' => $input['invitation_email'] ?? 1,
                 'position' => $input['position'],
@@ -86,6 +84,8 @@ class MutationStore extends CourseMutation
                 'free_trial_upgrade_url' => $input['free_trial_upgrade_url'] ?? null,
                 'free_trial_upgrade_title' => $input['free_trial_upgrade_title'] ?? null
             ]);
+            // Set course categories
+            isset($input['categories']) && $this->setCategories($course, $input['categories']);
 
             DB::commit();
         } catch (\Exception $e) {

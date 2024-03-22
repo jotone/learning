@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GraphQL\Category;
 
-use App\Classes\Str;
+use App\Services\Str;
 use App\Enums\CategoryType;
 use App\Models\Category;
 use GraphQL\Error\Error;

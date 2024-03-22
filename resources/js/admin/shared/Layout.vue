@@ -66,8 +66,8 @@ import axios from "axios";
 import moment from "moment";
 import {Notification} from "../libs/Notification.js";
 // Components
-import SideMenuItem from "../components/SideMenu/SideMenuItem.vue";
-import UserInfo from '../components/Default/UserInfo.vue';
+import SideMenuItem from "../components/Menu/SideMenuItem.vue";
+import UserInfo from '../components/User/Info.vue';
 
 const page = usePage();
 
@@ -96,7 +96,7 @@ const convertDate = (date, format = 'DD MMM YYYY') => moment(date).format(format
  * @param el
  * @returns {number|null}
  */
-const index = el => Array.from(el.parentNode.querySelectorAll(el.nodeName.toLowerCase())).indexOf(el);
+// const index = el => Array.from(el.parentNode.querySelectorAll(el.nodeName.toLowerCase())).indexOf(el);
 /**
  * Make HTTP requests using Axios
  * @param {object} props
@@ -139,16 +139,12 @@ const request = props => {
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
 const requestGraphQL = (url, query, headers = {}) => new Promise((resolve, reject) => axios
-  .post(
-    url,
-    typeof query === 'string' ? {'query': query} : query,
-    {
-      headers: Object.assign({
-        accept: "application/json",
-        Authorization: "Bearer " + page.props.auth.apiToken
-      }, headers)
-    }
-  ).then(response => {
+  .post(url, typeof query === 'string' ? {'query': query} : query, {
+    headers: Object.assign({
+      accept: "application/json",
+      Authorization: "Bearer " + page.props.auth.apiToken
+    }, headers)
+  }).then(response => {
     if (200 === response.status) {
       if ('errors' in response.data) {
         for (let i = 0, n = response.data.errors.length; i < n; i++) {
@@ -171,9 +167,66 @@ const requestGraphQL = (url, query, headers = {}) => new Promise((resolve, rejec
     }
   }))
 
-// Provide the "convertDate", "request", "requestGraphQL" functions on over the all projects
-provide('convertDate', convertDate)
-provide('index', index)
-provide('request', request)
-provide('requestGraphQL', requestGraphQL)
+/**
+ * Build a query for the GraphQL request to upload a file
+ * @param {File} file
+ * @param {int} id
+ * @param {string} type
+ * @param {string} field
+ * @returns {Object}
+ */
+const graphQlFileUploadQuery = (file, id, type, field) => ({
+    operations: JSON.stringify({
+      query: `mutation ${type}($id: Int!, $file: Upload!) {update(id: $id, ${field}: $file) {id ${field}}}`,
+      variables: {id: id, file: null}
+    }),
+    map: JSON.stringify({'0': ['variables.file']}),
+    '0': file
+})
+
+/**
+ * GraphQL form serialization function
+ * @param {string} mutationType
+ * @param {Object} form
+ * @param {string, Array} responseField
+ * @param {Array} except
+ * @returns {string}
+ */
+const graphQlSerializeForm = (mutationType, form, responseField, except = []) => {
+  let query = []
+  for (let field in form) {
+    const value = form[field];
+    if (except.indexOf(field) < 0) {
+      if (Array.isArray(value)) {
+        query.push(`${field}:[${value.join(',')}]`);
+      } else if (isNumber(value)) {
+        query.push(`${field}:${value}`);
+      } else if (typeof value === 'string') {
+        query.push(`${field}:"${value}"`);
+      } else if (typeof value === 'boolean') {
+        query.push(`${field}:${value ? 1 : 0}`);
+      } else if (null === value) {
+        query.push(`${field}:""`)
+      } else {
+        console.error('Unknown query field type', field, value)
+      }
+    }
+  }
+
+  if (Array.isArray(responseField)) {
+    responseField = responseField.join(',')
+  }
+
+  return `mutation {${mutationType} (${query.join(',')}) { ${responseField} }}`
+}
+
+const isNumber = n => !isNaN(parseFloat(n)) && isFinite(n);
+
+
+// Provide the functions on over the all projects
+provide('convertDate', convertDate);
+provide('graphQlFileUploadQuery', graphQlFileUploadQuery);
+provide('graphQlSerializeForm', graphQlSerializeForm);
+provide('request', request);
+provide('requestGraphQL', requestGraphQL);
 </script>

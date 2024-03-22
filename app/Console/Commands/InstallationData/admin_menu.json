@@ -20,7 +20,39 @@
     {
       "name": "Courses",
       "route": "dashboard.courses.index",
-      "img": "book-icon"
+      "img": "book-icon",
+      "inner": [
+        {
+          "name": "Curriculum",
+          "route": "dashboard.courses.curriculum",
+          "img": "file-icon"
+        },
+        {
+          "name": "Settings",
+          "route": "dashboard.courses.settings",
+          "img": "book-cog-icon"
+        },
+        {
+          "name": "User Access",
+          "route": "dashboard.courses.user-access",
+          "img": "user-key-icon"
+        },
+        {
+          "name": "Comments",
+          "route": "dashboard.courses.comments",
+          "img": "mirror comment-icon"
+        },
+        {
+          "name": "Worksheets",
+          "route": "dashboard.courses.worksheets",
+          "img": "worksheet-icon"
+        },
+        {
+          "name": "Certificates",
+          "route": "dashboard.courses.certificate",
+          "img": "certificate-icon"
+        }
+      ]
     },
     {
       "name": "Communities",

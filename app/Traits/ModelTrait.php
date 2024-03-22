@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Classes\FileHelper;
+use App\Services\FileHelper;
 use App\Models\Settings;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;

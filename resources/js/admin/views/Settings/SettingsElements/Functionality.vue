@@ -55,56 +55,16 @@
         </ul>
 
         <ul class="options-list">
-          <li>
-            <label class="caption" style="margin: 20px 0">
-              <span>Custom Question 1</span>
-              <textarea
-                class="form-text scrollbar"
-                name="custom_question_1"
+          <li v-for="i in 3">
+            <Label :caption="`Custom Question ${i}`" style="margin: 20px 0">
+              <TextArea
                 placeholder="Type your question here"
-                v-model="settings.custom_question_1"
-              >{{ settings.custom_question_1 }}</textarea>
-
-              <CircleProgress
+                v-model="settings['custom_question_' + i]"
+                :enableProgress="true"
                 :showRemnant="true"
-                :current="settings.custom_question_1?.length || 0"
                 max="200"
               />
-            </label>
-          </li>
-          <li>
-            <label class="caption" style="margin: 20px 0">
-              <span>Custom Question 2</span>
-              <textarea
-                class="form-text scrollbar"
-                name="custom_question_2"
-                placeholder="Type your question here"
-                v-model="settings.custom_question_2"
-              >{{ settings.custom_question_2 }}</textarea>
-
-              <CircleProgress
-                :showRemnant="true"
-                :current="settings.custom_question_2?.length || 0"
-                max="200"
-              />
-            </label>
-          </li>
-          <li>
-            <label class="caption" style="margin: 20px 0">
-              <span>Custom Question 3</span>
-              <textarea
-                class="form-text scrollbar"
-                name="custom_question_3"
-                placeholder="Type your question here"
-                v-model="settings.custom_question_3"
-              >{{ settings.custom_question_3 }}</textarea>
-
-              <CircleProgress
-                :showRemnant="true"
-                :current="settings.custom_question_3?.length || 0"
-                max="200"
-              />
-            </label>
+            </Label>
           </li>
         </ul>
       </div>
@@ -129,7 +89,12 @@
 
         <label class="caption" style="margin-top: 30px" v-if="settings.enable_search">
           <span>Search Title</span>
-          <input class="form-input" name="search_title" placeholder="Add the search title" v-model="settings.search_title">
+          <input
+            class="form-input"
+            name="search_title"
+            placeholder="Add the search title"
+            v-model="settings.search_title"
+          >
         </label>
       </div>
     </div>
@@ -233,7 +198,7 @@
 </template>
 
 <script setup lang="ts">
-import {CircleProgress, SliderCheckbox} from "../../../components/Form";
+import {Label, SliderCheckbox, TextArea} from "../../../components/Form";
 import SettingsElement from "./SettingsElement.vue";
 
 const props = defineProps({

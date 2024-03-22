@@ -7,6 +7,7 @@
 !/public/images/logo-dashboard.png
 !/public/images/logo-dashboard-mobile.png
 !/public/images/logo-dashboard-white.png
+!/resources/assets/images/upload.png
 /public/storage
 /storage/*.key
 /vendor

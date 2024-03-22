@@ -11,23 +11,23 @@
     </div>
 
     <div class="bulk-select-selector">
-      <v-select
-        label="label"
-        :options="options"
-        :clearable="false"
-        :searchable="false"
-        :selectable="option => !option?.disabled"
-        v-model="selectedOption"
-      >
-        <template v-slot:option="option">
-          <span
-            :class="{'disabled-option': option.disabled || false}"
-            @click="option.hasOwnProperty('callback') ? option.callback() : () => {}"
-          >
-            {{ option.label }}
-          </span>
-        </template>
-      </v-select>
+<!--      <v-select-->
+<!--        label="label"-->
+<!--        :options="options"-->
+<!--        :clearable="false"-->
+<!--        :searchable="false"-->
+<!--        :selectable="option => !option?.disabled"-->
+<!--        v-model="selectedOption"-->
+<!--      >-->
+<!--        <template v-slot:option="option">-->
+<!--          <span-->
+<!--            :class="{'disabled-option': option.disabled || false}"-->
+<!--            @click="option.hasOwnProperty('callback') ? option.callback() : () => {}"-->
+<!--          >-->
+<!--            {{ option.label }}-->
+<!--          </span>-->
+<!--        </template>-->
+<!--      </v-select>-->
     </div>
   </div>
 </template>

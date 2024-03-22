@@ -11,8 +11,7 @@
     </div>
 
     <div class="email-row-elements-controls">
-      <label class="caption">
-        <span>Tag</span>
+      <Label caption="Tag">
         <select name="tag" class="form-select" v-model="element.tag" @change="changeElementTag">
           <option value="a">a</option>
           <option value="br">br</option>
@@ -20,18 +19,12 @@
           <option value="p">p</option>
           <option value="span">span</option>
         </select>
-      </label>
+      </Label>
 
       <template v-if="element.tag !== 'br'">
-        <label class="caption">
-          <span>Text</span>
-          <textarea
-            autocomplete="off"
-            class="form-text"
-            name="text"
-            v-model="element.text"
-          ></textarea>
-        </label>
+        <Label caption="Text">
+          <TextArea name="text" v-model="element.text"/>
+        </Label>
 
         <SliderCheckbox
           name="isButton"
@@ -41,10 +34,9 @@
           @change="toggleFormValue('isButton')"
         />
 
-        <label class="caption" v-if="element.tag === 'a'">
-          <span>URL</span>
-          <input autocomplete="off" class="form-input" name="text" :value="element?.attributes?.href">
-        </label>
+        <Label caption="URL" v-if="element.tag === 'a'">
+          <InputText name="text" :value="element?.attributes?.href"/>
+        </Label>
 
         <div class="buttons-row">
           <EditRowButton
@@ -87,18 +79,15 @@
           />
         </div>
 
-        <label class="caption">
-          <span>Background Color</span>
+        <Label caption="Background Color">
           <ColorPicker :value="bgColor" @change="updateFormValue('background-color', $event)"/>
-        </label>
+        </Label>
 
-        <label class="caption">
-          <span>Text Color</span>
+        <Label caption="Text Color">
           <ColorPicker :value="color" @change="updateFormValue('color', $event)"/>
-        </label>
+        </Label>
 
-        <label class="caption">
-          <span>Font Size</span>
+        <Label caption="Font Size">
           <input
             autocomplete="off"
             class="form-input"
@@ -108,10 +97,9 @@
             :value="fontSize"
             @input="updateFormValue('font-size', $event.target.value.trim() + 'px')"
           >
-        </label>
+        </Label>
 
-        <label class="caption">
-          <span>Line Height</span>
+        <Label caption="Line Height">
           <input
             autocomplete="off"
             class="form-input"
@@ -121,7 +109,7 @@
             :value="lineHeight"
             @input="updateFormValue('line-height', $event.target.value.trim() + 'px')"
           >
-        </label>
+        </Label>
       </template>
     </div>
   </div>
@@ -131,7 +119,7 @@
 // Vue libs
 import {computed, reactive, ref, watch} from 'vue';
 // Components
-import {ColorPicker, SliderCheckbox} from '../../../components/Form/';
+import {ColorPicker, InputText, Label, SliderCheckbox, TextArea} from '../../../components/Form/';
 import EditRowButton from './EditRowButton.vue';
 
 // Assign the function to emit

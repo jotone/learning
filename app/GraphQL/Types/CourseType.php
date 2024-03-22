@@ -34,7 +34,6 @@ class CourseType extends GraphQLType
             'tracking_status' => ['type' => Type::int()],
             'optional_duration' => ['type' => Type::int()],
             'optional_expire_page' => ['type' => Type::string()],
-            'category_id' => ['type' => Type::int()],
             'instructor_id' => ['type' => Type::int()],
             'invitation_email' => ['type' => Type::boolean()],
             'position' => ['type' => Type::int()],
@@ -50,12 +49,9 @@ class CourseType extends GraphQLType
             'published_at' => ['type' => Type::string()],
             'created_at' => ['type' => Type::string()],
             'updated_at' => ['type' => Type::string()],
-            'category' => [
-                'type' => GraphQL::type('Category'),
-                'resolve' => fn($course) => $course->category
-            ],
-            'category_name' => [
-                'type' => Type::string(),
+            'categories' => [
+                'type' => Type::listOf(GraphQL::type('Category')),
+                'resolve' => fn($course) => $course->categories
             ],
             'instructor' => [
                 'type' => GraphQL::type('User'),

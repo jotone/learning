@@ -6,53 +6,39 @@
       <div class="popup-title-wrap">Create Course</div>
 
       <form class="popup-body-wrap" @submit.prevent="submit">
-        <label class="caption">
-          <span>Name of the Course</span>
-
-          <textarea
-            class="form-text scrollbar"
+        <Label caption="Name of the Course">
+          <TextArea
             placeholder="Name of the Course..."
-            style="min-height: 85px"
-            v-model.trim="form.name"
-            @input="checkStatus"
-          ></textarea>
-
-          <CircleProgress
-            ref="nameProgress"
-            :showRemnant="true"
-            :current="form.name?.length || 0"
+            style="{'min-height': '85px'}"
             max="90"
-          />
-        </label>
-
-        <label class="caption">
-          <span>Course Description</span>
-
-          <textarea
-            class="form-text scrollbar"
-            placeholder="Course Description..."
-            style="min-height: 200px"
-            v-model.trim="form.description"
-            @input="checkStatus"
-          ></textarea>
-
-          <CircleProgress
-            ref="descriptionProgress"
+            ref="nameProgress"
+            v-model="form.name"
+            :enableProgress="true"
             :showRemnant="true"
-            :current="form.description?.length || 0"
-            max="300"
+            @onInput="checkStatus"
           />
-        </label>
+        </Label>
 
-        <label class="caption">
-          <span>Status</span>
+        <Label caption="Course Description">
+          <TextArea
+            placeholder="Course Description..."
+            style="{'min-height': '200px'}"
+            max="300"
+            ref="descriptionProgress"
+            v-model="form.description"
+            :enableProgress="true"
+            :showRemnant="true"
+            @onInput="checkStatus"
+          />
+        </Label>
 
+        <Label caption="Status">
           <select class="form-select" v-model="form.status">
             <option v-for="status in statuses" :value="status">
               {{ status }}
             </option>
           </select>
-        </label>
+        </Label>
 
         <div class="row form-row" style="justify-content: flex-end">
           <button class="btn blue" type="submit" :disabled="preventSave">
@@ -67,10 +53,10 @@
 <script>
 // Mixin
 import {DefaultPopupMixin} from "../../../../../mixins/default-popup-mixin.js";
-import {CircleProgress} from "../../../../components/Form/index.js";
+import {Label, TextArea} from "../../../../components/Form/index.js";
 
 export default {
-  components: {CircleProgress},
+  components: {Label, TextArea},
   mixins: [DefaultPopupMixin],
   data() {
     return {

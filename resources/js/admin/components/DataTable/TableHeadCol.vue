@@ -11,7 +11,7 @@
     </div>
 
     <div
-      v-if="null !== field"
+      v-if="null !== field && showOrder"
       class="order"
       :class="{active: colIsActive(field), desc: colDirectDesc(field)}"
       @click="changeOrder"
@@ -45,6 +45,10 @@ const props = defineProps({
   showInfoIcon: {
     type: Boolean,
     default: false
+  },
+  showOrder: {
+    type: Boolean,
+    default: true
   },
   showPlusIcon: {
     type: Boolean,

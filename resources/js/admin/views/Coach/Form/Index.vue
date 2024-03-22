@@ -16,67 +16,26 @@
       <fieldset class="card">
         <legend title="Coach Details">Coach Details</legend>
 
-        <div class="form-row" style="padding: 20px 25px">
-          <label class="caption" style="width: 100%">
-            <span>First Name</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="first_name"
-              placeholder="First Name..."
-              required
-              v-model.trim="form.first_name"
-            >
-          </label>
+        <div class="form-row padding">
+          <Label caption="First Name" class="col">
+            <InputText placeholder="First Name..." :required="true" v-model="form.first_name"/>
+          </Label>
 
-          <label class="caption" style="width: 100%">
-            <span>Last Name</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="last_name"
-              placeholder="Last Name..."
-              required
-              v-model.trim="form.last_name"
-            >
-          </label>
+          <Label caption="Last Name" class="col">
+            <InputText placeholder="Last Name..." :required="true" v-model="form.last_name"/>
+          </Label>
 
-          <label class="caption" style="width: 100%">
-            <span>Email</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="email"
-              type="email"
-              placeholder="Email..."
-              required
-              v-model.trim="form.email"
-            >
-          </label>
+          <Label caption="Last Name" class="col">
+            <InputText placeholder="Email..." type="email" :required="true" v-model="form.email"/>
+          </Label>
 
-          <label class="caption" style="width: 100%">
-            <span>Password</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="password"
-              type="password"
-              placeholder="Enter Password..."
-              v-model="form.password"
-            >
-          </label>
+          <Label caption="Enter Password" class="col">
+            <InputText placeholder="Enter Password..." type="password" v-model="form.password"/>
+          </Label>
 
-          <label class="caption" style="width: 100%">
-            <span>Confirm Password</span>
-            <input
-              autocomplete="off"
-              class="form-input"
-              name="confirmation"
-              type="password"
-              placeholder="Confirm Password..."
-              v-model="form.confirmation"
-            >
-          </label>
+          <Label caption="Confirm Password" class="col">
+            <InputText placeholder="Confirm Password..." type="password" v-model="form.confirmation"/>
+          </Label>
         </div>
       </fieldset>
     </div>
@@ -93,9 +52,12 @@ import {Notification} from '../../../libs/Notification';
 import Notifications from '../../../components/Default/Notifications.vue';
 // Layout
 import Layout from '../../../shared/Layout.vue';
+import {InputText, Label} from "../../../components/Form/index.js";
 
 defineOptions({layout: Layout})
 
+// Assign the GraphQL form serialization function
+const serialize = inject('graphQlSerializeForm')
 // Assign the GraphQL request function
 const requestGraphQL = inject('requestGraphQL')
 // Page variables
@@ -112,17 +74,9 @@ const submit = e => {
   // The mutation type depends on if a model exists or not
   const mutationType = page.props.hasOwnProperty('model') ? 'update' : 'create';
 
-  let query = `first_name:"${form.first_name}",last_name:"${form.last_name}",email:"${form.email}"`;
+  let query = serialize(mutationType, form, 'id,first_name,last_name,email')
 
-  if (page.props.hasOwnProperty('model')) {
-    query += `,id:${page.props.model.id}`
-  }
-
-  if (null !== form.password && form.password.length) {
-    query += `,password:"${form.password}",confirmation:"${form.confirmation}",role_id:${page.props.role_id}`;
-  }
-
-  requestGraphQL(page.props.routes.api, `mutation {${mutationType} (${query}) {id,first_name,last_name,email}}`)
+  requestGraphQL(page.props.routes.api, query)
     .then(response => {
       if (response.data.hasOwnProperty('data')) {
         // Show notification
@@ -152,6 +106,7 @@ let form = reactive({
   first_name: page.props?.model?.first_name,
   last_name: page.props?.model?.last_name,
   email: page.props?.model?.email,
+  role_id: page.props.role_id,
   password: null,
   confirmation: null
 })

@@ -2,7 +2,7 @@
 
 namespace App\GraphQL\Types;
 
-use App\Classes\Str;
+use App\Services\Str;
 use App\Models\Category;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;

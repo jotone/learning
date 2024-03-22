@@ -18,42 +18,28 @@
 
         <div class="row padding">
           <div class="col-1-2">
-            <label class="caption">
-              <span>Name</span>
-              <input
-                autocomplete="off"
-                class="form-input"
-                name="name"
-                placeholder="Role name..."
-                required
-                v-model="form.name">
-            </label>
+            <Label caption="Name">
+              <InputText placeholder="Role name..." :required="true" v-model="form.name"/>
+            </Label>
 
-            <label class="caption" :style="{display: $attrs.auth.role.level === 0 ? 'block': 'none'}">
-              <span>Slug</span>
-              <input
-                autocomplete="off"
-                class="form-input"
-                name="slug"
-                placeholder="Role slug..."
-                v-model="form.slug">
-            </label>
+            <Label caption="Slug" v-if="$attrs.auth.role.level === 0">
+              <InputText placeholder="Role slug..." :required="true" v-model="form.slug"/>
+            </Label>
           </div>
           <div class="col-1-2">
-            <label class="caption">
-              <span>Level</span>
+            <Label caption="Level">
               <input
                 autocomplete="off"
                 class="form-input"
                 name="level"
                 placeholder="Role level..."
                 type="number"
-                max="255"
                 required
                 :min="$attrs.auth.role.level"
+                max="255"
                 v-model="form.level"
               >
-            </label>
+            </Label>
           </div>
         </div>
       </fieldset>
@@ -113,6 +99,7 @@ import {Notification} from '../../../libs/Notification';
 import Layout from '../../../shared/Layout.vue';
 import TableRow from './TableRow.vue';
 import Notifications from '../../../components/Default/Notifications.vue';
+import {InputText, Label} from "../../../components/Form";
 
 defineOptions({layout: Layout})
 

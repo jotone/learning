@@ -34,7 +34,12 @@ Route::get('/communities', [CommunityController::class, 'index'])->name('communi
 Route::group(['as' => 'courses.'], function () {
     Route::get('/courses', [CourseController::class, 'index'])->name('index');
     Route::get('/courses/create', [CourseController::class, 'create'])->name('create');
-    Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->name('edit');
+    Route::get('/courses/{course}/certificate', function () {})->name('certificate');
+    Route::get('/courses/{course}/comments', function () {})->name('comments');
+    Route::get('/courses/{course}/curriculum', function () {})->name('curriculum');
+    Route::get('/courses/{course}/settings', [CourseController::class, 'settings'])->name('settings');
+    Route::get('/courses/{course}/user-access', function () {})->name('user-access');
+    Route::get('/courses/{course}/worksheets', function () {})->name('worksheets');
 });
 
 Route::get('/events', [EventsController::class, 'index'])->name('events.index');

@@ -56,6 +56,10 @@
     mask-image: url("../../images/icons/burger-menu.svg");
   }
 
+  &.certificate-icon {
+    mask-image: url("../../images/icons/certificate.svg");
+  }
+
   &.chevron-icon {
     mask-image: url("../../images/icons/chevron.svg");
   }
@@ -68,6 +72,14 @@
     mask-image: url("../../images/icons/column-selector.svg");
   }
 
+  &.comment-icon {
+    mask-image: url("../../images/icons/comment.svg");
+  }
+
+  &.copy-icon {
+    mask-image: url("../../images/icons/copy.svg");
+  }
+
   &.double-chevron-icon {
     mask-image: url("../../images/icons/double-chevron.svg");
   }
@@ -78,6 +90,14 @@
 
   &.edit-icon {
     mask-image: url("../../images/icons/edit.svg");
+  }
+
+  &.eye-icon {
+    mask-image: url("../../images/icons/eye.svg");
+  }
+
+  &.file-icon {
+    mask-image: url("../../images/icons/file.svg");
   }
 
   &.file-download-icon {
@@ -120,7 +140,15 @@
     mask-image: url("../../images/icons/trash.svg");
   }
 
+  &.user-key-icon {
+    mask-image: url("../../images/icons/user-key.svg");
+  }
+
   &.user-plus-icon {
     mask-image: url("../../images/icons/user-plus.svg");
+  }
+
+  &.worksheet-icon {
+    mask-image: url("../../images/icons/worksheet.svg");
   }
 }

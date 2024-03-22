@@ -7,31 +7,27 @@
 
       <div class="popup-body-wrap">
         <form @submit.prevent="submit">
-          <label class="caption">
-            <span>Name</span>
-            <input class="form-input" name="name" placeholder="Variable Name..." required v-model="items.name">
-          </label>
+          <Label caption="Name">
+            <InputText placeholder="Variable Name..." :required="true" v-model="items.name"/>
+          </Label>
 
-          <label class="caption">
-            <span>Entity</span>
+          <Label caption="Entity">
             <select class="form-select" name="type" v-model="items.type" @change="entityChanged">
               <option v-for="(item, type) in entities.list" :value="type">
                 {{ type }}
               </option>
             </select>
-          </label>
+          </Label>
 
-          <label class="caption">
-            <span>Entity Fields</span>
+          <Label caption="Entity Fields">
             <select class="form-select" name="field" v-model="items.field">
               <option v-for="(name, field) in entities.list[items.type].fields" :value="field">
                 {{ name }}
               </option>
             </select>
-          </label>
+          </Label>
 
-          <label class="caption" v-if="items.type === 'Route'">
-            <span>Entity Encryption Model</span>
+          <Label caption="Entity Encryption Model">
             <select class="form-select" v-model="items.encrypt">
               <template v-for="(fields, type) in entities.encryption">
                 <option v-for="(name, field) in fields" :value="`${type}:${field}`">
@@ -39,7 +35,7 @@
                 </option>
               </template>
             </select>
-          </label>
+          </Label>
 
           <div class="form-row">
             <button class="btn blue" type="submit">
@@ -55,8 +51,10 @@
 <script>
 // Mixin
 import {DefaultPopupMixin} from "../../../../mixins/default-popup-mixin.js";
+import {InputText, Label} from "../../../components/Form/index.js";
 
 export default {
+  components: {InputText, Label},
   mixins: [DefaultPopupMixin],
   props: {
     entities: {

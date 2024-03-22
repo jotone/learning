@@ -58,10 +58,15 @@ class MutationUpdate extends CourseMutation
                 if ('description' === $key) {
                     $val = mb_substr($val, 0, 300);
                 }
-                $course->$key = $val;
+
+                if ('categories' !== $key) {
+                    $course->$key = $val;
+                }
             }
             // Save course if it was changed
             $course->isDirty() && $course->save();
+            // Set course categories
+            isset($input['categories']) && $this->setCategories($course, $input['categories']);
 
             DB::commit();
         } catch (\Exception $e) {

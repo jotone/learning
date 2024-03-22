@@ -40,23 +40,26 @@
         </label>
       </div>
 
-      <div class="row padding">
-        <label class="caption col-1-2">
-          <span>Short Description</span>
-          <textarea
-            class="form-text"
-            name="description"
+      <div class="row padding f-s-s">
+        <Label class="col-1-2" caption="Short Description">
+          <TextArea
             placeholder="Short Description"
+            :style="{'height': '93%'}"
             v-model="form.description"
-          >{{ form.description }}</textarea>
-        </label>
+          />
+        </Label>
 
         <div class="col-1-2">
           <label class="caption">
             <span>Category Image</span>
           </label>
 
-          <ImageUpload ref="imageUpload" :value="form.img_url" @onRemove="clearImage"/>
+          <ImageUpload
+            ref="imageUpload"
+            placeholderText="Upload Category Image"
+            :value="form.img_url"
+            @onRemove="clearImage"
+          />
         </div>
       </div>
 
@@ -83,13 +86,17 @@ import {usePage} from '@inertiajs/vue3';
 // Other Libs
 import {Notification} from '../../../libs/Notification';
 // Components
-import ImageUpload from "../../../components/Form/ImageUpload.vue";
+import {ImageUpload, Label, TextArea} from "../../../components/Form/index.js";
 import Notifications from "../../../components/Default/Notifications.vue";
 // Layout
 import Layout from '../../../shared/Layout.vue';
 
 defineOptions({layout: Layout})
 
+// Assign the file upload query function
+const graphQlFileUploadQuery = inject('graphQlFileUploadQuery')
+// Assign the GraphQL form serialization function
+const serialize = inject('graphQlSerializeForm')
 // Assign the GraphQL request function
 const requestGraphQL = inject('requestGraphQL')
 // Page variables
@@ -110,30 +117,21 @@ const clearImage = () => {
 const submit = () => {
   form.img_url = imageUpload.value.getData();
   // Build GraphQl query
-  let query = `id:${page.props.model.id}`;
-  for (let field in form) {
-    if (null !== form[field] && field !== 'img_url') {
-      query += `,${field}:"${form[field]}"`
-    }
-  }
+  let query = serialize('update', form, 'id,name,url,img_url,description,learn_more_link,type', ['img_url'])
   // Update the category model
-  requestGraphQL(page.props.routes.api, `mutation {update (${query}) {id,name,url,img_url,description,learn_more_link,type}}`)
+  requestGraphQL(page.props.routes.api, query)
     .then(response => {
       if (response.data.hasOwnProperty('data')) {
         try {
           // Upload the category image
           if (typeof form.img_url !== 'string' && null !== form.img_url) {
-            requestGraphQL(page.props.routes.api, {
-              operations: JSON.stringify({
-                query: 'mutation UpdateCategory($id: Int!, $file: Upload!) {update(id: $id, img_url: $file) {id img_url}}',
-                variables: {id: page.props.model.id, file: null}
-              }),
-              map: JSON.stringify({'0': ['variables.file']}),
-              '0': form.img_url
-            }, {'Content-Type': 'multipart/form-data'})
-              .then(response => {
-                form.img_url = response.data.data.update.img_url;
-              })
+            requestGraphQL(
+              page.props.routes.api,
+              graphQlFileUploadQuery(form.img_url, page.props.model.id, 'UpdateCategory', 'img_url'),
+              {'Content-Type': 'multipart/form-data'}
+            ).then(response => {
+              form.img_url = response.data.data.update.img_url;
+            })
           }
         } catch (e) {
         } finally {
@@ -148,6 +146,7 @@ const submit = () => {
  * Variables
  */
 let form = reactive({
+  id: page.props.model.id,
   name: page.props.model.name,
   url: page.props.model.url,
   img_url: page.props.model.img_url || null,

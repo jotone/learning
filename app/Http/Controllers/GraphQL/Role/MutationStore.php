@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GraphQL\Role;
 
-use App\Classes\Str;
+use App\Services\Str;
 use App\Models\Role;
 use GraphQL\Error\Error;
 use GraphQL\Type\Definition\Type;

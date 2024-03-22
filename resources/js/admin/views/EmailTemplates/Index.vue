@@ -16,29 +16,13 @@
       <legend :title="form.title">{{ form.title }}</legend>
 
       <div class="row padding">
-        <label class="caption col-1-2">
-          <span>Email Title</span>
-          <input
-            autocomplete="off"
-            class="form-input"
-            name="title"
-            placeholder="Email Title..."
-            required
-            v-model="form.title"
-          >
-        </label>
+        <Label class="col-1-2" caption="Email Title">
+          <InputText placeholder="Email Title..." :required="true" v-model="form.title"/>
+        </Label>
 
-        <label class="caption col-1-2" v-if="$attrs.auth.role.level === 0">
-          <span>Email Slug</span>
-          <input
-            autocomplete="off"
-            class="form-input"
-            name="slug"
-            placeholder="Email Slug..."
-            required
-            v-model="form.slug"
-          >
-        </label>
+        <Label class="col-1-2" caption="Email Slug" v-if="$attrs.auth.role.level === 0">
+          <InputText placeholder="Email Slug..." :required="true" v-model="form.slug"/>
+        </Label>
       </div>
     </fieldset>
 
@@ -72,8 +56,8 @@ import {Notification} from '../../libs/Notification';
 // Components
 import EmailContentEditor from './ContentEditor/EmailContentEditor.vue';
 import EmailRowEditor from './ContentEditor/EmailRowEditor.vue';
-import Notifications from '../../components/Default/Notifications.vue';
-import Sidebar from '../../components/Default/Sidebar.vue';
+import {Notifications, Sidebar} from '../../components/Default';
+import {InputText, Label} from "../../components/Form/index.js";
 import VariablesTable from './VariablesTable.vue';
 // Layout
 import Layout from '../../shared/Layout.vue';

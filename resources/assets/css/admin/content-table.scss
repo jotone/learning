@@ -56,7 +56,7 @@
         }
       }
 
-      td > a, td > span, .static-fields > a {
+      td > a, td > span, td > p, .static-fields > a {
         display: flex;
         align-items: center;
         color: $secondary;
@@ -122,8 +122,8 @@
       }
 
       .search-field {
-        border: 1px solid $border;
-        border-radius: 20px;
+        border: $b-type;
+        border-radius: $b-rad-default;
         padding: 10px 140px 10px 45px;
         width: 100%;
       }
@@ -163,7 +163,7 @@
         width: 80px;
         margin: 5px 20px;
         overflow: hidden;
-        border-radius: 6px;
+        border-radius: $b-rad-tiny;
 
         img {max-width: 100%; object-fit: contain}
       }
@@ -247,7 +247,7 @@
 
       strong {font-weight: 400}
 
-      a, span {
+      a, p, span {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -294,5 +294,9 @@
 }
 
 @media screen and (max-width: 480px) {
-  .content-table-wrap {padding: 10px}
+  .content-table-wrap {
+    padding: 10px;
+
+    .content-table-controls, .table-container .bulk-select {display: none}
+  }
 }

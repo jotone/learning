@@ -81,7 +81,7 @@
       border-bottom: 1px solid $separator;
 
       .slider-checkbox-container {
-        border-radius: 15px;
+        border-radius: $b-rad-small;
         height: 28px;
         width: 55px;
 
@@ -97,8 +97,8 @@
   margin: 25px 20px 25px 25px;
   padding: 30px;
   background-color: white;
-  border: 1px solid $border;
-  border-radius: 20px;
+  border: $b-type;
+  border-radius: $b-rad-default;
 
   .column-selector-reposition-caption {
     align-items: center;

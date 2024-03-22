@@ -12,6 +12,8 @@
   align-items: center;
   justify-content: center;
 
+  &.input-shift {right: 25px}
+
   .inner-circle {
     background-color: white;
     border-radius: 50%;
@@ -26,4 +28,8 @@
       font-size: 12px;
     }
   }
+}
+
+@media screen and (max-width: 720px) {
+  .circle-progress-wrap.input-shift {right: 5px}
 }

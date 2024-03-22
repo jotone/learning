@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\{AdminMenu, PageColumnSection, Settings};
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Inertia\{Inertia, Response};
@@ -62,6 +63,9 @@ class BaseDashboardController extends Controller
     protected function view(string $view, array $shared = [], array $scripts = []): Response
     {
         $response = Inertia::render($view, array_merge_recursive([
+            'images' => [
+                'upload' => '/images/upload.png'
+            ],
             'menu' => $this->buildSideMenu(),
             'routes' => [
                 'dashboard' => [
@@ -143,5 +147,26 @@ class BaseDashboardController extends Controller
         }
 
         return $result;
+    }
+
+    /**
+     * Get top menu structure
+     * @param Request $request
+     * @return iterable
+     */
+    protected function topMenu(Request $request): iterable
+    {
+        $url = rtrim(preg_replace('/\d+/', ':id', $request->getRequestUri()), '/');
+
+        $parent = AdminMenu::where('route', 'like', $url . '%')->first()?->parent;
+
+        return $parent?->subMenus()
+            ->select('name', 'route', 'img')
+            ->orderBy('position')
+            ->get()
+            ->map(function ($model) use ($url) {
+                $model->active = $model->route === $url;
+                return $model;
+            }) ?? [];
     }
 }

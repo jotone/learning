@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Classes\FileHelper;
+use App\Services\FileHelper;
 use App\Enums\{ShirtSize, UserStatus};
 use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;

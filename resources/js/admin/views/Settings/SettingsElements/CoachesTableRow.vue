@@ -26,7 +26,7 @@ import {usePage} from '@inertiajs/vue3';
 // Interfaces
 import {UserDataInterface} from '../../../../contracts/UserDataInterface.js';
 // Components
-import UserInfo from '../../../components/Default/UserInfo.vue';
+import UserInfo from '../../../components/User/Info.vue';
 
 // Implement function to convert dates into the proper view
 const convertDate = inject('convertDate');

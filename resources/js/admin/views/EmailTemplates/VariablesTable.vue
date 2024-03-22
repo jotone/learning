@@ -67,8 +67,9 @@
 // Vue libs
 import {reactive, ref} from 'vue';
 // Components
-import {TableHeadCol} from "../../components/DataTable/index.js";
+import {TableHeadCol} from "../../components/DataTable";
 import VariablePopup from "./Modals/VariablePopup.vue";
+
 // Get component properties
 const props = defineProps({
   entities: {

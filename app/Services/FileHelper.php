@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes;
+namespace App\Services;
 
 use DirectoryIterator;
 use Illuminate\Http\UploadedFile;

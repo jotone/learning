@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Classes\Str;
+use App\Services\Str;
 use App\Models\{Role, User};
 use Tests\GraphQlTestCase;
 

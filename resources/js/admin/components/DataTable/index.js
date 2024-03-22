@@ -1,4 +1,5 @@
 export { default as BulkActions } from './BulkActions.vue';
+export { default as ColumnSelector } from './ColumnSelector.vue';
 export { default as Pagination } from './Pagination.vue';
 export { default as PerPage } from './PerPage.vue';
 export { default as RowActions } from './RowActions.vue';
