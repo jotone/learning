@@ -1,7 +1,7 @@
 .image-upload-wrap {
   background-color: $bg;
-  border: 1px solid $border;
-  border-radius: 20px;
+  border: $b-type;
+  border-radius: $b-rad-default;
   display: block;
   min-height: 360px;
   margin-top: 10px;
@@ -25,7 +25,7 @@
   }
 
   .image-placeholder-wrap {
-    border-radius: 20px;
+    border-radius: $b-rad-default;
     height: 100%;
     padding: 15px;
 

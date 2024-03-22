@@ -51,13 +51,13 @@
           <div class="row padding">
             <div class="col-1-2">
               <Label caption="Sales Page URL">
-                <InputText placeholder="Sales Page Url..." v-model.trim="form.sale_page_url"/>
+                <InputText placeholder="Sales Page Url..." v-model="form.sale_page_url"/>
               </Label>
             </div>
 
             <div class="col-1-2">
               <Label caption="Expiry Link URL">
-                <InputText placeholder="Expiry Link Url..." v-model.trim="form.expire_url"/>
+                <InputText placeholder="Expiry Link Url..." v-model="form.expire_url"/>
               </Label>
             </div>
           </div>
@@ -70,7 +70,11 @@
 
           <div class="row padding">
             <Label caption="Category" class="col">
-              <MultipleSelector :options="$attrs.categories"/>
+              <MultipleSelector
+                :options="$attrs.categories"
+                :selected="form.categories"
+                @change="categorySelected"
+              />
             </Label>
           </div>
 
@@ -79,11 +83,41 @@
               name="terms_conditions_enable"
               text="Terms & Conditions"
               :checked="form.terms_conditions_enable"
+              @change="setFormValue"
             />
 
             <Label class="col" caption="Terms & Conditions Description">
               <TextArea placeholder="Terms & Conditions Description..." v-model="form.terms_conditions_text"/>
             </Label>
+          </div>
+
+          <div class="form-row padding">
+            <SliderCheckbox
+              name="optional_duration_enable"
+              text="Set course as optional"
+              :checked="form.optional_duration > 0"
+            />
+          </div>
+
+          <div class="row padding">
+            <div class="col-1-2">
+              <Label caption="Default Duration">
+                <select name="optional_duration" class="form-select" v-model="form.optional_duration">
+                  <option :value="0">Unlimited</option>
+                  <option v-for="i in 12" :value="i">
+                    {{ i }} {{ i > 1 ? 'months' : 'month' }}
+                  </option>
+                </select>
+              </Label>
+            </div>
+            <div class="col-1-2">
+              <Label caption="Expire Sale Page (Optional)">
+                <InputText
+                  placeholder="Link to expire sale page..."
+                  v-model="form.optional_expire_page"
+                />
+              </Label>
+            </div>
           </div>
         </div>
 
@@ -95,8 +129,28 @@
             @onRemove="clearImage"
           />
 
-          <button type="submit">
-            Save
+          <div class="form-row">
+            <Label caption="Actions">
+              <ul class="actions-list">
+                <li
+                  v-for="action in actions"
+                  :title="action?.title"
+                  @click="action.hasOwnProperty('callback') && action.callback()"
+                >
+                  <template v-if="action.hasOwnProperty('link')">
+                    <a :href="action.link"><i class="icon" :class="action.icon"></i></a>
+                  </template>
+
+                  <template v-else>
+                    <span><i class="icon" :class="action.icon"></i></span>
+                  </template>
+                </li>
+              </ul>
+            </Label>
+          </div>
+
+          <button class="btn blue" type="submit" style="min-width: 162px">
+            Save Changes
           </button>
         </div>
       </div>
@@ -106,43 +160,147 @@
 
 <script setup>
 // Vue libs
-import {inject, reactive} from 'vue';
+import {inject, reactive, ref} from 'vue';
 import {usePage} from '@inertiajs/vue3';
 // Components
-import {CircleProgress, ImageUpload, Label, MultipleSelector, SliderCheckbox, TextArea} from "../../../components/Form";
+import {ImageUpload, Label, MultipleSelector, SliderCheckbox, TextArea} from "../../../components/Form";
 import {Notifications, StatusInfo} from "../../../components/Default";
 import TopMenu from "../../../components/Menu/TopMenu.vue";
 // Layout
 import Layout from '../../../shared/Layout.vue';
 import {InputText} from "../../../components/Form/index.js";
+import {Notification} from "../../../libs/Notification.js";
 
-defineOptions({layout: Layout})
+defineOptions({layout: Layout});
 
+// Assign the file upload query function
+const graphQlFileUploadQuery = inject('graphQlFileUploadQuery')
+// Assign the GraphQL form serialization function
+const serialize = inject('graphQlSerializeForm')
+// Assign the http request function
+const request = inject('request');
 // Assign the GraphQL request function
-const requestGraphQL = inject('requestGraphQL')
+const requestGraphQL = inject('requestGraphQL');
+
 // Page variables
 const page = usePage();
 
 /*
  * Methods
  */
+/**
+ * Set the list of categories
+ * @param {Array} categories
+ */
+const categorySelected = categories => {
+  form.categories = categories ?? [];
+}
+/**
+ * Send a request to remove the image resource
+ */
 const clearImage = () => {
+  let imgUrl = null;
+  if (typeof form.img_url === 'object' && null !== form.img_url) {
+    imgUrl = form.img_url?.original;
+  }
+  if (typeof form.img_url === 'string') {
+    imgUrl = form.img_url;
+  }
 
+  null !== imgUrl && request({
+    url: page.props.routes.img,
+    method: 'delete',
+    data: {
+      path: imgUrl,
+      entity: 'App\\Models\\Course',
+      entity_id: page.props.course?.id,
+      field: 'img_url'
+    }
+  })
+}
+
+/**
+ * Change form value
+ * @param status
+ * @param field
+ */
+const setFormValue = (status, field) => {
+  form[field] = status
 }
 
 const submit = () => {
-  console.log(form)
+  form.img_url = imageUpload.value.getData();
+  form.categories = form.categories.map(item => item.id)
+  // Build GraphQl query
+  let query = serialize('update', form, [
+    'id',
+    'name',
+    'url',
+    'img_url',
+    'status',
+    'sale_page_url',
+    'expire_url',
+    'description',
+    'terms_conditions_enable',
+    'terms_conditions_text',
+    'categories{id,name}'
+  ], ['img_url'])
+
+  // Update the course model
+  requestGraphQL(page.props.routes.api, query).then(response => {
+    if (response.data.hasOwnProperty('data')) {
+      try {
+        // Upload the category image
+        if (typeof form.img_url !== 'string' && null !== form.img_url) {
+          requestGraphQL(
+            page.props.routes.api,
+            graphQlFileUploadQuery(form.img_url, page.props.course.id, 'UpdateCourse', 'img_url'),
+            {'Content-Type': 'multipart/form-data'}
+          ).then(response => {
+            form.img_url = response.data.data.update.img_url;
+          })
+        }
+      } catch (e) {
+      } finally {
+        // Show notification
+        Notification.success(`Course "${response.data.data.update.name}" was successfully modified.`)
+      }
+    }
+  })
 }
 
-console.log(page.props)
 /*
  * Variables
  */
+// Image upload referral variable
+const imageUpload = ref(null);
+// Default course status class
 let courseStatus = page.props.course.status === 'active'
   ? 'success'
   : page.props.course.status === 'coming_soon' ? 'warning' : null;
+// List of page actions
+const actions = [
+  {
+    icon: 'eye-icon',
+    link: '#',
+    title: 'View a course'
+  }, {
+    icon: 'copy-icon',
+    title: 'Duplicate this course',
+    callback: () => {
+      console.log('duplicate')
+    },
+  }, {
+    icon: 'trash-icon',
+    title: 'Delete this course',
+    callback: () => {
+      console.log('remove')
+    }
+  }
+]
 
 let form = reactive({
+  id: page.props.course.id,
   name: page.props.course?.name,
   url: page.props.course?.url,
   img_url: page.props.course?.img_url,
@@ -150,8 +308,15 @@ let form = reactive({
   sale_page_url: page.props.course?.sale_page_url,
   expire_url: page.props.course?.expire_url,
   description: page.props.course?.description,
-  category_id: page.props.course?.category_id,
   terms_conditions_enable: page.props.course?.terms_conditions_enable || false,
   terms_conditions_text: page.props.course?.terms_conditions_text,
+  optional_duration: page.props.course?.optional_duration || 0,
+  optional_expire_page: page.props.course?.optional_expire_page,
+  categories: (() => page.props.course?.categories?.map(
+    category => ({
+      id: category.pivot.category_id,
+      name: category.category_name
+    })
+  ) ?? [])(),
 })
 </script>

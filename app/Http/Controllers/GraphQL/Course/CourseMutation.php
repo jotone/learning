@@ -65,12 +65,12 @@ class CourseMutation extends Mutation
                 'rules' => ['nullable', 'numeric']
             ],
             'optional_duration' => [
-                'name' => 'tracking_status',
+                'name' => 'optional_duration',
                 'type' => Type::int(),
                 'rules' => ['nullable', 'numeric']
             ],
             'optional_expire_page' => [
-                'name' => 'tracking_type',
+                'name' => 'optional_expire_page',
                 'type' => Type::string(),
                 'rules' => ['nullable', 'string']
             ],

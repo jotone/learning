@@ -76,6 +76,10 @@
     mask-image: url("../../images/icons/comment.svg");
   }
 
+  &.copy-icon {
+    mask-image: url("../../images/icons/copy.svg");
+  }
+
   &.double-chevron-icon {
     mask-image: url("../../images/icons/double-chevron.svg");
   }
@@ -86,6 +90,10 @@
 
   &.edit-icon {
     mask-image: url("../../images/icons/edit.svg");
+  }
+
+  &.eye-icon {
+    mask-image: url("../../images/icons/eye.svg");
   }
 
   &.file-icon {

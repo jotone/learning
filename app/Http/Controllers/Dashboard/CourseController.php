@@ -61,7 +61,13 @@ class CourseController extends BaseDashboardController
                     ->where('type', Course::class)
                     ->orderBy('position')
                     ->get(),
-                'course' => $course,
+                'course' => $course->load([
+                    'categories' => fn($q) => $q->select('categories.name as category_name')
+                ]),
+                'routes' => [
+                    'api' => route('graphql.course'),
+                    'img' => route('api.image.destroy')
+                ],
                 'statuses' => CourseStatus::forSelect(),
                 'top_menu' => $this->topMenu($request)
             ]

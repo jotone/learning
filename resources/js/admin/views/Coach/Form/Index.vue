@@ -56,6 +56,8 @@ import {InputText, Label} from "../../../components/Form/index.js";
 
 defineOptions({layout: Layout})
 
+// Assign the GraphQL form serialization function
+const serialize = inject('graphQlSerializeForm')
 // Assign the GraphQL request function
 const requestGraphQL = inject('requestGraphQL')
 // Page variables
@@ -72,17 +74,9 @@ const submit = e => {
   // The mutation type depends on if a model exists or not
   const mutationType = page.props.hasOwnProperty('model') ? 'update' : 'create';
 
-  let query = `first_name:"${form.first_name}",last_name:"${form.last_name}",email:"${form.email}"`;
+  let query = serialize(mutationType, form, 'id,first_name,last_name,email')
 
-  if (page.props.hasOwnProperty('model')) {
-    query += `,id:${page.props.model.id}`
-  }
-
-  if (null !== form.password && form.password.length) {
-    query += `,password:"${form.password}",confirmation:"${form.confirmation}",role_id:${page.props.role_id}`;
-  }
-
-  requestGraphQL(page.props.routes.api, `mutation {${mutationType} (${query}) {id,first_name,last_name,email}}`)
+  requestGraphQL(page.props.routes.api, query)
     .then(response => {
       if (response.data.hasOwnProperty('data')) {
         // Show notification
@@ -112,6 +106,7 @@ let form = reactive({
   first_name: page.props?.model?.first_name,
   last_name: page.props?.model?.last_name,
   email: page.props?.model?.email,
+  role_id: page.props.role_id,
   password: null,
   confirmation: null
 })

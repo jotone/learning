@@ -19,54 +19,5 @@
 
   .bulk-select-selector {
     margin-top: 15px;
-
-    .vs--single {
-      max-width: 260px;
-
-      .vs__selected {
-        color: $text;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 18px;
-      }
-
-      .vs__dropdown-toggle {
-        border: 1px solid $border;
-        border-radius: 22px;
-        padding: 7px 5px 9px 5px;
-      }
-
-      .vs__actions {
-        appearance: none;
-        background: white url("../../images/icons/angle-down.svg") no-repeat 99% center / 24px;
-        padding: 0 15px;
-      }
-
-      .vs__dropdown-menu {
-        border-radius: 20px;
-        border-color: $border;
-        background: white;
-        box-shadow: 0px 6px 12px 0px rgba(144, 155, 191, 0.20);
-        padding: 25px 0;
-        margin-top: 2px;
-      }
-
-      .vs__dropdown-option {
-        color: $secondary;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 18px;
-
-        &--highlight {color: $text; font-weight: 500}
-
-        &--disabled, &--highlight {background: none}
-
-        .disabled-option {color: $menuText}
-      }
-
-      .vs__open-indicator {display: none}
-
-      &.vs--open .vs__selected {opacity: 1; margin-top: 6px}
-    }
   }
 }

@@ -12,7 +12,7 @@
 }
 
 .default-popup-wrap {
-  border-radius: 20px;
+  border-radius: $b-rad-default;
   background-color: white;
   box-shadow: 0 2px 8px 0 rgba(29, 33, 91, .2);
   position: relative;
@@ -37,7 +37,7 @@
   .popup-title-wrap, .popup-body-wrap {padding: 25px 30px}
 
   .popup-title-wrap {
-    border-bottom: 1px solid $border;
+    border-bottom: $b-type;
     font-size: 24px;
     font-weight: 600;
     line-height: 36px;
@@ -57,7 +57,7 @@
 
   .popup-items-list-wrap {
     background-color: $bg;
-    border-radius: 20px;
+    border-radius: $b-rad-default;
     margin: 10px 0;
     padding: 15px 25px;
 
@@ -144,8 +144,8 @@
 .row-actions-popup {
   display: none;
   background-color: white;
-  border: 1px solid $border;
-  border-radius: 6px;
+  border: $b-type;
+  border-radius: $b-rad-tiny;
   box-shadow: 0 2px 8px 0 rgba(29, 33, 91, .2);
   min-width: 150px;
   padding: 9px 18px;

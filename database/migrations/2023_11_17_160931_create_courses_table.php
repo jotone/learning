@@ -26,7 +26,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('tracking_type')->default(0);
             $table->unsignedTinyInteger('tracking_status')->default(0);
 
-            $table->unsignedTinyInteger('optional_duration')->nullable();
+            $table->unsignedTinyInteger('optional_duration')->default(0);
             $table->string('optional_expire_page')->nullable();
 
             $table->unsignedInteger('instructor_id')->nullable();

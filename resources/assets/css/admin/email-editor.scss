@@ -2,7 +2,7 @@
 
 .email-editor-wrap {
   background-color: $bg;
-  border-radius: 20px;
+  border-radius: $b-rad-default;
   padding: 35px;
 
   table {
@@ -14,7 +14,7 @@
     tr:not(.add-row-wrap) {
       .table-element-wrap {
         border: 1px solid $bg;
-        border-radius: 6px;
+        border-radius: $b-rad-tiny;
         overflow: hidden;
         margin-top: -1px;
         padding: 11px;
@@ -23,7 +23,7 @@
       }
 
       .table-element-controls {
-        border-bottom-left-radius: 6px;
+        border-bottom-left-radius: $b-rad-tiny;
         display: none;
         align-items: center;
         position: absolute;

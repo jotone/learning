@@ -71,7 +71,7 @@ class MutationStore extends CourseMutation
                 'status' => $status,
                 'tracking_type' => $input['tracking_type'] ?? 'enable_auto_approve',
                 'tracking_status' => $input['tracking_status'] ?? 0,
-                'optional_duration' => $input['optional_duration'] ?? null,
+                'optional_duration' => $input['optional_duration'] ?? 0,
                 'optional_expire_page' => $input['optional_expire_page'] ?? null,
                 'instructor_id' => $input['instructor_id'] ?? null,
                 'invitation_email' => $input['invitation_email'] ?? 1,

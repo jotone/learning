@@ -1,7 +1,7 @@
 .status-tooltip-wrap {
   position: absolute;
   background-color: $draft;
-  border-radius: 20px;
+  border-radius: $b-rad-default;
   color: white;
   padding: 20px 35px;
   top: 0;

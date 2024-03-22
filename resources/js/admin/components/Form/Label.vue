@@ -1,5 +1,5 @@
 <template>
-  <label class="caption">
+  <label :class="{caption: !inline, 'caption-inline': inline}">
     <span v-if="caption.length">{{ caption }}</span>
 
     <slot></slot>
@@ -11,6 +11,10 @@ const props = defineProps({
   caption: {
     type: String,
     default: ''
+  },
+  inline: {
+    type: Boolean,
+    default: false
   }
 })
 </script>

@@ -90,6 +90,9 @@ npm i && npm run prod
     - ~~Category remove~~
     - ~~Course Create~~
     - Course edit
+      - ~~Save~~
+      - Duplicate
+      - Remove
     - Course bulk actions
       - Delete
       - Export to CSV

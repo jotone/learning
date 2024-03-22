@@ -117,8 +117,8 @@
 
       .text-bar-wrap {
         background-color: $bg;
-        border: 1px solid $border;
-        border-radius: 20px;
+        border: $b-type;
+        border-radius: $b-rad-default;
         display: block;
         font-size: 14px;
         font-weight: 400;
