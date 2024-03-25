@@ -89,10 +89,7 @@ npm i && npm run prod
     - ~~Category edit~~
     - ~~Category remove~~
     - ~~Course Create~~
-    - Course edit
-      - ~~Save~~
-      - Duplicate
-      - Remove
+    - ~~Course edit~~
     - Course bulk actions
       - Delete
       - Export to CSV
@@ -136,3 +133,47 @@ npm i && npm run prod
   - Language
     - Api
     - Page
+- Course
+  - Curriculum
+    - Feedback form
+      - Add
+      - Edit
+      - Remove
+      - Sort
+      - Duplicate
+    - Quiz
+      - Add
+      - Edit
+      - Remove
+      - Sort
+      - Duplicate
+    - Lesson
+      - Add
+    - Week
+      - Add
+    - Lesson
+      - Edit
+        - audio
+        - code
+        - comments
+        - divider
+        - heading
+        - image
+        - questions
+        - resources
+        - spacer
+        - text
+        - video
+        - accordion
+      - Transcription
+      - Remove
+      - Duplicate
+    - Week
+      - Edit
+      - Remove
+      - Sort
+      - Duplicate
+  - Duplicate
+    - Bulk
+    - Edit page
+  - User Access
