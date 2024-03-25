@@ -156,6 +156,14 @@
       </div>
     </fieldset>
   </form>
+
+  <RemovePopup
+    title="Are you sure you want to delete this Course?"
+    ref="removeCourseModal"
+    :listMessages="{
+      bottom: ['This will delete all content irrevocably.', 'Type <b>Delete</b> to confirm.']
+    }"
+  />
 </template>
 
 <script setup>
@@ -170,6 +178,7 @@ import TopMenu from "../../../components/Menu/TopMenu.vue";
 import Layout from '../../../shared/Layout.vue';
 import {InputText} from "../../../components/Form/index.js";
 import {Notification} from "../../../libs/Notification.js";
+import RemovePopup from "../../../components/Popup/RemovePopup.vue";
 
 defineOptions({layout: Layout});
 
@@ -247,13 +256,13 @@ const submit = () => {
   ], ['img_url'])
 
   // Update the course model
-  requestGraphQL(page.props.routes.api, query).then(response => {
+  requestGraphQL(page.props.routes.course.api, query).then(response => {
     if (response.data.hasOwnProperty('data')) {
       try {
         // Upload the category image
         if (typeof form.img_url !== 'string' && null !== form.img_url) {
           requestGraphQL(
-            page.props.routes.api,
+            page.props.course.routes.api,
             graphQlFileUploadQuery(form.img_url, page.props.course.id, 'UpdateCourse', 'img_url'),
             {'Content-Type': 'multipart/form-data'}
           ).then(response => {
@@ -272,6 +281,8 @@ const submit = () => {
 /*
  * Variables
  */
+// Course remove modal referral variable
+const removeCourseModal = ref(null);
 // Image upload referral variable
 const imageUpload = ref(null);
 // Default course status class
@@ -294,7 +305,21 @@ const actions = [
     icon: 'trash-icon',
     title: 'Delete this course',
     callback: () => {
-      console.log('remove')
+      removeCourseModal.value.open([{
+        id: page.props.course.id,
+        text: page.props.course.name
+      }]).then(result => {
+        if (false !== result && Array.isArray(result) && typeof result[0] !== 'undefined') {
+          requestGraphQL(
+            page.props.routes.course.api,
+            `mutation {destroy(id:${result[0].id}){id}}`
+          ).then(response => {
+            if (typeof response.data.data !== 'undefined' && 'destroy' in response.data.data) {
+              window.location = page.props.routes.course.index;
+            }
+          })
+        }
+      })
     }
   }
 ]

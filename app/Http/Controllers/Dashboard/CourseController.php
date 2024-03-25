@@ -65,7 +65,10 @@ class CourseController extends BaseDashboardController
                     'categories' => fn($q) => $q->select('categories.name as category_name')
                 ]),
                 'routes' => [
-                    'api' => route('graphql.course'),
+                    'course' => [
+                        'api' => route('graphql.course'),
+                        'index' => route('dashboard.courses.index')
+                    ],
                     'img' => route('api.image.destroy')
                 ],
                 'statuses' => CourseStatus::forSelect(),
