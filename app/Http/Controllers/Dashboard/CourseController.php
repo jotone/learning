@@ -32,6 +32,7 @@ class CourseController extends BaseDashboardController
                     ],
                     'course' => [
                         'api' => route('graphql.course'),
+                        'export' => route('api.export.course'),
                         'settings' => route('dashboard.courses.settings', ':id')
                     ],
                     'settings' => route('api.settings.update')

@@ -157,7 +157,16 @@ import {decodeUriQuery, encodeUriQuery} from '../../../libs/RequestHelper';
 import {ColumnSectionInterface} from '../../../../contracts/ColumnSectionInterface';
 import {FiltersInterface} from '../../../../contracts/FiltersInterface';
 // Components
-import {BulkActions, ColumnSelector, getFilters, Pagination, PerPage, SearchForm, StatusTooltip, TableHeadCol} from '../../../components/DataTable';
+import {
+  BulkActions,
+  ColumnSelector,
+  getFilters,
+  Pagination,
+  PerPage,
+  SearchForm,
+  StatusTooltip,
+  TableHeadCol
+} from '../../../components/DataTable';
 import {Notifications, Sidebar} from '../../../components/Default';
 import CategoryModal from './Modals/CategoryModal.vue';
 import CourseModal from "./Modals/CourseModal.vue";
@@ -264,6 +273,73 @@ const runSearch = (search: string) => {
 /*
  * --------------- Bulk Actions list ---------------
  */
+/**
+ * Retrieve a list of ids of the selected courses
+ * @return {Promise}
+ */
+const getSelectedItems = () => new Promise(resolve => {
+  if (bulkActions.checkedNum === list.value.total) {
+    // Remove all. Get all courses data
+    requestGraphQL(page.props.routes.course.api, `{courses(per_page:0) {total per_page data { id name }}}`)
+      .then(response => resolve(response.data.data.courses.data))
+  } else {
+    // Remove selected. Get a list selected courses ids
+    const values = Array
+      .from(document.querySelectorAll('.table-container table tbody tr input[name="checkEl"]:checked'))
+      .map(input => parseInt(input.value));
+    resolve(list.value.data.filter(item => values.includes(item.id)))
+  }
+})
+
+/**
+ * Unselect checkboxes
+ */
+const uncheckSelected = () => {
+  document.querySelector('.table-container table thead input[name="checkAll"]:checked').checked = false;
+  const nodes = document.querySelectorAll('.table-container table tbody tr input[name="checkEl"]');
+  for (let i = 0, n = nodes.length; i < n; i++) {
+    nodes[i].checked = false
+  }
+}
+
+const courseExportHandler = () => {
+  getSelectedItems().then(courses => request({
+    url: page.props.routes.course.export,
+    method: 'post',
+    data: {list: courses.map(item => item.id)},
+    onSuccess: response => {
+      console.log(response)
+    }
+  }))
+}
+const courseRemoveHandler = () => getSelectedItems().then(courses => {
+  // Build a list of courses [{id: course.id, text: course.name}]
+  const items = courses.map(({id, name}) => ({id, text: name}))
+  uncheckSelected()
+  // Open the courses remove modal
+  removeCourseModal.value.open(items).then(result => {
+    if (false !== result && typeof result === 'object') {
+      const requests = [];
+      // Send requests to remove courses
+      for (let i = 0, n = result.length; i < n; i++) {
+        requests.push(requestGraphQL(page.props.routes.course.api, `mutation {destroy(id:${result[i].id}){id}}`))
+      }
+      // Wait for requests finish
+      Promise.all(requests).then(() => {
+        getList(filters)
+        if (items.length > 1) {
+          const courses = items.reduce((sum, item, i) => i === 0 ? `${item.text}` : `"${sum}", "${item.text}"`, '')
+          Notification.warning(`Courses ${courses} were successfully removed.`);
+        } else {
+          Notification.warning(`Course "${items[0].text}" was successfully removed.`);
+        }
+        uncheckSelected()
+      })
+    }
+  })
+})
+
+
 // Bulk actions element reference
 const bulkActionsRef = ref(null);
 // RemoveCourseModal element reference
@@ -280,47 +356,11 @@ let bulkActions = reactive({
     }, {
       value: 'delete',
       text: 'Delete',
-      callback: () => {
-        new Promise(resolve => {
-          if (bulkActions.checkedNum === list.value.total) {
-            // Remove all
-            requestGraphQL(page.props.routes.course.api, `{courses(per_page:0) {total per_page data { id name }}}`)
-              .then(response => resolve(response.data.data.courses.data))
-          } else {
-            // Remove selected
-            const values = Array
-              .from(document.querySelectorAll('.table-container table tbody tr input[name="checkEl"]:checked'))
-              .map(input => parseInt(input.value));
-
-            resolve(list.value.data.filter(item => values.includes(item.id)))
-          }
-        }).then(courses => {
-          const items = courses.map(({ id, name }) => ({ id, text: name }))
-
-          removeCourseModal.value.open(items).then(result => {
-            if (false !== result && typeof result === 'object') {
-              const requests = [];
-              // Send requests to remove courses
-              for (let i = 0, n = result.length; i< n; i++) {
-                requests.push(requestGraphQL(page.props.routes.course.api, `mutation {destroy(id:${result[i].id}){id}}`))
-              }
-              // Wait for requests finish
-              Promise.all(requests).then(() => {
-                getList(filters)
-                if (items.length > 1) {
-                  const courses = items.reduce((sum, item, i) => i === 0 ? `${item.text}` : `"${sum}", "${item.text}"`, '')
-                  Notification.warning(`Courses ${courses} were successfully removed.`);
-                } else {
-                  Notification.warning(`Course "${items[0].text}" was successfully removed.`);
-                }
-              })
-            }
-          })
-        })
-      }
+      callback: courseRemoveHandler
     }, {
       value: 'export',
-      text: 'Export to CSV'
+      text: 'Export to CSV',
+      callback: courseExportHandler
     }, {
       value: 'addToCat',
       text: 'Add to Category'
