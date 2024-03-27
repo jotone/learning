@@ -109,30 +109,14 @@ const requestGraphQL = inject('requestGraphQL')
 const page = usePage();
 
 /*
- * Methods
+ * --------------- Permissions builder ---------------
  */
-/**
- * Build the already set role permissions
- */
-const getRolePermissions = () => {
-  let rolePermissions = {};
-  if ('model' in page.props) {
-    for (let i = 0, n = page.props.model.permissions.length; i < n; i++) {
-      const permission = page.props.model.permissions[i]
-
-      const controller = permission.controller.split('\\').pop();
-      rolePermissions[controller] = permission.allowed_methods
-    }
-  }
-  return rolePermissions
-}
-
 /**
  * Build the role permissions list
  * @param form
  * @param rolePermissions
  */
-const buildPermissions = (form: any, rolePermissions: object) => {
+const buildPermissions = (rolePermissions: object, form: any) => {
   for (let type in page.props.permissions) {
     // Set form type body if it does not exist
     !form.hasOwnProperty(type) && (form[type] = {})
@@ -150,6 +134,34 @@ const buildPermissions = (form: any, rolePermissions: object) => {
 
   return form;
 }
+
+/**
+ * Build the already set role permissions
+ */
+const getRolePermissions = () => {
+  let rolePermissions = {};
+  if ('model' in page.props) {
+    for (let i = 0, n = page.props.model.permissions.length; i < n; i++) {
+      const permission = page.props.model.permissions[i]
+
+      const controller = permission.controller.split('\\').pop();
+      rolePermissions[controller] = permission.allowed_methods
+    }
+  }
+  return rolePermissions
+}
+
+// Page form variables
+let form = reactive(buildPermissions(getRolePermissions(), {
+  name: page.props?.model?.name || '',
+  slug: page.props?.model?.slug || '',
+  level: page.props?.model?.level || page.props.auth.role.level
+}))
+
+
+/*
+ * --------------- Form Handlers ---------------
+ */
 
 /**
  * Update the list of permissions
@@ -221,23 +233,9 @@ const submit = (e: SubmitEvent) => {
           form.slug = '';
           form.level = '';
           e.target.reset();
-          form = buildPermissions(form, getRolePermissions())
+          form = buildPermissions(getRolePermissions(), form)
         }
       }
     })
 }
-/*
- * Variables
- */
-// Page form variables
-let form = reactive(
-  buildPermissions(
-    {
-      name: page.props?.model?.name || '',
-      slug: page.props?.model?.slug || '',
-      level: page.props?.model?.level || page.props.auth.role.level
-    },
-    getRolePermissions()
-  )
-)
 </script>

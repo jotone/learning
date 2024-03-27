@@ -91,6 +91,9 @@ import CoachesTableRow from './CoachesTableRow.vue';
 import SettingsElement from './SettingsElement.vue';
 import RemovePopup from '../../../components/Popup/RemovePopup.vue';
 
+// Get content function
+const requestGraphQL = inject('requestGraphQL')
+
 const props = defineProps({
   roles: {
     type: Array,
@@ -102,12 +105,16 @@ const props = defineProps({
   }
 });
 
-// Get content function
-const requestGraphQL = inject('requestGraphQL')
-
 /*
- * Methods
+ * --------------- Content table ---------------
  */
+// Decoded URI query
+const query = decodeUriQuery(window.location.search);
+// Data-table items list
+let list = ref([]);
+// Page filters list
+let filters = reactive(getFilters(query));
+
 /**
  * GraphQL query string to get coaches list
  * @param {FiltersInterface} filters
@@ -145,15 +152,6 @@ const changeLimit = (limit: number) => {
 }
 
 /**
- * Search item results
- * @param {string} search
- */
-const runSearch = (search: string) => {
-  filters.search = search;
-  getList(filters)
-}
-
-/**
  * Click pagination element
  * @param {FiltersInterface} filters
  */
@@ -165,20 +163,6 @@ const changePage = (filters: FiltersInterface) => getList(filters, (filters: Fil
   // Change uri state
   window.history.pushState(window.location.origin + window.location.pathname, "", '?' + encodeUriQuery(state))
 })
-
-/**
- * View row actions in a tooltip panel
- * @param e
- * @param user
- */
-const showRowActions = (e, user: UserDataInterface) => {
-  const row = e.target.closest('tr');
-  const blockOffset = row.getBoundingClientRect();
-  selectedRow.model = user;
-  selectedRow.right = 10;
-  selectedRow.top = blockOffset.height * (row.rowIndex + 1);
-  selectedRow.show = true;
-}
 
 /**
  * Send request to get a coach list
@@ -193,9 +177,20 @@ const getList = (filters: FiltersInterface, callback?: Function) => {
     })
 }
 
-/*
- * Variables
+/**
+ * Search item results
+ * @param {string} search
  */
+const runSearch = (search: string) => {
+  filters.search = search;
+  getList(filters)
+}
+
+/*
+ * --------------- Actions list ---------------
+ */
+// Modal for the coach remove
+const removeCoachModal = ref(null);
 // Selected row model ID
 let selectedRow = reactive({
   model: {},
@@ -203,6 +198,21 @@ let selectedRow = reactive({
   top: 0,
   show: false
 });
+
+
+/**
+ * View row actions in a tooltip panel
+ * @param e
+ * @param user
+ */
+const showRowActions = (e, user: UserDataInterface) => {
+  const row = e.target.closest('tr');
+  const blockOffset = row.getBoundingClientRect();
+  selectedRow.model = user;
+  selectedRow.right = 10;
+  selectedRow.top = blockOffset.height * (row.rowIndex + 1);
+  selectedRow.show = true;
+}
 
 // List of actions for the row popup
 const rowActions = [
@@ -220,45 +230,28 @@ const rowActions = [
         id: selectedRow.model.id
       }];
 
-      removeCoachModal.value
-        .open(items)
-        .then(result => {
-          if (false !== result && typeof result === 'object') {
-            const requests = [];
-            for (let i = 0, n = result.length; i < n; i++) {
-              requests.push(requestGraphQL(
-                props.routes.user.api,
-                `mutation {destroy(id:${result[i].id}){id}}`
-              ));
-            }
-            Promise.all(requests).then(() => {
-              getList(filters)
-              if (items.length > 1) {
-                let users = items.reduce((sum, item, i) => i === 0 ? `"${item.text}"` : `"${sum}", "${item.text}"`, '')
-                Notification.warning(`Coaches ${users} were successfully removed.`);
-              } else {
-                Notification.warning(`Coach "${items[0].text}" was successfully removed.`);
-              }
-            })
+      removeCoachModal.value.open(items).then(result => {
+        if (false !== result && typeof result === 'object') {
+          const requests = [];
+          // Send requests to remove coaches
+          for (let i = 0, n = result.length; i < n; i++) {
+            requests.push(requestGraphQL(props.routes.user.api, `mutation {destroy(id:${result[i].id}){id}}`));
           }
-        })
+          // Wait for requests finish
+          Promise.all(requests).then(() => {
+            getList(filters)
+            if (items.length > 1) {
+              let coaches = items.reduce((sum, item, i) => i === 0 ? `${item.text}` : `"${sum}", "${item.text}"`, '')
+              Notification.warning(`Coaches ${coaches} were successfully removed.`);
+            } else {
+              Notification.warning(`Coach "${items[0].text}" was successfully removed.`);
+            }
+          })
+        }
+      })
     }
   }
 ]
-
-
-
-// Data-table items list
-let list = ref([]);
-
-// Modal for the coach remove
-const removeCoachModal = ref(null);
-
-// Decoded URI query
-const query = decodeUriQuery(window.location.search);
-
-// Page filters list
-let filters = reactive(getFilters(query));
 
 // Load coaches
 getList(filters)

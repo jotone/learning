@@ -3,7 +3,7 @@
     <td class="static">
       <div class="static-fields">
         <div class="bulk-select">
-          <input type="checkbox" name="checkEl" @change="bulkActionCheckboxChange">
+          <input type="checkbox" name="checkEl" @change="bulkActionCheckboxChange" :value="props.course.id">
         </div>
         <a class="image-container">
           <img :src="courseImage" v-if="Object.keys(props.course.img_url).length" alt="">
@@ -110,9 +110,6 @@ const statusValue = computed(() => {
   }
 });
 
-/*
- * Methods
- */
 /**
  * Bulk actions checkbox change event
  */

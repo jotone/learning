@@ -3,14 +3,14 @@
     <i class="icon search search-icon"></i>
     <i class="icon close close-icon" @click="clearAll"></i>
 
-    <ul class="multiple-selector__selected" @click="toggleAvailable">
-      <li v-for="(item, i) in selectedList">
+    <ul class="multiple-selector__selected" @click="toggleDropdown">
+      <li v-for="(item, i) in result">
         <span>{{ item[field] }}</span>
         <i class="icon close-icon" @click="unselect(i)"></i>
       </li>
     </ul>
 
-    <div class="multiple-selector__available scrollbar" :class="{active: showAvailable}">
+    <div class="multiple-selector__available scrollbar" :class="{active: showDropdown}">
       <ul>
         <li v-for="(option, i) in availableList" @click="select(i)">
           <span>{{ option[field] }}</span>
@@ -48,7 +48,7 @@ const props = defineProps({
  * @returns {Array}
  */
 const buildOptions = () => {
-  const selected = new Set(selectedList.value.map(item => item.name));
+  const selected = new Set(result.value.map(item => item.name));
   return props.options.filter(option => !selected.has(option[field.value]));
 }
 
@@ -56,23 +56,23 @@ const buildOptions = () => {
  * Show or hide the list of available options
  * @param {null|boolean} status
  */
-const toggleAvailable = (status = null) => {
-  showAvailable.value = null !== status ? status : !showAvailable.value && availableList.value.length;
+const toggleDropdown = (status = null) => {
+  showDropdown.value = null !== status ? status : !showDropdown.value && availableList.value.length;
 }
 
 /**
  * Force hide the list of available options
  */
-const hideAvailable = () => toggleAvailable(false)
+const hideAvailable = () => toggleDropdown(false)
 
 /**
  * Add an option to the list of selected options
  * @param {int} i
  */
 const select = i => {
-  selectedList.value.push(availableList.value[i]);
+  result.value.push(availableList.value[i]);
   availableList.value = buildOptions();
-  emit('change', selectedList.value);
+  emit('change', result.value);
 }
 
 /**
@@ -80,27 +80,27 @@ const select = i => {
  * @param i
  */
 const unselect = i => {
-  selectedList.value.splice(i, 1);
+  result.value.splice(i, 1);
   availableList.value = buildOptions();
-  emit('change', selectedList.value);
+  emit('change', result.value);
 }
 
 /**
  * Remove all options from the list of selected options
  */
 const clearAll = () => {
-  selectedList.value = [];
+  result.value = [];
   availableList.value = buildOptions();
-  toggleAvailable(false)
-  emit('change', selectedList.value);
+  toggleDropdown(false)
+  emit('change', result.value);
 }
 /*
  * Variables
  */
 const field = ref(props.label)
 
-let selectedList = ref(props.selected)
+let result = ref(props.selected)
 let availableList = ref(buildOptions())
 
-let showAvailable = ref(false)
+let showDropdown = ref(false)
 </script>

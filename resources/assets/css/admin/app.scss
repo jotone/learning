@@ -1,4 +1,4 @@
-@import "../font-popins.scss", "vars", "icons", "breadcrumbs", "circle-progress", "forms", "image-upload", "menu", "multiple-select", "notification", "popup", "sidebar", "status-info", "top-menu", "user-avatar";
+@import "../font-popins.scss", "vars", "custom-select", "icons", "breadcrumbs", "circle-progress", "forms", "image-upload", "menu", "multiple-select", "notification", "popup", "sidebar", "status-info", "top-menu", "user-avatar";
 
 .col {width: 100%}
 
@@ -221,7 +221,7 @@ a {color: $link; text-decoration: none}
       position: absolute;
       height: 65px;
       width: 100%;
-      z-index: 1;
+      z-index: 5;
 
       .logo-image {
         display: inline-block;

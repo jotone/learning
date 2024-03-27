@@ -63,9 +63,15 @@ const requestGraphQL = inject('requestGraphQL')
 // Page variables
 const page = usePage();
 
-/*
- * Methods
- */
+let form = reactive({
+  first_name: page.props?.model?.first_name,
+  last_name: page.props?.model?.last_name,
+  email: page.props?.model?.email,
+  role_id: page.props.role_id,
+  password: null,
+  confirmation: null
+})
+
 /**
  * Send form request
  * @param e
@@ -98,16 +104,4 @@ const submit = e => {
       }
     })
 }
-
-/*
- * Variables
- */
-let form = reactive({
-  first_name: page.props?.model?.first_name,
-  last_name: page.props?.model?.last_name,
-  email: page.props?.model?.email,
-  role_id: page.props.role_id,
-  password: null,
-  confirmation: null
-})
 </script>

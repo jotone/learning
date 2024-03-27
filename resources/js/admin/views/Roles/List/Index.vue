@@ -109,8 +109,15 @@ const requestGraphQL = inject('requestGraphQL')
 const page = usePage()
 
 /*
- * Methods
+ * --------------- Content table ---------------
  */
+// Decoded URI query
+const query = decodeUriQuery(window.location.search);
+// Data-table items list
+let list = ref([]);
+// Page filters list
+let filters = reactive(getFilters(query));
+
 /**
  * GraphQL query string to get roles list
  * @param {FiltersInterface} filters
@@ -147,15 +154,6 @@ const changeLimit = (limit: number) => {
 }
 
 /**
- * Search item results
- * @param {string} search
- */
-const runSearch = (search: string) => {
-  filters.search = search;
-  getList(filters)
-}
-
-/**
  * Click pagination element
  * @param {FiltersInterface} filters
  */
@@ -167,6 +165,41 @@ const changePage = (filters: FiltersInterface) => getList(filters, (filters: Fil
   // Change uri state
   window.history.pushState(window.location.origin + window.location.pathname, "", '?' + encodeUriQuery(state))
 })
+
+/**
+ * Send request to get a role list
+ * @param {FiltersInterface} filters
+ * @param {null|function} callback
+ */
+const getList = (filters: FiltersInterface, callback?: Function) =>
+  requestGraphQL(page.props.routes.api, listQuery(filters))
+    .then(response => {
+      list.value = response.data.data.roles;
+      typeof callback === 'function' && callback(filters)
+    })
+
+/**
+ * Search item results
+ * @param {string} search
+ */
+const runSearch = (search: string) => {
+  filters.search = search;
+  getList(filters)
+}
+
+/*
+ * --------------- Actions list ---------------
+ */
+// Modal for the role remove
+const removeRoleModal = ref(null);
+// Selected row model ID
+let selectedRow = reactive({
+  model: {},
+  right: 0,
+  top: 0,
+  show: false
+});
+
 
 /**
  * View row actions in a tooltip panel
@@ -181,31 +214,7 @@ const showRowActions = (e, role: RoleInterface) => {
   selectedRow.top = blockOffset.height * (row.rowIndex + 1);
   selectedRow.show = true;
 }
-
-/**
- * Send request to get a role list
- * @param {FiltersInterface} filters
- * @param {null|function} callback
- */
-const getList = (filters: FiltersInterface, callback?: Function) =>
-  requestGraphQL(page.props.routes.api, listQuery(filters))
-    .then(response => {
-      list.value = response.data.data.roles;
-      typeof callback === 'function' && callback(filters)
-    })
-
-/*
- * Variables
- */
-// Selected row model ID
-let selectedRow = reactive({
-  model: {},
-  right: 0,
-  top: 0,
-  show: false
-});
-
-// List of actions for the row popup
+// List of the row actions
 const rowActions = [
   {
     name: 'Edit',
@@ -217,45 +226,29 @@ const rowActions = [
     icon: 'trash-icon',
     callback: () => {
       const items = [{text: selectedRow.model.name, id: selectedRow.model.id}];
-      removeRoleModal.value
-        .open(items)
-        .then(result => {
-          if (false !== result && typeof result === 'object') {
-            const requests = [];
-            for (let i = 0, n = result.length; i < n; i++) {
-              requests.push(
-                requestGraphQL(
-                  page.props.routes.api,
-                  `mutation {destroy(id:${result[i].id}){id}}`
-                )
-              );
-            }
-            Promise.all(requests).then(() => {
-              getList(filters)
-              if (items.length > 1) {
-                let roles = items.reduce((sum, item, i) => i === 0 ? `"${item.text}"` : `"${sum}", "${item.text}"`, '')
-                Notification.warning(`Roles ${roles} were successfully removed.`);
-              } else {
-                Notification.warning(`Role "${items[0].text}" was successfully removed.`);
-              }
-            })
+
+      removeRoleModal.value.open(items).then(result => {
+        if (false !== result && typeof result === 'object') {
+          const requests = [];
+          // Send requests to remove roles
+          for (let i = 0, n = result.length; i < n; i++) {
+            requests.push(requestGraphQL(page.props.routes.api, `mutation {destroy(id:${result[i].id}){id}}`));
           }
-        })
+          // Wait for requests finish
+          Promise.all(requests).then(() => {
+            getList(filters)
+            if (items.length > 1) {
+              let roles = items.reduce((sum, item, i) => i === 0 ? `${item.text}` : `"${sum}", "${item.text}"`, '')
+              Notification.warning(`Roles ${roles} were successfully removed.`);
+            } else {
+              Notification.warning(`Role "${items[0].text}" was successfully removed.`);
+            }
+          })
+        }
+      })
     }
   }
 ]
-
-// Data-table items list
-let list = ref([]);
-
-// Modal for the role remove
-const removeRoleModal = ref(null);
-
-// Decoded URI query
-const query = decodeUriQuery(window.location.search);
-
-// Page filters list
-let filters = reactive(getFilters(query));
 
 // Load roles
 getList(filters)

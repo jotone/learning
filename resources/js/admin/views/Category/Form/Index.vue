@@ -103,14 +103,19 @@ const requestGraphQL = inject('requestGraphQL')
 const page = usePage();
 
 /*
- * Methods
+ * --------------- Forms ---------------
  */
-/**
- * Set the Form image as null
- */
-const clearImage = () => {
-  form.img_url = null;
-}
+
+let form = reactive({
+  id: page.props.model.id,
+  name: page.props.model.name,
+  url: page.props.model.url,
+  img_url: page.props.model.img_url || null,
+  description: page.props.model.description,
+  learn_more_link: page.props.model.learn_more_link,
+  type: 'course'
+})
+
 /**
  * Submit form handler
  */
@@ -143,17 +148,14 @@ const submit = () => {
 }
 
 /*
- * Variables
+ * --------------- Image Uploader ---------------
  */
-let form = reactive({
-  id: page.props.model.id,
-  name: page.props.model.name,
-  url: page.props.model.url,
-  img_url: page.props.model.img_url || null,
-  description: page.props.model.description,
-  learn_more_link: page.props.model.learn_more_link,
-  type: 'course'
-})
-
 let imageUpload = ref(null)
+/**
+ * Set the Form image as null
+ */
+const clearImage = () => {
+  form.img_url = null;
+}
+
 </script>

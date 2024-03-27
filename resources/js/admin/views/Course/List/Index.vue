@@ -136,6 +136,14 @@
     <CategoryModal ref="categoryModal"/>
 
     <CourseModal ref="courseModal" :statuses="$attrs.statuses"/>
+
+    <RemovePopup
+      title="Are you sure you want to delete these courses?"
+      ref="removeCourseModal"
+      :listMessages="{
+      bottom: ['This will delete all content irrevocably.', 'Type <b>Delete</b> to confirm.']
+    }"
+    />
   </Teleport>
 </template>
 
@@ -156,6 +164,8 @@ import CourseModal from "./Modals/CourseModal.vue";
 import TableRow from './TableRow.vue';
 // Layout
 import Layout from '../../../shared/Layout.vue';
+import RemovePopup from "../../../components/Popup/RemovePopup.vue";
+import {Notification} from "../../../libs/Notification";
 
 defineOptions({layout: Layout})
 
@@ -167,9 +177,21 @@ const requestGraphQL = inject('requestGraphQL');
 // Page variables
 const page = usePage()
 
+
 /*
- * Methods
+ * --------------- Content table ---------------
  */
+// Decoded URI query
+const query = decodeUriQuery(window.location.search)
+query.order = {
+  by: 'position',
+  dir: 'desc'
+}
+// Data-table items list
+let list = ref([]);
+// Page filters list
+let filters = reactive(getFilters(query))
+
 /**
  * GraphQL query string to get roles list
  * @param {FiltersInterface} filters
@@ -206,15 +228,6 @@ const changeLimit = (limit: number) => {
 }
 
 /**
- * Search item results
- * @param {string} search
- */
-const runSearch = (search: string) => {
-  filters.search = search;
-  getList(filters)
-}
-
-/**
  * Click pagination element
  * @param {FiltersInterface} filters
  */
@@ -240,24 +253,86 @@ const getList = (filters: FiltersInterface, callback?: Function) =>
     })
 
 /**
- * Get enabled columns list
- * @param sections
+ * Search item results
+ * @param {string} search
  */
-let activeColumns = (sections: Array<ColumnSectionInterface>) => Object.values( // Reset the result array indexes
-  // Go through every section
-  sections.reduce((result, section) => {
-    // Go through every enabled column in the section
-    section.columns.filter(col => col.enable)
-      // Fill the result array with column values
-      .reduce((sum, col) => result[col.table_position] = {
-        id: col.id,
-        field: col.field,
-        name: col.name
-      }, {})
-    return result;
-  }, {})
-);
+const runSearch = (search: string) => {
+  filters.search = search;
+  getList(filters)
+}
 
+/*
+ * --------------- Bulk Actions list ---------------
+ */
+// Bulk actions element reference
+const bulkActionsRef = ref(null);
+// RemoveCourseModal element reference
+let removeCourseModal = ref(null);
+// Show bulk actions marker
+let bulkActions = reactive({
+  checkedNum: 0,
+  selected: 'Bulk Actions',
+  options: [
+    {
+      value: null,
+      disabled: true,
+      text: 'Bulk Actions'
+    }, {
+      value: 'delete',
+      text: 'Delete',
+      callback: () => {
+        new Promise(resolve => {
+          if (bulkActions.checkedNum === list.value.total) {
+            // Remove all
+            requestGraphQL(page.props.routes.course.api, `{courses(per_page:0) {total per_page data { id name }}}`)
+              .then(response => resolve(response.data.data.courses.data))
+          } else {
+            // Remove selected
+            const values = Array
+              .from(document.querySelectorAll('.table-container table tbody tr input[name="checkEl"]:checked'))
+              .map(input => parseInt(input.value));
+
+            resolve(list.value.data.filter(item => values.includes(item.id)))
+          }
+        }).then(courses => {
+          const items = courses.map(({ id, name }) => ({ id, text: name }))
+
+          removeCourseModal.value.open(items).then(result => {
+            if (false !== result && typeof result === 'object') {
+              const requests = [];
+              // Send requests to remove courses
+              for (let i = 0, n = result.length; i< n; i++) {
+                requests.push(requestGraphQL(page.props.routes.course.api, `mutation {destroy(id:${result[i].id}){id}}`))
+              }
+              // Wait for requests finish
+              Promise.all(requests).then(() => {
+                getList(filters)
+                if (items.length > 1) {
+                  const courses = items.reduce((sum, item, i) => i === 0 ? `${item.text}` : `"${sum}", "${item.text}"`, '')
+                  Notification.warning(`Courses ${courses} were successfully removed.`);
+                } else {
+                  Notification.warning(`Course "${items[0].text}" was successfully removed.`);
+                }
+              })
+            }
+          })
+        })
+      }
+    }, {
+      value: 'export',
+      text: 'Export to CSV'
+    }, {
+      value: 'addToCat',
+      text: 'Add to Category'
+    }, {
+      value: 'renameFromCat',
+      text: 'Remove from Category'
+    }, {
+      value: 'activate',
+      text: 'Set to Active'
+    }
+  ]
+})
 /**
  * Select or unselect all bulk action checkboxes
  * @param e
@@ -295,29 +370,43 @@ const bulkCheckBoxToggleSingle = (e: Event) => {
   );
 }
 
-/**
- * Open the category modal window
+/*
+ * --------------- Column Selector Sidebar ---------------
  */
-const categoryModalShow = () => categoryModal.value.open()
 
-const courseModalShow = () => courseModal.value.open().then(result => {
-  if (result) {
-    getList(filters)
-  }
-})
+// Sidebar element reference
+let sidebar = ref(null);
 
 /**
- * View Course status tooltip
- * @param e
- * @param status
+ * Show or hide sidebar
+ * @param value
  */
-const showStatusTooltip = (e: Event, status) => {
-  const borders = e.target.closest('.info-icon-wrap').getBoundingClientRect();
-  statusTooltip.value.toggleShow(status, {
-    left: borders.left + 30,
-    top: window.innerWidth > 1200 ? -18 : 47
-  })
+const toggleSidebar = (value: boolean = true) => {
+  sidebar.value.toggleShow(value);
 }
+
+/*
+ * --------------- Column Selector Functionality ---------------
+ */
+
+/**
+ * Get enabled columns list
+ * @param sections
+ */
+let activeColumnsList = (sections: Array<ColumnSectionInterface>) => Object.values( // Reset the result array indexes
+  // Go through every section
+  sections.reduce((result, section) => {
+    // Go through every enabled column in the section
+    section.columns.filter(col => col.enable)
+      // Fill the result array with column values
+      .reduce((sum, col) => result[col.table_position] = {
+        id: col.id,
+        field: col.field,
+        name: col.name
+      }, {})
+    return result;
+  }, {})
+);
 
 /**
  * Check the page column changed its status
@@ -347,72 +436,52 @@ const toggleColumn = (section: string, field: string, value: boolean) => {
     }
   }
 
-  columns.value = activeColumns(page.props.sections)
+  columns.value = activeColumnsList(page.props.sections)
 }
+// List of active columns
+let columns = ref(activeColumnsList(page.props.sections))
+
+/*
+ * --------------- Status Tooltip ---------------
+ */
+// StatusTooltip element reference
+let statusTooltip = ref(null);
 
 /**
- * Show or hide sidebar
+ * View Course status tooltip
+ * @param e
  * @param status
  */
-const toggleSidebar = (status: boolean = true) => {
-  sidebar.value.toggleShow(status);
+const showStatusTooltip = (e: Event, status) => {
+  const borders = e.target.closest('.info-icon-wrap').getBoundingClientRect();
+  statusTooltip.value.toggleShow(status, {
+    left: borders.left + 30,
+    top: window.innerWidth > 1200 ? -18 : 47
+  })
 }
 
 /*
- * Variables
+ * --------------- Category modal ---------------
  */
-const bulkActionsRef = ref(null);
-// Show bulk actions marker
-let bulkActions = reactive({
-  checkedNum: 0,
-  selected: 'Bulk Actions',
-  options: [
-    {
-      value: null,
-      disabled: true,
-      label: 'Bulk Actions'
-    }, {
-      value: 'delete',
-      label: 'Delete',
-      callback: () => {
-        console.log(111)
-      }
-    }, {
-      value: 'export',
-      label: 'Export to CSV'
-    }, {
-      value: 'addToCat',
-      label: 'Add to Category'
-    }, {
-      value: 'renameFromCat',
-      label: 'Remove from Category'
-    }, {
-      value: 'activate',
-      label: 'Set to Active'
-    }
-  ]
-})
 // Category modal reference
 let categoryModal = ref(null);
+
+/**
+ * Open the category modal window
+ */
+const categoryModalShow = () => categoryModal.value.open()
+
+/*
+ * --------------- Course modal ---------------
+ */
 // Course modal reference
 let courseModal = ref(null);
-// Sidebar element reference
-let sidebar = ref(null);
-// StatusTooltip element reference
-let statusTooltip = ref(null);
-// Data-table items list
-let list = ref([]);
-// Decoded URI query
-const query = decodeUriQuery(window.location.search)
-query.order = {
-  by: 'position',
-  dir: 'desc'
-}
-// Page filters list
-let filters = reactive(getFilters(query))
 
-// List of active columns
-let columns = ref(activeColumns(page.props.sections))
+/**
+ * Open the course modal window
+ */
+const courseModalShow = () => courseModal.value.open().then(result => result && getList(filters))
+
 // Load roles
 getList(filters)
 
