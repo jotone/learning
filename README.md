@@ -92,7 +92,7 @@ npm i && npm run prod
     - ~~Course edit~~
     - Course bulk actions
       - ~~Delete~~
-      - Export to CSV
+      - ~~Export to CSV~~
       - Add to Category
       - Remove From Category
       - Set to Active

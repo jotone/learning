@@ -22,6 +22,15 @@ class AppInstall extends Command
     protected $description = 'This command will install the basic site data.';
 
     /**
+     * Superuser data
+     * @var array
+     */
+    protected array $superuser = [
+        'name' => 'Superuser',
+        'email' => 'superadmin@mail.com'
+    ];
+
+    /**
      * Execute the console command.
      */
     public function handle(): void
@@ -74,7 +83,6 @@ class AppInstall extends Command
 
     /**
      * Create admin menu
-     *
      * @param array $admin_menu
      * @return void
      */
@@ -89,7 +97,6 @@ class AppInstall extends Command
 
     /**
      * Process admin menu data
-     *
      * @param array $data
      * @param int $section
      * @param int $position
@@ -127,7 +134,6 @@ class AppInstall extends Command
 
     /**
      * Get installation files data
-     *
      * @return array
      */
     protected function installationFiles(): array
@@ -149,6 +155,11 @@ class AppInstall extends Command
         return $files;
     }
 
+    /**
+     * Install page column structure
+     * @param array $columns
+     * @return void
+     */
     public function installPageColumns(array $columns): void
     {
         foreach ($columns as $page => $section) {
@@ -177,7 +188,6 @@ class AppInstall extends Command
 
     /**
      * Install roles
-     *
      * @param array $roles
      * @return array
      */
@@ -205,22 +215,53 @@ class AppInstall extends Command
         return $result;
     }
 
+    /**
+     * Continue asking user to enter the right password until it's done
+     * @return string
+     */
+    protected function recursiveAskPassword(): string
+    {
+        $password = $this->ask('The Superuser password should be more than 8 characters. Please enter a new Superuser password');
+
+        return empty($password) || strlen($password) < 8
+            ? $this->recursiveAskPassword()
+            : $password;
+    }
+
+    /**
+     * Create a superuser with its role
+     * @return void
+     */
     protected function installSuperuser(): void
     {
+        // Get a password for the superuser
+        if (empty(config('app.superuser_pwd'))) {
+            $password = $this->ask('The Superuser password is not set. Please enter a new Superuser password');
+
+            if (empty($password) || strlen($password) < 8) {
+                $password = $this->recursiveAskPassword();
+            }
+        } else {
+            $password = config('app.superuser_pwd');
+        }
+
+        // Get a superuser role
+        $role = Role::where('slug', 'superuser')->value('id');
+
+        // Create a superuser entity
         User::whereHas('role', fn($q) => $q->where('level', '<', 1))->count()
             ? User::whereHas('role', fn($q) => $q->firstWhere('level', '<', 1))
             : User::create([
-            'first_name' => 'Superuser',
-            'email' => 'superadmin@mail.com',
+            'first_name' => $this->superuser['name'],
+            'email' => $this->superuser['email'],
             'email_verified_at' => now(),
-            'password' => base64_decode('OFNUUFQwbUJCMDZnXkV1Mg=='),
+            'password' => $password,
             'activated_at' => now(),
-            'role_id' => Role::firstWhere('level', '<', 1)->id,
+            'role_id' => $role,
             'status' => 'active'
         ]);
 
-        $role = Role::where('slug', 'superuser')->value('id');
-
+        // Set the permissions for the superuser
         $folders = [
             app_path('GraphQL/Schemas'),
             app_path('Http/Controllers/Api'),

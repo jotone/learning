@@ -185,4 +185,14 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Superuser password
+    |--------------------------------------------------------------------------
+    |
+    | This string provides a superuser password to access it's account
+    |
+     */
+
+    'superuser_pwd' => env('SUPERUSER_PASSWORD')
 ];
