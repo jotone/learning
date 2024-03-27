@@ -1,7 +1,7 @@
-.custom-selector-wrap {
+.custom-selector {
   position: relative;
 
-  .custom-selector-input {
+  &--input {
     border: $b-type;
     border-radius: $b-rad-big;
     background: white url("../../images/icons/angle-down.svg") no-repeat 99% center / 24px;
@@ -11,34 +11,43 @@
     outline: none;
     font-size: 16px;
     line-height: 18px;
-    width: calc(100% - 20px);
+    width: 100%;
   }
 
-  .custom-selector-dropdown-list-wrap {
-    border: 1px solid black;
-    position: absolute;
+  &--dropdown {
+    border-radius: $b-rad-default;
+    border: $b-type;
     background-color: white;
+    box-shadow: 0 6px 12px 0 rgba(144, 155, 191, 0.20);
+    position: absolute;
     width: 100%;
     max-height: 250px;
     overflow-y: auto;
-    z-index: 1;
+    z-index: 10;
+    padding: 25px 0;
 
     li {
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 15px;
-      padding: 4px 10px;
+      color: $secondary;
+      padding: 5px 15px;
+
+      &.disabled {
+        color: $text;
+        font-weight: 500;
+        cursor: default;
+      }
 
       .icon {background-color: $text}
 
       span {font-size: 14px; line-height: 18px}
 
-      &:hover {
-        background-color: $link;
-        color: white;
+      &:hover:not(.disabled) {
+        color: $link;
 
-        .icon {background-color: white}
+        .icon {background-color: $link}
       }
     }
   }

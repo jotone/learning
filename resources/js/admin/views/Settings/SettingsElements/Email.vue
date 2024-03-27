@@ -261,9 +261,12 @@ const props = defineProps({
     default: []
   }
 });
+
 /*
- * Methods
+ * --------------- Social media ---------------
  */
+// Social media modal reference
+const socialMediaModal = ref(null)
 /**
  * Opens a modal for adding a new social media entry.
  * @return {*}
@@ -333,6 +336,10 @@ const socialMediaSort = () => request({
   }
 })
 
+/*
+ * --------------- Templates ---------------
+ */
+
 /**
  * Generate a link to the email-template edit page
  * @param id
@@ -367,6 +374,11 @@ const templateRemove = id => {
     })
   }
 }
+
+/*
+ * --------------- SMTP Settings ---------------
+ */
+
 /**
  * Send request to save the SMTP settings.
  * @returns {Promise}
@@ -388,9 +400,4 @@ const saveSmtpSettings = () => request({
   })
 }).catch(e => null !== e?.response?.data?.errors && emit('notify', 'danger', e.response.data.errors))
 
-/*
- * Variables
- */
-// List of social media
-const socialMediaModal = ref(null)
 </script>

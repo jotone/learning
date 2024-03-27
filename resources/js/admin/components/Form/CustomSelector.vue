@@ -1,17 +1,20 @@
 <template>
-  <div class="custom-selector-wrap">
+  <div class="custom-selector">
     <input
-      class="custom-selector-input"
+      class="custom-selector--input"
       readonly
       :placeholder="placeholder"
-      :value="selected.text"
+      :value="result === null ? options[0][label] : result.text"
       @click="toggleDropdown"
     >
-    <input style="display: none" v-model="selected.value">
-    <div class="custom-selector-dropdown-list-wrap" v-if="showDropdown">
-      <ul class="custom-selector-dropdown-list">
+    <div class="custom-selector--dropdown" v-if="showDropdown">
+      <ul>
         <template v-for="option in options">
-          <li v-html="row(option)" @click="changeValue(option)"></li>
+          <li
+            :class="{disabled: option.hasOwnProperty('disabled') && option.disabled}"
+            v-html="template(option)"
+            @click="select(option)"
+          ></li>
         </template>
       </ul>
     </div>
@@ -27,13 +30,9 @@ const emit = defineEmits(['change'])
 
 // Get component properties
 const props = defineProps({
-  valueField: {
+  label: {
     type: String,
-    default: null
-  },
-  textField: {
-    type: String,
-    default: null
+    default: 'text'
   },
   placeholder: {
     type: String,
@@ -43,43 +42,50 @@ const props = defineProps({
     type: Array,
     default: []
   },
-  optionRow: {
+  template: {
     type: Function,
-    default: null
+    required: true
   },
-  value: {
-    type: String,
-    default: ''
+  selected: {
+    type: [Number, Boolean, String],
+    default: null
   }
 })
 /*
  * Methods
  */
 /**
- * Set new selector values on change event
- * @param option
+ * Build the result of the selected value
+ * @returns {object|null}
  */
-const changeValue = option => {
-  selected.value = option.value;
-  selected.text = option.text;
-  emit('change', selected.value)
+const prepareSelectedItem = () => {
+  if (!props.options.length) {
+    return null
+  }
+  const option = selectedOption.value == null
+    ? props.options[0]
+    : props.options.find(item => item.value === selectedOption.value) || props.options[0];
+  return {value: option.value, text: option[props.label]};
 }
-
 /**
- * Gets the text to be displayed for a given option
- * @param {object|string} option
- * @return {string}
+ * Reset selector, bind a null value
  */
-const optionText = option => null === props.valueField ? option : option[props.valueField];
-
+const reset = () => {
+  selectedOption.value = null;
+  result = prepareSelectedItem();
+}
 /**
- * Generates the HTML for a row in the dropdown
- * @param {object|string} option
- * @return {string}
+ * Set new selector values on change event
+ * @param {object} option
  */
-const row = option => null === props.optionRow
-  ? `<span>${optionText(option)}</span>`
-  : props.optionRow(option)
+const select = option => {
+  if (!option.disabled) {
+    result.value = option.value;
+    result.text = option.text;
+    showDropdown.value = false;
+    emit('change', result.value)
+  }
+}
 
 /**
  * Toggles the visibility of the dropdown
@@ -91,12 +97,12 @@ const toggleDropdown = () => {
 /*
  * Variables
  */
-// Current selected value
-let selected = reactive({
-  value: props.value.length ? props.value : optionText(props.options[0]),
-  text: (props.value.length ? props.value : props.options[0].text).ucfirst()
-})
-
 // Dropdown visibility value
-let showDropdown = ref(false)
+let showDropdown = ref(false);
+
+let selectedOption = ref(props.selected);
+// Get selected item
+let result = reactive(prepareSelectedItem())
+
+defineExpose({reset});
 </script>

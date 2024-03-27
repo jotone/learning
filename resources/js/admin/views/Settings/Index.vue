@@ -46,8 +46,9 @@ defineOptions({layout: Layout})
 const request = inject('request')
 // Page variables
 const page = usePage()
+
 /*
- * Methods
+ * --------------- Forms ---------------
  */
 /**
  * Fills a form object with data from page.props.data based on a list of keys.
@@ -65,38 +66,6 @@ const fillForm = keys => {
   return obj
 }
 
-/**
- * Custom notifications
- * @param type
- * @param messages
- */
-const callNotification = (type, messages) => messages.forEach(messageGroup => messageGroup.forEach(message => Notification[type](message)));
-
-/**
- * Saves settings by making API requests for each form and showing a success notification upon completion.
- * @param url
- */
-const saveSettings = url => {
-  // Prepares a list of forms to be submitted.
-  const forms = [mainSettingsForm, functionalityForm, emailForm]
-  let requests = []
-  for (let i = 0, n = forms.length; i < n; i++) {
-    // Creating a patch request for each and adding it to the request array.
-    requests.push(request({
-      url: url,
-      method: "patch",
-      data: forms[i]
-    }))
-  }
-  // Wait for all requests are complete.
-  Promise.all(requests)
-    .then(() => Notification.success('Settings has been updated. Your changes have been saved!'))
-    .catch(e => console.error(e))
-}
-
-/*
- * Variables
- */
 const mainSettingsForm = reactive(fillForm([
   'site_url',
   'site_title',
@@ -136,4 +105,38 @@ const emailForm = reactive(fillForm([
   'legal_address'
 ]))
 
+/**
+ * Saves settings by making API requests for each form and showing a success notification upon completion.
+ * @param url
+ */
+const saveSettings = url => {
+  // Prepares a list of forms to be submitted.
+  const forms = [mainSettingsForm, functionalityForm, emailForm]
+  let requests = []
+  for (let i = 0, n = forms.length; i < n; i++) {
+    // Creating a patch request for each and adding it to the request array.
+    requests.push(request({
+      url: url,
+      method: "patch",
+      data: forms[i]
+    }))
+  }
+  // Wait for all requests are complete.
+  Promise.all(requests)
+    .then(() => Notification.success('Settings has been updated. Your changes have been saved!'))
+    .catch(e => console.error(e))
+}
+
+/*
+ * --------------- Notifications---------------
+ */
+
+/**
+ * Custom notifications
+ * @param type
+ * @param messages
+ */
+const callNotification = (type, messages) => messages.forEach(
+  messageGroup => messageGroup.forEach(message => Notification[type](message))
+);
 </script>

@@ -11,23 +11,13 @@
     </div>
 
     <div class="bulk-select-selector">
-<!--      <v-select-->
-<!--        label="label"-->
-<!--        :options="options"-->
-<!--        :clearable="false"-->
-<!--        :searchable="false"-->
-<!--        :selectable="option => !option?.disabled"-->
-<!--        v-model="selectedOption"-->
-<!--      >-->
-<!--        <template v-slot:option="option">-->
-<!--          <span-->
-<!--            :class="{'disabled-option': option.disabled || false}"-->
-<!--            @click="option.hasOwnProperty('callback') ? option.callback() : () => {}"-->
-<!--          >-->
-<!--            {{ option.label }}-->
-<!--          </span>-->
-<!--        </template>-->
-<!--      </v-select>-->
+      <CustomSelector
+        ref="actionSelector"
+        :options="options"
+        :template="option => `<span>${option.text}</span>`"
+        placeholder="Bulk Actions"
+        @change="executeCallback"
+      />
     </div>
   </div>
 </template>
@@ -35,6 +25,7 @@
 <script setup>
 // Vue libs
 import {ref, watch} from 'vue';
+import {CustomSelector} from "../Form";
 
 // Assign the function to emit
 const emit = defineEmits(['clear']);
@@ -63,15 +54,26 @@ const props = defineProps({
  * Methods
  */
 /**
+ * Run the selected option callback from the bulk options list
+ * @param selected
+ */
+const executeCallback = selected => {
+  for (let i = 0, n = props.options.length; i < n; i++) {
+    const option = props.options[i]
+    if (option.value === selected && typeof option.callback === 'function') {
+      actionSelector.value.reset();
+      option.callback();
+      break;
+    }
+  }
+}
+
+/**
  * Clear all selected checkboxes
  * @param e
  * @param state
  */
 const forceSelection = (e, state) => emit('clear', e.target.closest('.content-table-wrap').querySelector('tbody'), state)
-
-const selectEvent = (a,b,c,d) => {
-  console.log(a,b,c,d)
-}
 
 /*
  * Variables
@@ -80,9 +82,8 @@ const selectEvent = (a,b,c,d) => {
 const show = ref(props.counter > 0);
 // Total number of items
 const totalItems = ref(props.total);
-// Selected option
-let selectedOption = ref(props.selected)
-
+// Bulk action selector reference
+const actionSelector = ref(null);
 /*
  * Watchers
  */

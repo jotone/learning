@@ -8,6 +8,8 @@ use Rebing\GraphQL\Support\Query;
 
 abstract class GraphQlPaginatedQuery extends Query
 {
+    const PHP_INT32 = 2147483647;
+
     /**
      * Filter default values
      *
@@ -111,6 +113,11 @@ abstract class GraphQlPaginatedQuery extends Query
             }
         }
 
-        return $query->paginate($this->filters['per_page'], $fields, 'page', $this->filters['page']);
+        return $query->paginate(
+            $this->filters['per_page'] < 1 ? self::PHP_INT32 : $this->filters['per_page'],
+            $fields,
+            'page',
+            $this->filters['page']
+        );
     }
 }

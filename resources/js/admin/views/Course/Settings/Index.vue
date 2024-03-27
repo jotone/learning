@@ -195,37 +195,44 @@ const requestGraphQL = inject('requestGraphQL');
 const page = usePage();
 
 /*
- * Methods
+ * --------------- Forms ---------------
  */
+
+let form = reactive({
+  id: page.props.course.id,
+  name: page.props.course?.name,
+  url: page.props.course?.url,
+  img_url: page.props.course?.img_url,
+  status: page.props.course?.status || 'draft',
+  sale_page_url: page.props.course?.sale_page_url,
+  expire_url: page.props.course?.expire_url,
+  description: page.props.course?.description,
+  terms_conditions_enable: page.props.course?.terms_conditions_enable || false,
+  terms_conditions_text: page.props.course?.terms_conditions_text,
+  optional_duration: page.props.course?.optional_duration || 0,
+  optional_expire_page: page.props.course?.optional_expire_page,
+  categories: (() => page.props.course?.categories?.map(
+    category => ({
+      id: category.pivot.category_id,
+      name: category.category_name
+    })
+  ) ?? [])(),
+})
+
+// Course remove modal referral variable
+const removeCourseModal = ref(null);
+
+// Default course status class
+let courseStatus = page.props.course.status === 'active'
+  ? 'success'
+  : page.props.course.status === 'coming_soon' ? 'warning' : null;
+
 /**
  * Set the list of categories
  * @param {Array} categories
  */
 const categorySelected = categories => {
   form.categories = categories ?? [];
-}
-/**
- * Send a request to remove the image resource
- */
-const clearImage = () => {
-  let imgUrl = null;
-  if (typeof form.img_url === 'object' && null !== form.img_url) {
-    imgUrl = form.img_url?.original;
-  }
-  if (typeof form.img_url === 'string') {
-    imgUrl = form.img_url;
-  }
-
-  null !== imgUrl && request({
-    url: page.props.routes.img,
-    method: 'delete',
-    data: {
-      path: imgUrl,
-      entity: 'App\\Models\\Course',
-      entity_id: page.props.course?.id,
-      field: 'img_url'
-    }
-  })
 }
 
 /**
@@ -237,6 +244,9 @@ const setFormValue = (status, field) => {
   form[field] = status
 }
 
+/**
+ * Form submit handler
+ */
 const submit = () => {
   form.img_url = imageUpload.value.getData();
   form.categories = form.categories.map(item => item.id)
@@ -278,17 +288,41 @@ const submit = () => {
   })
 }
 
+
 /*
- * Variables
+ * --------------- Image Uploader ---------------
  */
-// Course remove modal referral variable
-const removeCourseModal = ref(null);
 // Image upload referral variable
 const imageUpload = ref(null);
-// Default course status class
-let courseStatus = page.props.course.status === 'active'
-  ? 'success'
-  : page.props.course.status === 'coming_soon' ? 'warning' : null;
+
+/**
+ * Send a request to remove the image resource
+ */
+const clearImage = () => {
+  let imgUrl = null;
+  if (typeof form.img_url === 'object' && null !== form.img_url) {
+    imgUrl = form.img_url?.original;
+  }
+  if (typeof form.img_url === 'string') {
+    imgUrl = form.img_url;
+  }
+
+  null !== imgUrl && request({
+    url: page.props.routes.img,
+    method: 'delete',
+    data: {
+      path: imgUrl,
+      entity: 'App\\Models\\Course',
+      entity_id: page.props.course?.id,
+      field: 'img_url'
+    }
+  })
+}
+
+/*
+ * --------------- Course Actions List ---------------
+ */
+
 // List of page actions
 const actions = [
   {
@@ -323,25 +357,4 @@ const actions = [
     }
   }
 ]
-
-let form = reactive({
-  id: page.props.course.id,
-  name: page.props.course?.name,
-  url: page.props.course?.url,
-  img_url: page.props.course?.img_url,
-  status: page.props.course?.status || 'draft',
-  sale_page_url: page.props.course?.sale_page_url,
-  expire_url: page.props.course?.expire_url,
-  description: page.props.course?.description,
-  terms_conditions_enable: page.props.course?.terms_conditions_enable || false,
-  terms_conditions_text: page.props.course?.terms_conditions_text,
-  optional_duration: page.props.course?.optional_duration || 0,
-  optional_expire_page: page.props.course?.optional_expire_page,
-  categories: (() => page.props.course?.categories?.map(
-    category => ({
-      id: category.pivot.category_id,
-      name: category.category_name
-    })
-  ) ?? [])(),
-})
 </script>

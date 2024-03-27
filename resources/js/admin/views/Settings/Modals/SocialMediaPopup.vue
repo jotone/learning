@@ -11,11 +11,9 @@
             <span>Type</span>
 
             <CustomSelector
-              textField="text"
-              valueField="value"
               :options="options"
-              :optionRow="selectorRow"
-              :value="items.type"
+              :template="selectorRow"
+              :selected="items.type"
               @change="updateTypeValue"
             />
           </label>
@@ -47,7 +45,7 @@
 // Mixin
 import {DefaultPopupMixin} from "../../../../mixins/default-popup-mixin.js";
 // Components
-import CustomSelector from "../../../components/Form/CustomSelector.vue";
+import {CustomSelector} from "../../../components/Form";
 
 export default {
   components: {CustomSelector},
