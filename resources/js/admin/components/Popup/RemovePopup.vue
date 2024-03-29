@@ -37,7 +37,7 @@
 
         <form class="popup-confirmation-wrap" @submit.prevent="handle">
           <div class="popup-confirmation-field">
-            <input class="form-input" :placeholder="button.confirmation" v-model.trim="confirmationText">
+            <input class="form-input danger" :placeholder="button.confirmation" v-model.trim="confirmationText">
             <span class="circle-warning">!</span>
             <span class="hint-message" v-if="!confirmationText.length">Can't be blank</span>
           </div>

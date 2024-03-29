@@ -93,7 +93,7 @@ npm i && npm run prod
     - Course bulk actions
       - ~~Delete~~
       - ~~Export to CSV~~
-      - Add to Category
+      - ~~Add to Category~~
       - Remove From Category
       - Set to Active
     - Course filters

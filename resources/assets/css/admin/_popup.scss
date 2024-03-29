@@ -55,11 +55,8 @@
     &.big-text {font-size: 20px; line-height: 30px}
   }
 
-  .popup-items-list-wrap {
-    background-color: $bg;
-    border-radius: $b-rad-default;
+  .popup-simple-list-wrap, .popup-items-list-wrap {
     margin: 10px 0;
-    padding: 15px 25px;
 
     ul {
       max-height: 150px;
@@ -67,33 +64,46 @@
       overflow-y: auto;
 
       li {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        cursor: pointer;
         margin: 5px;
 
-        .item-text {
-          font-size: 16px;
-          font-weight: 500;
-          line-height: 30px;
-        }
+        .item-text {font-size: 16px;line-height: 30px}
+      }
+    }
+  }
 
-        .item-remove {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: $separator;
-          border-radius: 50%;
-          height: 20px;
-          width: 20px;
-        }
+  .popup-simple-list-wrap {
+    padding-top: 15px;
 
-        .icon {
-          background-color: $link;
-          height: 12px;
-          width: 12px;
-        }
+    ul li .item-text {color: $link}
+  }
+
+  .popup-items-list-wrap {
+    padding: 15px 25px;
+    background-color: $bg;
+    border-radius: $b-rad-default;
+
+    ul li {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      cursor: pointer;
+
+      .item-text {font-weight: 500}
+
+      .item-remove {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $separator;
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+      }
+
+      .icon {
+        background-color: $link;
+        height: 12px;
+        width: 12px;
       }
     }
   }
@@ -105,9 +115,12 @@
       position: relative;
 
       .form-input {
-        border-color: $danger;
-        color: $danger;
         width: 50%;
+
+        &.danger {
+          border-color: $danger;
+          color: $danger;
+        }
       }
 
       .circle-warning {

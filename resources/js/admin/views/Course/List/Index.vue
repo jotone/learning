@@ -133,16 +133,23 @@
       </div>
     </StatusTooltip>
 
-    <CategoryModal ref="categoryModal"/>
+    <CategoryModal ref="categoryModal" :getCategories="getCategories" @refresh="refreshLists"/>
 
     <CourseModal ref="courseModal" :statuses="$attrs.statuses"/>
 
+    <AddToCategory ref="addToCategoryModal" :getCategories="getCategories"/>
+
     <RemovePopup
-      title="Are you sure you want to delete these courses?"
       ref="removeCourseModal"
-      :listMessages="{
-      bottom: ['This will delete all content irrevocably.', 'Type <b>Delete</b> to confirm.']
-    }"
+      title="Are you sure you want to delete these courses?"
+      caption="The courses you want to remove from the category are the following:"
+      :listMessages="{bottom: ['This will delete all content irrevocably.', 'Type <b>Delete</b> to confirm.']}"
+    />
+
+    <SuccessPopup
+      title="Export Courses to CSV"
+      caption="We are processing your CSV file. We will send it shortly to the below email addresses:"
+      ref="successModal"
     />
   </Teleport>
 </template>
@@ -153,9 +160,11 @@ import {inject, reactive, ref} from 'vue';
 import {usePage} from '@inertiajs/vue3';
 // Other Libs
 import {decodeUriQuery, encodeUriQuery} from '../../../libs/RequestHelper';
+import {Notification} from "../../../libs/Notification";
 // Interfaces
 import {ColumnSectionInterface} from '../../../../contracts/ColumnSectionInterface';
 import {FiltersInterface} from '../../../../contracts/FiltersInterface';
+import {ResponseInterface} from "../../../../contracts/ResponseInterface";
 // Components
 import {
   BulkActions,
@@ -171,10 +180,11 @@ import {Notifications, Sidebar} from '../../../components/Default';
 import CategoryModal from './Modals/CategoryModal.vue';
 import CourseModal from "./Modals/CourseModal.vue";
 import TableRow from './TableRow.vue';
+import RemovePopup from "../../../components/Popup/RemovePopup.vue";
+import SuccessPopup from "../../../components/Popup/SuccessPopup.vue";
 // Layout
 import Layout from '../../../shared/Layout.vue';
-import RemovePopup from "../../../components/Popup/RemovePopup.vue";
-import {Notification} from "../../../libs/Notification";
+import AddToCategory from "./Modals/AddToCategoryModal.vue";
 
 defineOptions({layout: Layout})
 
@@ -270,6 +280,30 @@ const runSearch = (search: string) => {
   getList(filters)
 }
 
+const refreshLists = (categoryList: ResponseInterface) => {
+  categories = categoryList.data;
+  getList(filters)
+}
+
+/*
+ * --------------- Categories list ---------------
+ */
+
+let categories = reactive({})
+
+/**
+ * Get the list of the categories
+ */
+const getCategories = () => new Promise(resolve => {
+  // Get a list of categories
+  const query = `{categories(per_page:0,  order_by:"position", order_dir:"asc", page:1, type:"courses") {
+    total per_page last_page has_more_pages current_page data {
+      id name position
+    }
+  }}`
+  requestGraphQL(page.props.routes.category.api, query).then(response => resolve(response.data.data.categories))
+})
+
 /*
  * --------------- Bulk Actions list ---------------
  */
@@ -295,23 +329,54 @@ const getSelectedItems = () => new Promise(resolve => {
  * Unselect checkboxes
  */
 const uncheckSelected = () => {
-  document.querySelector('.table-container table thead input[name="checkAll"]:checked').checked = false;
+  document.querySelector('.table-container table thead input[name="checkAll"]').checked = false;
   const nodes = document.querySelectorAll('.table-container table tbody tr input[name="checkEl"]');
   for (let i = 0, n = nodes.length; i < n; i++) {
     nodes[i].checked = false
   }
 }
 
-const courseExportHandler = () => {
-  getSelectedItems().then(courses => request({
-    url: page.props.routes.course.export,
-    method: 'post',
-    data: {list: courses.map(item => item.id)},
-    onSuccess: response => {
-      console.log(response)
+/**
+ * Open adding courses to the category modal window
+ */
+const courseAddToCategory = () => getSelectedItems().then(courses => {
+  // Build a list of courses [{id: course.id, text: course.name}]
+  const items = courses.map(({id, name}) => ({id, text: name}))
+  uncheckSelected()
+  // Open the category add modal
+  addToCategoryModal.value.open(items).then(result => {
+    // Form a list of courses that should be updated
+    const coursesToUpdate = list.value.data.filter(item => result.items.includes(item.id));
+    // Iterate through the course list
+    for (let i = 0, n = coursesToUpdate.length; i < n; i++) {
+      const course = coursesToUpdate[i]
+      // Add a new category if it does not exist
+      let categories = course.categories.map(item => item.id)
+      if (!categories.includes(result.category)) {
+        categories.push(result.category)
+      }
+
+      requestGraphQL(
+        page.props.routes.course.api,
+        `mutation {update (id: ${course.id}, categories: [${categories.join(',')}]) {id}}`
+      ).then(response => response.data.hasOwnProperty('data') && getList(filters))
     }
-  }))
-}
+  })
+})
+
+/**
+ * Export courses handler. Gets selected courses and send a request to export them to csv file
+ */
+const courseExportHandler = () => getSelectedItems().then(courses => request({
+  url: page.props.routes.course.export,
+  method: 'post',
+  data: {list: courses.map(item => item.id)},
+  onSuccess: response => 201 === response.status && successModal.value.open(response.data.admins)
+}))
+
+/**
+ * Remove courses handler. Gets selected courses and send a request to remove them
+ */
 const courseRemoveHandler = () => getSelectedItems().then(courses => {
   // Build a list of courses [{id: course.id, text: course.name}]
   const items = courses.map(({id, name}) => ({id, text: name}))
@@ -324,7 +389,7 @@ const courseRemoveHandler = () => getSelectedItems().then(courses => {
       for (let i = 0, n = result.length; i < n; i++) {
         requests.push(requestGraphQL(page.props.routes.course.api, `mutation {destroy(id:${result[i].id}){id}}`))
       }
-      // Wait for requests finish
+      // Wait for request finish
       Promise.all(requests).then(() => {
         getList(filters)
         if (items.length > 1) {
@@ -342,8 +407,12 @@ const courseRemoveHandler = () => getSelectedItems().then(courses => {
 
 // Bulk actions element reference
 const bulkActionsRef = ref(null);
+// Add courses to the category element reference
+let addToCategoryModal = ref(null)
 // RemoveCourseModal element reference
 let removeCourseModal = ref(null);
+// SuccessModal element reference
+let successModal = ref(null);
 // Show bulk actions marker
 let bulkActions = reactive({
   checkedNum: 0,
@@ -363,7 +432,8 @@ let bulkActions = reactive({
       callback: courseExportHandler
     }, {
       value: 'addToCat',
-      text: 'Add to Category'
+      text: 'Add to Category',
+      callback: courseAddToCategory
     }, {
       value: 'renameFromCat',
       text: 'Remove from Category'
@@ -509,7 +579,7 @@ let categoryModal = ref(null);
 /**
  * Open the category modal window
  */
-const categoryModalShow = () => categoryModal.value.open()
+const categoryModalShow = () => categoryModal.value.open(categories)
 
 /*
  * --------------- Course modal ---------------
@@ -522,7 +592,10 @@ let courseModal = ref(null);
  */
 const courseModalShow = () => courseModal.value.open().then(result => result && getList(filters))
 
-// Load roles
-getList(filters)
-
+// Load courses
+getList(filters);
+// Load categories
+getCategories().then((categoryList: ResponseInterface) => {
+  categories = categoryList.data;
+})
 </script>

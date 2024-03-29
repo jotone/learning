@@ -22,14 +22,14 @@
         </div>
 
         <div class="sortable-list scrollbar">
-          <CategoriesList :list="list.data" @change="categorySort" @showControls="showRowActions"/>
+          <CategoryList :list="list" @change="categorySort" @showControls="showRowActions"/>
         </div>
 
         <SliderCheckbox
           name="cats_inst_courses"
           text="Use Categories on User Dashboard"
           :checked="categoriesInsteadOfCourses"
-          @change="categoriesInsteadOfCoursesChange"
+          @change="categoriesInsteadOfCourseChange"
         />
 
         <p class="popup-text-row">
@@ -64,13 +64,20 @@ import {DefaultPopupMixin} from '../../../../../mixins/default-popup-mixin.js';
 // Other Libs
 import {Notification} from "../../../../libs/Notification.js";
 // Components
-import CategoriesList from "./CategoriesList.vue";
+import CategoryList from "./CategoryList.vue";
 import {CircleProgress, SliderCheckbox} from "../../../../components/Form/index.js";
 import {RowActions} from "../../../../components/DataTable/index.js";
 import RemovePopup from "../../../../components/Popup/RemovePopup.vue";
 export default {
-  components: {RemovePopup, CategoriesList, CircleProgress, RowActions, SliderCheckbox},
+  components: {RemovePopup, CategoryList, CircleProgress, RowActions, SliderCheckbox},
   mixins: [DefaultPopupMixin],
+  emits: ['refresh'],
+  props: {
+    getCategories: {
+      type: Function,
+      required: true
+    }
+  },
   data() {
     return {
       actions: [
@@ -94,10 +101,11 @@ export default {
                     )
                   )
                 }
-                Promise.all(requests).then(() => {
-                  this.getCategories();
+                Promise.all(requests).then(() => this.getCategories().then(categoryList => {
+                  this.list = categoryList.data
+                  this.$emit('refresh', categoryList)
                   Notification.warning(`Category "${items[0].text}" was successfully removed.`);
-                })
+                }))
               }
             });
           }
@@ -106,14 +114,6 @@ export default {
       categoriesInsteadOfCourses: Boolean(+this.$page.props.settings.cats_inst_courses),
       form: {
         name: ''
-      },
-      filters: {
-        page: 1,
-        per_page: 0,
-        order: {
-          by: 'position',
-          dir: 'asc'
-        }
       },
       list: [],
       selectedCategory: {
@@ -129,7 +129,7 @@ export default {
      * Send request to enable or disable the option "show categories instead of courses on the main page"
      * @param {boolean} val
      */
-    categoriesInsteadOfCoursesChange(val) {
+    categoriesInsteadOfCourseChange(val) {
       this.categoriesInsteadOfCourses = val;
       this.request({
         url: this.$page.props.routes.settings,
@@ -145,13 +145,13 @@ export default {
     categoryStore() {
       const query = `mutation {create (name: "${this.form.name}", type: "course") {id name position}}`
       this.requestGraphQL(this.$page.props.routes.category.api, query)
-        .then(response => null !== response?.data?.data?.create && this.list.data.push(response.data.data.create))
+        .then(response => null !== response?.data?.data?.create && this.list.push(response.data.data.create))
     },
     /**
      * Send the categories sorting request
      */
     categorySort() {
-      let ids = this.list.data.map((item, index) => {
+      let ids = this.list.map((item, index) => {
         item.position = index;
         return item.id;
       });
@@ -159,34 +159,14 @@ export default {
 
       this.requestGraphQL(this.$page.props.routes.category.api, query)
     },
-    /**
-     * Get the list of the categories
-     */
-    getCategories() {
-      // Get list of categories
-      const query = `{categories(
-         per_page:${this.filters.per_page},
-         order_by:"${this.filters.order.by}",
-         order_dir:"${this.filters.order.dir}",
-         page:${this.filters.page},
-         type:"courses"
-       ) {
-        total per_page last_page has_more_pages current_page data {
-          id name position
-        }
-      }}`
-      this.requestGraphQL(this.$page.props.routes.category.api, query)
-        .then(response => {
-          this.list = response.data.data.categories;
-        })
-    },
+
     /**
      * Open the modal window
-     * @returns {Promise<unknown>}
+     * @returns {Promise}
      */
-    open() {
+    open(list) {
       this.active = true;
-
+      this.list = list;
       return new Promise(resolve => {
         this.resolver = resolve
       })
@@ -197,17 +177,12 @@ export default {
      * @param {int} i
      */
     showRowActions(e, i) {
-      const row = e.target.closest('li');
-      const blockOffset = row.getBoundingClientRect();
-
-      this.selectedCategory.model = this.list.data[i];
-      this.selectedCategory.right = 20;
-      this.selectedCategory.top = 205 + (blockOffset.height + 5) * (i + 1);
+      const boxShift = 20;
+      this.selectedCategory.model = this.list[i];
+      this.selectedCategory.right = boxShift;
+      this.selectedCategory.top = e.clientY - boxShift;
       this.selectedCategory.show = true;
     }
-  },
-  beforeMount() {
-    this.getCategories()
   },
   inject: ['request', 'requestGraphQL'],
 }

@@ -2,7 +2,7 @@
 
 namespace Feature;
 
-use App\Models\{Course, Role, User};
+use App\Models\{Course, User};
 use Tests\ApiTestCase;
 
 class CourseExportApiTest extends ApiTestCase
@@ -15,9 +15,8 @@ class CourseExportApiTest extends ApiTestCase
     {
         parent::setUp();
 
-        // Retrieve and delete users with 'admin' or 'coach' roles
-        $roles = Role::whereIn('slug', ['admin', 'coach'])->pluck('id')->toArray();
-        User::where('role_id', $roles)->delete();
+        // Retrieve and delete users with 'admin' roles
+        User::admin()->delete();
 
         // Construct the file path where the course export is expected to be saved.
         $this->path = storage_path('exports/course-export-' . date('Y-m-d') . '.csv');
