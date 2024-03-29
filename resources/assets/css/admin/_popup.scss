@@ -115,9 +115,12 @@
       position: relative;
 
       .form-input {
-        border-color: $danger;
-        color: $danger;
         width: 50%;
+
+        &.danger {
+          border-color: $danger;
+          color: $danger;
+        }
       }
 
       .circle-warning {

@@ -137,7 +137,7 @@
 
     <CourseModal ref="courseModal" :statuses="$attrs.statuses"/>
 
-    <AddToCategory :getCategories="getCategories" ref="addToCategoryModal"/>
+    <AddToCategory ref="addToCategoryModal" :getCategories="getCategories"/>
 
     <RemovePopup
       ref="removeCourseModal"
@@ -184,7 +184,7 @@ import RemovePopup from "../../../components/Popup/RemovePopup.vue";
 import SuccessPopup from "../../../components/Popup/SuccessPopup.vue";
 // Layout
 import Layout from '../../../shared/Layout.vue';
-import AddToCategory from "./Modals/AddToCategory.vue";
+import AddToCategory from "./Modals/AddToCategoryModal.vue";
 
 defineOptions({layout: Layout})
 
@@ -329,19 +329,40 @@ const getSelectedItems = () => new Promise(resolve => {
  * Unselect checkboxes
  */
 const uncheckSelected = () => {
-  document.querySelector('.table-container table thead input[name="checkAll"]:checked').checked = false;
+  document.querySelector('.table-container table thead input[name="checkAll"]').checked = false;
   const nodes = document.querySelectorAll('.table-container table tbody tr input[name="checkEl"]');
   for (let i = 0, n = nodes.length; i < n; i++) {
     nodes[i].checked = false
   }
 }
 
+/**
+ * Open adding courses to the category modal window
+ */
 const courseAddToCategory = () => getSelectedItems().then(courses => {
-  addToCategoryModal.value.open(courses).then(result => {
-    console.log(result)
+  // Build a list of courses [{id: course.id, text: course.name}]
+  const items = courses.map(({id, name}) => ({id, text: name}))
+  uncheckSelected()
+  // Open the category add modal
+  addToCategoryModal.value.open(items).then(result => {
+    // Form a list of courses that should be updated
+    const coursesToUpdate = list.value.data.filter(item => result.items.includes(item.id));
+    // Iterate through the course list
+    for (let i = 0, n = coursesToUpdate.length; i < n; i++) {
+      const course = coursesToUpdate[i]
+      // Add a new category if it does not exist
+      let categories = course.categories.map(item => item.id)
+      if (!categories.includes(result.category)) {
+        categories.push(result.category)
+      }
+
+      requestGraphQL(
+        page.props.routes.course.api,
+        `mutation {update (id: ${course.id}, categories: [${categories.join(',')}]) {id}}`
+      ).then(response => response.data.hasOwnProperty('data') && getList(filters))
+    }
   })
 })
-
 
 /**
  * Export courses handler. Gets selected courses and send a request to export them to csv file

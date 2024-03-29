@@ -76,6 +76,8 @@
           .icon {background-color: $secondary}
         }
       }
+
+      td > p {min-height: 20px}
     }
   }
 }
