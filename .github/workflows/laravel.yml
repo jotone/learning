@@ -10,11 +10,11 @@ jobs:
   laravel-tests:
 
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./
-    
+
     services:
       mysql:
         image: mysql:5.7
@@ -33,10 +33,18 @@ jobs:
       with:
         php-version: '8.2'
     - uses: actions/checkout@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --no-suggest --no-dev
+    - name: Install NPM Dependencies
+      run: npm install
+    - name: Build Assets
+      run: npm run build
     - name: Generate key
       run: php artisan key:generate
     - name: Directory Permissions

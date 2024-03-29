@@ -42,15 +42,14 @@ class ExportCourseController extends BaseApiController
         $path = $this->handleExport('course-export-*.csv', new CourseExport($courses->get()));
 
         // Send csv file admin email-boxes
-        $admins = User::select('users.*')
-            ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
-            ->whereIn('roles.slug', ['admin', 'coach'])
-            ->get();
+        $admins = User::admin()->get();
         foreach ($admins as $admin) {
-            SendCourseExport::dispatch($admin, $path)->afterResponse();
+//            SendCourseExport::dispatch($admin, $path)->afterResponse();
         }
 
-        return response()->json([], 201);
+        return response()->json([
+            'admins' => $admins->pluck('email')->toArray()
+        ], 201);
     }
 
     /**
