@@ -3,7 +3,7 @@
     <div class="default-popup-wrap category-popup">
       <div class="close-popup" @click="close"><i class="icon close-icon"></i></div>
 
-      <div class="popup-title-wrap">Add to Category</div>
+      <div class="popup-title-wrap">{{ title }}</div>
 
       <form class="popup-body-wrap" @submit.prevent="handle">
         <Label caption="Select the category to add the selected courses:">
@@ -18,9 +18,11 @@
           </select>
         </Label>
 
-        <p class="popup-text-row">
-          The courses you want to enroll to “{{ selected.name }}” are the following:
-        </p>
+        <p
+          class="popup-text-row"
+          v-if="caption.length"
+          v-html="caption.replace(':entity', selected.name)"
+        ></p>
 
         <div class="popup-items-list-wrap">
           <ul class="scrollbar" v-if="items.length">
@@ -31,16 +33,21 @@
           </ul>
         </div>
 
-        <p class="popup-text-row">Type <b>Add</b> to confirm.</p>
+        <p class="popup-text-row">Type <b>{{ button.confirmation }}</b> to confirm.</p>
 
         <div class="popup-confirmation-wrap">
           <div class="popup-confirmation-field">
-            <input class="form-input" placeholder="Add" v-model.trim="confirmationText">
+            <input class="form-input" :placeholder="button.confirmation" v-model.trim="confirmationText">
             <span class="hint-message" v-if="!confirmationText.length">Can't be blank</span>
           </div>
           <div class="popup-confirmation-button">
-            <button class="btn blue" type="submit" :disabled="confirmationText !== confirmation">
-              Add
+            <button
+              class="btn"
+              type="submit"
+              :class="button.class"
+              :disabled="confirmationText !== button.confirmation"
+            >
+              {{ button.text }}
             </button>
           </div>
         </div>
@@ -50,25 +57,35 @@
 </template>
 
 <script>
-// Mixin
-import {DefaultPopupMixin} from "../../../../../mixins/default-popup-mixin.js";
-import {Label} from "../../../../components/Form/index.js";
+import {DefaultPopupMixin} from "../../../mixins/default-popup-mixin.js";
+import {Label} from "../Form/index.js";
 
 export default {
   components: {Label},
   mixins: [DefaultPopupMixin],
-  props: {
-    getCategories: {
-      type: Function,
-      required: true
-    }
-  },
   data() {
     return {
+      confirmationText: '',
       categories: [],
-      confirmation: 'Add',
-      confirmationText: "",
       selected: null
+    }
+  },
+  props: {
+    button: {
+      type: Object,
+      default: {
+        class: 'blue',
+        confirmation: 'Add',
+        text: 'Add'
+      }
+    },
+    caption: {
+      type: String,
+      default: ''
+    },
+    title: {
+      type: String,
+      required: true
     }
   },
   methods: {
@@ -88,10 +105,16 @@ export default {
     /**
      * Open modal window
      * @param {Array} courses
+     * @param {Array} categories
      * @return {Promise<unknown>}
      */
-    open(courses) {
+    open(courses, categories) {
       this.items = courses;
+      this.categories = categories
+
+      if (this.categories.length) {
+        this.selected = this.categories[0];
+      }
       this.active = true;
       return new Promise(resolve => {
         this.resolver = resolve
@@ -130,14 +153,6 @@ export default {
         this.reset();
       }
     }
-  },
-  beforeMount() {
-    this.getCategories().then(categoryList => {
-      this.categories = categoryList.data;
-      if (this.categories.length) {
-        this.selected = this.categories[0];
-      }
-    })
   }
 }
 </script>

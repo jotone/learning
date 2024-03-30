@@ -137,12 +137,23 @@
 
     <CourseModal ref="courseModal" :statuses="$attrs.statuses"/>
 
-    <AddToCategory ref="addToCategoryModal" :getCategories="getCategories"/>
+    <BindingPopup
+      ref="addToCategoryModal"
+      title="Add to Category"
+      caption="The courses you want to enroll to “:entity” are the following:"
+    />
+
+    <BindingPopup
+      ref="removeFromCategoryModal"
+      title="Remove from Category"
+      caption="The courses you want to remove from “:entity” are the following:"
+      :button="{class: 'danger', confirmation: 'Remove', text: 'Remove'}"
+    />
 
     <RemovePopup
       ref="removeCourseModal"
       title="Are you sure you want to delete these courses?"
-      caption="The courses you want to remove from the category are the following:"
+      caption="The courses you want to remove are the following:"
       :listMessages="{bottom: ['This will delete all content irrevocably.', 'Type <b>Delete</b> to confirm.']}"
     />
 
@@ -176,15 +187,13 @@ import {
   StatusTooltip,
   TableHeadCol
 } from '../../../components/DataTable';
+import {BindingPopup, RemovePopup, SuccessPopup} from "../../../components/Popup";
 import {Notifications, Sidebar} from '../../../components/Default';
 import CategoryModal from './Modals/CategoryModal.vue';
 import CourseModal from "./Modals/CourseModal.vue";
 import TableRow from './TableRow.vue';
-import RemovePopup from "../../../components/Popup/RemovePopup.vue";
-import SuccessPopup from "../../../components/Popup/SuccessPopup.vue";
 // Layout
 import Layout from '../../../shared/Layout.vue';
-import AddToCategory from "./Modals/AddToCategoryModal.vue";
 
 defineOptions({layout: Layout})
 
@@ -314,10 +323,10 @@ const getCategories = () => new Promise(resolve => {
 const getSelectedItems = () => new Promise(resolve => {
   if (bulkActions.checkedNum === list.value.total) {
     // Remove all. Get all courses data
-    requestGraphQL(page.props.routes.course.api, `{courses(per_page:0) {total per_page data { id name }}}`)
+    requestGraphQL(page.props.routes.course.api, `{courses(per_page:0) {total per_page data { id name categories {id name} }}}`)
       .then(response => resolve(response.data.data.courses.data))
   } else {
-    // Remove selected. Get a list selected courses ids
+    // Remove selected. Get a list of selected courses ids
     const values = Array
       .from(document.querySelectorAll('.table-container table tbody tr input[name="checkEl"]:checked'))
       .map(input => parseInt(input.value));
@@ -337,37 +346,91 @@ const uncheckSelected = () => {
 }
 
 /**
- * Open adding courses to the category modal window
+ * Convert the course array into [{id: course.id, text: course.name}]
+ * @param {Array} courses
  */
-const courseAddToCategory = () => getSelectedItems().then(courses => {
-  // Build a list of courses [{id: course.id, text: course.name}]
-  const items = courses.map(({id, name}) => ({id, text: name}))
-  uncheckSelected()
-  // Open the category add modal
-  addToCategoryModal.value.open(items).then(result => {
-    // Form a list of courses that should be updated
-    const coursesToUpdate = list.value.data.filter(item => result.items.includes(item.id));
-    // Iterate through the course list
-    for (let i = 0, n = coursesToUpdate.length; i < n; i++) {
-      const course = coursesToUpdate[i]
-      // Add a new category if it does not exist
-      let categories = course.categories.map(item => item.id)
-      if (!categories.includes(result.category)) {
-        categories.push(result.category)
-      }
+const mapCourses = (courses: Array<object>) => courses.map(({id, name}) => ({id, text: name}))
 
-      requestGraphQL(
-        page.props.routes.course.api,
-        `mutation {update (id: ${course.id}, categories: [${categories.join(',')}]) {id}}`
-      ).then(response => response.data.hasOwnProperty('data') && getList(filters))
-    }
-  })
+/**
+ * Get the course category list and modify it
+ * @param items
+ * @param category
+ * @param callback
+ */
+const modifyCourseCategories = (items: Array<number>, category: number, callback) => {
+  // Form a list of courses that should be updated
+  const coursesToUpdate = list.value.data.filter(item => items.includes(item.id));
+  // Iterate through the course categories and apply callback function to add or remove the category
+  for (let i = 0, n = coursesToUpdate.length; i < n; i++) {
+    const course = coursesToUpdate[i]
+
+    let courseCategories = callback(course, category);
+
+    // Send a request to update course with categories
+    requestGraphQL(
+      page.props.routes.course.api,
+      `mutation {update (id: ${course.id}, categories: [${courseCategories.join(',')}]) {id}}`
+    ).then(response => response.data.hasOwnProperty('data') && getList(filters))
+  }
+}
+
+/**
+ * Open the modal window for adding courses to the category
+ */
+const courseAddToCategory = () => getSelectedItems().then((courses: Array<object>) => {
+  // Build a list of courses [{id: course.id, text: course.name}]
+  const items = mapCourses(courses);
+  uncheckSelected();
+
+  // Open the category add modal
+  addToCategoryModal.value
+    .open(items, categories)
+    .then(
+      result => modifyCourseCategories(
+        result.items,
+        result.category,
+        // Add a new category if it does not exist
+        (course, category) => {
+          let courseCategories = course.categories.map(item => item.id)
+          if (!courseCategories.includes(category)) {
+            courseCategories.push(category)
+          }
+          return courseCategories
+        }
+      )
+    )
+})
+
+/**
+ * Open the modal window for removing courses from the category
+ */
+const courseRemoveFromCategory = () => getSelectedItems().then((courses: Array<object>) => {
+  const categories = Object.values(courses.reduce((acc, course) => ({
+    ...acc,
+    ...course.categories.reduce((catAcc, category) => ({...catAcc, [category.id]: category}), {})
+  }), {}));
+
+  // Build a list of courses [{id: course.id, text: course.name}]
+  const items = mapCourses(courses);
+  uncheckSelected();
+
+  // Open the category add modal
+  removeFromCategoryModal.value
+    .open(items, categories)
+    .then(
+      result => modifyCourseCategories(
+        result.items,
+        result.category,
+        // Remove the category from the category list
+        (course, category) => course.categories.map(item => item.id).filter(item => item !== category)
+      )
+    )
 })
 
 /**
  * Export courses handler. Gets selected courses and send a request to export them to csv file
  */
-const courseExportHandler = () => getSelectedItems().then(courses => request({
+const courseExportHandler = () => getSelectedItems().then((courses: Array<object>) => request({
   url: page.props.routes.course.export,
   method: 'post',
   data: {list: courses.map(item => item.id)},
@@ -377,10 +440,11 @@ const courseExportHandler = () => getSelectedItems().then(courses => request({
 /**
  * Remove courses handler. Gets selected courses and send a request to remove them
  */
-const courseRemoveHandler = () => getSelectedItems().then(courses => {
+const courseRemoveHandler = () => getSelectedItems().then((courses: Array<object>) => {
   // Build a list of courses [{id: course.id, text: course.name}]
-  const items = courses.map(({id, name}) => ({id, text: name}))
-  uncheckSelected()
+  const items = mapCourses(courses);
+  uncheckSelected();
+
   // Open the courses remove modal
   removeCourseModal.value.open(items).then(result => {
     if (false !== result && typeof result === 'object') {
@@ -389,6 +453,7 @@ const courseRemoveHandler = () => getSelectedItems().then(courses => {
       for (let i = 0, n = result.length; i < n; i++) {
         requests.push(requestGraphQL(page.props.routes.course.api, `mutation {destroy(id:${result[i].id}){id}}`))
       }
+
       // Wait for request finish
       Promise.all(requests).then(() => {
         getList(filters)
@@ -408,7 +473,9 @@ const courseRemoveHandler = () => getSelectedItems().then(courses => {
 // Bulk actions element reference
 const bulkActionsRef = ref(null);
 // Add courses to the category element reference
-let addToCategoryModal = ref(null)
+let addToCategoryModal = ref(null);
+// Remove courses from the category element reference
+let removeFromCategoryModal = ref(null);
 // RemoveCourseModal element reference
 let removeCourseModal = ref(null);
 // SuccessModal element reference
@@ -418,29 +485,12 @@ let bulkActions = reactive({
   checkedNum: 0,
   selected: 'Bulk Actions',
   options: [
-    {
-      value: null,
-      disabled: true,
-      text: 'Bulk Actions'
-    }, {
-      value: 'delete',
-      text: 'Delete',
-      callback: courseRemoveHandler
-    }, {
-      value: 'export',
-      text: 'Export to CSV',
-      callback: courseExportHandler
-    }, {
-      value: 'addToCat',
-      text: 'Add to Category',
-      callback: courseAddToCategory
-    }, {
-      value: 'renameFromCat',
-      text: 'Remove from Category'
-    }, {
-      value: 'activate',
-      text: 'Set to Active'
-    }
+    {value: null, disabled: true, text: 'Bulk Actions'},
+    {value: 'delete', text: 'Delete', callback: courseRemoveHandler},
+    {value: 'export', text: 'Export to CSV', callback: courseExportHandler},
+    {value: 'addToCat', text: 'Add to Category', callback: courseAddToCategory},
+    {value: 'renameFromCat', text: 'Remove from Category', callback: courseRemoveFromCategory},
+    {value: 'activate', text: 'Set to Active'}
   ]
 })
 /**
