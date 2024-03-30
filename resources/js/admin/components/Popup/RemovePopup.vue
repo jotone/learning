@@ -42,7 +42,12 @@
             <span class="hint-message" v-if="!confirmationText.length">Can't be blank</span>
           </div>
           <div class="popup-confirmation-button">
-            <button class="btn" type="submit" :class="button.class" :disabled="confirmationText !== button.confirmation">
+            <button
+              class="btn"
+              type="submit"
+              :class="button.class"
+              :disabled="confirmationText !== button.confirmation"
+            >
               {{ button.text }}
             </button>
           </div>
