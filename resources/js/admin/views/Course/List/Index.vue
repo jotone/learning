@@ -33,13 +33,13 @@
         </div>
       </div>
 
-      <BulkActions
-        :ref="bulkActionsRef"
-        :total="list.total"
-        :selected="bulkActions.selected"
-        :options="bulkActions.options"
-        :counter="bulkActions.checkedNum"
+      <CourseBulkActions
+        ref="courseBulkActions"
+        :categories="categories"
+        :list="list"
         @clear="bulkCheckBoxToggleAll"
+        @courseRemoved="bulkActionsCourseRemoveHandler"
+        @getList="refreshDataTable"
       />
 
       <div class="table-container">
@@ -136,32 +136,6 @@
     <CategoryModal ref="categoryModal" :getCategories="getCategories" @refresh="refreshLists"/>
 
     <CourseModal ref="courseModal" :statuses="$attrs.statuses"/>
-
-    <BindingPopup
-      ref="addToCategoryModal"
-      title="Add to Category"
-      caption="The courses you want to enroll to “:entity” are the following:"
-    />
-
-    <BindingPopup
-      ref="removeFromCategoryModal"
-      title="Remove from Category"
-      caption="The courses you want to remove from “:entity” are the following:"
-      :button="{class: 'danger', confirmation: 'Remove', text: 'Remove'}"
-    />
-
-    <RemovePopup
-      ref="removeCourseModal"
-      title="Are you sure you want to delete these courses?"
-      caption="The courses you want to remove are the following:"
-      :listMessages="{bottom: ['This will delete all content irrevocably.', 'Type <b>Delete</b> to confirm.']}"
-    />
-
-    <SuccessPopup
-      title="Export Courses to CSV"
-      caption="We are processing your CSV file. We will send it shortly to the below email addresses:"
-      ref="successModal"
-    />
   </Teleport>
 </template>
 
@@ -177,8 +151,8 @@ import {ColumnSectionInterface} from '../../../../contracts/ColumnSectionInterfa
 import {FiltersInterface} from '../../../../contracts/FiltersInterface';
 import {ResponseInterface} from "../../../../contracts/ResponseInterface";
 // Components
+import CourseBulkActions from "./CourseBulkActions.vue";
 import {
-  BulkActions,
   ColumnSelector,
   getFilters,
   Pagination,
@@ -187,7 +161,6 @@ import {
   StatusTooltip,
   TableHeadCol
 } from '../../../components/DataTable';
-import {BindingPopup, RemovePopup, SuccessPopup} from "../../../components/Popup";
 import {Notifications, Sidebar} from '../../../components/Default';
 import CategoryModal from './Modals/CategoryModal.vue';
 import CourseModal from "./Modals/CourseModal.vue";
@@ -204,7 +177,6 @@ const requestGraphQL = inject('requestGraphQL');
 
 // Page variables
 const page = usePage()
-
 
 /*
  * --------------- Content table ---------------
@@ -290,7 +262,7 @@ const runSearch = (search: string) => {
 }
 
 const refreshLists = (categoryList: ResponseInterface) => {
-  categories = categoryList.data;
+  categories.value = categoryList.data;
   getList(filters)
 }
 
@@ -298,7 +270,7 @@ const refreshLists = (categoryList: ResponseInterface) => {
  * --------------- Categories list ---------------
  */
 
-let categories = reactive({})
+let categories = ref([])
 
 /**
  * Get the list of the categories
@@ -313,186 +285,30 @@ const getCategories = () => new Promise(resolve => {
   requestGraphQL(page.props.routes.category.api, query).then(response => resolve(response.data.data.categories))
 })
 
+// Load categories
+getCategories().then((categoryList: ResponseInterface) => {
+  categories.value = categoryList.data;
+})
 /*
  * --------------- Bulk Actions list ---------------
  */
-/**
- * Retrieve a list of ids of the selected courses
- * @return {Promise}
- */
-const getSelectedItems = () => new Promise(resolve => {
-  if (bulkActions.checkedNum === list.value.total) {
-    // Remove all. Get all courses data
-    requestGraphQL(page.props.routes.course.api, `{courses(per_page:0) {total per_page data { id name categories {id name} }}}`)
-      .then(response => resolve(response.data.data.courses.data))
-  } else {
-    // Remove selected. Get a list of selected courses ids
-    const values = Array
-      .from(document.querySelectorAll('.table-container table tbody tr input[name="checkEl"]:checked'))
-      .map(input => parseInt(input.value));
-    resolve(list.value.data.filter(item => values.includes(item.id)))
-  }
-})
+
+const courseBulkActions = ref(null)
 
 /**
- * Unselect checkboxes
- */
-const uncheckSelected = () => {
-  document.querySelector('.table-container table thead input[name="checkAll"]').checked = false;
-  const nodes = document.querySelectorAll('.table-container table tbody tr input[name="checkEl"]');
-  for (let i = 0, n = nodes.length; i < n; i++) {
-    nodes[i].checked = false
-  }
-}
-
-/**
- * Convert the course array into [{id: course.id, text: course.name}]
- * @param {Array} courses
- */
-const mapCourses = (courses: Array<object>) => courses.map(({id, name}) => ({id, text: name}))
-
-/**
- * Get the course category list and modify it
+ * Notify that remove courses action is completed
  * @param items
- * @param category
- * @param callback
  */
-const modifyCourseCategories = (items: Array<number>, category: number, callback) => {
-  // Form a list of courses that should be updated
-  const coursesToUpdate = list.value.data.filter(item => items.includes(item.id));
-  // Iterate through the course categories and apply callback function to add or remove the category
-  for (let i = 0, n = coursesToUpdate.length; i < n; i++) {
-    const course = coursesToUpdate[i]
-
-    let courseCategories = callback(course, category);
-
-    // Send a request to update course with categories
-    requestGraphQL(
-      page.props.routes.course.api,
-      `mutation {update (id: ${course.id}, categories: [${courseCategories.join(',')}]) {id}}`
-    ).then(response => response.data.hasOwnProperty('data') && getList(filters))
+const bulkActionsCourseRemoveHandler = (items: Array<object>) => {
+  getList(filters)
+  if (items.length > 1) {
+    const courses = items.reduce((sum, item, i) => i === 0 ? `${item.text}` : `"${sum}", "${item.text}"`, '')
+    Notification.warning(`Courses ${courses} were successfully removed.`);
+  } else {
+    Notification.warning(`Course "${items[0].text}" was successfully removed.`);
   }
 }
 
-/**
- * Open the modal window for adding courses to the category
- */
-const courseAddToCategory = () => getSelectedItems().then((courses: Array<object>) => {
-  // Build a list of courses [{id: course.id, text: course.name}]
-  const items = mapCourses(courses);
-  uncheckSelected();
-
-  // Open the category add modal
-  addToCategoryModal.value
-    .open(items, categories)
-    .then(
-      result => modifyCourseCategories(
-        result.items,
-        result.category,
-        // Add a new category if it does not exist
-        (course, category) => {
-          let courseCategories = course.categories.map(item => item.id)
-          if (!courseCategories.includes(category)) {
-            courseCategories.push(category)
-          }
-          return courseCategories
-        }
-      )
-    )
-})
-
-/**
- * Open the modal window for removing courses from the category
- */
-const courseRemoveFromCategory = () => getSelectedItems().then((courses: Array<object>) => {
-  const categories = Object.values(courses.reduce((acc, course) => ({
-    ...acc,
-    ...course.categories.reduce((catAcc, category) => ({...catAcc, [category.id]: category}), {})
-  }), {}));
-
-  // Build a list of courses [{id: course.id, text: course.name}]
-  const items = mapCourses(courses);
-  uncheckSelected();
-
-  // Open the category add modal
-  removeFromCategoryModal.value
-    .open(items, categories)
-    .then(
-      result => modifyCourseCategories(
-        result.items,
-        result.category,
-        // Remove the category from the category list
-        (course, category) => course.categories.map(item => item.id).filter(item => item !== category)
-      )
-    )
-})
-
-/**
- * Export courses handler. Gets selected courses and send a request to export them to csv file
- */
-const courseExportHandler = () => getSelectedItems().then((courses: Array<object>) => request({
-  url: page.props.routes.course.export,
-  method: 'post',
-  data: {list: courses.map(item => item.id)},
-  onSuccess: response => 201 === response.status && successModal.value.open(response.data.admins)
-}))
-
-/**
- * Remove courses handler. Gets selected courses and send a request to remove them
- */
-const courseRemoveHandler = () => getSelectedItems().then((courses: Array<object>) => {
-  // Build a list of courses [{id: course.id, text: course.name}]
-  const items = mapCourses(courses);
-  uncheckSelected();
-
-  // Open the courses remove modal
-  removeCourseModal.value.open(items).then(result => {
-    if (false !== result && typeof result === 'object') {
-      const requests = [];
-      // Send requests to remove courses
-      for (let i = 0, n = result.length; i < n; i++) {
-        requests.push(requestGraphQL(page.props.routes.course.api, `mutation {destroy(id:${result[i].id}){id}}`))
-      }
-
-      // Wait for request finish
-      Promise.all(requests).then(() => {
-        getList(filters)
-        if (items.length > 1) {
-          const courses = items.reduce((sum, item, i) => i === 0 ? `${item.text}` : `"${sum}", "${item.text}"`, '')
-          Notification.warning(`Courses ${courses} were successfully removed.`);
-        } else {
-          Notification.warning(`Course "${items[0].text}" was successfully removed.`);
-        }
-        uncheckSelected()
-      })
-    }
-  })
-})
-
-
-// Bulk actions element reference
-const bulkActionsRef = ref(null);
-// Add courses to the category element reference
-let addToCategoryModal = ref(null);
-// Remove courses from the category element reference
-let removeFromCategoryModal = ref(null);
-// RemoveCourseModal element reference
-let removeCourseModal = ref(null);
-// SuccessModal element reference
-let successModal = ref(null);
-// Show bulk actions marker
-let bulkActions = reactive({
-  checkedNum: 0,
-  selected: 'Bulk Actions',
-  options: [
-    {value: null, disabled: true, text: 'Bulk Actions'},
-    {value: 'delete', text: 'Delete', callback: courseRemoveHandler},
-    {value: 'export', text: 'Export to CSV', callback: courseExportHandler},
-    {value: 'addToCat', text: 'Add to Category', callback: courseAddToCategory},
-    {value: 'renameFromCat', text: 'Remove from Category', callback: courseRemoveFromCategory},
-    {value: 'activate', text: 'Set to Active'}
-  ]
-})
 /**
  * Select or unselect all bulk action checkboxes
  * @param e
@@ -506,7 +322,7 @@ const bulkCheckBoxToggleAll = (e, state = null) => {
   // Get checkboxes nodes
   const nodes = parent.querySelectorAll('input[name="checkEl"]');
   // Set a number of the selected elements
-  bulkActions.checkedNum = status ? nodes.length : 0;
+  courseBulkActions.value.bulkActions.checkedNum = status ? nodes.length : 0;
   // Set status to the checkboxes
   for (let i = 0, n = nodes.length; i < n; i++) {
     nodes[i].checked = status;
@@ -523,12 +339,21 @@ const bulkCheckBoxToggleAll = (e, state = null) => {
  */
 const bulkCheckBoxToggleSingle = (e: Event) => {
   const parent = e.target.closest('tbody');
-  bulkActions.checkedNum = parent.querySelectorAll('input[name="checkEl"]:checked').length;
+  courseBulkActions.value.bulkActions.checkedNum = parent.querySelectorAll('input[name="checkEl"]:checked').length;
   parent.closest('table').querySelector('input[name="checkAll"]').checked = (
-    0 !== bulkActions.checkedNum
-    && parent.querySelectorAll('input[name="checkEl"]').length === bulkActions.checkedNum
+    0 !== courseBulkActions.value.bulkActions.checkedNum
+    && parent.querySelectorAll('input[name="checkEl"]').length === courseBulkActions.value.bulkActions.checkedNum
   );
 }
+
+/**
+ * Reload the content table list
+ * @param response
+ */
+const refreshDataTable = response => {
+  const data = Array.isArray(response) ? response[0].data : response.data
+  data.hasOwnProperty('data') && getList(filters)
+};
 
 /*
  * --------------- Column Selector Sidebar ---------------
@@ -644,8 +469,4 @@ const courseModalShow = () => courseModal.value.open().then(result => result && 
 
 // Load courses
 getList(filters);
-// Load categories
-getCategories().then((categoryList: ResponseInterface) => {
-  categories = categoryList.data;
-})
 </script>

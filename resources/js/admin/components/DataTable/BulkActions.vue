@@ -91,4 +91,6 @@ watch(props, val => {
   show.value = val.counter > 0;
   totalItems.value = val.total;
 })
+
+defineExpose({show})
 </script>
