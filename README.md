@@ -90,13 +90,28 @@ npm i && npm run prod
     - ~~Category remove~~
     - ~~Course Create~~
     - ~~Course edit~~
-    - Course bulk actions
-      - ~~Delete~~
-      - ~~Export to CSV~~
-      - ~~Add to Category~~
-      - Remove From Category
-      - Set to Active
+    - ~~Course bulk actions~~
     - Course filters
+      - Category
+      - Creation Date // created_at
+      - Enrollment Number
+      - Rating
+      - Feedback Count
+      - Completion Rate
+      - Status
+      - Language
+      - Certificate
+      - Instructor
+      - Duration
+      - Featured
+      - Course Level
+      - Course Pace
+      - Keyword Search
+      - Time Commitment
+      - Interactive Component
+      - Content Update // updated_at
+      - Newly Released // published_at
+      - Difficulty Level
 - Settings Emails
 - User Courses
   - API

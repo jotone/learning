@@ -6,14 +6,14 @@
       <div class="popup-title-wrap">{{ title }}</div>
 
       <form class="popup-body-wrap" @submit.prevent="handle">
-        <Label caption="Select the category to add the selected courses:">
+        <Label :caption="text">
           <select class="form-select" @change="changeSelected">
             <option
-              v-for="category in categories"
-              :selected="selected.id === category.id"
-              :value="category.id"
+              v-for="option in options"
+              :selected="selected.id === option.id"
+              :value="option.id"
             >
-              {{ category.name }}
+              {{ option.name }}
             </option>
           </select>
         </Label>
@@ -66,7 +66,7 @@ export default {
   data() {
     return {
       confirmationText: '',
-      categories: [],
+      options: [],
       selected: null
     }
   },
@@ -83,39 +83,49 @@ export default {
       type: String,
       default: ''
     },
+    text: {
+      type: String,
+      default: ''
+    },
     title: {
       type: String,
       required: true
     }
   },
   methods: {
+    isNumeric(val) {
+      return !isNaN(val) && !isNaN(parseFloat(val));
+    },
     /**
      * Select category
      * @param e
      */
     changeSelected(e) {
-      const value = parseInt(e.target.value);
-      for (let i = 0, n = this.categories.length; i < n; i++) {
-        if (this.categories[i].id === value) {
-          this.selected =  this.categories[i];
+      let value = e.target.value;
+      value = this.isNumeric(value) ? parseInt(value) : value;
+
+      for (let i = 0, n = this.options.length; i < n; i++) {
+        if (this.options[i].id === value) {
+          this.selected =  this.options[i];
           break;
         }
       }
     },
     /**
      * Open modal window
-     * @param {Array} courses
-     * @param {Array} categories
+     * @param {Array} items
+     * @param {Array} options
      * @return {Promise<unknown>}
      */
-    open(courses, categories) {
-      this.items = courses;
-      this.categories = categories
+    open(items, options) {
+      this.items = items;
+      this.options = options
 
-      if (this.categories.length) {
-        this.selected = this.categories[0];
+      if (this.options.length) {
+        this.selected = this.options[0];
+        this.active = true;
       }
-      this.active = true;
+
       return new Promise(resolve => {
         this.resolver = resolve
       })
@@ -146,7 +156,7 @@ export default {
     handle() {
       this.resolver({
         items: this.items.map(item => item.id),
-        category: this.selected.id
+        option: this.selected.id
       })
       this.active = false;
       if (typeof this.reset === 'function') {

@@ -71,7 +71,7 @@ import UserInfo from '../components/User/Info.vue';
 
 const page = usePage();
 
-console.log(page.props.auth.apiToken)
+console.log(page.props)
 
 /**
  * Toggle the active status for the side menu
