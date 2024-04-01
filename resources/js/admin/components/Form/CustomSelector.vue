@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-selector">
+  <div class="custom-selector" v-click-outside="hideSelector">
     <input
       class="custom-selector--input"
       readonly
@@ -8,7 +8,7 @@
       @click="toggleDropdown"
     >
     <div class="custom-selector--dropdown" v-if="showDropdown">
-      <ul>
+      <ul class="scrollbar">
         <template v-for="option in options">
           <li
             :class="{disabled: option.hasOwnProperty('disabled') && option.disabled}"
@@ -54,6 +54,15 @@ const props = defineProps({
 /*
  * Methods
  */
+/**
+ * Close the custom selector on miss click
+ * @param e
+ */
+const hideSelector = e => {
+  if (null === e.target.closest('.custom-selector--dropdown')) {
+    showDropdown.value = false;
+  }
+}
 /**
  * Build the result of the selected value
  * @returns {object|null}

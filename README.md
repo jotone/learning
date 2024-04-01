@@ -95,7 +95,7 @@ npm i && npm run prod
       - Category
       - Creation Date // created_at
       - Enrollment Number
-      - Rating
+      - Rating // ??
       - Feedback Count
       - Completion Rate
       - Status
@@ -103,15 +103,15 @@ npm i && npm run prod
       - Certificate
       - Instructor
       - Duration
-      - Featured
+      - Featured // ??
       - Course Level
-      - Course Pace
-      - Keyword Search
-      - Time Commitment
-      - Interactive Component
+      - Course Pace // ??
+      - Keyword Search // ??
+      - Time Commitment // ??
+      - Interactive Component // ??
       - Content Update // updated_at
       - Newly Released // published_at
-      - Difficulty Level
+      - Difficulty Level // ??
 - Settings Emails
 - User Courses
   - API

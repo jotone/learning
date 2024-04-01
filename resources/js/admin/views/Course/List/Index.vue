@@ -15,12 +15,7 @@
   <div class="card">
     <div class="content-table-wrap">
       <div class="content-table-controls">
-        <div class="filters-list-wrap">
-          <select class="form-select">
-            <option>Category</option>
-            <option>Creation Date</option>
-          </select>
-        </div>
+        <CourseFilters/>
 
         <SearchForm
           placeholder="Search for a course by the name or url…"
@@ -167,6 +162,7 @@ import CourseModal from "./Modals/CourseModal.vue";
 import TableRow from './TableRow.vue';
 // Layout
 import Layout from '../../../shared/Layout.vue';
+import CourseFilters from "./CourseFilters.vue";
 
 defineOptions({layout: Layout})
 
