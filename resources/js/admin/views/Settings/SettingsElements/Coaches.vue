@@ -1,8 +1,8 @@
 <template>
   <SettingsElement name="Coaches">
     <div class="card" style="margin-top: 20px">
-      <div class="content-table-wrap">
-        <div class="content-table-controls">
+      <div class="content-table">
+        <div class="content-table--controls">
           <SearchForm
             placeholder="Search for a Coach by the name or slug…"
             :search="filters?.search"

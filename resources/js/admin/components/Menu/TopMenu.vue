@@ -1,5 +1,5 @@
 <template>
-  <div class="top-menu-wrap">
+  <div class="top-menu">
     <ul>
       <TopMenuItem v-for="item in menu" :item="item"/>
     </ul>

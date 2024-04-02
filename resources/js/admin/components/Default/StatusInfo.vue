@@ -1,5 +1,5 @@
 <template>
-  <div class="status-info-wrap" :class="type">
+  <div class="status-info" :class="type">
     {{ caption }}
   </div>
 </template>

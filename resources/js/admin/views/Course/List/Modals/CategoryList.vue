@@ -3,8 +3,8 @@
     <template #item="{ element, index }">
       <li>
         <i class="icon sort hellip-double-icon"></i>
-        <span class="sortable-list-name">{{ element.name }}</span>
-        <div class="sortable-list-controls" @click="emit('showControls', $event, index)">
+        <span class="sortable-list__name">{{ element.name }}</span>
+        <div class="sortable-list__controls" @click="emit('showControls', $event, index)">
           <i class="icon hellip-icon"></i>
         </div>
       </li>

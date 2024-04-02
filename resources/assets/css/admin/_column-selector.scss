@@ -80,15 +80,15 @@
       padding: 20px 0;
       border-bottom: 1px solid $separator;
 
-      .slider-checkbox-container {
+      .slider-checkbox__container {
         border-radius: $b-rad-small;
         height: 28px;
         width: 55px;
 
-        .slider-checkbox-circle {height: 18px; width: 18px}
+        .slider-checkbox__circle {height: 18px; width: 18px}
       }
 
-      .slider-checkbox-text {margin-left: 30px}
+      .slider-checkbox__text {margin-left: 30px}
     }
   }
 }

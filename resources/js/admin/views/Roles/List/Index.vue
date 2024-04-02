@@ -13,8 +13,8 @@
   <Notifications/>
 
   <div class="card">
-    <div class="content-table-wrap">
-      <div class="content-table-controls">
+    <div class="content-table">
+      <div class="content-table--controls">
         <SearchForm
           placeholder="Search for a Role by the name or slug…"
           :search="$attrs.filters?.search"

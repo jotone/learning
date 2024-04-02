@@ -67,7 +67,7 @@ const buildUrl = (link: string) => link.replace(/:id/, props.model.id);
  * @param e
  */
 const closeRowActions = async e => await nextTick(() => {
-  if (active.value && null === e.target.closest('.row-actions') && null === e.target.closest('.sortable-list-controls')) {
+  if (active.value && null === e.target.closest('.row-actions') && null === e.target.closest('.sortable-list__controls')) {
     active.value = false
   }
 })

@@ -11,14 +11,14 @@
   z-index: 1000;
 }
 
-.default-popup-wrap {
+.default-popup {
   border-radius: $b-rad-default;
   background-color: white;
   box-shadow: 0 2px 8px 0 rgba(29, 33, 91, .2);
   position: relative;
   width: 700px;
 
-  .close-popup {
+  &__close {
     cursor: pointer;
     padding: 5px;
     right: 25px;
@@ -34,96 +34,102 @@
     &:hover .icon {background-color: $text}
   }
 
-  .popup-title-wrap, .popup-body-wrap {padding: 25px 30px}
+  .popup {
+    &__title, &__body {padding: 25px 30px}
 
-  .popup-title-wrap {
-    border-bottom: $b-type;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 36px;
-  }
+    &__title {
+      border-bottom: $b-type;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 36px;
+    }
 
-  .popup-body-wrap {
-    .form-input, .form-select, .form-text {width: 100%}
-  }
+    &__body {
+      .form-input, .form-select, .form-text {width: 100%}
+    }
 
-  .popup-text-row {
-    color: $text;
-    font-size: 16px;
-    line-height: 24px;
+    &__text-row {
+      color: $text;
+      font-size: 16px;
+      line-height: 24px;
 
-    &.big-text {font-size: 20px; line-height: 30px}
-  }
+      &--big-text {font-size: 20px; line-height: 30px}
+    }
 
-  .popup-simple-list-wrap, .popup-items-list-wrap {
-    margin: 10px 0;
+    &__list--simple, &__list--items {
+      margin: 10px 0;
 
-    ul {
-      max-height: 150px;
-      overflow-x: hidden;
-      overflow-y: auto;
+      ul {
+        max-height: 150px;
+        overflow-x: hidden;
+        overflow-y: auto;
 
-      li {
-        margin: 5px;
+        li {
+          margin: 5px;
 
-        .item-text {font-size: 16px;line-height: 30px}
+          .item__text {font-size: 16px;line-height: 30px}
+        }
       }
     }
-  }
 
-  .popup-simple-list-wrap {
-    padding-top: 15px;
+    &__list {
+      &--simple {
+        padding-top: 15px;
 
-    ul li .item-text {color: $link}
-  }
-
-  .popup-items-list-wrap {
-    padding: 15px 25px;
-    background-color: $bg;
-    border-radius: $b-rad-default;
-
-    ul li {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      cursor: pointer;
-
-      .item-text {font-weight: 500}
-
-      .item-remove {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: $separator;
-        border-radius: 50%;
-        height: 20px;
-        width: 20px;
+        ul li .item__text {color: $link}
       }
 
-      .icon {
-        background-color: $link;
-        height: 12px;
-        width: 12px;
+      &--items {
+        padding: 15px 25px;
+        background-color: $bg;
+        border-radius: $b-rad-default;
+
+        ul li {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          cursor: pointer;
+
+          .item {
+            &__text {font-weight: 500}
+
+            &__remove {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: $separator;
+              border-radius: 50%;
+              height: 20px;
+              width: 20px;
+            }
+          }
+
+          .icon {
+            background-color: $link;
+            height: 12px;
+            width: 12px;
+          }
+        }
       }
     }
-  }
 
-  .popup-confirmation-wrap {
-    margin-top: 15px;
+    &__confirmation {
+      margin-top: 15px;
 
-    .popup-confirmation-field {
-      position: relative;
+      &__field {
+        position: relative;
 
-      .form-input {
-        width: 50%;
+        .form-input {
+          width: 50%;
 
-        &.danger {
-          border-color: $danger;
-          color: $danger;
+          &.danger {
+            border-color: $danger;
+            color: $danger;
+          }
         }
       }
 
-      .circle-warning {
+      &__circle-warning {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -138,18 +144,15 @@
         width: 20px;
       }
 
-      .hint-message {
+      &__hint-message {
         bottom: -20px;
         color: $danger;
         font-size: 14px;
         left: 5px;
         position: absolute;
       }
-    }
 
-    .popup-confirmation-button .btn {
-      margin-top: 30px;
-      width: 150px;
+      &__button .btn {margin-top: 30px; width: 150px}
     }
   }
 }
@@ -193,20 +196,20 @@
 }
 
 .category-popup {
-  .add-category-wrap {
-    .add-category-text {
+  .add-category {
+    &__text {
       color: $text;
       font-size: 16px;
       line-height: 18px;
       margin: 15px 0;
     }
 
-    .add-category-controls {
+    &__input {width: 100%}
+
+    &__controls {
       display: flex;
       align-content: center;
       gap: 20px;
-
-      .add-category-input {width: 100%}
 
       .form-input {padding-right: 40px}
 
@@ -220,15 +223,15 @@
     overflow: auto;
   }
 
-  .popup-text-row {margin-top: 20px}
+  .popup__text-row {margin-top: 20px}
 
-  .slider-checkbox-wrap .slider-checkbox-text {font-weight: 400}
+  .slider-checkbox .slider-checkbox__text {font-weight: 400}
 }
 
 .image-upload-popup {
-  .popup-body-wrap {padding-top: 50px}
+  .popup__body {padding-top: 50px}
 
-  .popup-confirmation-button {
+  .popup__confirmation__button {
     display: flex;
     justify-content: flex-end;
     gap: 10px
@@ -236,5 +239,5 @@
 }
 
 @media screen and (max-width: 720px) {
-  .default-popup-wrap {width: calc(100% - 20px); margin: 0 auto}
+  .default-popup {width: calc(100% - 20px); margin: 0 auto}
 }

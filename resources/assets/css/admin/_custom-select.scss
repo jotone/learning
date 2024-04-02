@@ -1,7 +1,7 @@
 .custom-selector {
   position: relative;
 
-  &--input {
+  &__input {
     border: $b-type;
     border-radius: $b-rad-big;
     background: white url("../../images/icons/angle-down.svg") no-repeat 99% center / 24px;
@@ -11,10 +11,10 @@
     outline: none;
     font-size: 16px;
     line-height: 18px;
-    width: 100%;
+    max-width: 185px;
   }
 
-  &--dropdown {
+  &__dropdown {
     border-radius: $b-rad-default;
     border: $b-type;
     background-color: white;

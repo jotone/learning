@@ -1,10 +1,10 @@
 <template>
-  <div class="sidebar-wrap" v-if="show">
-    <div class="sidebar-close" @click="toggleShow(false)">
+  <div class="sidebar" v-if="show">
+    <div class="sidebar__close" @click="toggleShow(false)">
       <i class="icon close-icon"></i>
     </div>
 
-    <div class="sidebar-caption" v-if="caption.length">{{ caption }}</div>
+    <div class="sidebar__caption" v-if="caption.length">{{ caption }}</div>
 
     <slot/>
   </div>

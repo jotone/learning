@@ -1,5 +1,5 @@
 <template>
-  <span class="circle-progress-wrap" :style="shift">
+  <span class="circle-progress" :style="shift">
     <span class="inner-circle">
       <span v-if="showPercent">{{ percent(current) }}%</span>
 

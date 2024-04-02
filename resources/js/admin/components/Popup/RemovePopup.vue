@@ -1,47 +1,47 @@
 <template>
   <div class="overlay" @click="close" v-if="active">
-    <div class="default-popup-wrap">
-      <div class="close-popup" @click="close"><i class="icon close-icon"></i></div>
+    <div class="default-popup">
+      <div class="default-popup__close" @click="close"><i class="icon close-icon"></i></div>
 
-      <div class="popup-title-wrap">{{ title }}</div>
+      <div class="popup__title">{{ title }}</div>
 
-      <div class="popup-body-wrap">
-        <p class="popup-text-row big-text" v-if="caption.length" v-html="caption"></p>
+      <div class="popup__body">
+        <p class="popup__text-row popup__text-row--big-text" v-if="caption.length" v-html="caption"></p>
 
         <template v-if="'top' in listMessages">
           <template v-if="typeof listMessages.top === 'string'">
-            <p class="popup-text-row" v-html="listMessages.top"></p>
+            <p class="popup__text-row" v-html="listMessages.top"></p>
           </template>
           <template v-else>
-            <p class="popup-text-row" v-for="message in listMessages.top" v-html="message"></p>
+            <p class="popup__text-row" v-for="message in listMessages.top" v-html="message"></p>
           </template>
         </template>
 
-        <div class="popup-items-list-wrap">
+        <div class="popup__list--items">
           <ul class="scrollbar" v-if="items.length">
             <li v-for="item in items">
-              <span class="item-text">{{ item.text }}</span>
-              <span class="item-remove" @click="removeItem(item.id)"><i class="icon close-icon"></i></span>
+              <span class="item__text">{{ item.text }}</span>
+              <span class="item__remove" @click="removeItem(item.id)"><i class="icon close-icon"></i></span>
             </li>
           </ul>
         </div>
 
         <template v-if="'bottom' in listMessages">
           <template v-if="typeof listMessages.bottom === 'string'">
-            <p class="popup-text-row" v-html="listMessages.bottom"></p>
+            <p class="popup__text-row" v-html="listMessages.bottom"></p>
           </template>
           <template v-else>
-            <p class="popup-text-row" v-for="message in listMessages.bottom" v-html="message"></p>
+            <p class="popup__text-row" v-for="message in listMessages.bottom" v-html="message"></p>
           </template>
         </template>
 
-        <form class="popup-confirmation-wrap" @submit.prevent="handle">
-          <div class="popup-confirmation-field">
+        <form class="popup__confirmation" @submit.prevent="handle">
+          <div class="popup__confirmation__field">
             <input class="form-input danger" :placeholder="button.confirmation" v-model.trim="confirmationText">
-            <span class="circle-warning">!</span>
-            <span class="hint-message" v-if="!confirmationText.length">Can't be blank</span>
+            <span class="popup__confirmation__circle-warning">!</span>
+            <span class="popup__confirmation__hint-message" v-if="!confirmationText.length">Can't be blank</span>
           </div>
-          <div class="popup-confirmation-button">
+          <div class="popup__confirmation__button">
             <button
               class="btn"
               type="submit"

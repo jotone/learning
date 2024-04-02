@@ -3,8 +3,8 @@
     <template #item="{ element }">
       <li>
         <i class="icon sort hellip-double-icon"></i>
-        <span class="sortable-list-name">{{ element.name }}</span>
-        <div class="sortable-list-controls">
+        <span class="sortable-list__name">{{ element.name }}</span>
+        <div class="sortable-list__controls">
           <i class="icon close-icon"></i>
         </div>
       </li>

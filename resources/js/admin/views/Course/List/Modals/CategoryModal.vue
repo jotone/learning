@@ -1,17 +1,17 @@
 <template>
   <div class="overlay" @click="close" v-if="active">
-    <div class="default-popup-wrap category-popup">
-      <div class="close-popup" @click="close"><i class="icon close-icon"></i></div>
+    <div class="default-popup category-popup">
+      <div class="default-popup__close" @click="close"><i class="icon close-icon"></i></div>
 
-      <div class="popup-title-wrap">Categories</div>
+      <div class="popup__title">Categories</div>
 
-      <div class="popup-body-wrap">
-        <div class="add-category-wrap">
-          <div class="add-category-text">
+      <div class="popup__body">
+        <div class="add-category">
+          <div class="add-category__text">
             Add Category
           </div>
-          <form class="add-category-controls" @submit.prevent="categoryStore">
-            <label class="add-category-input">
+          <form class="add-category__controls" @submit.prevent="categoryStore">
+            <label class="add-category__input">
               <input class="form-input" maxlength="60" v-model.trim="form.name" required>
               <CircleProgress :current="form.name?.length || 0" max="60" :showRemnant="true"/>
             </label>
@@ -32,7 +32,7 @@
           @change="categoriesInsteadOfCourseChange"
         />
 
-        <p class="popup-text-row">
+        <p class="popup__text-row">
           Note: All courses should belong to a category in order to<br>be able to select this view.
         </p>
 

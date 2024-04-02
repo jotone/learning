@@ -1,8 +1,8 @@
 <template>
-  <span class="color-picker-wrap" v-click-outside="close" >
-    <span class="color-picker-preview" :style="{'background-color': color}" @click="open"></span>
+  <span class="color-picker" v-click-outside="close" >
+    <span class="color-picker__preview" :style="{'background-color': color}" @click="open"></span>
 
-    <span class="color-picker-menu" v-if="show">
+    <span class="color-picker__menu" v-if="show">
       <ColorPicker theme="light" :color="color" :sucker-hide="true" @changeColor="changeColor"/>
     </span>
 

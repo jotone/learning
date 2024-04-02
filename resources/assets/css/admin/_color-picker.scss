@@ -1,10 +1,10 @@
-.color-picker-wrap {
+.color-picker {
   display: flex;
   align-items: center;
   gap: 15px;
   position: relative;
 
-  .color-picker-preview {
+  &__preview {
     border-radius: 50%;
     border: 1px solid $text;
     display: block;
@@ -15,7 +15,7 @@
 
   .form-input {width: calc(100% - 79px)}
 
-  .color-picker-menu {
+  &__menu {
     position: absolute;
     left: 0;
     bottom: 55px;

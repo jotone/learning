@@ -11,7 +11,7 @@
 
   <Notifications/>
 
-  <ul class="dropdown-list-wrap">
+  <ul class="dropdown-list">
     <MainSettings :settings="mainSettingsForm"/>
     <Functionality :settings="functionalityForm"/>
     <Email

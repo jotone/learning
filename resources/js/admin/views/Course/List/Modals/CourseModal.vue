@@ -1,11 +1,11 @@
 <template>
   <div class="overlay" @click="close" v-if="active">
-    <div class="default-popup-wrap category-popup">
-      <div class="close-popup" @click="close"><i class="icon close-icon"></i></div>
+    <div class="default-popup">
+      <div class="default-popup__close" @click="close"><i class="icon close-icon"></i></div>
 
-      <div class="popup-title-wrap">Create Course</div>
+      <div class="popup__title">Create Course</div>
 
-      <form class="popup-body-wrap" @submit.prevent="submit">
+      <form class="popup__body" @submit.prevent="submit">
         <Label caption="Name of the Course">
           <TextArea
             placeholder="Name of the Course..."
@@ -35,7 +35,7 @@
         <Label caption="Status">
           <select class="form-select" v-model="form.status">
             <option v-for="status in statuses" :value="status">
-              {{ status }}
+              {{ status.ucfirst().replace(/[_-]+/, '') }}
             </option>
           </select>
         </Label>

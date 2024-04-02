@@ -1,11 +1,11 @@
 <template>
   <div class="overlay" @click="close" v-if="active">
-    <div class="default-popup-wrap category-popup">
-      <div class="close-popup" @click="close"><i class="icon close-icon"></i></div>
+    <div class="default-popup">
+      <div class="default-popup__close" @click="close"><i class="icon close-icon"></i></div>
 
-      <div class="popup-title-wrap">{{ title }}</div>
+      <div class="popup__title">{{ title }}</div>
 
-      <form class="popup-body-wrap" @submit.prevent="handle">
+      <form class="popup__body" @submit.prevent="handle">
         <Label :caption="text">
           <select class="form-select" @change="changeSelected">
             <option
@@ -19,28 +19,28 @@
         </Label>
 
         <p
-          class="popup-text-row"
+          class="popup__text-row"
           v-if="caption.length"
           v-html="caption.replace(':entity', selected.name)"
         ></p>
 
-        <div class="popup-items-list-wrap">
+        <div class="popup__list--items">
           <ul class="scrollbar" v-if="items.length">
             <li v-for="item in items">
-              <span class="item-text">{{ item.text }}</span>
-              <span class="item-remove" @click="removeItem(item.id)"><i class="icon close-icon"></i></span>
+              <span class="item__text">{{ item.text }}</span>
+              <span class="item__remove" @click="removeItem(item.id)"><i class="icon close-icon"></i></span>
             </li>
           </ul>
         </div>
 
-        <p class="popup-text-row">Type <b>{{ button.confirmation }}</b> to confirm.</p>
+        <p class="popup__text-row">Type <b>{{ button.confirmation }}</b> to confirm.</p>
 
-        <div class="popup-confirmation-wrap">
-          <div class="popup-confirmation-field">
+        <div class="popup__confirmation">
+          <div class="popup__confirmation__field">
             <input class="form-input" :placeholder="button.confirmation" v-model.trim="confirmationText">
-            <span class="hint-message" v-if="!confirmationText.length">Can't be blank</span>
+            <span class="popup__confirmation__hint-message" v-if="!confirmationText.length">Can't be blank</span>
           </div>
-          <div class="popup-confirmation-button">
+          <div class="popup__confirmation__button">
             <button
               class="btn"
               type="submit"

@@ -12,7 +12,7 @@ export const DefaultPopupMixin = {
      * @param {event} e
      */
     close(e) {
-      if (e.target.classList.contains('overlay') || null !== e.target.closest('.close-popup')) {
+      if (e.target.classList.contains('overlay') || null !== e.target.closest('.default-popup__close')) {
         if (typeof this.reset === 'function') {
           this.reset();
         }

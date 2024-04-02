@@ -34,7 +34,7 @@
 
     <fieldset class="card">
       <legend title="Variables">Variables</legend>
-      <div class="simple-table-wrap">
+      <div class="simple-table">
         <div class="table-container">
           <VariablesTable :entities="entities" :variables="form.variables"/>
         </div>
@@ -76,9 +76,7 @@ const page = usePage()
 /**
  * Force an EmailRowEditor to rerender
  */
-const forceRerender = () => {
-  rowEditorCounter.value += 1;
-};
+const forceRerender = () => rowEditorCounter.value++;
 
 /**
  * Submit the email template form

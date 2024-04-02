@@ -1,11 +1,11 @@
 <template>
-  <label class="slider-checkbox-wrap">
+  <label class="slider-checkbox">
     <slot name="before"/>
-    <span class="slider-checkbox-container" :class="{checked: state}">
-      <span class="slider-checkbox-circle"></span>
+    <span class="slider-checkbox__container" :class="{checked: state}">
+      <span class="slider-checkbox__circle"></span>
     </span>
     <input type="checkbox" :name="name" @change="toggleStatus">
-    <span class="slider-checkbox-text" v-html="text"></span>
+    <span class="slider-checkbox__text" v-html="text"></span>
     <slot name="after"/>
   </label>
 </template>

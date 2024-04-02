@@ -13,9 +13,9 @@
   <Notifications/>
 
   <div class="card">
-    <div class="content-table-wrap">
-      <div class="content-table-controls">
-        <CourseFilters/>
+    <div class="content-table">
+      <div class="content-table__controls">
+        <CourseFilterDropdown/>
 
         <SearchForm
           placeholder="Search for a course by the name or url…"
@@ -23,10 +23,12 @@
           @runSearch="runSearch"
         />
 
-        <div class="column-selector-button-wrap" @click="toggleSidebar">
+        <div class="column-selector-button" @click="toggleSidebar">
           <i class="icon column-selector-icon"></i>
         </div>
       </div>
+
+      <CourseFilterList />
 
       <CourseBulkActions
         ref="courseBulkActions"
@@ -117,13 +119,13 @@
 
   <Teleport to="body">
     <StatusTooltip ref="statusTooltip">
-      <div class="status-tooltip-row">
+      <div class="status-tooltip__row">
         <b>Active:</b><span>Fully accessible, complete courses available now.</span>
       </div>
-      <div class="status-tooltip-row">
+      <div class="status-tooltip__row">
         <b>Coming Soon:</b><span>New courses launching soon.</span>
       </div>
-      <div class="status-tooltip-row">
+      <div class="status-tooltip__row">
         <b>Draft:</b><span>Courses in development, not yet available.</span>
       </div>
     </StatusTooltip>
@@ -147,8 +149,9 @@ import {FiltersInterface} from '../../../../contracts/FiltersInterface';
 import {ResponseInterface} from "../../../../contracts/ResponseInterface";
 // Components
 import CourseBulkActions from "./CourseBulkActions.vue";
+import CourseFilterDropdown from "./CourseFilterDropdown.vue";
 import {
-  ColumnSelector,
+  ColumnSelector, FilterList,
   getFilters,
   Pagination,
   PerPage,
@@ -162,7 +165,7 @@ import CourseModal from "./Modals/CourseModal.vue";
 import TableRow from './TableRow.vue';
 // Layout
 import Layout from '../../../shared/Layout.vue';
-import CourseFilters from "./CourseFilters.vue";
+import CourseFilterList from "./CourseFilterList.vue";
 
 defineOptions({layout: Layout})
 

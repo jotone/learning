@@ -1,4 +1,4 @@
-.sidebar-wrap {
+.sidebar {
   position: fixed;
   top: 0;
   right: 0;
@@ -10,7 +10,7 @@
   scrollbar-width: none;
   overflow: auto;
 
-  .sidebar-caption {
+  &__caption {
     border-bottom: 1px solid $menuText;
     color: $text;
     font-size: 25px;
@@ -20,7 +20,7 @@
     text-align: center;
   }
 
-  .sidebar-close {
+  &__close {
     position: absolute;
     top: 48px;
     right: 15px;
@@ -33,9 +33,9 @@
     }
   }
 
-  .sidebar-body {padding: 45px}
+  &__body {padding: 45px}
 }
 
 @media screen and (max-width: 1200px) {
-  .sidebar-wrap {top: 65px; height: calc(100vh - 65px)}
+  .sidebar {top: 65px; height: calc(100vh - 65px)}
 }

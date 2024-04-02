@@ -1,19 +1,19 @@
 <template>
   <div class="custom-selector" v-click-outside="hideSelector">
     <input
-      class="custom-selector--input"
+      class="custom-selector__input"
       readonly
       :placeholder="placeholder"
       :value="result === null ? options[0][label] : result.text"
       @click="toggleDropdown"
     >
-    <div class="custom-selector--dropdown" v-if="showDropdown">
+    <div class="custom-selector__dropdown" v-if="showDropdown">
       <ul class="scrollbar">
-        <template v-for="option in options">
+        <template v-for="(option, i) in options">
           <li
             :class="{disabled: option.hasOwnProperty('disabled') && option.disabled}"
             v-html="template(option)"
-            @click="select(option)"
+            @click="select(option, i)"
           ></li>
         </template>
       </ul>
@@ -23,7 +23,7 @@
 
 <script setup>
 // Vue libs
-import {reactive, ref} from "vue";
+import {reactive, ref, watch} from "vue";
 
 // Assign the function to emit
 const emit = defineEmits(['change'])
@@ -46,9 +46,11 @@ const props = defineProps({
     type: Function,
     required: true
   },
-  selected: {
-    type: [Number, Boolean, String],
-    default: null
+  settings: {
+    type: Object,
+    default: {
+      exclude: false
+    }
   }
 })
 /*
@@ -59,7 +61,7 @@ const props = defineProps({
  * @param e
  */
 const hideSelector = e => {
-  if (null === e.target.closest('.custom-selector--dropdown')) {
+  if (null === e.target.closest('.custom-selector__dropdown')) {
     showDropdown.value = false;
   }
 }
@@ -86,10 +88,11 @@ const reset = () => {
 /**
  * Set new selector values on change event
  * @param {object} option
+ * @param {int} i
  */
-const select = option => {
+const select = (option, i) => {
   if (!option.disabled) {
-    result.value = option.value;
+    result.value = option.hasOwnProperty('value') ? option.value : i;
     result.text = option.text;
     showDropdown.value = false;
     emit('change', result.value)

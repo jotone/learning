@@ -1,6 +1,6 @@
 @import "vars", "bulk-selector", "column-selector", "status-tooltip";
 
-.simple-table-wrap, .content-table-wrap {
+.simple-table, .content-table {
   position: relative;
   padding: 30px;
 
@@ -82,15 +82,19 @@
   }
 }
 
-.content-table-wrap {
-  .content-table-controls {
+.content-table {
+  &__controls, &__filter-list {
+    margin-bottom: 20px;
+    position: relative;
+    width: 100%;
+  }
+
+  &__controls {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: nowrap;
     gap: 15px;
-    position: relative;
-    margin-bottom: 20px;
 
     .search-form {
       width: 100%;
@@ -123,7 +127,7 @@
         top: 50%;
       }
 
-      .search-field {
+      &__field {
         border: $b-type;
         border-radius: $b-rad-default;
         padding: 10px 140px 10px 45px;
@@ -131,11 +135,28 @@
       }
     }
 
-    .column-selector-button-wrap .icon {
+    .column-selector-button .icon {
       background-color: $link;
       cursor: pointer;
       height: 28px;
       width: 28px;
+    }
+  }
+
+  &__filter-list {
+    ul li {
+      border: $b-type;
+      border-radius: $b-rad-big;
+    }
+
+    &__caption {
+      color: $text;
+      border-right: $b-type;
+      max-width: 184px;
+      height: 100%;
+      padding: 12px 10px 12px 20px;
+      font-size: 16px;
+      line-height: 18px;
     }
   }
 
@@ -284,7 +305,7 @@
 }
 
 @media screen and (max-width: 720px) {
-  .content-table-wrap {
+  .content-table {
     padding: 15px;
 
     .table-container table th,
@@ -296,9 +317,9 @@
 }
 
 @media screen and (max-width: 480px) {
-  .content-table-wrap {
+  .content-table {
     padding: 10px;
 
-    .content-table-controls, .table-container .bulk-select {display: none}
+    .content-table--controls, .table-container .bulk-select {display: none}
   }
 }

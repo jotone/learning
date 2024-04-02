@@ -31,11 +31,11 @@
     height: 40px;
     position: relative;
 
-    &.user-info-wrap {
+    &.user-info {
       border-bottom: 1px solid $menuEl;
       height: auto;
 
-      .user-credentials {
+      .user-info__credentials {
         color: white;
         left: 85px;
         top: 50%;
@@ -278,10 +278,10 @@ body::after {
 
         li {margin: 0}
 
-        li.user-info-wrap {
+        li.user-info {
           margin-bottom: 10px;
 
-          .avatar-wrap {padding: 15px}
+          .user-avatar {padding: 15px}
         }
       }
     }

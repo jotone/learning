@@ -1,87 +1,70 @@
 <template>
-  <div class="filters-list-wrap">
-    <CustomSelector
-      ref="actionSelector"
-      :options="available"
-      :template="option => `<span>${option.text}</span>`"
-      placeholder="Bulk Actions"
-      @change="executeCallback"
-    />
-  </div>
+  <FilterDropdown :filters="filters"/>
 </template>
 
 <script setup>
-import {computed, ref} from "vue";
-import {CustomSelector} from "../../../components/Form/index.js";
-
-const executeCallback = () => {
-  console.log(111)
-}
+import {FilterDropdown} from "../../../components/DataTable";
 
 const filters = [
   {
     text: 'Category',
+    value: 'category',
     type: 'multipleSelector',
   },
   {
     text: 'Creation Date',
+    value: 'created_at',
     type: 'datePicker'
   },
   {
     text: 'Enrollment Number',
-    type: 'number'
-  },
-  {
-    text: 'Feedback Count',
+    value: 'enroll_number',
     type: 'number'
   },
   {
     text: 'Completion Rate',
+    value: 'completion_rate',
     type: 'number'
   },
   {
     text: 'Status',
+    value: 'status',
     type: 'booleanList'
   },
   {
     text: 'Language',
+    value: 'lang',
     type: 'multipleSelector'
   },
   {
     text: 'Certificate',
+    value: 'certificate',
     type: 'booleanList'
   },
   {
     text: 'Instructor',
+    value: 'instructor',
     type: 'multipleSelector'
   },
   {
     text: 'Duration',
+    value: 'duration',
     type: 'number'
   },
   {
     text: 'Course Level',
+    value: 'course_level',
     type: 'number'
   },
   {
     text: 'Content Update',
+    value: 'update_at',
     type: 'datePicker'
   },
   {
     text: 'Newly Released',
+    value: 'published_at',
     type: 'datePicker'
   }
-]
-
-let selected = ref([]);
-
-let available = computed(() => {
-  let result = []
-  for (let i in filters) {
-    if (selected.value.indexOf(i) < 0) {
-      result.push(filters[i])
-    }
-  }
-  return result;
-})
+];
 </script>

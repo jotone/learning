@@ -4,7 +4,7 @@
       <span>{{ namespace }}\</span>{{ controller }}
     </td>
     <td class="list-col">
-      <label class="caption-inline" v-for="method in methods">
+      <label class="caption--inline" v-for="method in methods">
         <input
           type="checkbox"
           :name="`${namespace}[${controller}][${method}]`"

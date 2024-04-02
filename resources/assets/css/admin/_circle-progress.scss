@@ -1,6 +1,6 @@
 @import "vars";
 
-.circle-progress-wrap {
+.circle-progress {
   height: 32px;
   width: 32px;
   position: absolute;
@@ -24,12 +24,10 @@
     position: absolute;
     width: 26px;
 
-    > span {
-      font-size: 12px;
-    }
+    > span {font-size: 12px}
   }
 }
 
 @media screen and (max-width: 720px) {
-  .circle-progress-wrap.input-shift {right: 5px}
+  .circle-progress.input-shift {right: 5px}
 }

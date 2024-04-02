@@ -1,22 +1,22 @@
 <template>
-  <div class="image-upload-wrap">
-    <div class="image-preview-wrap" v-if="previewImage.src.length">
+  <div class="image-upload">
+    <div class="image-upload__preview" v-if="previewImage.src.length">
       <img :src="previewImage.src" alt="">
     </div>
 
-    <div class="image-placeholder-wrap" v-if="viewPlaceholder && !previewImage.src.length">
-      <div class="image-placeholder">
+    <div class="image-upload__placeholder" v-if="viewPlaceholder && !previewImage.src.length">
+      <div class="image-upload__placeholder__wrap">
         <img src="/resources/assets/images/upload.png" alt="">
       </div>
 
-      <div class="image-placeholder-text" v-if="placeholderText.length" v-html="placeholderText"></div>
+      <div class="image-upload__placeholder__text" v-if="placeholderText.length" v-html="placeholderText"></div>
 
-      <div class="image-placeholder-helper">
+      <div class="image-upload__placeholder__helper">
         Upload an image by <a href="javascript:void(0)">clicking here</a> or drag and drop the file.
       </div>
     </div>
 
-    <div class="image-upload-controls-wrap">
+    <div class="image-upload__controls">
       <i class="icon file-upload-icon" title="Upload Image" @click="fileInput.click()"></i>
       <i class="icon trash-icon" title="Remove Image" @click="removeImage"></i>
     </div>

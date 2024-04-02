@@ -1,4 +1,4 @@
-.image-upload-wrap {
+.image-upload {
   background-color: $bg;
   border: $b-type;
   border-radius: $b-rad-default;
@@ -8,7 +8,11 @@
   position: relative;
   overflow: hidden;
 
-  .image-preview-wrap {
+  &__preview, &__placeholder {
+    img {object-fit: contain}
+  }
+
+  &__preview {
     height: 100%;
     display: flex;
     align-items: center;
@@ -17,45 +21,37 @@
     padding: 10px;
     width: 100%;
 
-    img {
-      max-width: 100%;
-      max-height: 340px;
-      object-fit: contain;
-    }
+    img {max-width: 100%; max-height: 340px}
   }
 
-  .image-placeholder-wrap {
+  &__placeholder {
     border-radius: $b-rad-default;
     height: 100%;
     padding: 15px;
 
-    .image-placeholder {
+    &__wrap {
       text-align: center;
       padding: 40px;
 
-      img {
-        object-fit: contain;
-        max-height: 105px;
-        max-width: 105px;
-      }
+      img {max-height: 105px; max-width: 105px}
     }
 
-    .image-placeholder-text, .image-placeholder-helper {
+    &__text, &__helper {
       color: $text;
       text-align: center;
       line-height: 24px;
     }
 
-    .image-placeholder-text {font-size: 20px; font-weight: 500}
+    &__text {font-size: 20px; font-weight: 500}
 
-    .image-placeholder-helper {
+    &__helper {
       padding: 40px 70px;
       text-align: center;
       font-size: 18px;
     }
   }
 
-  .image-upload-controls-wrap {
+  &__controls {
     background-color: rgba(0, 0, 0, .6);
     display: flex;
     align-items: center;
@@ -76,9 +72,9 @@
   }
 
   &:hover {
-    .image-upload-controls-wrap {height: 100%; transition: height, 0.3s ease-in}
+    .image-upload__controls {height: 100%; transition: height, 0.3s ease-in}
 
-    .image-upload-controls-wrap .icon {display: block}
+    .image-upload__controls .icon {display: block}
   }
 
   input[type="file"] {display: none}

@@ -70,7 +70,7 @@ a {color: $link; text-decoration: none}
       img {object-fit: contain; max-width: 100%}
     }
 
-    .account-type-wrap {
+    .account-type {
       background: linear-gradient(135deg, $link 0%, $gradient 100%);
       border-radius: 15px;
       padding: 30px;
@@ -137,7 +137,7 @@ a {color: $link; text-decoration: none}
 
   h1 {font-size: 50px; font-weight: 600}
 
-  .status-info-wrap {
+  .status-info {
     border-radius: $b-rad-big;
     font-size: 16px;
     line-height: 46px;
@@ -146,28 +146,10 @@ a {color: $link; text-decoration: none}
 
 .content-container {width: calc(100% - 400px)}
 
-.sortable-list > ul > li {
-  align-items: center;
-  background-color: $bg;
-  color: $text;
-  display: flex;
-  font-size: 14px;
-  margin: 10px 0;
-  padding: 15px 15px 15px 40px;
-  position: relative;
+.sortable-list {
+  &__name {padding-right: 20px}
 
-  .sort {
-    background-color: $secondary;
-    cursor: grab;
-    left: 10px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .sortable-list-name {padding-right: 20px}
-
-  .sortable-list-controls {
+  &__controls {
     cursor: pointer;
     position: absolute;
     top: 50%;
@@ -185,14 +167,34 @@ a {color: $link; text-decoration: none}
 
     &:hover .icon {background-color: $text}
   }
+
+  > ul > li {
+    align-items: center;
+    background-color: $bg;
+    color: $text;
+    display: flex;
+    font-size: 14px;
+    margin: 10px 0;
+    padding: 15px 15px 15px 40px;
+    position: relative;
+
+    .sort {
+      background-color: $secondary;
+      cursor: grab;
+      left: 10px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
 }
 
-.user-info-wrap {
+.user-info {
   height: auto;
 
-  .avatar-wrap {padding: 10px}
+  .user-avatar {padding: 10px}
 
-  .user-credentials {
+  &__credentials {
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -202,9 +204,9 @@ a {color: $link; text-decoration: none}
     overflow: hidden;
     position: absolute;
 
-    .user-name {font-size: 16px; font-weight: 600; line-height: 24px}
+    &__name {font-size: 16px; font-weight: 600; line-height: 24px}
 
-    .user-email {font-size: 14px; line-height: 20px}
+    &__email {font-size: 14px; line-height: 20px}
   }
 }
 
@@ -232,7 +234,7 @@ a {color: $link; text-decoration: none}
 
       .view-menu-button {display: block}
 
-      .account-type-wrap {
+      .account-type {
         padding: 25px;
 
         a {
@@ -259,7 +261,6 @@ a {color: $link; text-decoration: none}
   .page-name-wrap, .row {display: block}
 
   .page-name-wrap h1 {margin-bottom: 10px; font-size: 36px}
-
 
   .row, .form-row {
     &.padding {padding: 0 15px; margin: 10px 0}

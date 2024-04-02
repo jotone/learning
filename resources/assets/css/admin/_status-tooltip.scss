@@ -1,4 +1,4 @@
-.status-tooltip-wrap {
+.status-tooltip {
   position: absolute;
   background-color: $draft;
   border-radius: $b-rad-default;
@@ -23,7 +23,7 @@
     width: 0;
   }
 
-  .status-tooltip-row {
+  &__row {
     font-size: 14px;
     line-height: 22px;
     margin: 5px 0;

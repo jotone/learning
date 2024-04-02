@@ -1,4 +1,4 @@
-.top-menu-wrap ul {
+.top-menu ul {
   align-items: center;
   display: flex;
   gap: 30px;
@@ -35,7 +35,7 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .top-menu-wrap ul {
+  .top-menu ul {
     gap: 15px;
     li {
       a {gap: 5px}
@@ -48,7 +48,7 @@
 }
 
 @media screen and (max-width: 720px) {
-  .top-menu-wrap ul {
+  .top-menu ul {
     justify-content: center;
     li {
       a, span {display: block; padding: 0; text-align: center}
@@ -61,7 +61,7 @@
 }
 
 @media screen and (max-width: 480px) {
-  .top-menu-wrap ul {
+  .top-menu ul {
     gap: 20px;
 
     li span {display: none}

@@ -14,7 +14,7 @@
           </ul>
         </li>
 
-        <li class="account-type-wrap">
+        <li class="account-type">
           <p>You are now on the Basic Plan. Upgrade to PRO for more resources.</p>
 
           <a href="#">Upgrade</a>

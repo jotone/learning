@@ -1,9 +1,9 @@
 <template>
-  <div class="avatar-wrap">
-    <div v-if="null === data.image" class="avatar-image" :style="`background-color: rgb(${data.bg.join(',')})`">
+  <div class="user-avatar">
+    <div v-if="null === data.image" class="user-avatar__image" :style="`background-color: rgb(${data.bg.join(',')})`">
       <span :style="`color: ${data.color}`">{{ data.text }}</span>
     </div>
-    <div class="avatar-image" v-else>
+    <div class="user-avatar__image" v-else>
       <img :src="data.image" alt=""/>
     </div>
   </div>

@@ -1,6 +1,6 @@
 @import "vars";
 
-.dropdown-list-wrap {
+.dropdown-list {
   margin: 40px 0;
   width: 75%;
 
@@ -27,7 +27,7 @@
         margin-bottom: 20px;
         position: relative;
 
-        .slider-checkbox-text {font-weight: 400}
+        .slider-checkbox__text {font-weight: 400}
 
         .icon {background-color: $secondary}
 
@@ -98,7 +98,7 @@
           font-weight: 400;
         }
 
-        .circle-progress-wrap {
+        .circle-progress {
           bottom: 5px;
           right: 40px;
           height: 24px;
@@ -136,16 +136,16 @@
   }
 }
 
-.content-table-wrap .user-info-wrap {
+.content-table .user-info {
   border-bottom: none;
   display: flex;
   align-items: center;
 
-  .user-credentials {position: relative; align-items: flex-start}
+  &__credentials {position: relative; align-items: flex-start}
 }
 
 @media screen and (max-width: 1024px) {
-  .dropdown-list-wrap {width: 100%}
+  .dropdown-list {width: 100%}
 }
 
 @media screen and (max-width: 720px) {

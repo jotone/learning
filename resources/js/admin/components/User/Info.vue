@@ -1,10 +1,10 @@
 <template>
-  <component :is="props.tag" class="user-info-wrap">
+  <component :is="props.tag" class="user-info">
     <Avatar :user="user"/>
 
-    <div class="user-credentials">
-      <div class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
-      <div class="user-email">{{ user.email }}</div>
+    <div class="user-info__credentials">
+      <div class="user-info__credentials__name">{{ user.first_name }} {{ user.last_name }}</div>
+      <div class="user-info__credentials__email">{{ user.email }}</div>
     </div>
   </component>
 </template>

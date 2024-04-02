@@ -1,11 +1,11 @@
 <template>
   <div class="overlay" @click="close" v-if="active">
-    <div class="default-popup-wrap">
-      <div class="close-popup" @click="close"><i class="icon close-icon"></i></div>
+    <div class="default-popup">
+      <div class="default-popup__close" @click="close"><i class="icon close-icon"></i></div>
 
-      <div class="popup-title-wrap">{{ settings[type].title }}</div>
+      <div class="popup__title">{{ settings[type].title }}</div>
 
-      <div class="popup-body-wrap">
+      <div class="popup__body">
         <form @submit.prevent="submit" :action="type === 'add' ? $page.props.routes.socials.store : editUrl">
           <label class="caption">
             <span>Type</span>

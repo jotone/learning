@@ -1,7 +1,7 @@
-.bulk-selector-wrap {
+.bulk-selector {
   margin: 30px 0;
 
-  .bulk-select-counters {
+  &__counters {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -17,8 +17,5 @@
     .btn {height: 31px}
   }
 
-  .bulk-select-selector {
-    margin-top: 15px;
-    max-width: 270px;
-  }
+  &__selector {margin-top: 15px; max-width: 270px}
 }

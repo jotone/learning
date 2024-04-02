@@ -96,12 +96,23 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
   width: 100%;
 }
 
-.slider-checkbox-wrap {
+.slider-checkbox {
   align-items: center;
   display: flex;
   gap: 20px;
 
-  .slider-checkbox-container {
+  &__circle {
+    background-color: $secondary;
+    border-radius: 50%;
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__container {
     background-color: $separator;
     border-radius: 12px;
     position: relative;
@@ -109,21 +120,10 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
     width: 42px;
     cursor: pointer;
 
-    .slider-checkbox-circle {
-      background-color: $secondary;
-      border-radius: 50%;
-      height: 16px;
-      width: 16px;
-      position: absolute;
-      left: 4px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
     &.checked {
       background-color: $linkBg;
 
-      .slider-checkbox-circle {
+      .slider-checkbox__circle {
         background-color: $link;
         left: auto;
         right: 4px;
@@ -131,7 +131,7 @@ input[type="search"]::-webkit-search-results-decoration {display: none}
     }
   }
 
-  .slider-checkbox-text {
+  .slider-checkbox__text {
     color: $text;
     font-size: 16px;
     line-height: 18px;
@@ -146,12 +146,12 @@ label {
   &.caption {
     display: block;
     margin-bottom: 10px;
-  }
 
-  &.caption-inline {
-    align-items: center;
-    display: flex;
-    gap: 10px;
+    &--inline {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+    }
   }
 
   > span {
@@ -163,10 +163,7 @@ label {
     margin: 5px 0;
   }
 
-  .form-input, .form-select, .form-text {
-    margin-top: 5px;
-    width: calc(100% - 20px);
-  }
+  .form-input, .form-select, .form-text {margin-top: 5px; width: calc(100% - 20px)}
 }
 
 .form-wrap {
@@ -243,6 +240,7 @@ fieldset {
 
   fieldset {
     margin-top: 70px;
+
     legend {font-size: 24px}
   }
 }

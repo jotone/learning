@@ -1,13 +1,13 @@
 <template>
   <div class="overlay" @click="close" v-if="active">
-    <div class="default-popup-wrap image-upload-popup">
-      <div class="close-popup" @click="close"><i class="icon close-icon"></i></div>
+    <div class="default-popup image-upload-popup">
+      <div class="default-popup__close" @click="close"><i class="icon close-icon"></i></div>
 
-      <div class="popup-body-wrap">
-        <form class="popup-confirmation-wrap" ref="form">
+      <div class="popup__body">
+        <form class="popup__confirmation" ref="form">
           <Cropper :src="src" ref="cropper"/>
 
-          <div class="popup-confirmation-button">
+          <div class="popup__confirmation__button">
             <button class="btn blue--inverse" type="button" @click="cancel">
               Cancel
             </button>

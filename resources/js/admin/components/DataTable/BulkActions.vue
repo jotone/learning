@@ -1,6 +1,6 @@
 <template>
-  <div class="bulk-selector-wrap" v-if="show">
-    <div class="bulk-select-counters">
+  <div class="bulk-selector" v-if="show">
+    <div class="bulk-selector__counters">
       <span>{{ counter }} selected</span>
       <button class="btn blue--inverse" v-if="total !== counter" @click="forceSelection($event, true)">
         <span>Select All {{ totalItems }} Courses</span>
@@ -10,7 +10,7 @@
       </button>
     </div>
 
-    <div class="bulk-select-selector">
+    <div class="bulk-selector__selector">
       <CustomSelector
         ref="actionSelector"
         :options="options"
@@ -73,7 +73,7 @@ const executeCallback = selected => {
  * @param e
  * @param state
  */
-const forceSelection = (e, state) => emit('clear', e.target.closest('.content-table-wrap').querySelector('tbody'), state)
+const forceSelection = (e, state) => emit('clear', e.target.closest('.content-table').querySelector('tbody'), state)
 
 /*
  * Variables

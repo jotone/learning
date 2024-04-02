@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="show"
-    class="status-tooltip-wrap"
+    class="status-tooltip"
     :style="{left: options.left + 'px', top: options.top + 'px'}"
     @mouseleave="hideTooltip"
     v-click-outside="hideTooltip"

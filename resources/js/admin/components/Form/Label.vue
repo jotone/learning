@@ -1,5 +1,5 @@
 <template>
-  <label :class="{caption: !inline, 'caption-inline': inline}">
+  <label :class="{caption: !inline, 'caption--inline': inline}">
     <span v-if="caption.length">{{ caption }}</span>
 
     <slot></slot>

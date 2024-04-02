@@ -2,7 +2,7 @@
   <form action="?search=" class="search-form" name="search" @submit.prevent="submitForm">
     <label>
       <input
-        class="search-field"
+        class="search-form__field"
         pattern=".{0}|.{3,}"
         type="search"
         :name="name"
